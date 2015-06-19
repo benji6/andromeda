@@ -1,1 +1,3 @@
-console.log('hello world');
+import ControlPad from './ControlPad';
+
+new ControlPad();

@@ -46,6 +46,9 @@
     "directories": {
       "baseURL": "public"
     },
+    "dependencies": {
+      "react": "npm:react@^0.14.0-alpha3"
+    },
     "devDependencies": {
       "babel": "npm:babel-core@^5.1.13",
       "babel-runtime": "npm:babel-runtime@^5.1.13",

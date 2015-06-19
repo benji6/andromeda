@@ -2,4 +2,20 @@
 
 body {
   background: $black;
+  margin: 0;
+  height: 100%;
+}
+html, #app {
+  height: 100%;
+}
+
+.touch-pad {
+  background: $gray;
+  display: block;
+  height: 100vw;
+  width: 100vw;
+  @media (orientation: landscape) {
+    height: 100%;
+    width: 100vh;
+  }
 }
