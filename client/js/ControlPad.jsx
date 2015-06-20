@@ -1,8 +1,6 @@
 import React from 'react';
 import {always, cond, flip, gte, identity, lt, T} from 'ramda';
-import {playNote, stopNote} from './noteController';
-import {major} from './scales';
-const {floor} = Math;
+import {inputXY, inputStop} from './handleTouchPadInput';
 const {EPSILON} = Number;
 
 const minZeroMaxOne = cond(
@@ -11,11 +9,10 @@ const minZeroMaxOne = cond(
   [T, identity]
 );
 
-const calculatePitch = (xRatio) => major[floor(8 * xRatio)];
-
 export default () => {
   class ControlPad extends React.Component {
     handleInput (e) {
+      const {currentXRatio, currentYRatio} = this.props;
       const {top, right, bottom, left} = e.target.getBoundingClientRect();
       const {clientX, clientY} = e.changedTouches[0];
       const x = clientX - left;
@@ -26,9 +23,10 @@ export default () => {
       const xRatio = minZeroMaxOne(x / width);
       const yRatio = minZeroMaxOne(y / height);
 
-      if (xRatio !== this.props.currentXRatio) {
-        playNote(calculatePitch(xRatio));
+      if (xRatio !== currentXRatio || yRatio !== currentYRatio) {
         this.props.currentXRatio = xRatio;
+        this.props.currentYRatio = yRatio;
+        inputXY(xRatio, yRatio);
       }
     }
 
@@ -38,7 +36,8 @@ export default () => {
     }
 
     handleInputEnd () {
-      stopNote();
+      this.props.currentXRatio = this.props.currentYRatio = null;
+      inputStop();
     }
 
     render () {
