@@ -1,5 +1,6 @@
+import {fromEvent} from 'most';
 import React from 'react';
-import {always, cond, flip, gte, identity, lt, T} from 'ramda';
+import {always, cond, curry, flip, gte, identity, lt, T} from 'ramda';
 import {inputXY, inputStop} from './handleTouchPadInput';
 const {EPSILON} = Number;
 
@@ -11,40 +12,37 @@ const minZeroMaxOne = cond(
 
 export default () => {
   class ControlPad extends React.Component {
-    handleInput (e) {
-      const {currentXRatio, currentYRatio} = this.props;
-      const {top, right, bottom, left} = e.target.getBoundingClientRect();
-      const {clientX, clientY} = e.changedTouches[0];
-      const x = clientX - left;
-      const y = clientY - top;
-      const width = right - left;
-      const height = bottom - top;
-
-      const xRatio = minZeroMaxOne(x / width);
-      const yRatio = minZeroMaxOne(y / height);
-
-      if (xRatio !== currentXRatio || yRatio !== currentYRatio) {
-        this.props.currentXRatio = xRatio;
-        this.props.currentYRatio = yRatio;
-        inputXY(xRatio, yRatio);
-      }
-    }
-
     componentDidMount () {
-      this.props.currentXRatio = null;
-      this.props.currentYRatio = null;
-    }
+      let currentXRatio = null;
+      let currentYRatio = null;
+      const fromTouchPadEvent = curry(flip(fromEvent))(document.querySelector('.touch-pad'));
 
-    handleInputEnd () {
-      this.props.currentXRatio = this.props.currentYRatio = null;
-      inputStop();
+      fromTouchPadEvent('touchstart').merge(fromTouchPadEvent('touchmove'))
+        .map((e) => {
+          const {top, right, bottom, left} = e.target.getBoundingClientRect();
+          const {clientX, clientY} = e.changedTouches[0];
+          const x = clientX - left;
+          const y = clientY - top;
+          const width = right - left;
+          const height = bottom - top;
+
+          return {
+            xRatio: minZeroMaxOne(x / width),
+            yRatio: minZeroMaxOne(y / height),
+          };
+        })
+        .filter(({xRatio, yRatio}) => xRatio !== currentXRatio || yRatio !== currentYRatio)
+        .tap(({xRatio}) => currentXRatio = xRatio)
+        .tap(({yRatio}) => currentYRatio = yRatio)
+        .observe(({xRatio, yRatio}) => inputXY(xRatio, yRatio));
+
+      fromTouchPadEvent('touchend')
+        .tap(() => currentXRatio = currentYRatio = null)
+        .observe(inputStop);
     }
 
     render () {
-      return <canvas className="touch-pad"
-        onTouchStart={this.handleInput.bind(this)}
-        onTouchMove={this.handleInput.bind(this)}
-        onTouchEnd={this.handleInputEnd.bind(this)}></canvas>;
+      return <canvas className="touch-pad"></canvas>;
     }
   }
 

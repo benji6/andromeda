@@ -18,6 +18,7 @@ System.config({
     "babel": "npm:babel-core@5.5.8",
     "babel-runtime": "npm:babel-runtime@5.5.8",
     "core-js": "npm:core-js@0.9.18",
+    "most": "npm:most@0.14.0",
     "ramda": "npm:ramda@0.15.0",
     "react": "npm:react@0.14.0-alpha3",
     "virtual-audio-graph": "npm:virtual-audio-graph@0.0.1-1",
@@ -81,6 +82,10 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.1",
       "source-map": "npm:source-map@0.1.31"
     },
+    "npm:most@0.14.0": {
+      "process": "github:jspm/nodelibs-process@0.1.1",
+      "when": "npm:when@3.7.3"
+    },
     "npm:path-browserify@0.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
@@ -137,6 +142,9 @@ System.config({
     "npm:virtual-audio-graph@0.0.1-1": {
       "process": "github:jspm/nodelibs-process@0.1.1",
       "ramda": "npm:ramda@0.15.0"
+    },
+    "npm:when@3.7.3": {
+      "process": "github:jspm/nodelibs-process@0.1.1"
     }
   }
 });
