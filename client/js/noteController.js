@@ -6,73 +6,73 @@ const calculateFrequency = (pitch) => 440 * Math.pow(2, pitch / 12);
 const virtualAudioGraph = new VirtualAudioGraph();
 
 const createVirtualAudioGraphParams = (pitch, modulation = 0) => {
-  let id = 1;
+  let id = 0;
   const delayTime = 1 / 3;
-  const oscillatorConnections = 7;
+  const oscillatorOutputs = 6;
 
   return [
     {
-      connections: 0,
+      output: 'output',
       id: id++,
-      name: 'stereoPanner',
+      node: 'stereoPanner',
       params: {
         pan: -1,
       }
     },
     {
-      connections: 0,
+      output: 'output',
       id: id++,
-      name: 'stereoPanner',
+      node: 'stereoPanner',
       params: {
         pan: 1,
       }
     },
     {
-      connections: [2, 6],
+      output: [1, 5],
       id: id++,
-      name: 'delay',
+      node: 'delay',
       params: {
         maxDelayTime: delayTime,
         delayTime,
       },
     },
     {
-      connections: 3,
+      output: 2,
       id: id++,
-      name: 'gain',
+      node: 'gain',
       params: {
         gain: 1 / 3,
       }
     },
     {
-      connections: [1, 4],
+      output: [0, 3],
       id: id++,
-      name: 'delay',
+      node: 'delay',
       params: {
         maxDelayTime: delayTime,
         delayTime,
       },
     },
     {
-      connections: 5,
+      output: 4,
       id: id++,
-      name: 'gain',
+      node: 'gain',
       params: {
         gain: 1 / 3,
       }
     },
     {
-      connections: [0, 6],
+      output: ['output', 5],
       id: id++,
-      name: 'gain',
+      node: 'gain',
       params: {
         gain: (1 - modulation) * 2 / 3,
       }
     },
     {
-      connections: oscillatorConnections,
+      output: oscillatorOutputs,
       id: id++,
-      name: 'oscillator',
+      node: 'oscillator',
       params: {
         detune: -2,
         frequency: calculateFrequency(pitch),
@@ -80,9 +80,9 @@ const createVirtualAudioGraphParams = (pitch, modulation = 0) => {
       },
     },
     {
-      connections: oscillatorConnections,
+      output: oscillatorOutputs,
       id: id++,
-      name: 'oscillator',
+      node: 'oscillator',
       params: {
         detune: -5,
         frequency: calculateFrequency(pitch - 12),
@@ -90,9 +90,9 @@ const createVirtualAudioGraphParams = (pitch, modulation = 0) => {
       },
     },
     {
-      connections: oscillatorConnections,
+      output: oscillatorOutputs,
       id: id++,
-      name: 'oscillator',
+      node: 'oscillator',
       params: {
         detune: 4,
         frequency: calculateFrequency(pitch),
@@ -104,4 +104,4 @@ const createVirtualAudioGraphParams = (pitch, modulation = 0) => {
 
 export const playNote = (pitch, modulation) => virtualAudioGraph.update(createVirtualAudioGraphParams(pitch, modulation));
 
-export const stopNote = () => virtualAudioGraph.update(reject(propEq('name', 'oscillator'), createVirtualAudioGraphParams()));
+export const stopNote = () => virtualAudioGraph.update(reject(propEq('node', 'oscillator'), createVirtualAudioGraphParams()));
