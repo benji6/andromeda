@@ -19,9 +19,9 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.5.8",
     "core-js": "npm:core-js@0.9.18",
     "most": "npm:most@0.14.0",
-    "ramda": "npm:ramda@0.15.0",
+    "ramda": "npm:ramda@0.15.1",
     "react": "npm:react@0.14.0-alpha3",
-    "virtual-audio-graph": "npm:virtual-audio-graph@0.0.1-1",
+    "virtual-audio-graph": "npm:virtual-audio-graph@0.0.1",
     "github:jspm/nodelibs-buffer@0.1.0": {
       "buffer": "npm:buffer@3.2.2"
     },
@@ -89,7 +89,7 @@ System.config({
     "npm:path-browserify@0.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:ramda@0.15.0": {
+    "npm:ramda@0.15.1": {
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
     "npm:react@0.14.0-alpha3": {
@@ -131,17 +131,9 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:virtual-audio-graph@0.0.0": {
+    "npm:virtual-audio-graph@0.0.1": {
       "process": "github:jspm/nodelibs-process@0.1.1",
-      "ramda": "npm:ramda@0.15.0"
-    },
-    "npm:virtual-audio-graph@0.0.1-0": {
-      "process": "github:jspm/nodelibs-process@0.1.1",
-      "ramda": "npm:ramda@0.15.0"
-    },
-    "npm:virtual-audio-graph@0.0.1-1": {
-      "process": "github:jspm/nodelibs-process@0.1.1",
-      "ramda": "npm:ramda@0.15.0"
+      "ramda": "npm:ramda@0.15.1"
     },
     "npm:when@3.7.3": {
       "process": "github:jspm/nodelibs-process@0.1.1"
