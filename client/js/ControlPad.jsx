@@ -2,8 +2,12 @@ import {fromEvent} from 'most';
 import {equals} from 'ramda';
 import React from 'react';
 import {always, cond, curry, flip, gte, identity, lt, T} from 'ramda';
-import {inputXY, inputStop} from './handleTouchPadInput';
+import {playNote, stopNote} from './noteController';
+import {major} from './scales';
+
+const {floor} = Math;
 const {EPSILON} = Number;
+const calculatePitch = (xRatio) => major[floor(major.length * xRatio)];
 
 const minZeroMaxOne = cond(
   [flip(lt)(0), always(0)],
@@ -11,33 +15,46 @@ const minZeroMaxOne = cond(
   [T, identity]
 );
 
+const calculateXAndYRatio = (e) => {
+  const {top, right, bottom, left} = e.target.getBoundingClientRect();
+  const {clientX, clientY} = e.changedTouches[0];
+  const x = clientX - left;
+  const y = clientY - top;
+  const width = right - left;
+  const height = bottom - top;
+
+  return {
+    xRatio: minZeroMaxOne(x / width),
+    yRatio: minZeroMaxOne(y / height),
+  };
+};
+
+const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
+
 export default () => {
   class ControlPad extends React.Component {
     componentDidMount () {
       let touchPadActive = false;
+      let currentlyPlayingPitch = null;
+
       const fromTouchPadEvent = curry(flip(fromEvent))(document.querySelector('.touch-pad'));
 
       fromTouchPadEvent('touchstart').merge(fromTouchPadEvent('touchmove'))
-        .map((e) => {
-          const {top, right, bottom, left} = e.target.getBoundingClientRect();
-          const {clientX, clientY} = e.changedTouches[0];
-          const x = clientX - left;
-          const y = clientY - top;
-          const width = right - left;
-          const height = bottom - top;
-
-          return {
-            xRatio: minZeroMaxOne(x / width),
-            yRatio: minZeroMaxOne(y / height),
-          };
-        })
+        .map(calculateXAndYRatio)
         .skipRepeatsWith((a, b) => touchPadActive && equals(a, b))
         .tap(() => touchPadActive = true)
-        .observe(({xRatio, yRatio}) => inputXY(xRatio, yRatio));
+        .map(calculatePitchAndMod)
+        .tap(({pitch}) => (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null) &&
+          stopNote({pitch: currentlyPlayingPitch}))
+        .tap(({pitch}) => currentlyPlayingPitch = pitch)
+        .observe(playNote);
 
       fromTouchPadEvent('touchend')
+        .map(calculateXAndYRatio)
         .tap(() => touchPadActive = false)
-        .observe(inputStop);
+        .tap(() => currentlyPlayingPitch = null)
+        .map(calculatePitchAndMod)
+        .observe(stopNote);
     }
 
     render () {

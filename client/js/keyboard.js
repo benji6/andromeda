@@ -54,10 +54,12 @@ fromEvent('keydown', document)
   .filter((note) => !isNil(note))
   .filter((note) => !pressedKeys.has(note))
   .tap((note) => pressedKeys.add(note))
+  .map((pitch) => ({pitch}))
   .observe(playNote);
 
 fromEvent('keyup', document)
   .map(({keyCode}) => keyCodesToNotes[keyCode])
   .filter((note) => !isNil(note))
   .tap((note) => pressedKeys.delete(note))
+  .map((pitch) => ({pitch}))
   .observe(stopNote);

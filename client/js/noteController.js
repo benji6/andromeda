@@ -66,7 +66,7 @@ const createVirtualAudioGraphParams = (pitch, modulation = 0) => {
       id: id++,
       node: 'gain',
       params: {
-        gain: (1 - modulation) * 2 / 3,
+        gain: (1 - modulation) / 4,
       }
     },
     {
@@ -102,6 +102,18 @@ const createVirtualAudioGraphParams = (pitch, modulation = 0) => {
   ];
 };
 
-export const playNote = (pitch, modulation) => virtualAudioGraph.update(createVirtualAudioGraphParams(pitch, modulation));
+const currentlyPlayingPitches = new Set();
 
-export const stopNote = () => virtualAudioGraph.update(reject(propEq('node', 'oscillator'), createVirtualAudioGraphParams()));
+export const playNote = ({pitch, modulation}) => {
+  if (currentlyPlayingPitches.has(pitch)) {
+    return;
+  }
+
+  currentlyPlayingPitches.add(pitch);
+  virtualAudioGraph.update(createVirtualAudioGraphParams(pitch, modulation));
+};
+
+export const stopNote = ({pitch}) => {
+  currentlyPlayingPitches.delete(pitch);
+  virtualAudioGraph.update(reject(propEq('node', 'oscillator'), createVirtualAudioGraphParams()));
+};

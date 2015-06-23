@@ -131,10 +131,6 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:virtual-audio-graph@0.0.1": {
-      "process": "github:jspm/nodelibs-process@0.1.1",
-      "ramda": "npm:ramda@0.15.1"
-    },
     "npm:virtual-audio-graph@0.0.2": {
       "process": "github:jspm/nodelibs-process@0.1.1",
       "ramda": "npm:ramda@0.15.1"
