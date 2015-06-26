@@ -5,7 +5,7 @@ import {isNil} from 'ramda';
 
 let pressedKeys = new Set();
 
-const keyCodesToNotes = {
+const keyCodesToPitches = {
   220: -10,
   90: -9,
   83: -8,
@@ -50,16 +50,22 @@ const keyCodesToNotes = {
 
 fromEvent('keydown', document)
   .tap((e) => e.keyCode === 191 && e.preventDefault())
-  .map(({keyCode}) => keyCodesToNotes[keyCode])
-  .filter((note) => !isNil(note))
-  .filter((note) => !pressedKeys.has(note))
-  .tap((note) => pressedKeys.add(note))
-  .map((pitch) => ({pitch}))
+  .map(({keyCode}) => ({
+    id: `keyboard: ${keyCode}`,
+    keyCode,
+    pitch: keyCodesToPitches[keyCode]
+  }))
+  .filter(({pitch}) => !isNil(pitch))
+  .filter(({keyCode}) => !pressedKeys.has(keyCode))
+  .tap(({keyCode}) => pressedKeys.add(keyCode))
   .observe(playNote);
 
 fromEvent('keyup', document)
-  .map(({keyCode}) => keyCodesToNotes[keyCode])
-  .filter((note) => !isNil(note))
-  .tap((note) => pressedKeys.delete(note))
-  .map((pitch) => ({pitch}))
+  .map(({keyCode}) => ({
+    id: `keyboard: ${keyCode}`,
+    keyCode,
+    pitch: keyCodesToPitches[keyCode]
+  }))
+  .filter(({pitch}) => !isNil(pitch))
+  .tap(({keyCode}) => pressedKeys.delete(keyCode))
   .observe(stopNote);

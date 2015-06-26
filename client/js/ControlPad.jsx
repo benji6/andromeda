@@ -1,5 +1,5 @@
 import {fromEvent} from 'most';
-import {equals} from 'ramda';
+import {assoc, equals} from 'ramda';
 import React from 'react';
 import {always, cond, curry, flip, gte, identity, lt, T} from 'ramda';
 import {playNote, stopNote} from './noteController';
@@ -46,8 +46,9 @@ export default () => {
         .skipRepeatsWith((a, b) => touchPadActive && equals(a, b))
         .tap(() => touchPadActive = true)
         .map(calculatePitchAndMod)
-        .tap(({pitch}) => (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null) &&
-          stopNote({pitch: currentlyPlayingPitch}))
+        .map((note) => assoc('id', 'touchpad', note))
+        .tap(({id, pitch}) => (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null) &&
+          stopNote({id, pitch: currentlyPlayingPitch}))
         .tap(({pitch}) => currentlyPlayingPitch = pitch)
         .observe(playNote);
 
@@ -56,6 +57,7 @@ export default () => {
         .tap(() => touchPadActive = false)
         .tap(() => currentlyPlayingPitch = null)
         .map(calculatePitchAndMod)
+        .map((note) => assoc('id', 'touchpad', note))
         .observe(stopNote);
     }
 
