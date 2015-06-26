@@ -17,7 +17,8 @@ const minZeroMaxOne = cond(
 
 const calculateXAndYRatio = (e) => {
   const {top, right, bottom, left} = e.target.getBoundingClientRect();
-  const {clientX, clientY} = e.changedTouches[0];
+  const clientXAndClientYObj = e.changedTouches && e.changedTouches[0] || e;
+  const {clientX, clientY} = clientXAndClientYObj;
   const x = clientX - left;
   const y = clientY - top;
   const width = right - left;
@@ -34,14 +35,18 @@ const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRati
 export default () => {
   class ControlPad extends React.Component {
     componentDidMount () {
-      let touchPadActive = false;
       let currentlyPlayingPitch = null;
+      let mouseInputEnabled = false;
+      let touchPadActive = false;
       const touchPadElement = document.querySelector('.touch-pad');
       const fromTouchPadEvent = curry(flip(fromEvent))(touchPadElement);
 
       touchPadElement.oncontextmenu = (e) => e.preventDefault();
 
-      fromTouchPadEvent('touchstart').merge(fromTouchPadEvent('touchmove'))
+      fromTouchPadEvent('touchstart')
+        .merge(fromTouchPadEvent('touchmove'))
+        .merge(fromTouchPadEvent('mousemove'))
+        .filter((e) => !(e instanceof MouseEvent && !mouseInputEnabled))
         .map(calculateXAndYRatio)
         .skipRepeatsWith((a, b) => touchPadActive && equals(a, b))
         .tap(() => touchPadActive = true)
@@ -53,12 +58,17 @@ export default () => {
         .observe(playNote);
 
       fromTouchPadEvent('touchend')
+        .merge(fromEvent('mouseup', document))
+        .tap(() => mouseInputEnabled = false)
         .map(calculateXAndYRatio)
         .tap(() => touchPadActive = false)
         .tap(() => currentlyPlayingPitch = null)
         .map(calculatePitchAndMod)
         .map((note) => assoc('id', 'touchpad', note))
         .observe(stopNote);
+
+      fromTouchPadEvent('mousedown')
+        .observe(() => mouseInputEnabled = true);
     }
 
     render () {
