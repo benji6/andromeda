@@ -36,8 +36,10 @@ export default () => {
     componentDidMount () {
       let touchPadActive = false;
       let currentlyPlayingPitch = null;
+      const touchPadElement = document.querySelector('.touch-pad');
+      const fromTouchPadEvent = curry(flip(fromEvent))(touchPadElement);
 
-      const fromTouchPadEvent = curry(flip(fromEvent))(document.querySelector('.touch-pad'));
+      touchPadElement.oncontextmenu = (e) => e.preventDefault();
 
       fromTouchPadEvent('touchstart').merge(fromTouchPadEvent('touchmove'))
         .map(calculateXAndYRatio)
