@@ -38,16 +38,71 @@ export default () => {
       let currentlyPlayingPitch = null;
       let mouseInputEnabled = false;
       let touchPadActive = false;
+      let fadeLoopIsOn = false;
       const touchPadElement = document.querySelector('.touch-pad');
+      const context = touchPadElement.getContext('2d');
       const fromTouchPadEvent = curry(flip(fromEvent))(touchPadElement);
+      const {width, height} = touchPadElement;
+      const gradient = context.createLinearGradient(0, 0, width, height);
+
+      gradient.addColorStop(0, 'rgb(200, 0, 90)');
+      gradient.addColorStop(0.5, 'rgb(164, 0, 0)');
+      gradient.addColorStop(1, 'rgb(140, 70, 0)');
+      context.rect(0, 0, width, height);
+      context.fillStyle = gradient;
+      context.fill();
+
+      const fade = () => {
+        const gradient = context.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, 'rgba(200, 0, 90, 0.15)');
+        gradient.addColorStop(0.5, 'rgba(164, 0, 0, 0.15)');
+        gradient.addColorStop(1, 'rgba(140, 70, 0, 0.15)');
+        context.rect(0, 0, width, height);
+        context.fillStyle = gradient;
+        context.fill();
+      };
+
+      function fadeLoop () {
+        if (!fadeLoopIsOn) {
+          return;
+        }
+        window.requestAnimationFrame(fadeLoop);
+        fade();
+      }
+
+      const turnFadeLoopOn = () => {
+        fadeLoopIsOn = true;
+        fadeLoop();
+      };
+
+      const turnFadeLoopOff = () => fadeLoopIsOn = false;
 
       touchPadElement.oncontextmenu = (e) => e.preventDefault();
 
       fromTouchPadEvent('touchstart')
         .merge(fromTouchPadEvent('touchmove'))
         .merge(fromTouchPadEvent('mousemove'))
+        .merge(fromTouchPadEvent('mousedown'))
+        .tap(({type}) => mouseInputEnabled = type === 'mousedown' ? true : mouseInputEnabled)
         .filter((e) => !(e instanceof MouseEvent && !mouseInputEnabled))
         .map(calculateXAndYRatio)
+        .tap(turnFadeLoopOff)
+        .tap(fade)
+        .tap(({xRatio, yRatio}) => {
+          const {width, height} = touchPadElement;
+          const x = xRatio * width;
+          const y = yRatio * height;
+          const r = width * 0.08;
+          var gradient = context.createRadialGradient(x, y, r, x, y, 0);
+          gradient.addColorStop(0, 'rgba(143, 0, 255, 0');
+          gradient.addColorStop(0.5, 'rgba(143, 0, 255, 0.02');
+          gradient.addColorStop(1, 'rgba(143, 245, 255, 1');
+          context.fillStyle = gradient;
+          context.beginPath();
+          context.arc(x, y, r, 0, 2 * Math.PI, true);
+          context.closePath();
+          context.fill();
+        })
         .skipRepeatsWith((a, b) => touchPadActive && equals(a, b))
         .tap(() => touchPadActive = true)
         .map(calculatePitchAndMod)
@@ -65,14 +120,12 @@ export default () => {
         .tap(() => currentlyPlayingPitch = null)
         .map(calculatePitchAndMod)
         .map((note) => assoc('id', 'touchpad', note))
+        .tap(turnFadeLoopOn)
         .observe(stopNote);
-
-      fromTouchPadEvent('mousedown')
-        .observe(() => mouseInputEnabled = true);
     }
 
     render () {
-      return <canvas className="touch-pad"></canvas>;
+      return <canvas width="768" height="768" className="touch-pad"></canvas>;
     }
   }
 
