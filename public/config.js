@@ -21,7 +21,7 @@ System.config({
     "most": "npm:most@0.14.0",
     "ramda": "npm:ramda@0.15.1",
     "react": "npm:react@0.14.0-alpha3",
-    "virtual-audio-graph": "npm:virtual-audio-graph@0.1.0",
+    "virtual-audio-graph": "npm:virtual-audio-graph@0.2.1",
     "github:jspm/nodelibs-buffer@0.1.0": {
       "buffer": "npm:buffer@3.2.2"
     },
@@ -131,11 +131,11 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:virtual-audio-graph@0.0.2": {
+    "npm:virtual-audio-graph@0.2.0": {
       "process": "github:jspm/nodelibs-process@0.1.1",
       "ramda": "npm:ramda@0.15.1"
     },
-    "npm:virtual-audio-graph@0.1.0": {
+    "npm:virtual-audio-graph@0.2.1": {
       "process": "github:jspm/nodelibs-process@0.1.1",
       "ramda": "npm:ramda@0.15.1"
     },
