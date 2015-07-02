@@ -2,8 +2,8 @@ import {fromEvent} from 'most';
 import {assoc, equals} from 'ramda';
 import React from 'react';
 import {always, clone, cond, curry, flip, gte, identity, lt, T} from 'ramda';
-import {playNote, stopNote} from './noteController';
-import {major} from './scales';
+import {playNote, stopNote} from '../noteController';
+import {major} from '../scales';
 
 const {floor} = Math;
 const {EPSILON} = Number;
