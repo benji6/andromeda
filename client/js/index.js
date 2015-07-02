@@ -1,4 +1,2 @@
-import ControlPad from './ControlPad';
+import PerformanceView from './PerformanceView';
 import keyboard from './keyboard';
-
-new ControlPad();
