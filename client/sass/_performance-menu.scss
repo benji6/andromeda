@@ -1,0 +1,20 @@
+@import 'vars';
+
+.performance-menu {
+  display: inline-block;
+  text-align: center;
+  width: 100%;
+  margin: 0;
+  button {
+    background: linear-gradient(#04e, #03c);
+    border-color: #03a;
+    border-radius: 1rem;
+    color: $off-white;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1rem;
+    margin: 0.5rem;
+    width: 8rem;
+    height: 4rem;
+  }
+}

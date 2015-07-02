@@ -1,17 +1,15 @@
 import React from 'react';
-import {fromEvent} from 'most';
+import InstrumentSelector from './InstrumentSelector';
+import render from '../tools/render';
 
 export default class PerformanceMenu extends React.Component {
-  componentDidMount () {
-    const instrumentButton = document.querySelector('#instrument-button');
-
-    fromEvent('click', instrumentButton)
-      .observe(console.log.bind(console));
+  handleClick () {
+    render(<InstrumentSelector />);
   }
 
   render () {
     return <div className="performance-menu">
-      <button id="instrument-button">Instrument</button>
+      <button id="instrument-button" onClick={this.handleClick}>Instrument</button>
       <button>Effects</button>
       <button>Root Note</button>
       <button>Scale</button>

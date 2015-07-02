@@ -11,4 +11,4 @@ class PerformanceView extends React.Component {
   }
 }
 
-React.render(<PerformanceView />, document.querySelector('#app'));
+export default PerformanceView;

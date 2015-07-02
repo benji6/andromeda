@@ -33,6 +33,10 @@ const calculateXAndYRatio = (e) => {
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
 
 export default class ControlPad extends React.Component {
+  componentWillUnmount () {
+    console.log('need to remove touch-pad event listeners here');
+  }
+
   componentDidMount () {
     let currentlyPlayingPitch = null;
     let mouseInputEnabled = false;
