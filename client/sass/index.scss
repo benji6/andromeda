@@ -3,13 +3,33 @@
 @import 'touch-pad';
 
 body {
-  background: $black;
+  background: linear-gradient(#000, #000);
+  font-family: sans-serif;
   margin: 0;
   user-select: none;
+  height: 100vh;
+}
+
+button, select {
+  box-shadow: #a02 0 0 1.5rem 0.1rem;
+  background: linear-gradient(#e04, #c30);
+  border-color: #a03;
+  border-radius: 1rem;
+  color: $black;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 1rem;
+  height: 4rem;
+  margin: 1rem;
+  width: 12rem;
+}
+
+select {
+  height: 3rem;
+  text-indent: 2rem;
 }
 
 .modal-container {
-  background: green;
   height: 100vh;
   position: fixed;
   width: 100%;
@@ -17,18 +37,17 @@ body {
     margin: auto;
     position: relative;
     text-align: center;
-    top: 10rem;
-    button {
-      background: linear-gradient(#04e, #03c);
-      border-color: #03a;
-      border-radius: 1rem;
-      color: $off-white;
-      cursor: pointer;
+    top: 8rem;
+    .modal-contents {
+      background: linear-gradient(#500, #100);
+      border-radius: 2rem;
+      box-shadow: #c00 0 0 2rem 0.2rem;
       display: inline-block;
-      font-size: 1rem;
-      margin: 0.5rem;
-      width: 8rem;
-      height: 4rem;
+      padding: 2rem;
+      h1 {
+        color: #000;
+        text-shadow: 0 0 1rem #f24;
+      }
     }
   }
 }
