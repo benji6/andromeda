@@ -1,5 +1,4 @@
-import {fromEvent} from 'most';
-import {assoc, equals} from 'ramda';
+import {assoc, compose, equals} from 'ramda';
 import React from 'react';
 import {always, clone, cond, curry, flip, gte, identity, lt, T} from 'ramda';
 import {playNote, stopNote} from '../noteController';
@@ -7,6 +6,7 @@ import {major} from '../scales';
 
 const {floor} = Math;
 const {EPSILON} = Number;
+
 const calculatePitch = (xRatio) => major[floor(major.length * xRatio)];
 
 const minZeroMaxOne = cond(
@@ -32,19 +32,40 @@ const calculateXAndYRatio = (e) => {
 
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
 
-export default class ControlPad extends React.Component {
-  componentWillUnmount () {
-    console.log('need to remove touch-pad event listeners here');
-  }
+const getNoteFromXYRatios = compose(assoc('id', 'touchpad'), calculatePitchAndMod);
 
+let fadeLoopIsOn = false;
+let mouseInputEnabled = false;
+let context = null;
+let touchPadActive = false;
+let currentlyPlayingPitch = null;
+let currentXYRatios = null;
+let touchPadElement = null;
+
+const drawTouchCircle = () => {
+  if (!touchPadActive) {
+    return;
+  }
+  const {xRatio, yRatio} = currentXYRatios;
+  const {width, height} = touchPadElement;
+  const x = xRatio * width;
+  const y = yRatio * height;
+  const r = width * 0.08;
+  const gradient = context.createRadialGradient(x, y, r, x, y, 0);
+  gradient.addColorStop(0, 'rgba(143, 0, 255, 0');
+  gradient.addColorStop(0.5, 'rgba(143, 0, 255, 0.02');
+  gradient.addColorStop(1, 'rgba(143, 245, 255, 1');
+  context.fillStyle = gradient;
+  context.beginPath();
+  context.arc(x, y, r, 0, 2 * Math.PI, true);
+  context.closePath();
+  context.fill();
+};
+
+export default class ControlPad extends React.Component {
   componentDidMount () {
-    let currentlyPlayingPitch = null;
-    let mouseInputEnabled = false;
-    let touchPadActive = false;
-    let currentXYRatios = null;
-    const touchPadElement = document.querySelector('.touch-pad');
-    const context = touchPadElement.getContext('2d');
-    const fromTouchPadEvent = curry(flip(fromEvent))(touchPadElement);
+    touchPadElement = document.querySelector('.touch-pad');
+    context = touchPadElement.getContext('2d');
     const {width, height} = touchPadElement;
     const gradient = context.createLinearGradient(0, 0, width, height);
 
@@ -65,66 +86,53 @@ export default class ControlPad extends React.Component {
       context.fill();
     };
 
-    const drawTouchCircle = () => {
-      if (!touchPadActive) {
-        return;
-      }
-      const {xRatio, yRatio} = currentXYRatios;
-      const {width, height} = touchPadElement;
-      const x = xRatio * width;
-      const y = yRatio * height;
-      const r = width * 0.08;
-      const gradient = context.createRadialGradient(x, y, r, x, y, 0);
-      gradient.addColorStop(0, 'rgba(143, 0, 255, 0');
-      gradient.addColorStop(0.5, 'rgba(143, 0, 255, 0.02');
-      gradient.addColorStop(1, 'rgba(143, 245, 255, 1');
-      context.fillStyle = gradient;
-      context.beginPath();
-      context.arc(x, y, r, 0, 2 * Math.PI, true);
-      context.closePath();
-      context.fill();
-    };
+    fadeLoopIsOn = true;
 
     (function fadeLoop () {
+      if (!fadeLoopIsOn) return;
       window.requestAnimationFrame(fadeLoop);
       drawTouchCircle();
       drawBackground();
     }());
 
     touchPadElement.oncontextmenu = (e) => e.preventDefault();
+  }
 
-    fromTouchPadEvent('touchstart')
-      .merge(fromTouchPadEvent('touchmove'))
-      .merge(fromTouchPadEvent('mousemove'))
-      .merge(fromTouchPadEvent('mousedown'))
-      .tap(({type}) => mouseInputEnabled = type === 'mousedown' ? true : mouseInputEnabled)
-      .filter((e) => !(e instanceof MouseEvent && !mouseInputEnabled))
-      .map(calculateXAndYRatio)
-      .tap((ratios) => currentXYRatios = clone(ratios))
-      .tap(drawTouchCircle)
-      .skipRepeatsWith((a, b) => touchPadActive && equals(a, b))
-      .tap(() => touchPadActive = true)
-      .map(calculatePitchAndMod)
-      .map((note) => assoc('id', 'touchpad', note))
-      .tap(({id, pitch}) => (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null) &&
-        stopNote({id, pitch: currentlyPlayingPitch}))
-      .tap(({pitch}) => currentlyPlayingPitch = pitch)
-      .observe(playNote);
+  componentWillUnmount () {
+    fadeLoopIsOn = false;
+  }
 
-    fromTouchPadEvent('touchend')
-      .merge(fromEvent('mouseup', document))
-      .tap(() => mouseInputEnabled = false)
-      .map(calculateXAndYRatio)
-      .tap(() => touchPadActive = false)
-      .tap(() => currentlyPlayingPitch = null)
-      .map(calculatePitchAndMod)
-      .map((note) => assoc('id', 'touchpad', note))
-      .observe(stopNote);
+  handleInput (e) {
+    mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled;
+    if (e.nativeEvent instanceof MouseEvent && !mouseInputEnabled)
+      return;
+    touchPadActive = true;
+    currentXYRatios = calculateXAndYRatio(e);
+    const note = getNoteFromXYRatios(currentXYRatios);
+    const {id, pitch} = note;
+    if (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null) {
+      stopNote({id, pitch: currentlyPlayingPitch});
+    }
+    currentlyPlayingPitch = pitch;
+    playNote(note);
+  }
+
+  handleInputEnd (e) {
+    mouseInputEnabled = false;
+    touchPadActive = false;
+    currentlyPlayingPitch = null;
+    stopNote(getNoteFromXYRatios(calculateXAndYRatio(e)));
   }
 
   render () {
     // jshint ignore: start
-    return <canvas width="768" height="768" className="touch-pad"></canvas>;
+    return <canvas width="768" height="768" className="touch-pad"
+      onTouchStart={this.handleInput}
+      onTouchMove={this.handleInput}
+      onMouseDown={this.handleInput}
+      onMouseMove={this.handleInput}
+      onTouchEnd={this.handleInputEnd}
+      onMouseUp={this.handleInputEnd}></canvas>;
     // jshint ignore: end
   }
 }
