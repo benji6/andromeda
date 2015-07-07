@@ -50,7 +50,6 @@
     "dependencies": {
       "alt": "npm:alt@^0.17.0",
       "capitalize": "npm:capitalize@^1.0.0",
-      "most": "npm:most@^0.14.0",
       "ramda": "npm:ramda@^0.15.0",
       "react": "npm:react@^0.14.0-alpha3",
       "virtual-audio-graph": "npm:virtual-audio-graph@^0.2.0"

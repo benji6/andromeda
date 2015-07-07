@@ -20,7 +20,6 @@ System.config({
     "babel-runtime": "npm:babel-runtime@5.5.8",
     "capitalize": "npm:capitalize@1.0.0",
     "core-js": "npm:core-js@0.9.18",
-    "most": "npm:most@0.14.0",
     "ramda": "npm:ramda@0.15.1",
     "react": "npm:react@0.14.0-alpha3",
     "virtual-audio-graph": "npm:virtual-audio-graph@0.2.1",
@@ -418,10 +417,6 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:most@0.14.0": {
-      "process": "github:jspm/nodelibs-process@0.1.1",
-      "when": "npm:when@3.7.3"
-    },
     "npm:nan@1.8.4": {
       "path": "github:jspm/nodelibs-path@0.1.0"
     },
@@ -589,9 +584,6 @@ System.config({
     },
     "npm:vm-browserify@0.0.4": {
       "indexof": "npm:indexof@0.0.1"
-    },
-    "npm:when@3.7.3": {
-      "process": "github:jspm/nodelibs-process@0.1.1"
     }
   }
 });

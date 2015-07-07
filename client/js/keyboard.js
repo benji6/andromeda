@@ -1,5 +1,4 @@
 import {playNote, stopNote} from './noteController';
-import {fromEvent} from 'most';
 import {isNil} from 'ramda';
 
 let pressedKeys = new Set();
@@ -47,24 +46,35 @@ const keyCodesToPitches = {
   221: 20,
 };
 
-fromEvent('keydown', document)
-  .tap((e) => e.keyCode === 191 && e.preventDefault())
-  .map(({keyCode}) => ({
-    id: `keyboard: ${keyCode}`,
-    keyCode,
-    pitch: keyCodesToPitches[keyCode]
-  }))
-  .filter(({pitch}) => !isNil(pitch))
-  .filter(({keyCode}) => !pressedKeys.has(keyCode))
-  .tap(({keyCode}) => pressedKeys.add(keyCode))
-  .observe(playNote);
+document.onkeydown = (e) => {
+  const {keyCode} = e;
 
-fromEvent('keyup', document)
-  .map(({keyCode}) => ({
+  if (keyCode === 191) e.preventDefault();
+  if (pressedKeys.has(keyCode)) return;
+
+  const pitch = keyCodesToPitches[keyCode];
+
+  if (isNil(pitch)) return;
+
+  pressedKeys.add(keyCode);
+
+  playNote({
     id: `keyboard: ${keyCode}`,
     keyCode,
-    pitch: keyCodesToPitches[keyCode]
-  }))
-  .filter(({pitch}) => !isNil(pitch))
-  .tap(({keyCode}) => pressedKeys.delete(keyCode))
-  .observe(stopNote);
+    pitch,
+  });
+};
+
+document.onkeyup = ({keyCode}) => {
+  const pitch = keyCodesToPitches[keyCode];
+
+  if (isNil(pitch)) return;
+
+  pressedKeys.delete(keyCode);
+
+  stopNote({
+    id: `keyboard: ${keyCode}`,
+    keyCode,
+    pitch,
+  });
+};
