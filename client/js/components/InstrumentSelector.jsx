@@ -1,8 +1,8 @@
 import React from 'react';
-import PerformanceView from '../PerformanceView';
-import render from '../../tools/render';
-import InstrumentStore from '../../stores/InstrumentStore';
-import InstrumentActions from './InstrumentActions';
+import PerformanceView from './PerformanceView';
+import render from '../tools/render';
+import InstrumentStore from '../stores/InstrumentStore';
+import InstrumentActions from '../actions/InstrumentActions';
 import {map} from 'ramda';
 import capitalize from 'capitalize';
 

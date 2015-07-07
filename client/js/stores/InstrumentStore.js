@@ -1,5 +1,5 @@
 import alt from '../alt';
-import InstrumentActions from '../components/InstrumentSelector/InstrumentActions';
+import InstrumentActions from '../actions/InstrumentActions';
 
 class InstrumentStore {
   constructor () {
@@ -16,8 +16,8 @@ class InstrumentStore {
     });
   }
 
-  handleUpdateSelectedInstrument (instrument) {
-    this.selectedInstrument = instrument;
+  handleUpdateSelectedInstrument (item) {
+    this.selectedInstrument = item;
   }
 }
 

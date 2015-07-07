@@ -1,5 +1,5 @@
 import React from 'react';
-import InstrumentSelector from './InstrumentSelector/';
+import InstrumentSelector from './InstrumentSelector';
 import render from '../tools/render';
 
 export default class PerformanceMenu extends React.Component {
