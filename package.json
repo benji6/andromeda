@@ -52,6 +52,7 @@
       "capitalize": "npm:capitalize@^1.0.0",
       "ramda": "npm:ramda@^0.15.0",
       "react": "npm:react@^0.14.0-alpha3",
+      "react-dom": "npm:react-dom@^0.14.0-beta1",
       "virtual-audio-graph": "npm:virtual-audio-graph@^0.2.0"
     },
     "devDependencies": {

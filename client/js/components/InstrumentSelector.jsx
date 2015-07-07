@@ -30,7 +30,7 @@ export default class InstrumentSelector extends React.Component {
   }
 
   handleSelect (e) {
-    InstrumentActions.updateSelectedInstrument(e.target.value);
+    InstrumentActions.updateSelectedInstrument(e.currentTarget.value);
   }
 
   onChange (state) {
@@ -44,10 +44,10 @@ export default class InstrumentSelector extends React.Component {
         <div className="modal-contents">
           <h1>Instrument</h1>
           <div>
-            <select value={this.state.selectedInstrument} onChange={this.handleSelect.bind(this)}>
-              {map(instrument =>
-                <option value={instrument} key={instrument}>
-                  {capitalize(instrument)}
+            <select value={this.state.selectedInstrument} onChange={this.handleSelect}>
+              {map(item =>
+                <option value={item} key={item}>
+                  {capitalize(item)}
                 </option>, this.state.instruments)}
             </select>
           </div>
