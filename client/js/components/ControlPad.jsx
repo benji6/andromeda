@@ -74,7 +74,7 @@ export default class ControlPad extends React.Component {
       const x = xRatio * width;
       const y = yRatio * height;
       const r = width * 0.08;
-      var gradient = context.createRadialGradient(x, y, r, x, y, 0);
+      const gradient = context.createRadialGradient(x, y, r, x, y, 0);
       gradient.addColorStop(0, 'rgba(143, 0, 255, 0');
       gradient.addColorStop(0.5, 'rgba(143, 0, 255, 0.02');
       gradient.addColorStop(1, 'rgba(143, 245, 255, 1');
@@ -123,6 +123,8 @@ export default class ControlPad extends React.Component {
   }
 
   render () {
+    // jshint ignore: start
     return <canvas width="768" height="768" className="touch-pad"></canvas>;
+    // jshint ignore: end
   }
 }

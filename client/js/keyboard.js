@@ -1,4 +1,3 @@
-import calculatePitch from './calculatePitch';
 import {playNote, stopNote} from './noteController';
 import {fromEvent} from 'most';
 import {isNil} from 'ramda';

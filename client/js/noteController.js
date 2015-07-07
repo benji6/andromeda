@@ -1,14 +1,17 @@
 import {append, propEq, reject} from 'ramda';
-import VirtualAudioGraph from 'virtual-audio-graph';
+import virtualAudioGraph from './virtualAudioGraph';
 import pingPongDelay from './customVirtualNodes/pingPongDelay';
-import oscillatorBank from './customVirtualNodes/oscillatorBank';
+import detuned from './customVirtualNodes/oscillatorBanks/detuned';
+import sine from './customVirtualNodes/oscillatorBanks/sine';
+import supersaw from './customVirtualNodes/oscillatorBanks/supersaw';
+import alt from './alt';
 
 const calculateFrequency = (pitch) => 440 * Math.pow(2, pitch / 12);
 
-const virtualAudioGraph = new VirtualAudioGraph();
-
 virtualAudioGraph.defineNode(pingPongDelay, 'pingPongDelay');
-virtualAudioGraph.defineNode(oscillatorBank, 'oscillatorBank');
+virtualAudioGraph.defineNode(detuned, 'detuned');
+virtualAudioGraph.defineNode(sine, 'sine');
+virtualAudioGraph.defineNode(supersaw, 'supersaw');
 
 let currentVirtualAudioGraph = [
   {
@@ -19,6 +22,8 @@ let currentVirtualAudioGraph = [
 ];
 
 export const playNote = ({id, pitch, modulation}) => {
+  const InstrumentStore = alt.getStore('InstrumentStore');
+
   modulation = modulation === undefined ? 0.5 : modulation;
 
   currentVirtualAudioGraph = reject(propEq('id', id), currentVirtualAudioGraph);
@@ -26,7 +31,7 @@ export const playNote = ({id, pitch, modulation}) => {
   currentVirtualAudioGraph = append({
     output: ['output', 0],
     id,
-    node: 'oscillatorBank',
+    node: InstrumentStore.getState().selectedInstrument,
     params: {
       frequency: calculateFrequency(pitch),
       gain: (1 - modulation) / 4,
