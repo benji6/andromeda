@@ -1,6 +1,7 @@
 const autoprefixer = require('gulp-autoprefixer');
 const babel = require('gulp-babel');
 const connect = require('gulp-connect');
+const del = require('del');
 const gulp = require('gulp');
 const minifyCSS = require('gulp-minify-css');
 const minifyHTML = require('gulp-minify-html');
@@ -26,6 +27,12 @@ gulp.task('html', function () {
     .pipe(minifyHTML())
     .pipe(gulp.dest(publicPath))
     .pipe(connect.reload());
+});
+
+gulp.task('clean', function () {
+  return del([
+    'public/js/**/*',
+  ]);
 });
 
 gulp.task('css', function () {
@@ -74,9 +81,9 @@ gulp.task('watch', function () {
 });
 
 gulp.task('build', function () {
-  return runSequence(['html', 'css', 'jsProd']);
+  return runSequence('clean', ['html', 'css', 'jsProd']);
 });
 
 gulp.task('default', function () {
-  return runSequence(['watch', 'html', 'css', 'jsDev'], 'connect');
+  return runSequence('clean', ['watch', 'html', 'css', 'jsDev'], 'connect');
 });
