@@ -1,9 +1,7 @@
 import alt from '../alt';
 
-class InstrumentActions {
+export default alt.createActions(class InstrumentActions {
   updateSelectedInstrument (item) {
     this.dispatch(item);
   }
-}
-
-export default alt.createActions(InstrumentActions);
+});

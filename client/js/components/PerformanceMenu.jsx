@@ -1,19 +1,14 @@
 import React from 'react';
 import InstrumentSelector from './InstrumentSelector';
+import EffectSelector from './EffectSelector';
 import render from '../tools/render';
 
 export default class PerformanceMenu extends React.Component {
-  handleClick () {
-    // jshint ignore: start
-    render(<InstrumentSelector />);
-    // jshint ignore: end
-  }
-
   render () {
     // jshint ignore: start
     return <div className="performance-menu">
-      <button id="instrument-button" onClick={this.handleClick}>Instrument</button>
-      <button>Effects</button>
+      <button onClick={() => render(<InstrumentSelector />)}>Instrument</button>
+      <button onClick={() => render(<EffectSelector />)}>Effects</button>
       <button>Root Note</button>
       <button>Scale</button>
     </div>;
