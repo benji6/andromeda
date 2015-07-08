@@ -1,0 +1,10 @@
+{
+  "registry": "npm",
+  "format": "cjs",
+  "ignore": [
+    "node_modules"
+  ],
+  "dependencies": {
+    "timers-browserify": "timers-browserify@^1.1.0"
+  }
+}

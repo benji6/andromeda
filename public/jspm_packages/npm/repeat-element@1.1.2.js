@@ -1,0 +1,1 @@
+module.exports = require("npm:repeat-element@1.1.2/index");

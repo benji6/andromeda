@@ -1,0 +1,1 @@
+module.exports = require("npm:preserve@0.2.0/index");

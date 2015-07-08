@@ -1,0 +1,1 @@
+module.exports = require("npm:fsevents@0.3.6/fsevents");

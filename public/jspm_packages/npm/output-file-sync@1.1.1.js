@@ -1,0 +1,1 @@
+module.exports = require("npm:output-file-sync@1.1.1/index");

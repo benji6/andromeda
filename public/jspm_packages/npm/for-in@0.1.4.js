@@ -1,0 +1,1 @@
+module.exports = require("npm:for-in@0.1.4/index");

@@ -1,0 +1,1 @@
+module.exports = require("npm:path-is-absolute@1.0.0/index");

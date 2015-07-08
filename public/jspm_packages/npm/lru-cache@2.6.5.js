@@ -1,0 +1,1 @@
+module.exports = require("npm:lru-cache@2.6.5/lib/lru-cache");

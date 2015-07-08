@@ -1,0 +1,1 @@
+module.exports = require("npm:flux@2.0.3/index");

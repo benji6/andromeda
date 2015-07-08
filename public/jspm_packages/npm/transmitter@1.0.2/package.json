@@ -1,0 +1,36 @@
+{
+  "name": "transmitter",
+  "version": "1.0.2",
+  "description": "",
+  "main": "dist/transmitter.js",
+  "scripts": {
+    "build": "babel src --out-dir dist",
+    "coverage": "istanbul cover node_modules/mocha/bin/_mocha -- -u exports -R tap --require ./test/babel test/*-test.js",
+    "prepublish": "npm run build",
+    "test": "npm run tests-node",
+    "tests-node": "mocha -u exports -R nyan --require ./test/babel test/*-test.js"
+  },
+  "keywords": [
+    "transmit",
+    "pubsub",
+    "pub",
+    "sub",
+    "eventemitter",
+    "observable",
+    "subscribe"
+  ],
+  "author": "Josh Perez <josh@goatslacker.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/goatslacker/transmitter.git"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "5.4.3",
+    "chai": "2.3.0",
+    "coveralls": "2.11.2",
+    "istanbul": "0.3.14",
+    "mocha": "2.2.5",
+    "sinon": "1.14.1"
+  }
+}

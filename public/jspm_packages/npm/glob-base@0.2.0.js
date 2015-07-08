@@ -1,0 +1,1 @@
+module.exports = require("npm:glob-base@0.2.0/index");

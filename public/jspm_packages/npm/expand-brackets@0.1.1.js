@@ -1,0 +1,1 @@
+module.exports = require("npm:expand-brackets@0.1.1/index");

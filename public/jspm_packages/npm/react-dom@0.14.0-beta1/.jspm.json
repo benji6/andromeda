@@ -1,0 +1,53 @@
+{
+  "name": "react-dom",
+  "version": "0.14.0-beta1",
+  "description": "React package for working with the DOM.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/facebook/react.git"
+  },
+  "keywords": [
+    "react"
+  ],
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/facebook/react/issues"
+  },
+  "homepage": "https://github.com/facebook/react/tree/master/npm-react-dom",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "_id": "react-dom@0.14.0-beta1",
+  "_shasum": "a008dd5eeb41c60a11e77738eb43c00d7ff390b8",
+  "_resolved": "file:build/packages/react-dom.tgz",
+  "_from": "build/packages/react-dom.tgz",
+  "_npmVersion": "2.2.0",
+  "_nodeVersion": "0.10.35",
+  "_npmUser": {
+    "name": "spicyj",
+    "email": "ben@benalpert.com"
+  },
+  "maintainers": [
+    {
+      "name": "spicyj",
+      "email": "ben@benalpert.com"
+    },
+    {
+      "name": "zpao",
+      "email": "paul@oshannessy.com"
+    }
+  ],
+  "dist": {
+    "shasum": "a008dd5eeb41c60a11e77738eb43c00d7ff390b8",
+    "tarball": "http://registry.npmjs.org/react-dom/-/react-dom-0.14.0-beta1.tgz"
+  },
+  "format": "cjs",
+  "ignore": [
+    "node_modules"
+  ],
+  "registry": "npm",
+  "dependencies": {
+    "react": "react@^0.14.0-beta1"
+  }
+}

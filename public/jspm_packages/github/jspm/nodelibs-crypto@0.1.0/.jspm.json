@@ -1,0 +1,10 @@
+{
+  "registry": "npm",
+  "format": "cjs",
+  "ignore": [
+    "node_modules"
+  ],
+  "dependencies": {
+    "crypto-browserify": "crypto-browserify@^3.7.2"
+  }
+}

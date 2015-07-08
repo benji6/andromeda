@@ -1,0 +1,1 @@
+module.exports = require("npm:babelify@6.1.2/index");

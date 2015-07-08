@@ -1,0 +1,59 @@
+{
+  "name": "capitalize",
+  "version": "1.0.0",
+  "description": "capitalize the first letter of a string, or all words in a string",
+  "main": "index.js",
+  "devDependencies": {
+    "tape": "~2.4.0",
+    "markdown-code-blocks": "0.0.1"
+  },
+  "scripts": {
+    "test": "markdown-code-blocks -t javascript < README.md | node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/grncdr/js-capitalize.git"
+  },
+  "bugs": {
+    "url": "git://github.com/grncdr/js-capitalize/issues"
+  },
+  "homepage": "https://github.com/grncdr/js-capitalize",
+  "keywords": [
+    "capitalize"
+  ],
+  "author": {
+    "name": "Stephen Sugden",
+    "email": "me@stephensugden.com"
+  },
+  "license": "MIT",
+  "gitHead": "be772163f312c8a40bf3c1a6eb76e6f3f12fa953",
+  "_id": "capitalize@1.0.0",
+  "_shasum": "dc802c580aee101929020d2ca14b4ca8a0ae44be",
+  "_from": ".",
+  "_npmVersion": "2.7.1",
+  "_nodeVersion": "1.6.2",
+  "_npmUser": {
+    "name": "grncdr",
+    "email": "glurgle@gmail.com"
+  },
+  "maintainers": [
+    {
+      "name": "robkuz",
+      "email": "robert@robkuz.com"
+    },
+    {
+      "name": "grncdr",
+      "email": "glurgle@gmail.com"
+    }
+  ],
+  "dist": {
+    "shasum": "dc802c580aee101929020d2ca14b4ca8a0ae44be",
+    "tarball": "http://registry.npmjs.org/capitalize/-/capitalize-1.0.0.tgz"
+  },
+  "format": "cjs",
+  "ignore": [
+    "node_modules"
+  ],
+  "registry": "npm",
+  "dependencies": {}
+}

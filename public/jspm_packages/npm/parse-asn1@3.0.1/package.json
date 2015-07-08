@@ -1,0 +1,24 @@
+{
+  "name": "parse-asn1",
+  "version": "3.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/crypto-browserify/parse-asn1.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "asn1.js": "^2.0.0",
+    "browserify-aes": "^1.0.0",
+    "create-hash": "^1.1.0",
+    "pbkdf2": "^3.0.3"
+  },
+  "devDependencies": {
+    "tape": "^3.4.0"
+  }
+}

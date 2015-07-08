@@ -1,0 +1,1 @@
+module.exports = require("npm:transmitter@1.0.2/dist/transmitter");
