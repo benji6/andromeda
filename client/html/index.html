@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name=viewport content="width=device-width, initial-scale=1, user-scalable=no">
     <title>Elemental</title>
-    <link rel="stylesheet" href="css/index.css">
   </head>
     <!--<script>
       window.applicationCache.addEventListener("updateready", function () {
@@ -12,7 +11,19 @@
           window.location.reload();
       });
     </script>-->
-    <div id="app"></div>
+    <style>
+      h1.loading-placeholder {
+        color: white;
+        position: absolute;
+        text-align: center;
+        top: 33vh;
+        width: 100%;
+      }
+    </style>
+    <div id="app">
+      <h1 class="loading-placeholder">Loading, please wait....</h1>
+    </div>
+    <link rel="stylesheet" href="css/index.css">
     <script src="jspm_packages/system.js"></script>
     <script src="config.js"></script>
     <script>System.import('js/index');</script>
