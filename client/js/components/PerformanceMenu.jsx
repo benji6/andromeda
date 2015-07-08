@@ -7,10 +7,12 @@ export default class PerformanceMenu extends React.Component {
   render () {
     // jshint ignore: start
     return <div className="performance-menu">
-      <button onClick={() => render(<InstrumentSelector />)}>Instrument</button>
-      <button onClick={() => render(<EffectSelector />)}>Effects</button>
-      <button>Root Note</button>
-      <button>Scale</button>
+      <div className="buttons-container">
+        <button onClick={() => render(<InstrumentSelector />)}>Instrument</button>
+        <button onClick={() => render(<EffectSelector />)}>Effects</button>
+        <button>Root Note</button>
+        <button>Scale</button>
+      </div>
     </div>;
     // jshint ignore: end
   }

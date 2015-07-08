@@ -32,22 +32,22 @@ const calculateXAndYRatio = (e) => {
 
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
 
-const getNoteFromXYRatios = compose(assoc('id', 'touchpad'), calculatePitchAndMod);
+const getNoteFromXYRatios = compose(assoc('id', 'controlPad'), calculatePitchAndMod);
 
 let fadeLoopIsOn = false;
 let mouseInputEnabled = false;
 let context = null;
-let touchPadActive = false;
+let controlPadActive = false;
 let currentlyPlayingPitch = null;
 let currentXYRatios = null;
-let touchPadElement = null;
+let controlPadElement = null;
 
 const drawTouchCircle = () => {
-  if (!touchPadActive) {
+  if (!controlPadActive) {
     return;
   }
   const {xRatio, yRatio} = currentXYRatios;
-  const {width, height} = touchPadElement;
+  const {width, height} = controlPadElement;
   const x = xRatio * width;
   const y = yRatio * height;
   const r = width * 0.08;
@@ -64,9 +64,9 @@ const drawTouchCircle = () => {
 
 export default class ControlPad extends React.Component {
   componentDidMount () {
-    touchPadElement = document.querySelector('.touch-pad');
-    context = touchPadElement.getContext('2d');
-    const {width, height} = touchPadElement;
+    controlPadElement = document.querySelector('.control-pad');
+    context = controlPadElement.getContext('2d');
+    const {width, height} = controlPadElement;
     const gradient = context.createLinearGradient(0, 0, width, height);
 
     gradient.addColorStop(0, 'rgb(200, 0, 90)');
@@ -95,7 +95,7 @@ export default class ControlPad extends React.Component {
       drawBackground();
     }());
 
-    touchPadElement.oncontextmenu = (e) => e.preventDefault();
+    controlPadElement.oncontextmenu = (e) => e.preventDefault();
   }
 
   componentWillUnmount () {
@@ -106,7 +106,7 @@ export default class ControlPad extends React.Component {
     mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled;
     if (e.nativeEvent instanceof MouseEvent && !mouseInputEnabled)
       return;
-    touchPadActive = true;
+    controlPadActive = true;
     currentXYRatios = calculateXAndYRatio(e);
     const note = getNoteFromXYRatios(currentXYRatios);
     const {id, pitch} = note;
@@ -119,20 +119,22 @@ export default class ControlPad extends React.Component {
 
   handleInputEnd (e) {
     mouseInputEnabled = false;
-    touchPadActive = false;
+    controlPadActive = false;
     currentlyPlayingPitch = null;
     stopNote(getNoteFromXYRatios(calculateXAndYRatio(e)));
   }
 
   render () {
     // jshint ignore: start
-    return <canvas width="768" height="768" className="touch-pad"
+    return <div className="center">
+      <canvas width="768" height="768" className="control-pad"
       onTouchStart={this.handleInput}
       onTouchMove={this.handleInput}
       onMouseDown={this.handleInput}
       onMouseMove={this.handleInput}
       onTouchEnd={this.handleInputEnd}
-      onMouseUp={this.handleInputEnd}></canvas>;
+      onMouseUp={this.handleInputEnd}></canvas>
+  </div>;
     // jshint ignore: end
   }
 }

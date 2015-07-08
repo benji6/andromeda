@@ -1,6 +1,6 @@
 @import 'vars';
 @import 'performance-menu';
-@import 'touch-pad';
+@import 'control-pad';
 
 body {
   background: linear-gradient(#000, #000);
@@ -50,4 +50,8 @@ select {
       }
     }
   }
+}
+
+.center {
+  text-align: center;
 }
