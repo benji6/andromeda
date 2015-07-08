@@ -1,13 +1,18 @@
 import {assoc, compose, equals} from 'ramda';
 import React from 'react';
-import {always, clone, cond, curry, flip, gte, identity, lt, T} from 'ramda';
+import alt from '../alt';
 import {playNote, stopNote} from '../noteController';
-import {major} from '../scales';
+import {always, clone, cond, curry, flip, gte, identity, lt, T} from 'ramda';
 
 const {floor} = Math;
 const {EPSILON} = Number;
 
-const calculatePitch = (xRatio) => major[floor(major.length * xRatio)];
+const calculatePitch = (xRatio) => {
+  const scaleStoreState = alt.getStore('ScaleStore').getState();
+  const {scaleName, scales} = scaleStoreState;
+  const scale = scales[scaleName];
+  return scale[floor(scale.length * xRatio)];
+};
 
 const minZeroMaxOne = cond(
   [flip(lt)(0), always(0)],
