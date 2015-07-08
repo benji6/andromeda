@@ -1,6 +1,7 @@
 import React from 'react';
 import InstrumentSelector from './InstrumentSelector';
 import EffectSelector from './EffectSelector';
+import RootNoteSelector from './RootNoteSelector';
 import render from '../tools/render';
 
 export default class PerformanceMenu extends React.Component {
@@ -10,7 +11,7 @@ export default class PerformanceMenu extends React.Component {
       <div className="buttons-container">
         <button onClick={() => render(<InstrumentSelector />)}>Instrument</button>
         <button onClick={() => render(<EffectSelector />)}>Effects</button>
-        <button>Root Note</button>
+        <button onClick={() => render(<RootNoteSelector />)}>Root Note</button>
         <button>Scale</button>
       </div>
     </div>;
