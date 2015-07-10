@@ -7,7 +7,7 @@ export default ({gain, frequency, detune=12}) => [
     node: 'gain',
     params: {
       gain,
-    }
+    },
   },
   {
     output: 0,
