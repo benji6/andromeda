@@ -1,10 +1,10 @@
+import capitalize from 'capitalize';
+import {keys, map} from 'ramda';
 import React from 'react';
 import PerformanceView from './PerformanceView';
 import render from '../tools/render';
 import ScaleStore from '../stores/ScaleStore';
 import ScaleActions from '../actions/ScaleActions';
-import {keys, map} from 'ramda';
-import capitalize from 'capitalize';
 
 let boundOnChange = null;
 

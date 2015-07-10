@@ -1,8 +1,7 @@
-import {assoc, compose, equals} from 'ramda';
+import {always, assoc, clone, compose, cond, curry, equals, flip, gte, identity, lt, T} from 'ramda';
 import React from 'react';
 import alt from '../alt';
 import {playNote, stopNote} from '../noteController';
-import {always, clone, cond, curry, flip, gte, identity, lt, T} from 'ramda';
 
 const {floor} = Math;
 const {EPSILON} = Number;

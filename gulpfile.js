@@ -1,17 +1,24 @@
 const autoprefixer = require('gulp-autoprefixer');
-const babel = require('gulp-babel');
+const babelify = require('babelify');
+const browserify = require('browserify');
+const buffer = require('vinyl-buffer');
 const connect = require('gulp-connect');
 const del = require('del');
 const gulp = require('gulp');
+const gutil = require('gulp-util');
 const minifyCSS = require('gulp-minify-css');
 const minifyHTML = require('gulp-minify-html');
 const plumber = require('gulp-plumber');
-const react = require('gulp-react');
+const R = require('ramda');
+const reactify = require('reactify');
 const runSequence = require('run-sequence');
 const sass = require('gulp-sass');
+const source = require('vinyl-source-stream');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
+const watchify = require('watchify');
 
+const browserifyEntryPath = 'client/js/index.jsx';
 const publicPath = 'public';
 
 gulp.task('connect', function () {
@@ -41,7 +48,7 @@ gulp.task('css', function () {
     .pipe(sass())
     .pipe(autoprefixer({
       browsers: ['last 2 versions'],
-      cascade: false
+      cascade: false,
     }))
     .pipe(minifyCSS())
     .pipe(gulp.dest(publicPath + '/css'))
@@ -49,21 +56,29 @@ gulp.task('css', function () {
 });
 
 gulp.task('jsDev', function () {
-  return gulp.src('client/js/**/*.js*')
+  return watchify(browserify(browserifyEntryPath, R.assoc('debug', true, watchify.args)))
+    .transform(babelify)
+    .transform(reactify)
+    .bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('index.js'))
     .pipe(plumber())
-    .pipe(sourcemaps.init())
-    .pipe(babel())
-    .pipe(react())
-    .pipe(uglify())
-    .pipe(sourcemaps.write())
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest(publicPath + '/js'))
     .pipe(connect.reload());
 });
 
 gulp.task('jsProd', function () {
-  return gulp.src('client/js/**/*.js*')
-    .pipe(babel())
-    .pipe(react())
+  return browserify(browserifyEntryPath)
+    .transform(babelify)
+    .transform(reactify)
+    .bundle()
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('index.js'))
+    .pipe(plumber())
+    .pipe(buffer())
     .pipe(uglify())
     .pipe(gulp.dest(publicPath + '/js'));
 });
