@@ -1,4 +1,4 @@
-import {always, assoc, clone, compose, cond, curry, equals, flip, gte, identity, lt, T} from 'ramda';
+import {always, assoc, clone, compose, cond, curry, equals, flip, gte, identity, isNil, lt, T} from 'ramda';
 import React from 'react';
 import alt from '../alt';
 import {playNote, stopNote} from '../noteController';
@@ -6,10 +6,17 @@ import {playNote, stopNote} from '../noteController';
 const {floor} = Math;
 const {EPSILON} = Number;
 
+let stopLastNoteOnNoteChange = true;
+
 const calculatePitch = (xRatio) => {
   const scaleStoreState = alt.getStore('ScaleStore').getState();
   const {scaleName, scales} = scaleStoreState;
   const scale = scales[scaleName];
+  if (isNil(scale)) {
+    stopLastNoteOnNoteChange = false;
+    return xRatio * 12;
+  }
+  stopLastNoteOnNoteChange = true;
   return scale[floor(scale.length * xRatio)];
 };
 
@@ -114,9 +121,8 @@ export default class ControlPad extends React.Component {
     currentXYRatios = calculateXAndYRatio(e);
     const note = getNoteFromXYRatios(currentXYRatios);
     const {id, pitch} = note;
-    if (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null) {
+    if (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null && stopLastNoteOnNoteChange)
       stopNote({id, pitch: currentlyPlayingPitch});
-    }
     currentlyPlayingPitch = pitch;
     playNote(note);
   }
