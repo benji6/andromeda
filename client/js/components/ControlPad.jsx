@@ -130,7 +130,6 @@ export default class ControlPad extends React.Component {
   }
 
   render () {
-    // jshint ignore: start
     return <div className="center">
       <canvas width="768" height="768" className="control-pad"
       onTouchStart={this.handleInput}
@@ -139,7 +138,6 @@ export default class ControlPad extends React.Component {
       onMouseMove={this.handleInput}
       onTouchEnd={this.handleInputEnd}
       onMouseUp={this.handleInputEnd}></canvas>
-  </div>;
-    // jshint ignore: end
+    </div>;
   }
 }

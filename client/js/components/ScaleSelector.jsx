@@ -24,9 +24,7 @@ export default class ScaleSelector extends React.Component {
   }
 
   handleClick () {
-    // jshint ignore: start
     render(<PerformanceView />);
-    // jshint ignore: end
   }
 
   handleSelect (e) {
@@ -38,7 +36,6 @@ export default class ScaleSelector extends React.Component {
   }
 
   render () {
-    // jshint ignore: start
     return <div className="modal-container">
       <div className="modal-window">
         <div className="modal-contents">
@@ -55,6 +52,5 @@ export default class ScaleSelector extends React.Component {
         </div>
       </div>
     </div>;
-    // jshint ignore: end
   }
 }
