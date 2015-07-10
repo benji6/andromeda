@@ -1,8 +1,7 @@
-import {assoc, compose, equals} from 'ramda';
+import {always, assoc, clone, compose, cond, curry, equals, flip, gte, identity, lt, T} from 'ramda';
 import React from 'react';
 import alt from '../alt';
 import {playNote, stopNote} from '../noteController';
-import {always, clone, cond, curry, flip, gte, identity, lt, T} from 'ramda';
 
 const {floor} = Math;
 const {EPSILON} = Number;
@@ -130,7 +129,6 @@ export default class ControlPad extends React.Component {
   }
 
   render () {
-    // jshint ignore: start
     return <div className="center">
       <canvas width="768" height="768" className="control-pad"
       onTouchStart={this.handleInput}
@@ -139,7 +137,6 @@ export default class ControlPad extends React.Component {
       onMouseMove={this.handleInput}
       onTouchEnd={this.handleInputEnd}
       onMouseUp={this.handleInputEnd}></canvas>
-  </div>;
-    // jshint ignore: end
+    </div>;
   }
 }

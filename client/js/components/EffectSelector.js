@@ -1,36 +1,34 @@
 import React from 'react';
 import PerformanceView from './PerformanceView';
 import render from '../tools/render';
-import ScaleStore from '../stores/ScaleStore';
-import ScaleActions from '../actions/ScaleActions';
-import {keys, map} from 'ramda';
+import EffectStore from '../stores/EffectStore';
+import EffectActions from '../actions/EffectActions';
+import {map} from 'ramda';
 import capitalize from 'capitalize';
 
 let boundOnChange = null;
 
-export default class ScaleSelector extends React.Component {
+export default class EffectSelector extends React.Component {
   constructor (props) {
     super(props);
-    this.state = ScaleStore.getState();
+    this.state = EffectStore.getState();
   }
 
   componentDidMount () {
     boundOnChange = this.onChange.bind(this);
-    ScaleStore.listen(boundOnChange);
+    EffectStore.listen(boundOnChange);
   }
 
   componentWillUnmount () {
-    ScaleStore.unlisten(boundOnChange);
+    EffectStore.unlisten(boundOnChange);
   }
 
   handleClick () {
-    // jshint ignore: start
     render(<PerformanceView />);
-    // jshint ignore: end
   }
 
   handleSelect (e) {
-    ScaleActions.updateScale(e.currentTarget.value);
+    EffectActions.updateSelectedEffect(e.currentTarget.value);
   }
 
   onChange (state) {
@@ -38,23 +36,21 @@ export default class ScaleSelector extends React.Component {
   }
 
   render () {
-    // jshint ignore: start
     return <div className="modal-container">
       <div className="modal-window">
         <div className="modal-contents">
-          <h1>Scale</h1>
+          <h1>Effect</h1>
           <div>
-            <select value={this.state.scaleName} onChange={this.handleSelect}>
+            <select value={this.state.selectedEffect} onChange={this.handleSelect}>
               {map(item =>
                 <option value={item} key={item}>
-                  {capitalize.words(item)}
-                </option>, keys(this.state.scales))}
+                  {capitalize(item)}
+                </option>, this.state.effects)}
             </select>
           </div>
           <button onClick={this.handleClick}>OK</button>
         </div>
       </div>
     </div>;
-    // jshint ignore: end
   }
 }

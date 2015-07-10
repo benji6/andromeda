@@ -5,7 +5,7 @@ export default ({gain, frequency}) => [
     node: 'gain',
     params: {
       gain,
-    }
+    },
   },
   {
     output: 0,

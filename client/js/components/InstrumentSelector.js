@@ -1,36 +1,34 @@
 import React from 'react';
 import PerformanceView from './PerformanceView';
 import render from '../tools/render';
-import EffectStore from '../stores/EffectStore';
-import EffectActions from '../actions/EffectActions';
+import InstrumentStore from '../stores/InstrumentStore';
+import InstrumentActions from '../actions/InstrumentActions';
 import {map} from 'ramda';
 import capitalize from 'capitalize';
 
 let boundOnChange = null;
 
-export default class EffectSelector extends React.Component {
+export default class InstrumentSelector extends React.Component {
   constructor (props) {
     super(props);
-    this.state = EffectStore.getState();
+    this.state = InstrumentStore.getState();
   }
 
   componentDidMount () {
     boundOnChange = this.onChange.bind(this);
-    EffectStore.listen(boundOnChange);
+    InstrumentStore.listen(boundOnChange);
   }
 
   componentWillUnmount () {
-    EffectStore.unlisten(boundOnChange);
+    InstrumentStore.unlisten(boundOnChange);
   }
 
   handleClick () {
-    // jshint ignore: start
     render(<PerformanceView />);
-    // jshint ignore: end
   }
 
   handleSelect (e) {
-    EffectActions.updateSelectedEffect(e.currentTarget.value);
+    InstrumentActions.updateSelectedInstrument(e.currentTarget.value);
   }
 
   onChange (state) {
@@ -38,23 +36,21 @@ export default class EffectSelector extends React.Component {
   }
 
   render () {
-    // jshint ignore: start
     return <div className="modal-container">
       <div className="modal-window">
         <div className="modal-contents">
-          <h1>Effect</h1>
+          <h1>Instrument</h1>
           <div>
-            <select value={this.state.selectedEffect} onChange={this.handleSelect}>
+            <select value={this.state.selectedInstrument} onChange={this.handleSelect}>
               {map(item =>
                 <option value={item} key={item}>
                   {capitalize(item)}
-                </option>, this.state.effects)}
+                </option>, this.state.instruments)}
             </select>
           </div>
           <button onClick={this.handleClick}>OK</button>
         </div>
       </div>
     </div>;
-    // jshint ignore: end
   }
 }

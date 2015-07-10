@@ -7,7 +7,6 @@ import render from '../tools/render';
 
 export default class PerformanceMenu extends React.Component {
   render () {
-    // jshint ignore: start
     return <div className="performance-menu">
       <div className="buttons-container">
         <button onClick={() => render(<InstrumentSelector />)}>Instrument</button>
@@ -16,6 +15,5 @@ export default class PerformanceMenu extends React.Component {
         <button onClick={() => render(<ScaleSelector />)}>Scale</button>
       </div>
     </div>;
-    // jshint ignore: end
   }
 }

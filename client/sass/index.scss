@@ -2,14 +2,6 @@
 @import 'performance-menu';
 @import 'control-pad';
 
-body {
-  background: linear-gradient(#000, #000);
-  font-family: sans-serif;
-  margin: 0;
-  user-select: none;
-  height: 100vh;
-}
-
 button, select {
   box-shadow: #a02 0 0 1.5rem 0.1rem;
   background: linear-gradient(#e04, #c30);
