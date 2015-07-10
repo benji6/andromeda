@@ -23,7 +23,7 @@ System.config({
     "ramda": "npm:ramda@0.15.1",
     "react": "npm:react@0.14.0-beta1",
     "react-dom": "npm:react-dom@0.14.0-beta1",
-    "virtual-audio-graph": "npm:virtual-audio-graph@0.2.2",
+    "virtual-audio-graph": "npm:virtual-audio-graph@0.3.0",
     "github:jspm/nodelibs-assert@0.1.0": {
       "assert": "npm:assert@1.3.0"
     },
@@ -185,11 +185,6 @@ System.config({
       "parse-asn1": "npm:parse-asn1@3.0.1",
       "stream": "github:jspm/nodelibs-stream@0.1.0",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
-    },
-    "npm:buffer@3.3.0": {
-      "base64-js": "npm:base64-js@0.0.8",
-      "ieee754": "npm:ieee754@1.1.6",
-      "is-array": "npm:is-array@1.0.1"
     },
     "npm:buffer@3.3.1": {
       "base64-js": "npm:base64-js@0.0.8",
@@ -550,12 +545,6 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:source-map@0.4.2": {
-      "amdefine": "npm:amdefine@0.1.1",
-      "fs": "github:jspm/nodelibs-fs@0.1.2",
-      "path": "github:jspm/nodelibs-path@0.1.0",
-      "process": "github:jspm/nodelibs-process@0.1.1"
-    },
     "npm:source-map@0.4.3": {
       "amdefine": "npm:amdefine@0.1.1",
       "fs": "github:jspm/nodelibs-fs@0.1.2",
@@ -593,11 +582,9 @@ System.config({
       "inherits": "npm:inherits@2.0.1",
       "process": "github:jspm/nodelibs-process@0.1.1"
     },
-    "npm:virtual-audio-graph@0.2.2": {
+    "npm:virtual-audio-graph@0.3.0": {
       "capitalize": "npm:capitalize@1.0.0",
-      "process": "github:jspm/nodelibs-process@0.1.1",
-      "ramda": "npm:ramda@0.15.1",
-      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+      "ramda": "npm:ramda@0.15.1"
     },
     "npm:vm-browserify@0.0.4": {
       "indexof": "npm:indexof@0.0.1"
