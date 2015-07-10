@@ -1,4 +1,3 @@
-const autoprefixer = require('gulp-autoprefixer');
 const babelify = require('babelify');
 const browserify = require('browserify');
 const buffer = require('vinyl-buffer');
@@ -46,10 +45,6 @@ gulp.task('css', function () {
   gulp.src('client/sass/index.scss')
     .pipe(plumber())
     .pipe(sass())
-    .pipe(autoprefixer({
-      browsers: ['last 2 versions'],
-      cascade: false,
-    }))
     .pipe(minifyCSS())
     .pipe(gulp.dest(publicPath + '/css'))
     .pipe(connect.reload());
