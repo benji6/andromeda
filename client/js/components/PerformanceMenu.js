@@ -1,18 +1,18 @@
 import React from 'react';
-import InstrumentSelector from './InstrumentSelector';
-import EffectSelector from './EffectSelector';
-import RootNoteSelector from './RootNoteSelector';
-import ScaleSelector from './ScaleSelector';
+import InstrumentSelectorContainer from './InstrumentSelectorContainer';
+import EffectSelectorContainer from './EffectSelectorContainer';
+import RootNoteSelectorContainer from './RootNoteSelectorContainer';
+import ScaleSelectorContainer from './ScaleSelectorContainer';
 import render from '../tools/render';
 
 export default class PerformanceMenu extends React.Component {
   render () {
     return <div className="performance-menu">
       <div className="buttons-container">
-        <button onClick={() => render(<InstrumentSelector />)}>Instrument</button>
-        <button onClick={() => render(<EffectSelector />)}>Effects</button>
-        <button onClick={() => render(<RootNoteSelector />)}>Root Note</button>
-        <button onClick={() => render(<ScaleSelector />)}>Scale</button>
+        <button onClick={() => render(<InstrumentSelectorContainer />)}>Instrument</button>
+        <button onClick={() => render(<EffectSelectorContainer />)}>Effects</button>
+        <button onClick={() => render(<RootNoteSelectorContainer />)}>Root Note</button>
+        <button onClick={() => render(<ScaleSelectorContainer />)}>Scale</button>
       </div>
     </div>;
   }
