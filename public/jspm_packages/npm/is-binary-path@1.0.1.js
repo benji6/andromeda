@@ -1,1 +1,0 @@
-module.exports = require("npm:is-binary-path@1.0.1/index");

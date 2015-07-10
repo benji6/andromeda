@@ -1,1 +1,0 @@
-module.exports = require("npm:readdirp@1.3.0/readdirp");

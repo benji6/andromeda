@@ -1,1 +1,0 @@
-module.exports = require("npm:virtual-audio-graph@0.2.2/dist/index");

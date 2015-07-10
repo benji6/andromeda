@@ -1,1 +1,0 @@
-"use strict";function _interopRequireDefault(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(exports,"__esModule",{value:!0});var _virtualAudioGraph=require("virtual-audio-graph"),_virtualAudioGraph2=_interopRequireDefault(_virtualAudioGraph);exports["default"]=new _virtualAudioGraph2["default"],module.exports=exports["default"];

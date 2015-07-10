@@ -1,1 +1,0 @@
-module.exports = require("npm:graceful-fs@2.0.3/graceful-fs");

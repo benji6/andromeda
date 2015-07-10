@@ -1,1 +1,0 @@
-module.exports = require("npm:alt@0.17.0/lib");

@@ -1,1 +1,0 @@
-module.exports = require("npm:sigmund@1.0.1/sigmund");

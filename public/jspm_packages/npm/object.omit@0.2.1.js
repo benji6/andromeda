@@ -1,1 +1,0 @@
-module.exports = require("npm:object.omit@0.2.1/index");

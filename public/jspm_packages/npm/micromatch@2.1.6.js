@@ -1,1 +1,0 @@
-module.exports = require("npm:micromatch@2.1.6/index");

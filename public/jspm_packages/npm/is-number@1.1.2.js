@@ -1,1 +1,0 @@
-module.exports = require("npm:is-number@1.1.2/index");

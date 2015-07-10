@@ -1,1 +1,0 @@
-module.exports = require("npm:wrappy@1.0.1/wrappy");

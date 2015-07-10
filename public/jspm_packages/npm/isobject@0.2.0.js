@@ -1,1 +1,0 @@
-module.exports = require("npm:isobject@0.2.0/index");

@@ -1,1 +1,0 @@
-module.exports = require("npm:randomatic@1.1.0/index");

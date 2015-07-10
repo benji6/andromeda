@@ -1,6 +1,0 @@
-{
-  "registry": "npm",
-  "dependencies": {
-    "timers-browserify": "^1.1.0"
-  }
-}
