@@ -3,12 +3,12 @@ import React from 'react';
 import RootNoteStore from '../stores/RootNoteStore';
 import RootNoteSelector from './RootNoteSelector';
 
-export default React.createClass({
+export default class RootNoteContainer extends React.Component {
   render() {
     return (
       <AltContainer store={RootNoteStore}>
         <RootNoteSelector />
       </AltContainer>
     );
-  },
-});
+  }
+}

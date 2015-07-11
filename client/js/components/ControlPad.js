@@ -78,23 +78,12 @@ export default class ControlPad extends React.Component {
     controlPadElement = document.querySelector('.control-pad');
     context = controlPadElement.getContext('2d');
     const {width, height} = controlPadElement;
-    const gradient = context.createLinearGradient(0, 0, width, height);
-
-    gradient.addColorStop(0, 'rgb(200, 0, 90)');
-    gradient.addColorStop(0.5, 'rgb(164, 0, 0)');
-    gradient.addColorStop(1, 'rgb(140, 70, 0)');
-    context.rect(0, 0, width, height);
-    context.fillStyle = gradient;
-    context.fill();
+    context.fillStyle = 'rgb(164, 0, 0)';
+    context.fillRect(0, 0, width, height);
 
     const drawBackground = () => {
-      const gradient = context.createLinearGradient(0, 0, width, height);
-      gradient.addColorStop(0, 'rgba(200, 0, 90, 0.15)');
-      gradient.addColorStop(0.5, 'rgba(164, 0, 0, 0.15)');
-      gradient.addColorStop(1, 'rgba(140, 70, 0, 0.15)');
-      context.rect(0, 0, width, height);
-      context.fillStyle = gradient;
-      context.fill();
+      context.fillStyle = 'rgba(164, 0, 0, 0.15)';
+      context.fillRect(0, 0, width, height);
     };
 
     fadeLoopIsOn = true;
