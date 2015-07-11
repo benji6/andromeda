@@ -3,10 +3,10 @@
 @import 'control-pad';
 
 button, select {
-  box-shadow: #a02 0 0 1.5rem 0.1rem;
   background: linear-gradient(#e04, #c30);
-  border-color: #a03;
+  border: 1px solid rgb(170, 0, 51);
   border-radius: 1rem;
+  box-shadow: #a02 0 0 1.5rem 0.1rem;
   color: $black;
   cursor: pointer;
   display: inline-block;
