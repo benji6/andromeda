@@ -79,6 +79,6 @@
     "ramda": "^0.15.1",
     "react": "^0.13.3",
     "react-dom": "^0.14.0-beta1",
-    "virtual-audio-graph": "^0.3.2"
+    "virtual-audio-graph": "^0.3.3"
   }
 }
