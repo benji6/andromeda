@@ -2,6 +2,7 @@ import {always, assoc, clone, compose, cond, curry, equals, flip, gte, identity,
 import React from 'react';
 import alt from '../alt';
 import {playNote, stopNote} from '../noteController';
+import virtualAudioGraph from '../virtualAudioGraph';
 
 const {floor} = Math;
 const {EPSILON} = Number;
@@ -54,18 +55,16 @@ let currentXYRatios = null;
 let controlPadElement = null;
 
 const drawTouchCircle = () => {
-  if (!controlPadActive) {
+  if (!controlPadActive)
     return;
-  }
   const {xRatio, yRatio} = currentXYRatios;
   const {width, height} = controlPadElement;
   const x = xRatio * width;
   const y = yRatio * height;
-  const r = width * 0.08;
+  const r = width * 0.05;
   const gradient = context.createRadialGradient(x, y, r, x, y, 0);
-  gradient.addColorStop(0, 'rgba(143, 0, 255, 0');
-  gradient.addColorStop(0.5, 'rgba(143, 0, 255, 0.02');
-  gradient.addColorStop(1, 'rgba(143, 245, 255, 1');
+  gradient.addColorStop(0, 'rgba(34, 165, 255, 1)');
+  gradient.addColorStop(0.5, 'rgba(193, 245, 255, 0)');
   context.fillStyle = gradient;
   context.beginPath();
   context.arc(x, y, r, 0, 2 * Math.PI, true);
@@ -78,11 +77,9 @@ export default class ControlPad extends React.Component {
     controlPadElement = document.querySelector('.control-pad');
     context = controlPadElement.getContext('2d');
     const {width, height} = controlPadElement;
-    context.fillStyle = 'rgb(164, 0, 0)';
-    context.fillRect(0, 0, width, height);
 
     const drawBackground = () => {
-      context.fillStyle = 'rgba(164, 0, 0, 0.15)';
+      context.fillStyle = 'rgba(0, 0, 0, 0.1)';
       context.fillRect(0, 0, width, height);
     };
 
