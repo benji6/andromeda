@@ -1,25 +1,8 @@
-import {always, assoc, clone, compose, cond, curry, equals, flip, gte, identity, isNil, lt, T} from 'ramda';
+import {always, cond, flip, gte, identity, lt, T} from 'ramda';
 import React from 'react';
-import alt from '../alt';
-import {playNote, stopNote} from '../noteController';
-import virtualAudioGraph from '../virtualAudioGraph';
+import {handleControlPadInput, handleControlPadInputEnd} from '../handleControlPadSignals';
 
-const {floor} = Math;
 const {EPSILON} = Number;
-
-let stopLastNoteOnNoteChange = true;
-
-const calculatePitch = (xRatio) => {
-  const scaleStoreState = alt.getStore('ScaleStore').getState();
-  const {scaleName, scales} = scaleStoreState;
-  const scale = scales[scaleName];
-  if (isNil(scale)) {
-    stopLastNoteOnNoteChange = false;
-    return xRatio * 12;
-  }
-  stopLastNoteOnNoteChange = true;
-  return scale[floor(scale.length * xRatio)];
-};
 
 const minZeroMaxOne = cond(
   [flip(lt)(0), always(0)],
@@ -42,21 +25,15 @@ const calculateXAndYRatio = (e) => {
   };
 };
 
-const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
-
-const getNoteFromXYRatios = compose(assoc('id', 'controlPad'), calculatePitchAndMod);
-
 let fadeLoopIsOn = false;
 let mouseInputEnabled = false;
 let context = null;
 let controlPadActive = false;
-let currentlyPlayingPitch = null;
 let currentXYRatios = null;
 let controlPadElement = null;
 
 const drawTouchCircle = () => {
-  if (!controlPadActive)
-    return;
+  if (!controlPadActive) return;
   const {xRatio, yRatio} = currentXYRatios;
   const {width, height} = controlPadElement;
   const x = xRatio * width;
@@ -87,7 +64,7 @@ export default class ControlPad extends React.Component {
 
     (function fadeLoop () {
       if (!fadeLoopIsOn) return;
-      window.requestAnimationFrame(fadeLoop);
+      requestAnimationFrame(fadeLoop);
       drawTouchCircle();
       drawBackground();
     }());
@@ -101,34 +78,29 @@ export default class ControlPad extends React.Component {
 
   handleInput (e) {
     mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled;
-    if (e.nativeEvent instanceof MouseEvent && !mouseInputEnabled)
-      return;
+    if (e.nativeEvent instanceof MouseEvent && !mouseInputEnabled) return;
     controlPadActive = true;
     currentXYRatios = calculateXAndYRatio(e);
-    const note = getNoteFromXYRatios(currentXYRatios);
-    const {id, pitch} = note;
-    if (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null && stopLastNoteOnNoteChange)
-      stopNote({id, pitch: currentlyPlayingPitch});
-    currentlyPlayingPitch = pitch;
-    playNote(note);
+    handleControlPadInput(currentXYRatios);
   }
 
   handleInputEnd (e) {
     mouseInputEnabled = false;
     controlPadActive = false;
-    currentlyPlayingPitch = null;
-    stopNote(getNoteFromXYRatios(calculateXAndYRatio(e)));
+    currentXYRatios = calculateXAndYRatio(e);
+    handleControlPadInputEnd(currentXYRatios);
   }
 
   render () {
     return <div className="center">
       <canvas width="768" height="768" className="control-pad"
-      onTouchStart={this.handleInput}
-      onTouchMove={this.handleInput}
-      onMouseDown={this.handleInput}
-      onMouseMove={this.handleInput}
-      onTouchEnd={this.handleInputEnd}
-      onMouseUp={this.handleInputEnd}></canvas>
+        onTouchStart={this.handleInput}
+        onTouchMove={this.handleInput}
+        onMouseDown={this.handleInput}
+        onMouseMove={this.handleInput}
+        onTouchEnd={this.handleInputEnd}
+        onMouseUp={this.handleInputEnd}>
+      </canvas>
     </div>;
   }
 }
