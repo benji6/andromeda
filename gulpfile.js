@@ -17,7 +17,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const watchify = require('watchify');
 
-const browserifyEntryPath = 'client/js/index.jsx';
+const browserifyEntryPath = 'client/js/index.js';
 const publicPath = 'public';
 
 gulp.task('connect', function () {
