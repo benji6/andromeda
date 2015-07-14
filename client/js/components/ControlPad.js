@@ -1,4 +1,5 @@
 /* global THREE */
+import {isNil} from 'ramda';
 import React from 'react';
 import {handleControlPadInput, handleControlPadInputEnd} from '../handleControlPadSignals';
 
@@ -6,6 +7,9 @@ const {EPSILON} = Number;
 const {pow} = Math;
 
 const cameraZ = 16;
+const minZ = -128;
+const sideLength = 1;
+const maxDepth = pow(3 * pow(sideLength, 2), 0.5);
 
 const validRatio = (x) => x < 0 ?
   0 :
@@ -48,24 +52,30 @@ const setRendererSize = () => {
 const renderLoop = function renderLoop () {
   if (!renderLoopActive) return;
   requestAnimationFrame(() => renderLoop());
+  const controlPadHasNotBeenUsed = isNil(currentXYRatios);
+  const {z} = cube.position;
+  if (controlPadHasNotBeenUsed) return;
   if (!controlPadActive) {
-    cube.position.x = 64;
-  } else {
-    const {xRatio, yRatio} = currentXYRatios;
-    const xMod = xRatio < 0.5 ?
-     -pow(xRatio - 0.5, 2) :
-     pow(xRatio - 0.5, 2);
-    const yMod = yRatio < 0.5 ?
-     -pow(yRatio - 0.5, 2) :
-     pow(yRatio - 0.5, 2);
-    const rotationBaseAmount = 0.01;
-    const rotationVelocityComponent = 0.8;
-    cube.rotation.x += rotationBaseAmount + rotationVelocityComponent * xMod;
-    cube.rotation.y += rotationBaseAmount + rotationVelocityComponent * yMod;
-    cube.rotation.z += rotationBaseAmount + rotationVelocityComponent * xMod * yMod;
-    cube.position.x = (xRatio - 0.5) * cameraZ;
-    cube.position.y = (0.5 - yRatio) * cameraZ;
+    if (z > minZ - maxDepth) cube.position.z -= 1;
+    renderer.render(scene, camera);
+    return;
   }
+  const {xRatio, yRatio} = currentXYRatios;
+  const xMod = xRatio < 0.5 ?
+   -pow(xRatio - 0.5, 2) :
+   pow(xRatio - 0.5, 2);
+  const yMod = yRatio < 0.5 ?
+   -pow(yRatio - 0.5, 2) :
+   pow(yRatio - 0.5, 2);
+  const rotationBaseAmount = 0.01;
+  const rotationVelocityComponent = 0.8;
+  cube.rotation.x += rotationBaseAmount + rotationVelocityComponent * xMod;
+  cube.rotation.y += rotationBaseAmount + rotationVelocityComponent * yMod;
+  cube.rotation.z += rotationBaseAmount + rotationVelocityComponent * xMod * yMod;
+  cube.position.x = (xRatio - 0.5) * cameraZ;
+  cube.position.y = (0.5 - yRatio) * cameraZ;
+  const returnVelocity = 8;
+  if (z < 0) cube.position.z += z > -returnVelocity ? -z : returnVelocity;
   renderer.render(scene, camera);
 };
 
@@ -73,15 +83,13 @@ export default class ControlPad extends React.Component {
   componentDidMount () {
     controlPadElement = document.querySelector('.control-pad');
     const {width, height} = controlPadElement;
-    const sideLength = 1;
-    const maxDepth = pow(2 * pow(sideLength, 2), 0.5);
     renderLoopActive = true;
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(
       54,
       1,
       cameraZ - maxDepth,
-      cameraZ + maxDepth
+      cameraZ - minZ
     );
     renderer = new THREE.WebGLRenderer({canvas: controlPadElement});
     const geometry = new THREE.BoxGeometry(sideLength, sideLength, sideLength);
@@ -90,6 +98,7 @@ export default class ControlPad extends React.Component {
     });
     const directionalLight = new THREE.DirectionalLight(0xffffff);
     cube = new THREE.Mesh(geometry, material);
+    cube.position.z = minZ - maxDepth;
 
     directionalLight.position.set(16, 16, 24).normalize();
     scene.add(new THREE.AmbientLight(0x333333));
