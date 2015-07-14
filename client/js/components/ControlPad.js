@@ -1,14 +1,13 @@
-import {always, cond, flip, gte, identity, lt, T} from 'ramda';
 import React from 'react';
 import {handleControlPadInput, handleControlPadInputEnd} from '../handleControlPadSignals';
 
 const {EPSILON} = Number;
 
-const minZeroMaxOne = cond(
-  [flip(lt)(0), always(0)],
-  [flip(gte)(1), always(1 - EPSILON)],
-  [T, identity]
-);
+const validRatio = (x) => x < 0 ?
+  0 :
+  x >= 1 ?
+    1 - EPSILON :
+    x;
 
 const calculateXAndYRatio = (e) => {
   const {top, right, bottom, left} = e.target.getBoundingClientRect();
@@ -20,8 +19,8 @@ const calculateXAndYRatio = (e) => {
   const height = bottom - top;
 
   return {
-    xRatio: minZeroMaxOne(x / width),
-    yRatio: minZeroMaxOne(y / height),
+    xRatio: validRatio(x / width),
+    yRatio: validRatio(y / height),
   };
 };
 

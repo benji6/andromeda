@@ -30,7 +30,6 @@ export const handleControlPadInput = (xYRatios) => {
     stopNote({id, pitch: currentlyPlayingPitch});
   currentlyPlayingPitch = pitch;
   playNote(note);
-
 };
 
 export const handleControlPadInputEnd = (xYRatios) => {

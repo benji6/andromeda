@@ -1,3 +1,4 @@
+import './customVirtualNodes/defineNodes';
 import './alt';
 import React from 'react';
 import PerformanceView from './components/PerformanceView';

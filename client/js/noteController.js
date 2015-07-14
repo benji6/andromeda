@@ -20,7 +20,7 @@ export const playNote = ({id, pitch, modulation}) => {
 
   modulation = modulation === undefined ? 0.5 : modulation;
 
-  currentVirtualAudioGraph = reject(propEq('id', id), currentVirtualAudioGraph);
+  currentVirtualAudioGraph = reject(propEq(id, 'id'), currentVirtualAudioGraph);
 
   currentVirtualAudioGraph = append({
     output: ['output', 0],
@@ -36,6 +36,6 @@ export const playNote = ({id, pitch, modulation}) => {
 };
 
 export const stopNote = ({id}) => {
-  currentVirtualAudioGraph = reject(propEq('id', id), currentVirtualAudioGraph);
+  currentVirtualAudioGraph = reject(propEq(id, 'id'), currentVirtualAudioGraph);
   virtualAudioGraph.update(currentVirtualAudioGraph);
 };
