@@ -1,31 +1,17 @@
-import {always, assoc, clone, compose, cond, curry, equals, flip, gte, identity, isNil, lt, T} from 'ramda';
+/* global THREE */
 import React from 'react';
-import alt from '../alt';
-import {playNote, stopNote} from '../noteController';
-import virtualAudioGraph from '../virtualAudioGraph';
+import {handleControlPadInput, handleControlPadInputEnd} from '../handleControlPadSignals';
 
-const {floor} = Math;
 const {EPSILON} = Number;
+const {pow} = Math;
 
-let stopLastNoteOnNoteChange = true;
+const cameraZ = 16;
 
-const calculatePitch = (xRatio) => {
-  const scaleStoreState = alt.getStore('ScaleStore').getState();
-  const {scaleName, scales} = scaleStoreState;
-  const scale = scales[scaleName];
-  if (isNil(scale)) {
-    stopLastNoteOnNoteChange = false;
-    return xRatio * 12;
-  }
-  stopLastNoteOnNoteChange = true;
-  return scale[floor(scale.length * xRatio)];
-};
-
-const minZeroMaxOne = cond(
-  [flip(lt)(0), always(0)],
-  [flip(gte)(1), always(1 - EPSILON)],
-  [T, identity]
-);
+const validRatio = (x) => x < 0 ?
+  0 :
+  x >= 1 ?
+    1 - EPSILON :
+    x;
 
 const calculateXAndYRatio = (e) => {
   const {top, right, bottom, left} = e.target.getBoundingClientRect();
@@ -37,98 +23,118 @@ const calculateXAndYRatio = (e) => {
   const height = bottom - top;
 
   return {
-    xRatio: minZeroMaxOne(x / width),
-    yRatio: minZeroMaxOne(y / height),
+    xRatio: validRatio(x / width),
+    yRatio: validRatio(y / height),
   };
 };
 
-const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
-
-const getNoteFromXYRatios = compose(assoc('id', 'controlPad'), calculatePitchAndMod);
-
-let fadeLoopIsOn = false;
 let mouseInputEnabled = false;
-let context = null;
 let controlPadActive = false;
-let currentlyPlayingPitch = null;
 let currentXYRatios = null;
 let controlPadElement = null;
+let renderLoopActive = null;
+let cube = null;
+let renderer = null;
+let camera = null;
+let scene = null;
 
-const drawTouchCircle = () => {
-  if (!controlPadActive)
-    return;
-  const {xRatio, yRatio} = currentXYRatios;
-  const {width, height} = controlPadElement;
-  const x = xRatio * width;
-  const y = yRatio * height;
-  const r = width * 0.05;
-  const gradient = context.createRadialGradient(x, y, r, x, y, 0);
-  gradient.addColorStop(0, 'rgba(34, 165, 255, 1)');
-  gradient.addColorStop(0.5, 'rgba(193, 245, 255, 0)');
-  context.fillStyle = gradient;
-  context.beginPath();
-  context.arc(x, y, r, 0, 2 * Math.PI, true);
-  context.closePath();
-  context.fill();
+const setRendererSize = () => {
+  const rendererSize = innerWidth < innerHeight ?
+    innerWidth :
+    innerHeight * 0.8;
+  renderer.setSize(rendererSize, rendererSize);
+};
+
+const renderLoop = function renderLoop () {
+  if (!renderLoopActive) return;
+  requestAnimationFrame(() => renderLoop());
+  if (!controlPadActive) {
+    cube.position.x = 64;
+  } else {
+    const {xRatio, yRatio} = currentXYRatios;
+    const xMod = xRatio < 0.5 ?
+     -pow(xRatio - 0.5, 2) :
+     pow(xRatio - 0.5, 2);
+    const yMod = yRatio < 0.5 ?
+     -pow(yRatio - 0.5, 2) :
+     pow(yRatio - 0.5, 2);
+    const rotationBaseAmount = 0.01;
+    const rotationVelocityComponent = 0.8;
+    cube.rotation.x += rotationBaseAmount + rotationVelocityComponent * xMod;
+    cube.rotation.y += rotationBaseAmount + rotationVelocityComponent * yMod;
+    cube.rotation.z += rotationBaseAmount + rotationVelocityComponent * xMod * yMod;
+    cube.position.x = (xRatio - 0.5) * cameraZ;
+    cube.position.y = (0.5 - yRatio) * cameraZ;
+  }
+  renderer.render(scene, camera);
 };
 
 export default class ControlPad extends React.Component {
   componentDidMount () {
     controlPadElement = document.querySelector('.control-pad');
-    context = controlPadElement.getContext('2d');
     const {width, height} = controlPadElement;
+    const sideLength = 1;
+    const maxDepth = pow(2 * pow(sideLength, 2), 0.5);
+    renderLoopActive = true;
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(
+      54,
+      1,
+      cameraZ - maxDepth,
+      cameraZ + maxDepth
+    );
+    renderer = new THREE.WebGLRenderer({canvas: controlPadElement});
+    const geometry = new THREE.BoxGeometry(sideLength, sideLength, sideLength);
+    const material = new THREE.MeshLambertMaterial({
+      color: 'rgb(20, 200, 255)',
+    });
+    const directionalLight = new THREE.DirectionalLight(0xffffff);
+    cube = new THREE.Mesh(geometry, material);
 
-    const drawBackground = () => {
-      context.fillStyle = 'rgba(0, 0, 0, 0.1)';
-      context.fillRect(0, 0, width, height);
-    };
+    directionalLight.position.set(16, 16, 24).normalize();
+    scene.add(new THREE.AmbientLight(0x333333));
+    scene.add(directionalLight);
+    scene.add(cube);
+    camera.position.z = cameraZ;
 
-    fadeLoopIsOn = true;
-
-    (function fadeLoop () {
-      if (!fadeLoopIsOn) return;
-      window.requestAnimationFrame(fadeLoop);
-      drawTouchCircle();
-      drawBackground();
-    }());
+    setRendererSize();
+    window.onresize = setRendererSize;
 
     controlPadElement.oncontextmenu = (e) => e.preventDefault();
+
+    renderLoop();
   }
 
   componentWillUnmount () {
-    fadeLoopIsOn = false;
+    renderLoopActive = false;
+    window.onresize = null;
   }
 
   handleInput (e) {
     mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled;
-    if (e.nativeEvent instanceof MouseEvent && !mouseInputEnabled)
-      return;
+    if (e.nativeEvent instanceof MouseEvent && !mouseInputEnabled) return;
     controlPadActive = true;
     currentXYRatios = calculateXAndYRatio(e);
-    const note = getNoteFromXYRatios(currentXYRatios);
-    const {id, pitch} = note;
-    if (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null && stopLastNoteOnNoteChange)
-      stopNote({id, pitch: currentlyPlayingPitch});
-    currentlyPlayingPitch = pitch;
-    playNote(note);
+    handleControlPadInput(currentXYRatios);
   }
 
   handleInputEnd (e) {
     mouseInputEnabled = false;
     controlPadActive = false;
-    currentlyPlayingPitch = null;
-    stopNote(getNoteFromXYRatios(calculateXAndYRatio(e)));
+    currentXYRatios = calculateXAndYRatio(e);
+    handleControlPadInputEnd(currentXYRatios);
   }
 
   render () {
     return <div className="center">
       <canvas width="768" height="768" className="control-pad"
-      onTouchStart={this.handleInput}
-      onTouchMove={this.handleInput}
-      onMouseDown={this.handleInput}
-      onMouseMove={this.handleInput}
-      onTouchEnd={this.handleInputEnd}
-      onMouseUp={this.handleInputEnd}></canvas>
+        onTouchStart={this.handleInput}
+        onTouchMove={this.handleInput}
+        onMouseDown={this.handleInput}
+        onMouseMove={this.handleInput}
+        onTouchEnd={this.handleInputEnd}
+        onMouseUp={this.handleInputEnd}>
+      </canvas>
     </div>;
   }
 }
