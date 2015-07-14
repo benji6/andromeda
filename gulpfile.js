@@ -36,9 +36,7 @@ gulp.task('html', function () {
 });
 
 gulp.task('clean', function () {
-  return del([
-    'public/js/**/*',
-  ]);
+  return del('public/js/index*');
 });
 
 gulp.task('css', function () {

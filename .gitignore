@@ -1,5 +1,5 @@
 node_modules
 jspm_packages
 public/css
-public/js
+public/js/index*
 public/index.html
