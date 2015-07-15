@@ -5,8 +5,9 @@ import detuned from './oscillatorBanks/detuned';
 import sine from './oscillatorBanks/sine';
 import supersaw from './oscillatorBanks/supersaw';
 
-virtualAudioGraph.defineNode(none, 'none');
-virtualAudioGraph.defineNode(pingPongDelay, 'pingPongDelay');
-virtualAudioGraph.defineNode(detuned, 'detuned');
-virtualAudioGraph.defineNode(sine, 'sine');
-virtualAudioGraph.defineNode(supersaw, 'supersaw');
+virtualAudioGraph
+  .defineNode(none, 'none')
+  .defineNode(pingPongDelay, 'pingPongDelay')
+  .defineNode(detuned, 'detuned')
+  .defineNode(sine, 'sine')
+  .defineNode(supersaw, 'supersaw');
