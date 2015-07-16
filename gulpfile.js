@@ -45,7 +45,6 @@ gulp.task('htmlProd', function () {
       files: [
         {
           file: 'js/lib/three.min.js',
-          test: 'window.THREE',
           cdn: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js',
         },
       ],
