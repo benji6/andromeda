@@ -1,6 +1,7 @@
 const babelify = require('babelify');
 const browserify = require('browserify');
 const buffer = require('vinyl-buffer');
+const cdnizer = require('gulp-cdnizer');
 const connect = require('gulp-connect');
 const del = require('del');
 const gulp = require('gulp');
@@ -27,9 +28,28 @@ gulp.task('connect', function () {
   });
 });
 
-gulp.task('html', function () {
+gulp.task('htmlDev', function () {
   return gulp.src('client/html/index.html')
     .pipe(plumber())
+    .pipe(minifyHTML())
+    .pipe(gulp.dest(publicPath))
+    .pipe(connect.reload());
+});
+
+gulp.task('htmlProd', function () {
+  return gulp.src('client/html/index.html')
+    .pipe(plumber())
+    .pipe(cdnizer({
+      allowRev: false,
+      allowMin: true,
+      files: [
+        {
+          file: 'js/lib/three.min.js',
+          test: 'window.THREE',
+          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js',
+        },
+      ],
+    }))
     .pipe(minifyHTML())
     .pipe(gulp.dest(publicPath))
     .pipe(connect.reload());
@@ -78,7 +98,7 @@ gulp.task('jsProd', function () {
 
 gulp.task('watch', function () {
   gulp.watch('client/html/**/*.html', function () {
-    return runSequence('html');
+    return runSequence('htmlDev');
   });
   gulp.watch('client/sass/**/*.scss', function () {
     return runSequence('css');
@@ -89,9 +109,9 @@ gulp.task('watch', function () {
 });
 
 gulp.task('build', function () {
-  return runSequence('clean', ['html', 'css', 'jsProd']);
+  return runSequence('clean', ['htmlProd', 'css', 'jsProd']);
 });
 
 gulp.task('default', function () {
-  return runSequence('clean', ['watch', 'html', 'css', 'jsDev'], 'connect');
+  return runSequence('clean', ['watch', 'htmlDev', 'css', 'jsDev'], 'connect');
 });
