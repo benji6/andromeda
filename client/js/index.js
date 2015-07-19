@@ -1,5 +1,6 @@
 import './customVirtualNodes/defineNodes';
 import './alt';
+import './stores/ArpeggiatorStore';
 import React from 'react';
 import PerformanceView from './components/PerformanceView';
 import UpgradeBrowserView from './components/UpgradeBrowserView';

@@ -1,10 +1,12 @@
-export default ({gain, frequency}) => [
+export default ({gain, frequency, startTime, stopTime}) => [
   {
     output: ['output'],
     id: 0,
     node: 'gain',
     params: {
       gain,
+      startTime,
+      stopTime,
     },
   },
   {
@@ -14,6 +16,8 @@ export default ({gain, frequency}) => [
     params: {
       frequency,
       type: 'sine',
+      startTime,
+      stopTime,
     },
   },
 ];
