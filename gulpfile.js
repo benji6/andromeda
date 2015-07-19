@@ -4,6 +4,7 @@ const buffer = require('vinyl-buffer');
 const cdnizer = require('gulp-cdnizer');
 const connect = require('gulp-connect');
 const del = require('del');
+const eslint = require('gulp-eslint');
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 const minifyCSS = require('gulp-minify-css');
@@ -26,6 +27,19 @@ gulp.task('connect', function () {
     livereload: true,
     root: publicPath,
   });
+});
+
+gulp.task('clean', function () {
+  return del('public/js/index*');
+});
+
+gulp.task('css', function () {
+  gulp.src('client/sass/index.scss')
+    .pipe(plumber())
+    .pipe(sass())
+    .pipe(minifyCSS())
+    .pipe(gulp.dest(publicPath + '/css'))
+    .pipe(connect.reload());
 });
 
 gulp.task('htmlDev', function () {
@@ -51,19 +65,6 @@ gulp.task('htmlProd', function () {
     }))
     .pipe(minifyHTML())
     .pipe(gulp.dest(publicPath))
-    .pipe(connect.reload());
-});
-
-gulp.task('clean', function () {
-  return del('public/js/index*');
-});
-
-gulp.task('css', function () {
-  gulp.src('client/sass/index.scss')
-    .pipe(plumber())
-    .pipe(sass())
-    .pipe(minifyCSS())
-    .pipe(gulp.dest(publicPath + '/css'))
     .pipe(connect.reload());
 });
 
@@ -95,6 +96,12 @@ gulp.task('jsProd', function () {
     .pipe(gulp.dest(publicPath + '/js'));
 });
 
+gulp.task('lint', function () {
+  return gulp.src('client/js/**/*')
+    .pipe(eslint())
+    .pipe(eslint.formatEach());
+});
+
 gulp.task('watch', function () {
   gulp.watch('client/html/**/*.html', function () {
     return runSequence('htmlDev');
@@ -103,14 +110,14 @@ gulp.task('watch', function () {
     return runSequence('css');
   });
   gulp.watch('client/js/**/*.js*', function () {
-    return runSequence('jsDev');
+    return runSequence(['jsDev', 'lint']);
   });
 });
 
 gulp.task('build', function () {
-  return runSequence('clean', ['htmlProd', 'css', 'jsProd']);
+  return runSequence('clean', ['css', 'htmlProd', 'jsProd', 'lint']);
 });
 
 gulp.task('default', function () {
-  return runSequence('clean', ['watch', 'htmlDev', 'css', 'jsDev'], 'connect');
+  return runSequence('clean', ['css',  'htmlDev','jsDev', 'lint', 'watch'], 'connect');
 });
