@@ -50,13 +50,19 @@ const setRendererSize = () => {
 };
 
 const renderLoop = function renderLoop () {
-  if (!renderLoopActive) return;
+  if (!renderLoopActive) {
+    return;
+  }
   requestAnimationFrame(() => renderLoop());
   const controlPadHasNotBeenUsed = isNil(currentXYRatios);
   const {z} = cube.position;
-  if (controlPadHasNotBeenUsed) return;
+  if (controlPadHasNotBeenUsed) {
+    return;
+  }
   if (!controlPadActive) {
-    if (z > minZ - maxDepth) cube.position.z -= 1;
+    if (z > minZ - maxDepth) {
+      cube.position.z -= 1;
+    }
     renderer.render(scene, camera);
     return;
   }
@@ -75,7 +81,9 @@ const renderLoop = function renderLoop () {
   cube.position.x = (xRatio - 0.5) * cameraZ;
   cube.position.y = (0.5 - yRatio) * cameraZ;
   const returnVelocity = 8;
-  if (z < 0) cube.position.z += z > -returnVelocity ? -z : returnVelocity;
+  if (z < 0) {
+    cube.position.z += z > -returnVelocity ? -z : returnVelocity;
+  }
   renderer.render(scene, camera);
 };
 
@@ -107,7 +115,7 @@ export default class ControlPad extends React.Component {
     camera.position.z = cameraZ;
 
     setRendererSize();
-    window.onresize = setRendererSize;
+    onresize = setRendererSize;
 
     controlPadElement.oncontextmenu = (e) => e.preventDefault();
 
@@ -116,12 +124,14 @@ export default class ControlPad extends React.Component {
 
   componentWillUnmount () {
     renderLoopActive = false;
-    window.onresize = null;
+    onresize = null;
   }
 
   handleInput (e) {
     mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled;
-    if (e.nativeEvent instanceof MouseEvent && !mouseInputEnabled) return;
+    if (e.nativeEvent instanceof MouseEvent && !mouseInputEnabled) {
+      return;
+    }
     controlPadActive = true;
     currentXYRatios = calculateXAndYRatio(e);
     handleControlPadInput(currentXYRatios);

@@ -21,7 +21,7 @@ const incrementPitch = (pitch, increment) => {
     return scale[index - scale.length] + 12;
   }
   return scale[index];
-}
+};
 
 const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, startTime, stopTime) => {
   let octave = 1;
@@ -80,7 +80,7 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
       currentVirtualAudioGraph = reject(propEq(id, 'id'), currentVirtualAudioGraph);
       currentVirtualAudioGraph = append(createInstrumentCustomNodeParams(pitch, id, rootNote, modulation, startTime, stopTime), currentVirtualAudioGraph);
       virtualAudioGraph.update(currentVirtualAudioGraph);
-    }
+    };
 
     scheduleEvents();
 

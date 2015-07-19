@@ -26,8 +26,9 @@ const getNoteFromXYRatios = compose(assoc('id', 'controlPad'), calculatePitchAnd
 export const handleControlPadInput = (xYRatios) => {
   const note = getNoteFromXYRatios(xYRatios);
   const {id, pitch} = note;
-  if (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null && stopLastNoteOnNoteChange)
+  if (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null && stopLastNoteOnNoteChange) {
     stopNote({id, pitch: currentlyPlayingPitch});
+  }
   currentlyPlayingPitch = pitch;
   playNote(note);
 };
