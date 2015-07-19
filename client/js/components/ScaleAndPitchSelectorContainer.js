@@ -4,7 +4,7 @@ import ScaleStore from '../stores/ScaleStore';
 import ScaleSelector from './ScaleSelector';
 import RootNoteStore from '../stores/RootNoteStore';
 import RootNoteSelector from './RootNoteSelector';
-import ModalOKButton from './ModalOKButton';
+import ModalOKButton from './atoms/ModalOKButton';
 
 export default class RootNoteContainer extends React.Component {
   render() {

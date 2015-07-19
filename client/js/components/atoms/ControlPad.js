@@ -1,7 +1,7 @@
 /* global THREE */
 import {isNil} from 'ramda';
 import React from 'react';
-import {handleControlPadInput, handleControlPadInputEnd} from '../handleControlPadSignals';
+import {handleControlPadInput, handleControlPadInputEnd} from '../../handleControlPadSignals';
 
 const {EPSILON} = Number;
 const {pow} = Math;
@@ -135,7 +135,7 @@ export default class ControlPad extends React.Component {
   }
 
   render () {
-    return <div className="center">
+    return (
       <canvas width="768" height="768" className="control-pad"
         onTouchStart={this.handleInput}
         onTouchMove={this.handleInput}
@@ -144,6 +144,6 @@ export default class ControlPad extends React.Component {
         onTouchEnd={this.handleInputEnd}
         onMouseUp={this.handleInputEnd}>
       </canvas>
-    </div>;
+    );
   }
 }
