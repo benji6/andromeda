@@ -1,6 +1,7 @@
 import React from 'react';
-import ScaleSelectorContainer from './ScaleSelectorContainer';
+import ArpeggiatorSelectorContainer from './ArpeggiatorSelectorContainer';
 import RootNoteSelectorContainer from './RootNoteSelectorContainer';
+import ScaleSelectorContainer from './ScaleSelectorContainer';
 import ModalOKButton from './atoms/ModalOKButton';
 
 export default class RootNoteContainer extends React.Component {
@@ -11,6 +12,7 @@ export default class RootNoteContainer extends React.Component {
           <div className="modal-contents">
             <RootNoteSelectorContainer />
             <ScaleSelectorContainer />
+            <ArpeggiatorSelectorContainer />
             <ModalOKButton />
           </div>
         </div>
