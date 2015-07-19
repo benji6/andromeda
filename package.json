@@ -74,6 +74,7 @@
   "dependencies": {
     "alt": "^0.17.1",
     "capitalize": "^1.0.0",
+    "flyd": "^0.1.14",
     "ramda": "^0.16.0",
     "react": "^0.13.3",
     "react-dom": "^0.14.0-beta1",
