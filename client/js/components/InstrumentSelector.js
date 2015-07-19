@@ -1,15 +1,12 @@
+import capitalize from 'capitalize';
+import {map} from 'ramda';
 import React from 'react';
+import InstrumentActions from '../actions/InstrumentActions';
+import ModalOKButton from './atoms/ModalOKButton';
 import PerformanceView from './PerformanceView';
 import render from '../tools/render';
-import InstrumentActions from '../actions/InstrumentActions';
-import {map} from 'ramda';
-import capitalize from 'capitalize';
 
 export default class InstrumentSelector extends React.Component {
-  handleClick () {
-    render(<PerformanceView />);
-  }
-
   handleSelect (e) {
     InstrumentActions.updateSelectedInstrument(e.currentTarget.value);
     setTimeout(() => render(<PerformanceView />), 0);
@@ -28,7 +25,7 @@ export default class InstrumentSelector extends React.Component {
                 </option>, this.props.instruments)}
             </select>
           </div>
-          <button onClick={this.handleClick}>OK</button>
+          <ModalOKButton />
         </div>
       </div>
     </div>;

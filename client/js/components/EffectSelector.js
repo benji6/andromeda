@@ -1,15 +1,12 @@
+import capitalize from 'capitalize';
+import {map} from 'ramda';
 import React from 'react';
+import EffectActions from '../actions/EffectActions';
+import ModalOKButton from './atoms/ModalOKButton';
 import PerformanceView from './PerformanceView';
 import render from '../tools/render';
-import EffectActions from '../actions/EffectActions';
-import {map} from 'ramda';
-import capitalize from 'capitalize';
 
 export default class EffectSelector extends React.Component {
-  handleClick () {
-    render(<PerformanceView />);
-  }
-
   handleSelect (e) {
     EffectActions.updateSelectedEffect(e.currentTarget.value);
     setTimeout(() => render(<PerformanceView />), 0);
@@ -28,7 +25,7 @@ export default class EffectSelector extends React.Component {
                 </option>, this.props.effects)}
             </select>
           </div>
-          <button onClick={this.handleClick}>OK</button>
+          <ModalOKButton />
         </div>
       </div>
     </div>;
