@@ -1,7 +1,8 @@
 import {playNote, stopNote} from './noteController';
-import {isNil} from 'ramda';
+import {compose, flip, forEach, isNil, map, prop, reject, tap} from 'ramda';
+import flyd from 'flyd';
 
-let pressedKeys = new Set();
+const pressedKeys = new Set();
 
 const keyCodesToPitches = {
   220: -10,
@@ -46,35 +47,28 @@ const keyCodesToPitches = {
   221: 20,
 };
 
-document.onkeydown = (e) => {
-  const {keyCode} = e;
+const computeNoteParams = (pitch) => ({
+  id: `keyboard: ${pitch}`,
+  pitch,
+});
 
-  if (keyCode === 191) e.preventDefault();
-  if (pressedKeys.has(keyCode)) return;
+document.onkeydown = flyd.stream();
+document.onkeyup = flyd.stream();
 
-  const pitch = keyCodesToPitches[keyCode];
+flyd.transduce(compose(map(tap((e) => e.keyCode === 191 && e.preventDefault())),
+                       map(prop('keyCode')),
+                       reject(pressedKeys.has.bind(pressedKeys)),
+                       map(tap(pressedKeys.add.bind(pressedKeys))),
+                       map(flip(prop)(keyCodesToPitches)),
+                       reject(isNil),
+                       map(computeNoteParams),
+                       map(playNote)),
+               document.onkeydown);
 
-  if (isNil(pitch)) return;
-
-  pressedKeys.add(keyCode);
-
-  playNote({
-    id: `keyboard: ${keyCode}`,
-    keyCode,
-    pitch,
-  });
-};
-
-document.onkeyup = ({keyCode}) => {
-  const pitch = keyCodesToPitches[keyCode];
-
-  if (isNil(pitch)) return;
-
-  pressedKeys.delete(keyCode);
-
-  stopNote({
-    id: `keyboard: ${keyCode}`,
-    keyCode,
-    pitch,
-  });
-};
+flyd.transduce(compose(map(prop('keyCode')),
+                       map(tap(pressedKeys.delete.bind(pressedKeys))),
+                       map(flip(prop)(keyCodesToPitches)),
+                       reject(isNil),
+                       map(computeNoteParams),
+                       map(stopNote)),
+               document.onkeyup);
