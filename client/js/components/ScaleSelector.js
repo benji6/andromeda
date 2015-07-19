@@ -12,7 +12,7 @@ export default class ScaleSelector extends React.Component {
     return (
       <label>
         <span>Scale</span>
-        <select selected={this.props.scaleName} onChange={this.handleSelect}>
+        <select defaultValue={this.props.scaleName} onChange={this.handleSelect}>
           {map(item =>
             <option value={item} key={item}>
               {capitalize.words(item)}

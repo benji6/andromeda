@@ -12,7 +12,7 @@ export default class EffectSelector extends React.Component {
     return (
       <label>
         <span>Effect</span>
-        <select selected={this.props.selectedEffect} onChange={this.handleSelect}>
+        <select defaultValue={this.props.selectedEffect} onChange={this.handleSelect}>
           {map(item =>
             <option value={item} key={item}>
               {capitalize(item)}

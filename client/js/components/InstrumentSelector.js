@@ -12,7 +12,7 @@ export default class InstrumentSelector extends React.Component {
     return (
       <label>
         <span>Instrument</span>
-        <select selected={this.props.selectedInstrument} onChange={this.handleSelect}>
+        <select defaultValue={this.props.selectedInstrument} onChange={this.handleSelect}>
           {map(item =>
             <option value={item} key={item}>
               {capitalize(item)}
