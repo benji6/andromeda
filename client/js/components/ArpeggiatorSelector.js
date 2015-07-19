@@ -9,12 +9,9 @@ export default class EffectSelector extends React.Component {
 
   render () {
     return (
-      <div>
-        <h1>Arpeggiator</h1>
-        <div>
-          <input type="checkbox" defaultChecked={this.props.arpeggiatorIsOn} onChange={this.handleChange}></input>
-        </div>
-      </div>
+      <label><span>Arpeggiator</span>
+        <input type="checkbox" defaultChecked={this.props.arpeggiatorIsOn} onChange={this.handleChange}></input>
+      </label>
     );
   }
 }

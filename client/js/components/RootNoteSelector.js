@@ -17,13 +17,14 @@ export default class RootNoteSelector extends React.Component {
 
   render () {
     return (
-      <div>
-        <h1>Root Note</h1>
-          <output>{computeNoteNameFromPitch(this.props.rootNote)}</output>
+      <label>
         <div>
-          <input max="24" min="-36" type="range" value={this.props.rootNote} onChange={this.handleChange}></input>
+          <span></span>
+          <output>{computeNoteNameFromPitch(this.props.rootNote)}</output>
         </div>
-      </div>
+        <span>Root Note</span>
+        <input max="24" min="-36" type="range" value={this.props.rootNote} onChange={this.handleChange}></input>
+      </label>
     );
   }
 }

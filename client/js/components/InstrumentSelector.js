@@ -10,17 +10,15 @@ export default class InstrumentSelector extends React.Component {
 
   render () {
     return (
-      <div>
-        <h1>Instrument</h1>
-        <div>
-          <select selected={this.props.selectedInstrument} onChange={this.handleSelect}>
-            {map(item =>
-              <option value={item} key={item}>
-                {capitalize(item)}
-              </option>, this.props.instruments)}
-          </select>
-        </div>
-      </div>
+      <label>
+        <span>Instrument</span>
+        <select selected={this.props.selectedInstrument} onChange={this.handleSelect}>
+          {map(item =>
+            <option value={item} key={item}>
+              {capitalize(item)}
+            </option>, this.props.instruments)}
+        </select>
+      </label>
     );
   }
 }

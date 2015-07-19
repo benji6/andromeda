@@ -13,9 +13,24 @@
       box-shadow: #02c 0 0 2rem 0.2rem;
       display: inline-block;
       padding: 2rem;
-      h1 {
-        color: $black;
-        text-shadow: 0 0 1rem #26f;
+      label {
+        display: block;
+        &:hover span {
+          text-shadow: 0 0 0.5rem #26f;
+        }
+        &:hover output {
+          text-shadow: 0 0 0.5rem #26f;
+        }
+      }
+      output {
+        color: $white;
+      }
+      span {
+        color: $white;
+        display: inline-block;
+        margin-right: 0.5rem;
+        text-align: right;
+        width: 5rem;
       }
     }
   }

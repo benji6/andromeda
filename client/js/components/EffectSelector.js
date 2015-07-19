@@ -10,17 +10,15 @@ export default class EffectSelector extends React.Component {
 
   render () {
     return (
-      <div>
-        <h1>Effect</h1>
-        <div>
-          <select selected={this.props.selectedEffect} onChange={this.handleSelect}>
-            {map(item =>
-              <option value={item} key={item}>
-                {capitalize(item)}
-              </option>, this.props.effects)}
-          </select>
-        </div>
-      </div>
+      <label>
+        <span>Effect</span>
+        <select selected={this.props.selectedEffect} onChange={this.handleSelect}>
+          {map(item =>
+            <option value={item} key={item}>
+              {capitalize(item)}
+            </option>, this.props.effects)}
+        </select>
+      </label>
     );
   }
 }

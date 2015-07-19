@@ -10,17 +10,15 @@ export default class ScaleSelector extends React.Component {
 
   render () {
     return (
-      <div>
-        <h1>Scale</h1>
-        <div>
-          <select selected={this.props.scaleName} onChange={this.handleSelect}>
-            {map(item =>
-              <option value={item} key={item}>
-                {capitalize.words(item)}
-              </option>, keys(this.props.scales))}
-          </select>
-        </div>
-      </div>
+      <label>
+        <span>Scale</span>
+        <select selected={this.props.scaleName} onChange={this.handleSelect}>
+          {map(item =>
+            <option value={item} key={item}>
+              {capitalize.words(item)}
+            </option>, keys(this.props.scales))}
+        </select>
+      </label>
     );
   }
 }
