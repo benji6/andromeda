@@ -5,6 +5,7 @@ export default alt.createStore(class InstrumentStore {
   constructor () {
     this.instruments = [
       'detuned',
+      'fm',
       'sine',
       'supersaw',
     ];
