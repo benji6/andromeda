@@ -22,17 +22,14 @@ export default class RootNoteSelector extends React.Component {
   }
 
   render () {
-    return <div className="modal-container">
-      <div className="modal-window">
-        <div className="modal-contents">
-          <h1>Root Note</h1>
-            <output>{computeNoteNameFromPitch(this.props.rootNote)}</output>
-          <div>
-            <input max="24" min="-36" type="range" value={this.props.rootNote} onChange={this.handleChange}></input>
-          </div>
-          <button onClick={this.handleClick}>OK</button>
+    return (
+      <div>
+        <h1>Root Note</h1>
+          <output>{computeNoteNameFromPitch(this.props.rootNote)}</output>
+        <div>
+          <input max="24" min="-36" type="range" value={this.props.rootNote} onChange={this.handleChange}></input>
         </div>
       </div>
-    </div>;
+    );
   }
 }
