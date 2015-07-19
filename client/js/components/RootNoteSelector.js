@@ -1,6 +1,4 @@
 import React from 'react';
-import PerformanceView from './PerformanceView';
-import render from '../tools/render';
 import RootNoteActions from '../actions/RootNoteActions';
 
 const {abs, floor} = Math;
@@ -13,10 +11,6 @@ const computeNoteNameFromPitch = (pitch) => {
 };
 
 export default class RootNoteSelector extends React.Component {
-  handleClick () {
-    render(<PerformanceView />);
-  }
-
   handleChange (e) {
     RootNoteActions.updateRootNote(Number(e.currentTarget.value));
   }
