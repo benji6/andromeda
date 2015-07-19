@@ -25,7 +25,8 @@ const incrementPitch = (pitch, increment) => {
 
 const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, startTime, stopTime) => {
   let octave = 1;
-  if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn) {
+  if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn &&
+      alt.getStore('ScaleStore').getState().scaleName !== 'none') {
     octave = pickRandom([1, 2]);
     pitch = pickRandom([pitch, incrementPitch(pitch, 2), incrementPitch(pitch, 5)]);
   }
@@ -61,7 +62,8 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
 
   currentVirtualAudioGraph = reject(propEq(id, 'id'), currentVirtualAudioGraph);
 
-  if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn) {
+  if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn &&
+      alt.getStore('ScaleStore').getState().scaleName !== 'none') {
     clearInterval(intervalId);
 
     const scheduleEvents = () => {
@@ -92,7 +94,8 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
 };
 
 export const stopNote = ({id}) => {
-  if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn) {
+  if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn &&
+      alt.getStore('ScaleStore').getState().scaleName !== 'none') {
     clearInterval(intervalId);
   }
   lastStartTime = null;
