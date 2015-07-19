@@ -1,9 +1,6 @@
-import AltContainer from 'alt/AltContainer';
 import React from 'react';
-import ScaleStore from '../stores/ScaleStore';
-import ScaleSelector from './ScaleSelector';
-import RootNoteStore from '../stores/RootNoteStore';
-import RootNoteSelector from './RootNoteSelector';
+import ScaleSelectorContainer from './ScaleSelectorContainer';
+import RootNoteSelectorContainer from './RootNoteSelectorContainer';
 import ModalOKButton from './atoms/ModalOKButton';
 
 export default class RootNoteContainer extends React.Component {
@@ -12,12 +9,8 @@ export default class RootNoteContainer extends React.Component {
       <div className="modal-container">
         <div className="modal-window">
           <div className="modal-contents">
-            <AltContainer store={RootNoteStore}>
-              <RootNoteSelector />
-            </AltContainer>
-            <AltContainer store={ScaleStore}>
-              <ScaleSelector />
-            </AltContainer>
+            <RootNoteSelectorContainer />
+            <ScaleSelectorContainer />
             <ModalOKButton />
           </div>
         </div>
