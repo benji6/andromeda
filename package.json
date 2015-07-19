@@ -38,9 +38,6 @@
         1,
         "always-multiline"
       ],
-      "curly": [
-        0
-      ],
       "no-shadow": [
         0
       ],
