@@ -100,7 +100,7 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
     node: alt.getStore('EffectStore').getState().selectedEffect,
   };
 
-  currentVirtualAudioGraph = reject(propEq(id, 'id'), currentVirtualAudioGraph);
+  currentVirtualAudioGraph = reject(propEq('id', id), currentVirtualAudioGraph);
 
   if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn &&
       alt.getStore('ScaleStore').getState().scaleName !== 'none') {
@@ -119,7 +119,7 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
       }
       lastStopTime = stopTime;
 
-      currentVirtualAudioGraph = reject(propEq(id, 'id'), currentVirtualAudioGraph);
+      currentVirtualAudioGraph = reject(propEq('id', id), currentVirtualAudioGraph);
       currentVirtualAudioGraph = append(createInstrumentCustomNodeParams(pitch, id, rootNote, modulation, startTime, stopTime), currentVirtualAudioGraph);
       virtualAudioGraph.update(currentVirtualAudioGraph);
     };
@@ -141,6 +141,6 @@ export const stopNote = ({id}) => {
   currentIndex = 0;
   lastStartTime = null;
   lastStopTime = null;
-  currentVirtualAudioGraph = reject(propEq(id, 'id'), currentVirtualAudioGraph);
+  currentVirtualAudioGraph = reject(propEq('id', id), currentVirtualAudioGraph);
   virtualAudioGraph.update(currentVirtualAudioGraph);
 };
