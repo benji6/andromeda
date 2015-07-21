@@ -1,4 +1,4 @@
-import {append, propEq, reject} from 'ramda';
+import {append, dropLast, propEq, reject} from 'ramda';
 import Random from 'random-js';
 import alt from './alt';
 import virtualAudioGraph from './virtualAudioGraph';
@@ -14,28 +14,70 @@ let intervalId = null;
 let lastStartTime = null;
 let lastStopTime = null;
 
-const incrementPitch = (pitch, increment) => {
+const incrementScalePitch = (pitch, increment) => {
   const scale = alt.getStore('ScaleStore').getState().scales[alt.getStore('ScaleStore').getState().scaleName];
-  let index = scale.indexOf(pitch) + increment;
-  if (index > scale.length - 1) {
-    return scale[index - scale.length] + 12;
+  const scaleWithNoRepeats = dropLast(1, scale);
+  if (scaleWithNoRepeats.indexOf(pitch % 12) === -1) {
+    return pitch;
   }
-  return scale[index];
+  return (function recur (index, pitchIncrement) {
+    const scaleLength = scaleWithNoRepeats.length;
+    if (index >= scaleLength) {
+      return recur(index - scaleLength, pitchIncrement + 12);
+    }
+    return scaleWithNoRepeats[index] + pitchIncrement;
+  }(scaleWithNoRepeats.indexOf(pitch % 12) + increment, Math.floor(pitch / 12) * 12));
 };
 
+let currentIndex = 0;
+let ascending = true;
+
 const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, startTime, stopTime) => {
-  let octave = 1;
   if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn &&
       alt.getStore('ScaleStore').getState().scaleName !== 'none') {
-    octave = pickRandom([1, 2]);
-    pitch = pickRandom([pitch, incrementPitch(pitch, 2), incrementPitch(pitch, 5)]);
+    const arpeggiatorPitches = [
+      incrementScalePitch(pitch, 0),
+      incrementScalePitch(pitch, 2),
+      incrementScalePitch(pitch, 4),
+      incrementScalePitch(pitch, 7),
+      incrementScalePitch(pitch, 9),
+      incrementScalePitch(pitch, 11),
+    ];
+    if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'random') {
+      pitch = pickRandom(arpeggiatorPitches);
+    }
+    if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'up') {
+      ascending = true;
+    }
+    if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'down') {
+      ascending = false;
+    }
+    if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'up and down') {
+      if (currentIndex === 0) {
+        ascending = true;
+      }
+      if (currentIndex === arpeggiatorPitches.length - 1) {
+        ascending = false;
+      }
+    }
+    if (ascending) {
+      pitch = arpeggiatorPitches[currentIndex];
+      currentIndex = ++currentIndex === arpeggiatorPitches.length ?
+        0 :
+        currentIndex;
+    } else {
+      currentIndex = currentIndex === 0 ?
+        arpeggiatorPitches.length - 1 :
+        --currentIndex;
+      pitch = arpeggiatorPitches[currentIndex];
+    }
   }
   const instrumentCustomNodeParams = {
     output: ['output', 0],
     id,
     node: alt.getStore('InstrumentStore').getState().selectedInstrument,
     params: {
-      frequency: calculateFrequency(pitch + rootNote) * octave,
+      frequency: calculateFrequency(pitch + rootNote),
       gain: (1 - modulation) / 4,
     },
   };
@@ -50,14 +92,12 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
 };
 
 export const playNote = ({id, pitch, modulation = 0.5}) => {
-  const EffectStore = alt.getStore('EffectStore');
-  const RootNoteStore = alt.getStore('RootNoteStore');
-  const rootNote = RootNoteStore.getState().rootNote;
+  const rootNote = alt.getStore('RootNoteStore').getState().rootNote;
 
   currentVirtualAudioGraph[0] = {
     output: 'output',
     id: 0,
-    node: EffectStore.getState().selectedEffect,
+    node: alt.getStore('EffectStore').getState().selectedEffect,
   };
 
   currentVirtualAudioGraph = reject(propEq(id, 'id'), currentVirtualAudioGraph);
@@ -98,6 +138,7 @@ export const stopNote = ({id}) => {
       alt.getStore('ScaleStore').getState().scaleName !== 'none') {
     clearInterval(intervalId);
   }
+  currentIndex = 0;
   lastStartTime = null;
   lastStopTime = null;
   currentVirtualAudioGraph = reject(propEq(id, 'id'), currentVirtualAudioGraph);

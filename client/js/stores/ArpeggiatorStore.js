@@ -12,7 +12,7 @@ export default alt.createStore(class ArpeggiatorStore {
       'up and down',
     ];
 
-    this.selectedPattern = 'random';
+    this.selectedPattern = 'up and down';
 
     this.bindListeners({
       handleUpdateArpegiatorIsOn: InstrumentActions.UPDATE_ARPEGGIATOR_IS_ON,
