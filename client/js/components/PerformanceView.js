@@ -1,11 +1,13 @@
 import React from 'react';
-import ControlPad from './ControlPad';
+import ControlPad from './atoms/ControlPad';
 import PerformanceMenu from './PerformanceMenu';
 
 class PerformanceView extends React.Component {
   render () {
     return <div>
-      <ControlPad />
+      <div className="center">
+        <ControlPad />
+      </div>
       <PerformanceMenu />
     </div>;
   }

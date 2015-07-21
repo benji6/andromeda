@@ -11,4 +11,4 @@ export default class InstrumentSelectorContainer extends React.Component {
       </AltContainer>
     );
   }
-};
+}
