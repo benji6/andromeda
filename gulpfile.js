@@ -9,6 +9,7 @@ const gulp = require('gulp');
 const gutil = require('gulp-util');
 const minifyCSS = require('gulp-minify-css');
 const minifyHTML = require('gulp-minify-html');
+const minifyInline = require('gulp-minify-inline');
 const plumber = require('gulp-plumber');
 const R = require('ramda');
 const reactify = require('reactify');
@@ -45,6 +46,7 @@ gulp.task('css', function () {
 gulp.task('htmlDev', function () {
   return gulp.src('client/html/index.html')
     .pipe(plumber())
+    .pipe(minifyInline())
     .pipe(minifyHTML())
     .pipe(gulp.dest(publicPath))
     .pipe(connect.reload());
@@ -63,6 +65,7 @@ gulp.task('htmlProd', function () {
         },
       ],
     }))
+    .pipe(minifyInline())
     .pipe(minifyHTML())
     .pipe(gulp.dest(publicPath))
     .pipe(connect.reload());
@@ -119,5 +122,5 @@ gulp.task('build', function () {
 });
 
 gulp.task('default', function () {
-  return runSequence('clean', ['css',  'htmlDev','jsDev', 'lint', 'watch'], 'connect');
+  return runSequence('clean', ['css', 'htmlDev','jsDev', 'lint', 'watch'], 'connect');
 });
