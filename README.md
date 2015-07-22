@@ -6,4 +6,4 @@ Work in progress, live demo here: http://benji6.github.io/elemental/public/
 
 Built using virtual-audio-graph: https://github.com/benji6/virtual-audio-graph/
 
-**NB Only works well in the latest version of Chrome**
+**NB works best in Chrome and currently only supports Firefox and Chrome**
