@@ -43,9 +43,6 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
       incrementScalePitch(pitch, 9),
       incrementScalePitch(pitch, 11),
     ];
-    if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'random') {
-      pitch = pickRandom(arpeggiatorPitches);
-    }
     if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'up') {
       ascending = true;
     }
@@ -60,16 +57,20 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
         ascending = false;
       }
     }
-    if (ascending) {
-      pitch = arpeggiatorPitches[currentIndex];
-      currentIndex = ++currentIndex === arpeggiatorPitches.length ?
-        0 :
-        currentIndex;
+    if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'random') {
+      pitch = pickRandom(arpeggiatorPitches);
     } else {
-      currentIndex = currentIndex === 0 ?
-        arpeggiatorPitches.length - 1 :
-        --currentIndex;
-      pitch = arpeggiatorPitches[currentIndex];
+      if (ascending) {
+        pitch = arpeggiatorPitches[currentIndex];
+        currentIndex = ++currentIndex === arpeggiatorPitches.length ?
+          0 :
+          currentIndex;
+      } else {
+        currentIndex = currentIndex === 0 ?
+          arpeggiatorPitches.length - 1 :
+          --currentIndex;
+        pitch = arpeggiatorPitches[currentIndex];
+      }
     }
   }
   const instrumentCustomNodeParams = {
