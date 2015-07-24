@@ -1,9 +1,20 @@
 import capitalize from 'capitalize';
+import connectToStores from 'alt/utils/connectToStores';
 import {map} from 'ramda';
 import React from 'react';
 import EffectActions from '../actions/EffectActions';
+import EffectStore from '../stores/EffectStore';
 
+@connectToStores
 export default class EffectSelector extends React.Component {
+  static getStores() {
+    return [EffectStore];
+  }
+
+  static getPropsFromStores() {
+    return EffectStore.getState();
+  }
+
   handleSelect (e) {
     EffectActions.updateSelectedEffect(e.currentTarget.value);
   }
