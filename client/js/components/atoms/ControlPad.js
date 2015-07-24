@@ -5,12 +5,11 @@ import React from 'react';
 import {handleControlPadInput, handleControlPadInputEnd} from '../../handleControlPadSignals';
 
 const {EPSILON} = Number;
-const {pow} = Math;
 
 const cameraZ = 16;
 const minZ = -128;
 const sideLength = 1;
-const maxDepth = pow(3 * pow(sideLength, 2), 0.5);
+const maxDepth = 3 * sideLength ** 2 ** 0.5;
 
 const validRatio = (x) => x < 0 ?
   0 :
@@ -69,11 +68,11 @@ const renderLoop = function renderLoop () {
   }
   const {xRatio, yRatio} = currentXYRatios;
   const xMod = xRatio < 0.5 ?
-   -pow(xRatio - 0.5, 2) :
-   pow(xRatio - 0.5, 2);
+   -(xRatio - 0.5) ** 2 :
+   (xRatio - 0.5) ** 2;
   const yMod = yRatio < 0.5 ?
-   -pow(yRatio - 0.5, 2) :
-   pow(yRatio - 0.5, 2);
+   -(yRatio - 0.5) ** 2 :
+   (yRatio - 0.5) ** 2;
   const rotationBaseAmount = 0.01;
   const rotationVelocityComponent = 0.8;
   cube.rotation.x += rotationBaseAmount + rotationVelocityComponent * xMod;
