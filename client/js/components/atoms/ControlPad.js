@@ -1,5 +1,5 @@
 /* global THREE */
-import flyd from 'flyd';
+import {stream, transduce} from 'flyd';
 import {compose, isNil, map, reject, tap} from 'ramda';
 import React from 'react';
 import {handleControlPadInput, handleControlPadInputEnd} from '../../handleControlPadSignals';
@@ -88,17 +88,17 @@ const renderLoop = function renderLoop () {
   renderer.render(scene, camera);
 };
 
-const inputStream = flyd.stream();
-const inputEndStream = flyd.stream();
+const inputStream = stream();
+const inputEndStream = stream();
 
-flyd.transduce(compose(map(tap((e) => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
+transduce(compose(map(tap((e) => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
                        reject((e) => e.nativeEvent instanceof MouseEvent && !mouseInputEnabled),
                        map(tap(() => controlPadActive = true)),
                        map((e) => currentXYRatios = calculateXAndYRatio(e)),
                        map(handleControlPadInput)),
                inputStream);
 
-flyd.transduce(compose(map(tap(() => mouseInputEnabled = false)),
+transduce(compose(map(tap(() => mouseInputEnabled = false)),
                        map(tap(() => controlPadActive = false)),
                        map((e) => currentXYRatios = calculateXAndYRatio(e)),
                        map(handleControlPadInputEnd)),
