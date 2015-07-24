@@ -1,5 +1,3 @@
-const numberOfOscillators = 7;
-
 export default ({gain, frequency, detune=12}) => [
   {
     output: ['output'],

@@ -1,5 +1,5 @@
 import {playNote, stopNote} from './noteController';
-import {compose, flip, forEach, isNil, map, prop, reject, tap} from 'ramda';
+import {compose, flip, isNil, map, prop, reject, tap} from 'ramda';
 import {stream, transduce} from 'flyd';
 
 const pressedKeys = new Set();

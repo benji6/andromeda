@@ -106,7 +106,6 @@ transduce(compose(map(tap(() => mouseInputEnabled = false)),
 export default class ControlPad extends React.Component {
   componentDidMount () {
     controlPadElement = document.querySelector('.control-pad');
-    const {width, height} = controlPadElement;
     renderLoopActive = true;
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(

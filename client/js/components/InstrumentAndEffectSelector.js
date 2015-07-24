@@ -1,4 +1,3 @@
-import AltContainer from 'alt/AltContainer';
 import React from 'react';
 import EffectSelector from './EffectSelector';
 import InstrumentSelector from './InstrumentSelector';
