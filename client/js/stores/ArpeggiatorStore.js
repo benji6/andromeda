@@ -3,28 +3,28 @@ import InstrumentActions from '../actions/ArpeggiatorActions';
 
 export default alt.createStore(class ArpeggiatorStore {
   constructor () {
-    this.arpeggiatorIsOn = false;
-
-    this.patterns = [
-      'random',
-      'up',
-      'down',
-      'up and down',
-    ];
-
-    this.selectedPattern = 'up and down';
-
     this.bindListeners({
-      handleUpdateArpegiatorIsOn: InstrumentActions.UPDATE_ARPEGGIATOR_IS_ON,
-      handleUpdateSelectedPattern: InstrumentActions.UPDATE_SELECTED_PATTERN,
+      handleUpdateArpegiatorIsOn: InstrumentActions.updateArpeggiatorIsOn,
+      handleUpdateSelectedPattern: InstrumentActions.updateSelectedPattern,
     });
+
+    this.state = {
+      arpeggiatorIsOn: false,
+      patterns: [
+        'random',
+        'up',
+        'down',
+        'up and down',
+      ],
+      selectedPattern: 'up and down',
+    };
   }
 
   handleUpdateArpegiatorIsOn (item) {
-    this.arpeggiatorIsOn = item;
+    this.state.arpeggiatorIsOn = item;
   }
 
   handleUpdateSelectedPattern (item) {
-    this.selectedPattern = item;
+    this.state.selectedPattern = item;
   }
 }, 'ArpeggiatorStore');

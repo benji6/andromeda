@@ -3,19 +3,20 @@ import EffectActions from '../actions/EffectActions';
 
 export default alt.createStore(class EffectStore {
   constructor () {
-    this.effects = [
-      'pingPongDelay',
-      'none',
-    ];
-
-    this.selectedEffect = 'pingPongDelay';
-
     this.bindListeners({
-      handleUpdateSelectedEffect: EffectActions.UPDATE_SELECTED_EFFECT,
+      handleUpdateSelectedEffect: EffectActions.updateSelectedEffect,
     });
+
+    this.state = {
+      effects: [
+        'pingPongDelay',
+        'none',
+      ],
+      selectedEffect: 'pingPongDelay',
+    };
   }
 
   handleUpdateSelectedEffect (item) {
-    this.selectedEffect = item;
+    this.state.selectedEffect = item;
   }
 }, 'EffectStore');
