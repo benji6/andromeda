@@ -73,7 +73,7 @@ gulp.task('htmlProd', function () {
 
 gulp.task('jsDev', function () {
   return watchify(browserify(browserifyEntryPath, R.assoc('debug', true, watchify.args)))
-    .transform(babelify)
+    .transform(babelify, {stage: 1})
     .transform(reactify)
     .bundle()
     .pipe(plumber())
@@ -88,7 +88,7 @@ gulp.task('jsDev', function () {
 
 gulp.task('jsProd', function () {
   return browserify(browserifyEntryPath)
-    .transform(babelify)
+    .transform(babelify, {stage: 1})
     .transform(reactify)
     .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
