@@ -3,14 +3,16 @@ import RootNoteActions from '../actions/RootNoteActions';
 
 export default alt.createStore(class RootNoteStore {
   constructor () {
-    this.rootNote = 0;
-
     this.bindListeners({
-      handleUpdateRootNote: RootNoteActions.UPDATE_ROOT_NOTE,
+      handleUpdateRootNote: RootNoteActions.updateRootNote,
     });
+
+    this.state = {
+      rootNote: 0,
+    };
   }
 
   handleUpdateRootNote (item) {
-    this.rootNote = item;
+    this.state.rootNote = item;
   }
 }, 'RootNoteStore');

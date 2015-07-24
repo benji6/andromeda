@@ -1,9 +1,20 @@
 import capitalize from 'capitalize';
+import connectToStores from 'alt/utils/connectToStores';
 import React from 'react';
 import {map} from 'ramda';
 import ArpeggiatorActions from '../actions/ArpeggiatorActions';
+import ArpeggiatorStore from '../stores/ArpeggiatorStore';
 
+@connectToStores
 export default class EffectSelector extends React.Component {
+  static getStores() {
+    return [ArpeggiatorStore];
+  }
+
+  static getPropsFromStores() {
+    return ArpeggiatorStore.getState();
+  }
+
   handleChange (e) {
     ArpeggiatorActions.updateArpeggiatorIsOn(e.currentTarget.checked);
   }

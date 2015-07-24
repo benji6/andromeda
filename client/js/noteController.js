@@ -3,7 +3,7 @@ import Random from 'random-js';
 import alt from './alt';
 import virtualAudioGraph from './virtualAudioGraph';
 
-const calculateFrequency = (pitch) => 440 * Math.pow(2, pitch / 12);
+const calculateFrequency = (pitch) => 440 * 2 ** (pitch / 12);
 const pickRandom = (arr) => Random.pick(Random.engines.browserCrypto, arr);
 
 const bpm = 140;

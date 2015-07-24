@@ -1,7 +1,6 @@
-import AltContainer from 'alt/AltContainer';
 import React from 'react';
-import EffectSelectorContainer from './EffectSelectorContainer';
-import InstrumentSelectorContainer from './InstrumentSelectorContainer';
+import EffectSelector from './EffectSelector';
+import InstrumentSelector from './InstrumentSelector';
 import ModalOKButton from './atoms/ModalOKButton';
 
 export default class RootNoteContainer extends React.Component {
@@ -10,8 +9,8 @@ export default class RootNoteContainer extends React.Component {
       <div className="modal-container">
         <div className="modal-window">
           <div className="modal-contents">
-            <InstrumentSelectorContainer />
-            <EffectSelectorContainer />
+            <InstrumentSelector />
+            <EffectSelector />
             <ModalOKButton />
           </div>
         </div>

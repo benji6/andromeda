@@ -1,7 +1,6 @@
 import {assoc, compose, isNil} from 'ramda';
 import alt from './alt';
 import {playNote, stopNote} from './noteController';
-import virtualAudioGraph from './virtualAudioGraph';
 
 const {floor} = Math;
 

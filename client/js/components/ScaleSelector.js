@@ -1,9 +1,20 @@
 import capitalize from 'capitalize';
+import connectToStores from 'alt/utils/connectToStores';
 import {keys, map} from 'ramda';
 import React from 'react';
 import ScaleActions from '../actions/ScaleActions';
+import ScaleStore from '../stores/ScaleStore';
 
+@connectToStores
 export default class ScaleSelector extends React.Component {
+  static getStores() {
+    return [ScaleStore];
+  }
+
+  static getPropsFromStores() {
+    return ScaleStore.getState();
+  }
+
   handleSelect (e) {
     ScaleActions.updateScale(e.currentTarget.value);
   }

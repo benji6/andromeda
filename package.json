@@ -33,16 +33,14 @@
       "es6": true,
       "node": true
     },
+    "parser": "babel-eslint",
+    "plugins": [
+      "react"
+    ],
     "rules": {
       "comma-dangle": [
         1,
         "always-multiline"
-      ],
-      "no-shadow": [
-        0
-      ],
-      "no-unused-vars": [
-        0
       ],
       "quotes": [
         1,
@@ -51,10 +49,12 @@
     }
   },
   "devDependencies": {
+    "babel-eslint": "^3.1.26",
     "babelify": "^6.1.3",
     "browserify": "^11.0.0",
     "del": "^1.2.0",
     "eslint": "^0.24.1",
+    "eslint-plugin-react": "^3.0.0",
     "gulp": "^3.9.0",
     "gulp-cdnizer": "^1.1.6",
     "gulp-connect": "^2.2.0",

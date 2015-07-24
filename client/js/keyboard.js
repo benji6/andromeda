@@ -1,6 +1,6 @@
 import {playNote, stopNote} from './noteController';
-import {compose, flip, forEach, isNil, map, prop, reject, tap} from 'ramda';
-import flyd from 'flyd';
+import {compose, flip, isNil, map, prop, reject, tap} from 'ramda';
+import {stream, transduce} from 'flyd';
 
 const pressedKeys = new Set();
 
@@ -52,10 +52,10 @@ const computeNoteParams = (pitch) => ({
   pitch,
 });
 
-document.onkeydown = flyd.stream();
-document.onkeyup = flyd.stream();
+document.onkeydown = stream();
+document.onkeyup = stream();
 
-flyd.transduce(compose(map(tap((e) => e.keyCode === 191 && e.preventDefault())),
+transduce(compose(map(tap((e) => e.keyCode === 191 && e.preventDefault())),
                        map(prop('keyCode')),
                        reject(pressedKeys.has.bind(pressedKeys)),
                        map(tap(pressedKeys.add.bind(pressedKeys))),
@@ -65,7 +65,7 @@ flyd.transduce(compose(map(tap((e) => e.keyCode === 191 && e.preventDefault())),
                        map(playNote)),
                document.onkeydown);
 
-flyd.transduce(compose(map(prop('keyCode')),
+transduce(compose(map(prop('keyCode')),
                        map(tap(pressedKeys.delete.bind(pressedKeys))),
                        map(flip(prop)(keyCodesToPitches)),
                        reject(isNil),

@@ -1,9 +1,20 @@
 import capitalize from 'capitalize';
+import connectToStores from 'alt/utils/connectToStores';
 import {map} from 'ramda';
 import React from 'react';
 import InstrumentActions from '../actions/InstrumentActions';
+import InstrumentStore from '../stores/InstrumentStore';
 
+@connectToStores
 export default class InstrumentSelector extends React.Component {
+  static getStores() {
+    return [InstrumentStore];
+  }
+
+  static getPropsFromStores() {
+    return InstrumentStore.getState();
+  }
+
   handleSelect (e) {
     InstrumentActions.updateSelectedInstrument(e.currentTarget.value);
   }

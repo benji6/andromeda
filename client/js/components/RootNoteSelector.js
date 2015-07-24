@@ -1,6 +1,7 @@
+import connectToStores from 'alt/utils/connectToStores';
 import React from 'react';
 import RootNoteActions from '../actions/RootNoteActions';
-
+import RootNoteStore from '../stores/RootNoteStore';
 const {abs, floor} = Math;
 
 const computeNoteNameFromPitch = (pitch) => {
@@ -10,7 +11,16 @@ const computeNoteNameFromPitch = (pitch) => {
   return AlphabeticalComponents[abs(pitch) % numberOfNotes] + octave;
 };
 
+@connectToStores
 export default class RootNoteSelector extends React.Component {
+  static getStores() {
+    return [RootNoteStore];
+  }
+
+  static getPropsFromStores() {
+    return RootNoteStore.getState();
+  }
+
   handleChange (e) {
     RootNoteActions.updateRootNote(Number(e.currentTarget.value));
   }
