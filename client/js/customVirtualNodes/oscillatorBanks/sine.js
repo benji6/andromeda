@@ -1,17 +1,13 @@
-export default ({gain, frequency, startTime, stopTime}) => [
-  {
+export default ({gain, frequency, startTime, stopTime}) => ({
+  0: {
     output: ['output'],
-    id: 0,
     node: 'gain',
     params: {
       gain,
-      startTime,
-      stopTime,
     },
   },
-  {
+  1: {
     output: 0,
-    id: 1,
     node: 'oscillator',
     params: {
       frequency,
@@ -20,4 +16,4 @@ export default ({gain, frequency, startTime, stopTime}) => [
       stopTime,
     },
   },
-];
+});

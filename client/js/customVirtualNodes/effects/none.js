@@ -1,7 +1,6 @@
-export default () => [
-  {
-    id: 0,
+export default () => ({
+  0: {
     node: 'gain',
     output: 'output',
   },
-];
+});

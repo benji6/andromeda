@@ -4,25 +4,22 @@ export default (params = {}) => {
   delayTime = delayTime !== undefined ? delayTime : 1 / 3;
   maxDelayTime = maxDelayTime !== undefined ? maxDelayTime : 1 / 3;
 
-  return [
-    {
-      id: 0,
+  return {
+    0: {
       node: 'stereoPanner',
       output: 'output',
       params: {
         pan: -1,
       },
     },
-    {
-      id: 1,
+    1: {
       node: 'stereoPanner',
       output: 'output',
       params: {
         pan: 1,
       },
     },
-    {
-      id: 2,
+    2: {
       node: 'delay',
       output: [1, 5],
       params: {
@@ -30,16 +27,14 @@ export default (params = {}) => {
         delayTime,
       },
     },
-    {
-      id: 3,
+    3: {
       node: 'gain',
       output: 2,
       params: {
         gain: decay,
       },
     },
-    {
-      id: 4,
+    4: {
       node: 'delay',
       output: [0, 3],
       params: {
@@ -47,8 +42,7 @@ export default (params = {}) => {
         delayTime,
       },
     },
-    {
-      id: 5,
+    5: {
       input: 'input',
       node: 'gain',
       output: 4,
@@ -56,5 +50,5 @@ export default (params = {}) => {
         gain: decay,
       },
     },
-  ];
+  };
 };
