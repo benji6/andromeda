@@ -136,7 +136,6 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
                                                                     id,
                                                                     rootNote,
                                                                     modulation);
-                                                                    console.log(JSON.stringify(currentVirtualAudioGraph));
     virtualAudioGraph.update(currentVirtualAudioGraph);
   }
 };
