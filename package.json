@@ -68,7 +68,6 @@
     "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.6",
     "ramda": "^0.17.1",
-    "reactify": "^1.1.1",
     "run-sequence": "^1.1.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",

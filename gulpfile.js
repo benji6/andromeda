@@ -12,7 +12,6 @@ const minifyHTML = require('gulp-minify-html');
 const minifyInline = require('gulp-minify-inline');
 const plumber = require('gulp-plumber');
 const R = require('ramda');
-const reactify = require('reactify');
 const runSequence = require('run-sequence');
 const sass = require('gulp-sass');
 const source = require('vinyl-source-stream');
@@ -74,7 +73,6 @@ gulp.task('htmlProd', function () {
 gulp.task('jsDev', function () {
   return watchify(browserify(browserifyEntryPath, R.assoc('debug', true, watchify.args)))
     .transform(babelify, {stage: 1})
-    .transform(reactify)
     .bundle()
     .pipe(plumber())
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
@@ -89,7 +87,6 @@ gulp.task('jsDev', function () {
 gulp.task('jsProd', function () {
   return browserify(browserifyEntryPath)
     .transform(babelify, {stage: 1})
-    .transform(reactify)
     .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('index.js'))
@@ -122,5 +119,5 @@ gulp.task('build', function () {
 });
 
 gulp.task('default', function () {
-  return runSequence('clean', ['css', 'htmlDev','jsDev', 'lint', 'watch'], 'connect');
+  return runSequence('clean', ['css', 'htmlDev', 'jsDev', 'lint', 'watch'], 'connect');
 });
