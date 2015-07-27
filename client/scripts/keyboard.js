@@ -56,19 +56,19 @@ document.onkeydown = stream();
 document.onkeyup = stream();
 
 transduce(compose(map(tap((e) => e.keyCode === 191 && e.preventDefault())),
-                       map(prop('keyCode')),
-                       reject(pressedKeys.has.bind(pressedKeys)),
-                       map(tap(pressedKeys.add.bind(pressedKeys))),
-                       map(flip(prop)(keyCodesToPitches)),
-                       reject(isNil),
-                       map(computeNoteParams),
-                       map(playNote)),
-               document.onkeydown);
+                  map(prop('keyCode')),
+                  reject(pressedKeys.has.bind(pressedKeys)),
+                  map(tap(pressedKeys.add.bind(pressedKeys))),
+                  map(flip(prop)(keyCodesToPitches)),
+                  reject(isNil),
+                  map(computeNoteParams),
+                  map(playNote)),
+          document.onkeydown);
 
 transduce(compose(map(prop('keyCode')),
-                       map(tap(pressedKeys.delete.bind(pressedKeys))),
-                       map(flip(prop)(keyCodesToPitches)),
-                       reject(isNil),
-                       map(computeNoteParams),
-                       map(stopNote)),
-               document.onkeyup);
+                  map(tap(pressedKeys.delete.bind(pressedKeys))),
+                  map(flip(prop)(keyCodesToPitches)),
+                  reject(isNil),
+                  map(computeNoteParams),
+                  map(stopNote)),
+          document.onkeyup);
