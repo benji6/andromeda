@@ -19,7 +19,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const watchify = require('watchify');
 
-const browserifyEntryPath = 'client/js/index.js';
+const browserifyEntryPath = 'client/scripts/index.js';
 const publicPath = 'public';
 
 gulp.task('connect', function () {
@@ -30,7 +30,7 @@ gulp.task('connect', function () {
 });
 
 gulp.task('clean', function () {
-  return del('public/js/index*');
+  return del('public/scripts/index*');
 });
 
 gulp.task('css', function () {
@@ -59,7 +59,7 @@ gulp.task('htmlProd', function () {
       allowMin: true,
       files: [
         {
-          file: 'js/lib/three.min.js',
+          file: 'scripts/lib/three.min.js',
           cdn: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js',
         },
       ],
@@ -70,7 +70,7 @@ gulp.task('htmlProd', function () {
     .pipe(connect.reload());
 });
 
-gulp.task('jsDev', function () {
+gulp.task('scriptsDev', function () {
   return watchify(browserify(browserifyEntryPath, R.assoc('debug', true, watchify.args)))
     .transform(babelify, {stage: 1})
     .bundle()
@@ -80,11 +80,11 @@ gulp.task('jsDev', function () {
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(publicPath + '/js'))
+    .pipe(gulp.dest(publicPath + '/scripts'))
     .pipe(connect.reload());
 });
 
-gulp.task('jsProd', function () {
+gulp.task('scriptsProd', function () {
   return browserify(browserifyEntryPath)
     .transform(babelify, {stage: 1})
     .bundle()
@@ -93,31 +93,31 @@ gulp.task('jsProd', function () {
     .pipe(plumber())
     .pipe(buffer())
     .pipe(uglify())
-    .pipe(gulp.dest(publicPath + '/js'));
+    .pipe(gulp.dest(publicPath + '/scripts'));
 });
 
 gulp.task('lint', function () {
-  return gulp.src('client/js/**/*')
+  return gulp.src('client/scripts/**/*')
     .pipe(eslint())
     .pipe(eslint.formatEach());
 });
 
 gulp.task('watch', function () {
-  gulp.watch('client/html/**/*.html', function () {
+  gulp.watch('client/html/**/*', function () {
     return runSequence('htmlDev');
   });
-  gulp.watch('client/sass/**/*.scss', function () {
+  gulp.watch('client/sass/**/*', function () {
     return runSequence('css');
   });
-  gulp.watch('client/js/**/*.js*', function () {
-    return runSequence(['jsDev', 'lint']);
+  gulp.watch('client/scripts/**/*', function () {
+    return runSequence(['scriptsDev', 'lint']);
   });
 });
 
 gulp.task('build', function () {
-  return runSequence('clean', ['css', 'htmlProd', 'jsProd', 'lint']);
+  return runSequence('clean', ['css', 'htmlProd', 'scriptsProd', 'lint']);
 });
 
 gulp.task('default', function () {
-  return runSequence('clean', ['css', 'htmlDev', 'jsDev', 'lint', 'watch'], 'connect');
+  return runSequence('clean', ['css', 'htmlDev', 'scriptsDev', 'lint', 'watch'], 'connect');
 });
