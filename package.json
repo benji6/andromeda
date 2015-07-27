@@ -2,15 +2,15 @@
   "name": "elemental",
   "version": "0.0.0",
   "description": "Make music in your browser!",
-  "main": "gulpfile.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "babel-node --stage 1 ./tests/index.js | node_modules/.bin/tap-nyan"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/benji6/elemental.git"
   },
   "keywords": [
+    "elemental",
     "music",
     "synth",
     "web",
@@ -69,9 +69,12 @@
     "gulp-util": "^3.0.6",
     "ramda": "^0.17.1",
     "run-sequence": "^1.1.2",
+    "tap-nyan": "0.0.2",
+    "tape": "^4.0.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.3.0"
+    "watchify": "^3.3.0",
+    "web-audio-test-api": "^0.3.6"
   },
   "dependencies": {
     "alt": "^0.17.1",
