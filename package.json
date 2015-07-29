@@ -83,6 +83,6 @@
     "random-js": "^1.0.4",
     "react": "^0.13.3",
     "react-dom": "^0.14.0-beta1",
-    "virtual-audio-graph": "^0.7.1"
+    "virtual-audio-graph": "^0.7.3"
   }
 }

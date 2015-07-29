@@ -15,7 +15,7 @@ export default ({gain, frequency}) => ({
   },
   2: {
     node: 'gain',
-    output: {id: 1, destination: 'frequency'},
+    output: {key: 1, destination: 'frequency'},
     params: {
       gain: 1024,
     },
