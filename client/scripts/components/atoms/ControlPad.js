@@ -91,17 +91,17 @@ const inputStream = stream();
 const inputEndStream = stream();
 
 transduce(compose(map(tap((e) => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
-                       reject((e) => e.nativeEvent instanceof MouseEvent && !mouseInputEnabled),
-                       map(tap(() => controlPadActive = true)),
-                       map((e) => currentXYRatios = calculateXAndYRatio(e)),
-                       map(handleControlPadInput)),
-               inputStream);
+                  reject((e) => e.nativeEvent instanceof MouseEvent && !mouseInputEnabled),
+                  map(tap(() => controlPadActive = true)),
+                  map((e) => currentXYRatios = calculateXAndYRatio(e)),
+                  map(handleControlPadInput)),
+          inputStream);
 
 transduce(compose(map(tap(() => mouseInputEnabled = false)),
-                       map(tap(() => controlPadActive = false)),
-                       map((e) => currentXYRatios = calculateXAndYRatio(e)),
-                       map(handleControlPadInputEnd)),
-               inputEndStream);
+                  map(tap(() => controlPadActive = false)),
+                  map((e) => currentXYRatios = calculateXAndYRatio(e)),
+                  map(handleControlPadInputEnd)),
+          inputEndStream);
 
 export default class ControlPad extends React.Component {
   componentDidMount () {
