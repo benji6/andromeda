@@ -80,7 +80,6 @@
     "alt": "^0.17.1",
     "capitalize": "^1.0.0",
     "flyd": "^0.1.14",
-    "ramda": "^0.17.1",
     "random-js": "^1.0.4",
     "react": "^0.13.3",
     "react-dom": "^0.14.0-beta1",
