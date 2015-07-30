@@ -8,7 +8,7 @@ const calculateFrequency = (pitch) => 440 * 2 ** (pitch / 12);
 const pickRandom = (arr) => Random.pick(Random.engines.browserCrypto, arr);
 
 const bpm = 140;
-const beatDuration = 60 / bpm / 2;
+const beatDuration = 60 / bpm / 4;
 
 let currentVirtualAudioGraph = {};
 let intervalId = null;
@@ -92,8 +92,9 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
   return instrumentCustomNodeParams;
 };
 
-const computeNextStartTime = t => Math.ceil(t * 10) / 10;
-const computeNextStopTime = t => computeNextStartTime(t) + beatDuration;
+const computeNextStartTime = currentTime =>
+  Math.ceil(currentTime / beatDuration) * beatDuration;
+const computeNextStopTime = startTime => startTime + beatDuration;
 
 export const playNote = ({id, pitch, modulation = 0.5}) => {
   const rootNote = alt.getStore('RootNoteStore').getState().rootNote;
@@ -127,7 +128,7 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
 
     scheduleEventsStream(virtualAudioGraph.currentTime);
     intervalId = setInterval(() => scheduleEventsStream(virtualAudioGraph.currentTime),
-                             80);
+                             Math.floor(beatDuration / 2));
   } else {
     currentVirtualAudioGraph[id] = createInstrumentCustomNodeParams(pitch,
                                                                     id,
