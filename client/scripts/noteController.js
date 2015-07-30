@@ -33,7 +33,10 @@ let currentIndex = 0;
 let ascending = true;
 
 const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, startTime, stopTime) => {
-  if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn &&
+  const {arpeggiatorIsOn,
+         selectedPattern} = alt.getStore('ArpeggiatorStore').getState();
+
+  if (arpeggiatorIsOn &&
       alt.getStore('ScaleStore').getState().scaleName !== 'none') {
     const arpeggiatorPitches = [
       incrementScalePitch(pitch, 0),
@@ -43,21 +46,19 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
       incrementScalePitch(pitch, 9),
       incrementScalePitch(pitch, 11),
     ];
-    if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'up') {
+    if (selectedPattern === 'up') {
       ascending = true;
-    }
-    if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'down') {
+    } else if (selectedPattern === 'down') {
       ascending = false;
-    }
-    if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'up and down') {
+    } else if (selectedPattern === 'up and down') {
       if (currentIndex === 0) {
         ascending = true;
-      }
-      if (currentIndex === arpeggiatorPitches.length - 1) {
+      } else if (currentIndex === arpeggiatorPitches.length - 1) {
         ascending = false;
       }
     }
-    if (alt.getStore('ArpeggiatorStore').getState().selectedPattern === 'random') {
+
+    if (selectedPattern === 'random') {
       pitch = pickRandom(arpeggiatorPitches);
     } else {
       if (ascending) {
