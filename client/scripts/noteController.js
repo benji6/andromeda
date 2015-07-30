@@ -1,7 +1,8 @@
-import {dropLast} from 'ramda';
+import {compose, dropLast, map, reject, tap} from 'ramda';
 import Random from 'random-js';
 import alt from './alt';
 import virtualAudioGraph from './virtualAudioGraph';
+import {stream, transduce} from 'flyd';
 
 const calculateFrequency = (pitch) => 440 * 2 ** (pitch / 12);
 const pickRandom = (arr) => Random.pick(Random.engines.browserCrypto, arr);
@@ -12,7 +13,6 @@ const beatDuration = 60 / bpm / 2;
 let currentVirtualAudioGraph = {};
 let intervalId = null;
 let lastStartTime = null;
-let lastStopTime = null;
 
 const incrementScalePitch = (pitch, increment) => {
   const scale = alt.getStore('ScaleStore').getState().scales[alt.getStore('ScaleStore').getState().scaleName];
@@ -92,6 +92,9 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
   return instrumentCustomNodeParams;
 };
 
+const computeNextStartTime = t => Math.ceil(t * 10) / 10;
+const computeNextStopTime = t => computeNextStartTime(t) + beatDuration;
+
 export const playNote = ({id, pitch, modulation = 0.5}) => {
   const rootNote = alt.getStore('RootNoteStore').getState().rootNote;
 
@@ -106,32 +109,25 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
       alt.getStore('ScaleStore').getState().scaleName !== 'none') {
     clearInterval(intervalId);
 
-    const scheduleEvents = () => {
-      const startTime = Math.ceil(virtualAudioGraph.currentTime * 10) / 10;
-      if (startTime === lastStartTime) {
-        return;
-      }
-      lastStartTime = startTime;
+    const scheduleEventsStream = stream();
 
-      const stopTime = startTime + beatDuration / 2;
-      if (startTime <= lastStopTime) {
-        return;
-      }
-      lastStopTime = stopTime;
+    transduce(compose(map(computeNextStartTime),
+                      reject(startTime => startTime === lastStartTime),
+                      map(tap(startTime => lastStartTime = startTime)),
+                      map(startTime => ({startTime, stopTime: computeNextStopTime(startTime)})),
+                      map(tap(({startTime, stopTime}) =>
+                        currentVirtualAudioGraph[id] = createInstrumentCustomNodeParams(pitch,
+                                                                                        id,
+                                                                                        rootNote,
+                                                                                        modulation,
+                                                                                        startTime,
+                                                                                        stopTime))),
+                      map(() => virtualAudioGraph.update(currentVirtualAudioGraph))),
+              scheduleEventsStream);
 
-      delete currentVirtualAudioGraph[id];
-      currentVirtualAudioGraph[id] = createInstrumentCustomNodeParams(pitch,
-                                                                      id,
-                                                                      rootNote,
-                                                                      modulation,
-                                                                      startTime,
-                                                                      stopTime);
-      virtualAudioGraph.update(currentVirtualAudioGraph);
-    };
-
-    scheduleEvents();
-
-    intervalId = setInterval(scheduleEvents, 90);
+    scheduleEventsStream(virtualAudioGraph.currentTime);
+    intervalId = setInterval(() => scheduleEventsStream(virtualAudioGraph.currentTime),
+                             80);
   } else {
     currentVirtualAudioGraph[id] = createInstrumentCustomNodeParams(pitch,
                                                                     id,
@@ -148,7 +144,6 @@ export const stopNote = ({id}) => {
   }
   currentIndex = 0;
   lastStartTime = null;
-  lastStopTime = null;
   delete currentVirtualAudioGraph[id];
   virtualAudioGraph.update(currentVirtualAudioGraph);
 };
