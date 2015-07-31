@@ -1,4 +1,4 @@
-export default ({gain, frequency, detune=12}) => ({
+export default ({gain, frequency, detune=12, startTime, stopTime}) => ({
   0: {
     output: ['output'],
     node: 'gain',
@@ -12,6 +12,8 @@ export default ({gain, frequency, detune=12}) => ({
     params: {
       detune: -3 * detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
@@ -21,6 +23,8 @@ export default ({gain, frequency, detune=12}) => ({
     params: {
       detune: -2 * detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
@@ -30,6 +34,8 @@ export default ({gain, frequency, detune=12}) => ({
     params: {
       detune: -detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
@@ -39,6 +45,8 @@ export default ({gain, frequency, detune=12}) => ({
     params: {
       detune: 0,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
@@ -48,6 +56,8 @@ export default ({gain, frequency, detune=12}) => ({
     params: {
       detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
@@ -57,6 +67,8 @@ export default ({gain, frequency, detune=12}) => ({
     params: {
       detune: 2 * detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
@@ -66,6 +78,8 @@ export default ({gain, frequency, detune=12}) => ({
     params: {
       detune: 3 * detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },

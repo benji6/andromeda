@@ -1,4 +1,4 @@
-export default ({gain, frequency}) => ({
+export default ({gain, frequency, startTime, stopTime}) => ({
   0: {
     output: ['output'],
     node: 'gain',
@@ -12,6 +12,8 @@ export default ({gain, frequency}) => ({
     params: {
       detune: -2,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
@@ -21,6 +23,8 @@ export default ({gain, frequency}) => ({
     params: {
       detune: -5,
       frequency: frequency - 12,
+      startTime,
+      stopTime,
       type: 'triangle',
     },
   },
@@ -30,6 +34,8 @@ export default ({gain, frequency}) => ({
     params: {
       detune: 4,
       frequency,
+      startTime,
+      stopTime,
       type: 'square',
     },
   },
