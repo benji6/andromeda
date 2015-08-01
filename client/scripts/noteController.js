@@ -10,6 +10,14 @@ const pickRandom = (arr) => Random.pick(Random.engines.browserCrypto, arr);
 const bpm = 140;
 const beatDuration = 60 / bpm / 4;
 
+const getVirtualNodeId = (() => {
+  let currentId = 0;
+  return id => {
+    currentId = currentId >= 3 ? 0 : currentId + 1;
+    return `${id}-${currentId}`;
+  };
+}());
+
 let currentVirtualAudioGraph = {};
 let intervalId = null;
 let lastStartTime = null;
@@ -117,7 +125,7 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
                       map(tap(startTime => lastStartTime = startTime)),
                       map(startTime => ({startTime, stopTime: computeNextStopTime(startTime)})),
                       map(tap(({startTime, stopTime}) =>
-                        currentVirtualAudioGraph[id] = createInstrumentCustomNodeParams(pitch,
+                        currentVirtualAudioGraph[getVirtualNodeId(id)] = createInstrumentCustomNodeParams(pitch,
                                                                                         id,
                                                                                         rootNote,
                                                                                         modulation,
