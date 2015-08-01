@@ -1,40 +1,42 @@
-export default ({gain, frequency}) => [
-  {
+export default ({gain, frequency, startTime, stopTime}) => ({
+  0: {
     output: ['output'],
-    id: 0,
     node: 'gain',
     params: {
       gain,
     },
   },
-  {
+  1: {
     output: 0,
-    id: 1,
     node: 'oscillator',
     params: {
       detune: -2,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
-  {
+  2: {
     output: 0,
-    id: 2,
     node: 'oscillator',
     params: {
       detune: -5,
       frequency: frequency - 12,
+      startTime,
+      stopTime,
       type: 'triangle',
     },
   },
-  {
+  3: {
     output: 0,
-    id: 3,
     node: 'oscillator',
     params: {
       detune: 4,
       frequency,
+      startTime,
+      stopTime,
       type: 'square',
     },
   },
-];
+});

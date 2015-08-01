@@ -1,80 +1,86 @@
-export default ({gain, frequency, detune=12}) => [
-  {
+export default ({gain, frequency, detune=12, startTime, stopTime}) => ({
+  0: {
     output: ['output'],
-    id: 0,
     node: 'gain',
     params: {
       gain,
     },
   },
-  {
+  1: {
     output: 0,
-    id: 1,
     node: 'oscillator',
     params: {
       detune: -3 * detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
-  {
+  2: {
     output: 0,
-    id: 2,
     node: 'oscillator',
     params: {
       detune: -2 * detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
-  {
+  3: {
     output: 0,
-    id: 3,
     node: 'oscillator',
     params: {
       detune: -detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
-  {
+  4: {
     output: 0,
-    id: 4,
     node: 'oscillator',
     params: {
       detune: 0,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
-  {
+  5: {
     output: 0,
-    id: 5,
     node: 'oscillator',
     params: {
       detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
-  {
+  6: {
     output: 0,
-    id: 6,
     node: 'oscillator',
     params: {
       detune: 2 * detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
-  {
+  7: {
     output: 0,
-    id: 7,
     node: 'oscillator',
     params: {
       detune: 3 * detune,
       frequency,
+      startTime,
+      stopTime,
       type: 'sawtooth',
     },
   },
-];
+});
