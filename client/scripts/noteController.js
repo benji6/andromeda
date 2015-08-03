@@ -2,7 +2,9 @@ import {compose, dropLast, map, reject, tap} from 'ramda';
 import Random from 'random-js';
 import alt from './alt';
 import virtualAudioGraph from './virtualAudioGraph';
-import {stream, transduce} from 'flyd';
+import {Rx} from '@cycle/core';
+
+const {interval} = Rx.Observable;
 
 const calculateFrequency = (pitch) => 440 * 2 ** (pitch / 12);
 const pickRandom = (arr) => Random.pick(Random.engines.browserCrypto, arr);
@@ -21,6 +23,7 @@ const getVirtualNodeId = (() => {
 let currentVirtualAudioGraph = {};
 let intervalId = null;
 let lastStartTime = null;
+let arpOn = true;
 
 const incrementScalePitch = (pitch, increment) => {
   const scale = alt.getStore('ScaleStore').getState().scales[alt.getStore('ScaleStore').getState().scaleName];
@@ -116,27 +119,25 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
 
   if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn &&
       alt.getStore('ScaleStore').getState().scaleName !== 'none') {
-    clearInterval(intervalId);
-
-    const scheduleEventsStream = stream();
-
-    transduce(compose(map(computeNextStartTime),
-                      reject(startTime => startTime === lastStartTime),
-                      map(tap(startTime => lastStartTime = startTime)),
-                      map(startTime => ({startTime, stopTime: computeNextStopTime(startTime)})),
-                      map(tap(({startTime, stopTime}) =>
-                        currentVirtualAudioGraph[getVirtualNodeId(id)] = createInstrumentCustomNodeParams(pitch,
-                                                                                        id,
-                                                                                        rootNote,
-                                                                                        modulation,
-                                                                                        startTime,
-                                                                                        stopTime))),
-                      map(() => virtualAudioGraph.update(currentVirtualAudioGraph))),
-              scheduleEventsStream);
-
-    scheduleEventsStream(virtualAudioGraph.currentTime);
-    intervalId = setInterval(() => scheduleEventsStream(virtualAudioGraph.currentTime),
-                             Math.floor(beatDuration / 2));
+    arpOn = true;
+    interval(Math.floor(beatDuration / 2))
+      .timeInterval()
+      .startWith(virtualAudioGraph.currentTime)
+      .takeWhile(() => arpOn === true)
+      .map(x => virtualAudioGraph.currentTime)
+      .transduce(compose(map(computeNextStartTime),
+                         reject(startTime => startTime === lastStartTime),
+                         map(tap(startTime => lastStartTime = startTime)),
+                         map(startTime => ({startTime, stopTime: computeNextStopTime(startTime)})),
+                         map(tap(({startTime, stopTime}) =>
+                           currentVirtualAudioGraph[getVirtualNodeId(id)] = createInstrumentCustomNodeParams(pitch,
+                                                                                                             id,
+                                                                                                             rootNote,
+                                                                                                             modulation,
+                                                                                                             startTime,
+                                                                                                             stopTime))),
+                         map(() => virtualAudioGraph.update(currentVirtualAudioGraph))))
+      .subscribe();
   } else {
     currentVirtualAudioGraph[id] = createInstrumentCustomNodeParams(pitch,
                                                                     id,
@@ -149,7 +150,7 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
 export const stopNote = ({id}) => {
   if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn &&
       alt.getStore('ScaleStore').getState().scaleName !== 'none') {
-    clearInterval(intervalId);
+    arpOn = false;
   }
   currentIndex = 0;
   lastStartTime = null;

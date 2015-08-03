@@ -1,6 +1,8 @@
 import {playNote, stopNote} from './noteController';
 import {compose, flip, isNil, map, prop, reject, tap} from 'ramda';
-import {stream, transduce} from 'flyd';
+import {Rx} from '@cycle/core';
+
+const {fromEvent} = Rx.Observable;
 
 const keyCodesToPitches = {
   220: -10,
@@ -46,8 +48,6 @@ const keyCodesToPitches = {
 };
 
 const pressedKeys = new Set();
-document.onkeydown = stream();
-document.onkeyup = stream();
 
 const computeNoteParams = (pitch) => ({id: `keyboard: ${pitch}`,
                                        pitch});
@@ -56,16 +56,16 @@ const computeNoteParamsFromKeyCode = compose(map(flip(prop)(keyCodesToPitches)),
                                              reject(isNil),
                                              map(computeNoteParams));
 
-transduce(compose(map(tap((e) => e.keyCode === 191 && e.preventDefault())),
-                  map(prop('keyCode')),
-                  reject(::pressedKeys.has),
-                  map(tap(::pressedKeys.add)),
-                  computeNoteParamsFromKeyCode,
-                  map(playNote)),
-          document.onkeydown);
+fromEvent(document.body, 'keydown')
+  .transduce(compose(map(tap((e) => e.keyCode === 191 && e.preventDefault())),
+                    map(prop('keyCode')),
+                    reject(::pressedKeys.has),
+                    map(tap(::pressedKeys.add)),
+                    computeNoteParamsFromKeyCode,
+                    map(playNote))).subscribe();
 
-transduce(compose(map(prop('keyCode')),
-                  map(tap(::pressedKeys.delete)),
-                  computeNoteParamsFromKeyCode,
-                  map(stopNote)),
-          document.onkeyup);
+fromEvent(document.body, 'keyup')
+  .transduce(compose(map(prop('keyCode')),
+                    map(tap(::pressedKeys.delete)),
+                    computeNoteParamsFromKeyCode,
+                    map(stopNote))).subscribe();

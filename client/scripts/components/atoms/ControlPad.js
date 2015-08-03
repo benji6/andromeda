@@ -1,9 +1,10 @@
 /* global THREE */
-import {stream, transduce} from 'flyd';
 import {compose, isNil, map, reject, tap} from 'ramda';
 import React from 'react';
 import {handleControlPadInput, handleControlPadInputEnd} from '../../handleControlPadSignals';
+import {Rx} from '@cycle/core';
 
+const {fromEvent, merge} = Rx.Observable;
 const {EPSILON} = Number;
 
 const cameraZ = 16;
@@ -87,25 +88,31 @@ const renderLoop = function renderLoop () {
   renderer.render(scene, camera);
 };
 
-const inputStream = stream();
-const inputEndStream = stream();
-
-transduce(compose(map(tap((e) => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
-                  reject((e) => e.nativeEvent instanceof MouseEvent && !mouseInputEnabled),
-                  map(tap(() => controlPadActive = true)),
-                  map((e) => currentXYRatios = calculateXAndYRatio(e)),
-                  map(handleControlPadInput)),
-          inputStream);
-
-transduce(compose(map(tap(() => mouseInputEnabled = false)),
-                  map(tap(() => controlPadActive = false)),
-                  map((e) => currentXYRatios = calculateXAndYRatio(e)),
-                  map(handleControlPadInputEnd)),
-          inputEndStream);
-
 export default class ControlPad extends React.Component {
   componentDidMount () {
     controlPadElement = document.querySelector('.control-pad');
+    const input$ = merge(fromEvent(controlPadElement, 'touchstart'),
+                         fromEvent(controlPadElement, 'touchmove'),
+                         fromEvent(controlPadElement, 'mousedown'),
+                         fromEvent(controlPadElement, 'mousemove'));
+    const endInput$ = merge(fromEvent(controlPadElement, 'touchend'),
+                            fromEvent(controlPadElement, 'mouseup'));
+
+      input$
+        .transduce(compose(map(tap((e) => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
+                           reject((e) => e instanceof MouseEvent && !mouseInputEnabled),
+                           map(tap(() => controlPadActive = true)),
+                           map((e) => currentXYRatios = calculateXAndYRatio(e)),
+                           map(handleControlPadInput)))
+        .subscribe();
+
+    endInput$
+      .transduce(compose(map(tap(() => mouseInputEnabled = false)),
+                         map(tap(() => controlPadActive = false)),
+                         map((e) => currentXYRatios = calculateXAndYRatio(e)),
+                         map(handleControlPadInputEnd)))
+      .subscribe();
+
     renderLoopActive = true;
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera(
@@ -145,13 +152,7 @@ export default class ControlPad extends React.Component {
 
   render () {
     return (
-      <canvas width="768" height="768" className="control-pad"
-        onTouchStart={inputStream}
-        onTouchMove={inputStream}
-        onMouseDown={inputStream}
-        onMouseMove={inputStream}
-        onTouchEnd={inputEndStream}
-        onMouseUp={inputEndStream}>
+      <canvas width="768" height="768" className="control-pad">
       </canvas>
     );
   }
