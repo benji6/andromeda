@@ -43,7 +43,7 @@ gulp.task('css', function () {
 });
 
 gulp.task('htmlDev', function () {
-  return gulp.src('client/html/index.html')
+  return gulp.src('client/index.html')
     .pipe(plumber())
     .pipe(minifyInline())
     .pipe(minifyHTML())
@@ -52,7 +52,7 @@ gulp.task('htmlDev', function () {
 });
 
 gulp.task('htmlProd', function () {
-  return gulp.src('client/html/index.html')
+  return gulp.src('client/index.html')
     .pipe(plumber())
     .pipe(cdnizer({
       allowRev: false,
