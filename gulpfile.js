@@ -34,11 +34,11 @@ gulp.task('clean', function () {
 });
 
 gulp.task('css', function () {
-  gulp.src('client/sass/index.scss')
+  gulp.src('client/styles/index.scss')
     .pipe(plumber())
     .pipe(sass())
     .pipe(minifyCSS())
-    .pipe(gulp.dest(publicPath + '/css'))
+    .pipe(gulp.dest(publicPath + '/styles'))
     .pipe(connect.reload());
 });
 
@@ -106,7 +106,7 @@ gulp.task('watch', function () {
   gulp.watch('client/html/**/*', function () {
     return runSequence('htmlDev');
   });
-  gulp.watch('client/sass/**/*', function () {
+  gulp.watch('client/styles/**/*', function () {
     return runSequence('css');
   });
   gulp.watch('client/scripts/**/*', function () {
