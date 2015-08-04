@@ -1,9 +1,7 @@
-/* global THREE */
+/* global THREE Rx */
 import {compose, isNil, map, reject, tap} from 'ramda';
 import React from 'react';
 import {handleControlPadInput, handleControlPadInputEnd} from '../../handleControlPadSignals';
-import Rx from 'rx';
-
 const {fromEvent, merge} = Rx.Observable;
 const {EPSILON} = Number;
 

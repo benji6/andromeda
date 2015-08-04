@@ -1,9 +1,8 @@
+/* global Rx */
 import {compose, dropLast, map, reject, tap} from 'ramda';
 import Random from 'random-js';
 import alt from './alt';
 import virtualAudioGraph from './virtualAudioGraph';
-import Rx from 'rx';
-
 const {interval} = Rx.Observable;
 
 const calculateFrequency = (pitch) => 440 * 2 ** (pitch / 12);
