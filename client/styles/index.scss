@@ -3,32 +3,15 @@
 @import 'control-pad';
 @import 'modal-container';
 @import 'pattern-editor';
+@import 'inputs';
+@import 'loading-spinner';
 
-button, select {
-  background: linear-gradient(#06e, #05c);
-  border: 1px solid #058;
-  border-radius: 1rem;
-  box-shadow: #05a 0 0 1.5rem 0.1rem;
-  color: $black;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 1rem;
-  height: 4rem;
-  margin: 1rem 0.5rem;
-  width: 12rem;
-}
-
-input {
-  margin: 1rem 0.5rem;
-  width: 12rem;
-}
-
-select {
-  height: 3rem;
-  text-indent: 1.5rem;
-  &[disabled] {
-    visibility: hidden;
-  }
+body {
+  background: #012;
+  font-family: sans-serif;
+  margin: 0;
+  user-select: none;
+  height: 100vh;
 }
 
 .upgrade-browser-message {
