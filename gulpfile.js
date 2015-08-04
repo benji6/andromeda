@@ -58,7 +58,6 @@ gulp.task('htmlDev', function () {
 
 gulp.task('htmlProd', function () {
   return gulp.src('client/index.html')
-    .pipe(plumber())
     .pipe(cdnizer({
       allowRev: false,
       allowMin: true,
@@ -79,7 +78,6 @@ gulp.task('scriptsDev', function () {
   return watchify(browserify(browserifyEntryPath, R.assoc('debug', true, watchify.args)))
     .transform(babelify, {stage: 0})
     .bundle()
-    .pipe(plumber())
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('index.js'))
     .pipe(buffer())
@@ -95,7 +93,6 @@ gulp.task('scriptsProd', function () {
     .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('index.js'))
-    .pipe(plumber())
     .pipe(buffer())
     .pipe(uglify())
     .pipe(gulp.dest(publicPath + '/scripts'));
