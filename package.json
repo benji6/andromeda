@@ -71,7 +71,7 @@
     "ramda": "^0.17.1",
     "run-sequence": "^1.1.2",
     "tap-nyan": "0.0.2",
-    "tape": "^4.0.2",
+    "tape": "^4.0.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1",
@@ -83,6 +83,6 @@
     "random-js": "^1.0.4",
     "react": "^0.13.3",
     "react-dom": "^0.14.0-beta3",
-    "virtual-audio-graph": "^0.7.11"
+    "virtual-audio-graph": "^0.7.12"
   }
 }
