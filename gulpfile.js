@@ -103,7 +103,7 @@ gulp.task('lint', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch('client/html/**/*', function () {
+  gulp.watch('client/index.html', function () {
     return runSequence('htmlDev');
   });
   gulp.watch('client/styles/**/*', function () {
