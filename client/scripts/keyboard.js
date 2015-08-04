@@ -1,6 +1,6 @@
 import {playNote, stopNote} from './noteController';
 import {compose, flip, isNil, map, prop, reject, tap} from 'ramda';
-import {Rx} from '@cycle/core';
+import Rx from 'rx';
 
 const {fromEvent} = Rx.Observable;
 

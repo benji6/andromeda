@@ -78,12 +78,12 @@
     "web-audio-test-api": "^0.3.6"
   },
   "dependencies": {
-    "@cycle/core": "^1.0.2",
     "alt": "^0.17.1",
     "capitalize": "^1.0.0",
     "random-js": "^1.0.4",
     "react": "^0.13.3",
     "react-dom": "^0.14.0-beta1",
+    "rx": "^3.0.0",
     "virtual-audio-graph": "^0.7.7"
   }
 }

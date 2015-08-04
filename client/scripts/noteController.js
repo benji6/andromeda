@@ -2,7 +2,7 @@ import {compose, dropLast, map, reject, tap} from 'ramda';
 import Random from 'random-js';
 import alt from './alt';
 import virtualAudioGraph from './virtualAudioGraph';
-import {Rx} from '@cycle/core';
+import Rx from 'rx';
 
 const {interval} = Rx.Observable;
 
