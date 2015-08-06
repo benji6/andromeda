@@ -54,7 +54,7 @@
     "browserify": "^11.0.1",
     "del": "^1.2.0",
     "eslint": "^1.0.0",
-    "eslint-plugin-react": "^3.1.0",
+    "eslint-plugin-react": "^3.2.0",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^2.3.1",
     "gulp-cdnizer": "^1.1.6",
@@ -82,7 +82,7 @@
     "capitalize": "^1.0.0",
     "random-js": "^1.0.4",
     "react": "^0.13.3",
-    "react-dom": "^0.14.0-beta1",
-    "virtual-audio-graph": "^0.7.7"
+    "react-dom": "^0.14.0-beta3",
+    "virtual-audio-graph": "^0.7.11"
   }
 }
