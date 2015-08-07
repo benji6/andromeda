@@ -70,6 +70,10 @@ gulp.task('htmlProd', function () {
           file: 'scripts/lib/rx.all.min.js',
           cdn: 'https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.5.3/rx.all.js',
         },
+        {
+          file: 'scripts/lib/ramda.min.js',
+          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/ramda/0.17.1/ramda.min.js',
+        },
       ],
     }))
     .pipe(minifyInline())

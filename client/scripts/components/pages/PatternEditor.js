@@ -1,6 +1,7 @@
+/* global R */
 import React from 'react';
 import render from '../tools/render';
-import {addIndex, curry, map} from 'ramda';
+const {addIndex, curry, map} = R;
 
 const mapIndexed = addIndex(map);
 

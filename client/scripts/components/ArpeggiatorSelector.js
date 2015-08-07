@@ -1,9 +1,10 @@
+/* global R */
 import capitalize from 'capitalize';
 import connectToStores from 'alt/utils/connectToStores';
 import React from 'react';
-import {map} from 'ramda';
 import ArpeggiatorActions from '../actions/ArpeggiatorActions';
 import ArpeggiatorStore from '../stores/ArpeggiatorStore';
+const {map} = R;
 
 @connectToStores
 export default class EffectSelector extends React.Component {

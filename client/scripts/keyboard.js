@@ -1,6 +1,6 @@
-/* global Rx */
+/* global R Rx */
 import {playNote, stopNote} from './noteController';
-import {compose, flip, isNil, map, prop, reject, tap} from 'ramda';
+const {compose, flip, isNil, map, prop, reject, tap} = R;
 const {fromEvent} = Rx.Observable;
 
 const keyCodesToPitches = {

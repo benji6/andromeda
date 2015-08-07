@@ -1,5 +1,5 @@
-/* global Rx */
-import {compose, dropLast, map, reject, tap} from 'ramda';
+/* global R Rx */
+const {compose, dropLast, map, reject, tap} = R;
 import Random from 'random-js';
 import alt from './alt';
 import virtualAudioGraph from './virtualAudioGraph';

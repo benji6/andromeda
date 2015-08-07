@@ -1,9 +1,10 @@
+/* global R */
 import capitalize from 'capitalize';
 import connectToStores from 'alt/utils/connectToStores';
-import {keys, map} from 'ramda';
 import React from 'react';
 import ScaleActions from '../actions/ScaleActions';
 import ScaleStore from '../stores/ScaleStore';
+const {keys, map} = R;
 
 @connectToStores
 export default class ScaleSelector extends React.Component {
