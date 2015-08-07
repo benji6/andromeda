@@ -23,31 +23,6 @@
     "url": "https://github.com/benji6/elemental/issues"
   },
   "homepage": "https://github.com/benji6/elemental",
-  "eslintConfig": {
-    "ecmaFeatures": {
-      "jsx": true,
-      "modules": true
-    },
-    "env": {
-      "browser": true,
-      "es6": true,
-      "node": true
-    },
-    "parser": "babel-eslint",
-    "plugins": [
-      "react"
-    ],
-    "rules": {
-      "comma-dangle": [
-        1,
-        "always-multiline"
-      ],
-      "quotes": [
-        1,
-        "single"
-      ]
-    }
-  },
   "devDependencies": {
     "babel-eslint": "^4.0.5",
     "babelify": "^6.1.3",
