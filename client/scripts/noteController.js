@@ -20,7 +20,6 @@ const getVirtualNodeId = (() => {
 }());
 
 let currentVirtualAudioGraph = {};
-let intervalId = null;
 let lastStartTime = null;
 let arpOn = true;
 
@@ -123,7 +122,7 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
       .timeInterval()
       .startWith(virtualAudioGraph.currentTime)
       .takeWhile(() => arpOn === true)
-      .map(x => virtualAudioGraph.currentTime)
+      .map(() => virtualAudioGraph.currentTime)
       .transduce(compose(map(computeNextStartTime),
                          reject(startTime => startTime === lastStartTime),
                          map(tap(startTime => lastStartTime = startTime)),

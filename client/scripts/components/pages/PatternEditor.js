@@ -1,11 +1,11 @@
 /* global R */
 import React from 'react';
-import render from '../tools/render';
+// import render from '../tools/render';
 const {addIndex, curry, map} = R;
 
 const mapIndexed = addIndex(map);
 
-const patternModel = map(x => Array.apply(0, {length:8}), Array.apply(0, {length:8}));
+const patternModel = map(() => Array.apply(0, {length:8}), Array.apply(0, {length:8}));
 
 const handleOnClick = curry((i, j, e) => console.log(i, j, e));
 
