@@ -68,7 +68,7 @@ gulp.task('htmlProd', function () {
         },
         {
           file: 'scripts/lib/rx.all.min.js',
-          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.5.3/rx.all.js',
+          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.5.3/rx.all.min.js',
         },
         {
           file: 'scripts/lib/ramda.min.js',
