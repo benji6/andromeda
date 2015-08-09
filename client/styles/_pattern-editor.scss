@@ -1,0 +1,17 @@
+.pattern-editor {
+  display: flex;
+  flex-wrap: wrap;
+  .step {
+    $total-width: 100vw;
+    $side-length: $total-width / 8;
+    $color: #11c;
+    width: $side-length;
+    height: $side-length;
+    background-color: $color;
+    box-sizing: border-box;
+    border: $side-length / 16 solid #fff;
+    &.selected {
+      background: darken($color, 20%);
+    }
+  }
+}

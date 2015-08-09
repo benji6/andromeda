@@ -1,3 +1,4 @@
+const autoprefixer = require('gulp-autoprefixer');
 const babelify = require('babelify');
 const browserify = require('browserify');
 const buffer = require('vinyl-buffer');
@@ -34,16 +35,20 @@ gulp.task('clean', function () {
 });
 
 gulp.task('css', function () {
-  gulp.src('client/sass/index.scss')
+  gulp.src('client/styles/index.scss')
     .pipe(plumber())
     .pipe(sass())
+    .pipe(autoprefixer({
+      browsers: ['last 2 Firefox versions', 'last 2 Chrome versions'],
+      cascade: false,
+    }))
     .pipe(minifyCSS())
-    .pipe(gulp.dest(publicPath + '/css'))
+    .pipe(gulp.dest(publicPath + '/styles'))
     .pipe(connect.reload());
 });
 
 gulp.task('htmlDev', function () {
-  return gulp.src('client/html/index.html')
+  return gulp.src('client/index.html')
     .pipe(plumber())
     .pipe(minifyInline())
     .pipe(minifyHTML())
@@ -52,8 +57,7 @@ gulp.task('htmlDev', function () {
 });
 
 gulp.task('htmlProd', function () {
-  return gulp.src('client/html/index.html')
-    .pipe(plumber())
+  return gulp.src('client/index.html')
     .pipe(cdnizer({
       allowRev: false,
       allowMin: true,
@@ -61,6 +65,14 @@ gulp.task('htmlProd', function () {
         {
           file: 'scripts/lib/three.min.js',
           cdn: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js',
+        },
+        {
+          file: 'scripts/lib/rx.all.min.js',
+          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.5.3/rx.all.min.js',
+        },
+        {
+          file: 'scripts/lib/ramda.min.js',
+          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/ramda/0.17.1/ramda.min.js',
         },
       ],
     }))
@@ -74,7 +86,6 @@ gulp.task('scriptsDev', function () {
   return watchify(browserify(browserifyEntryPath, R.assoc('debug', true, watchify.args)))
     .transform(babelify, {stage: 0})
     .bundle()
-    .pipe(plumber())
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('index.js'))
     .pipe(buffer())
@@ -90,7 +101,6 @@ gulp.task('scriptsProd', function () {
     .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('index.js'))
-    .pipe(plumber())
     .pipe(buffer())
     .pipe(uglify())
     .pipe(gulp.dest(publicPath + '/scripts'));
@@ -103,10 +113,10 @@ gulp.task('lint', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch('client/html/**/*', function () {
+  gulp.watch('client/index.html', function () {
     return runSequence('htmlDev');
   });
-  gulp.watch('client/sass/**/*', function () {
+  gulp.watch('client/styles/**/*', function () {
     return runSequence('css');
   });
   gulp.watch('client/scripts/**/*', function () {

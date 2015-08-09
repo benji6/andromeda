@@ -1,6 +1,6 @@
 import React from 'react';
-import ControlPad from './atoms/ControlPad';
-import PerformanceMenu from './PerformanceMenu';
+import ControlPad from '../atoms/ControlPad';
+import PerformanceMenu from '../molecules/PerformanceMenu';
 
 class PerformanceView extends React.Component {
   render () {

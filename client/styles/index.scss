@@ -1,0 +1,27 @@
+@import 'vars';
+@import 'performance-menu';
+@import 'control-pad';
+@import 'modal-container';
+@import 'pattern-editor';
+@import 'inputs';
+@import 'loading-spinner';
+
+body {
+  background: #012;
+  font-family: sans-serif;
+  margin: 0;
+  user-select: none;
+  height: 100vh;
+  cursor: default;
+}
+
+.upgrade-browser-message {
+  color: $white;
+  text-align: center;
+  margin: 0;
+  padding: 2rem 0;
+}
+
+.center {
+  text-align: center;
+}

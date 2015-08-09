@@ -23,39 +23,15 @@
     "url": "https://github.com/benji6/elemental/issues"
   },
   "homepage": "https://github.com/benji6/elemental",
-  "eslintConfig": {
-    "ecmaFeatures": {
-      "jsx": true,
-      "modules": true
-    },
-    "env": {
-      "browser": true,
-      "es6": true,
-      "node": true
-    },
-    "parser": "babel-eslint",
-    "plugins": [
-      "react"
-    ],
-    "rules": {
-      "comma-dangle": [
-        1,
-        "always-multiline"
-      ],
-      "quotes": [
-        1,
-        "single"
-      ]
-    }
-  },
   "devDependencies": {
     "babel-eslint": "^4.0.5",
     "babelify": "^6.1.3",
     "browserify": "^11.0.1",
     "del": "^1.2.0",
     "eslint": "^1.0.0",
-    "eslint-plugin-react": "^3.1.0",
+    "eslint-plugin-react": "^3.2.0",
     "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^2.3.1",
     "gulp-cdnizer": "^1.1.6",
     "gulp-connect": "^2.2.0",
     "gulp-eslint": "^1.0.0",
@@ -70,7 +46,7 @@
     "ramda": "^0.17.1",
     "run-sequence": "^1.1.2",
     "tap-nyan": "0.0.2",
-    "tape": "^4.0.1",
+    "tape": "^4.0.3",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.3.1",
@@ -79,10 +55,9 @@
   "dependencies": {
     "alt": "^0.17.1",
     "capitalize": "^1.0.0",
-    "flyd": "^0.1.14",
     "random-js": "^1.0.4",
     "react": "^0.13.3",
-    "react-dom": "^0.14.0-beta1",
-    "virtual-audio-graph": "^0.7.6"
+    "react-dom": "^0.14.0-beta3",
+    "virtual-audio-graph": "^0.7.12"
   }
 }

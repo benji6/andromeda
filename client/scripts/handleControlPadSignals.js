@@ -1,7 +1,7 @@
-import {assoc, compose, isNil} from 'ramda';
+/* global R */
 import alt from './alt';
 import {playNote, stopNote} from './noteController';
-
+const {assoc, compose, isNil} = R;
 const {floor} = Math;
 
 let currentlyPlayingPitch = null;

@@ -1,9 +1,5 @@
-@import 'vars';
-@import 'performance-menu';
-@import 'control-pad';
-@import 'modal-container';
-
 button, select {
+  appearance: none;
   background: linear-gradient(#06e, #05c);
   border: 1px solid #058;
   border-radius: 1rem;
@@ -28,13 +24,4 @@ select {
   &[disabled] {
     visibility: hidden;
   }
-}
-
-.upgrade-browser-message {
-  color: $white;
-  text-align: center;
-}
-
-.center {
-  text-align: center;
 }
