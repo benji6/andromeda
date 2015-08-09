@@ -1,5 +1,5 @@
 import React from 'react';
-import PerformanceView from '../pages/PerformanceView';
+import PerformanceView from '../templates/PerformanceView';
 import render from '../../tools/render';
 
 export default class ModalOKButton extends React.Component {
