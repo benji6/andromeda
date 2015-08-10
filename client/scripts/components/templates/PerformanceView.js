@@ -1,6 +1,7 @@
 import React from 'react';
 import ControlPad from '../atoms/ControlPad';
 import PerformanceMenu from '../molecules/PerformanceMenu';
+import {connect} from 'react-redux';
 
 class PerformanceView extends React.Component {
   render () {
@@ -13,4 +14,6 @@ class PerformanceView extends React.Component {
   }
 }
 
-export default PerformanceView;
+const select = state => state;
+
+export default connect(select)(PerformanceView);

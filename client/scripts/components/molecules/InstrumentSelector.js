@@ -3,8 +3,6 @@ import capitalize from 'capitalize';
 import connectToStores from 'alt/utils/connectToStores';
 const {map} = R;
 import React from 'react';
-import InstrumentActions from '../actions/InstrumentActions';
-import InstrumentStore from '../stores/InstrumentStore';
 
 @connectToStores
 export default class InstrumentSelector extends React.Component {

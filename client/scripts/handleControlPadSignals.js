@@ -1,15 +1,16 @@
 /* global R */
-import alt from './alt';
 import {playNote, stopNote} from './noteController';
+import store from './store';
+
 const {assoc, compose, isNil} = R;
 const {floor} = Math;
+const getState = ::store.getState;
 
 let currentlyPlayingPitch = null;
 let stopLastNoteOnNoteChange = true;
 
 const calculatePitch = (xRatio) => {
-  const scaleStoreState = alt.getStore('ScaleStore').getState();
-  const {scaleName, scales} = scaleStoreState;
+  const {scaleName, scales} = getState().scale;
   const scale = scales[scaleName];
   if (isNil(scale)) {
     stopLastNoteOnNoteChange = false;

@@ -3,8 +3,6 @@ import capitalize from 'capitalize';
 import connectToStores from 'alt/utils/connectToStores';
 const {map} = R;
 import React from 'react';
-import EffectActions from '../actions/EffectActions';
-import EffectStore from '../stores/EffectStore';
 
 @connectToStores
 export default class EffectSelector extends React.Component {

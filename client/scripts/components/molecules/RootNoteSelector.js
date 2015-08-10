@@ -1,7 +1,5 @@
 import connectToStores from 'alt/utils/connectToStores';
 import React from 'react';
-import RootNoteActions from '../actions/RootNoteActions';
-import RootNoteStore from '../stores/RootNoteStore';
 const {abs, floor} = Math;
 
 const computeNoteNameFromPitch = (pitch) => {

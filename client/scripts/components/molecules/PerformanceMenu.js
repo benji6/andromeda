@@ -1,6 +1,6 @@
 import React from 'react';
-import InstrumentAndEffectSelector from '../InstrumentAndEffectSelector';
-import ScaleAndPitchSelector from '../ScaleAndPitchSelector';
+import InstrumentAndEffectSelector from '../organisms/InstrumentAndEffectSelector';
+import ScaleAndPitchSelector from '../organisms/ScaleAndPitchSelector';
 import render from '../../tools/render';
 
 export default class PerformanceMenu extends React.Component {

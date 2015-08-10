@@ -2,8 +2,6 @@
 import capitalize from 'capitalize';
 import connectToStores from 'alt/utils/connectToStores';
 import React from 'react';
-import ArpeggiatorActions from '../actions/ArpeggiatorActions';
-import ArpeggiatorStore from '../stores/ArpeggiatorStore';
 const {map} = R;
 
 @connectToStores
