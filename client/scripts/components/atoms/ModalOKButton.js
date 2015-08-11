@@ -1,10 +1,16 @@
 import React from 'react';
 import PerformanceView from '../templates/PerformanceView';
 import render from '../../tools/render';
+import {Provider} from 'react-redux';
+import store from '../../store';
 
 export default class ModalOKButton extends React.Component {
   handleClick () {
-    render(<PerformanceView />);
+    render(
+      <Provider store={store}>
+        {() => <PerformanceView />}
+      </Provider>
+    );
   }
 
   render () {

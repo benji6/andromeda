@@ -149,9 +149,6 @@ export default class ControlPad extends React.Component {
   }
 
   render () {
-    return (
-      <canvas width="768" height="768" className="control-pad">
-      </canvas>
-    );
+    return <canvas width="768" height="768" className="control-pad"></canvas>;
   }
 }

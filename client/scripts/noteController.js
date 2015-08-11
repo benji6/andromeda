@@ -1,13 +1,15 @@
 /* global R Rx */
-const {compose, dropLast, map, reject, tap} = R;
 import Random from 'random-js';
-import alt from './alt';
+import store from './store';
 import virtualAudioGraph from './virtualAudioGraph';
+const {compose, dropLast, map, reject, tap} = R;
 const {Observable, Subject} = Rx;
+
 const {interval} = Observable;
+const getState = ::store.getState;
+
 const calculateFrequency = (pitch) => 440 * 2 ** (pitch / 12);
 const pickRandom = (arr) => Random.pick(Random.engines.browserCrypto, arr);
-
 const bpm = 140;
 const beatDuration = 60 / bpm / 4;
 
@@ -25,7 +27,8 @@ const arpStop$ = new Subject();
 arpStop$.subscribe();
 
 const incrementScalePitch = (pitch, increment) => {
-  const scale = alt.getStore('ScaleStore').getState().scales[alt.getStore('ScaleStore').getState().scaleName];
+  const {scales, scaleName} = getState().scale;
+  const scale = scales[scaleName];
   const scaleWithNoRepeats = dropLast(1, scale);
   if (scaleWithNoRepeats.indexOf(pitch % 12) === -1) {
     return pitch;
@@ -43,11 +46,10 @@ let currentIndex = 0;
 let ascending = true;
 
 const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, startTime, stopTime) => {
-  const {arpeggiatorIsOn,
-         selectedPattern} = alt.getStore('ArpeggiatorStore').getState();
+  const {arpeggiator, scale} = getState();
+  const {arpeggiatorIsOn, selectedPattern} = arpeggiator;
 
-  if (arpeggiatorIsOn &&
-      alt.getStore('ScaleStore').getState().scaleName !== 'none') {
+  if (arpeggiatorIsOn && scale.scaleName !== 'none') {
     const arpeggiatorPitches = [
       incrementScalePitch(pitch, 0),
       incrementScalePitch(pitch, 2),
@@ -86,7 +88,7 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
   }
   const instrumentCustomNodeParams = {
     output: ['output', 0],
-    node: alt.getStore('InstrumentStore').getState().selectedInstrument,
+    node: getState().instrument.selectedInstrument,
     params: {
       frequency: calculateFrequency(pitch + rootNote),
       gain: (1 - modulation) / 4,
@@ -107,17 +109,16 @@ const computeNextStartTime = currentTime =>
 const computeNextStopTime = startTime => startTime + beatDuration;
 
 export const playNote = ({id, pitch, modulation = 0.5}) => {
-  const rootNote = alt.getStore('RootNoteStore').getState().rootNote;
+  const {arpeggiator, effect, rootNote, scale} = getState();
 
   currentVirtualAudioGraph[0] = {
     output: 'output',
-    node: alt.getStore('EffectStore').getState().selectedEffect,
+    node: effect.selectedEffect,
   };
 
   delete currentVirtualAudioGraph[id];
 
-  if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn &&
-      alt.getStore('ScaleStore').getState().scaleName !== 'none') {
+  if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     interval(Math.floor(beatDuration / 2))
       .timeInterval()
       .startWith(virtualAudioGraph.currentTime)
@@ -146,8 +147,8 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
 };
 
 export const stopNote = ({id}) => {
-  if (alt.getStore('ArpeggiatorStore').getState().arpeggiatorIsOn &&
-      alt.getStore('ScaleStore').getState().scaleName !== 'none') {
+  const {arpeggiator, scale} = getState();
+  if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     arpStop$.onNext();
   }
   currentIndex = 0;

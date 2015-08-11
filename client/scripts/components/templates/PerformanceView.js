@@ -2,7 +2,7 @@ import React from 'react';
 import ControlPad from '../atoms/ControlPad';
 import PerformanceMenu from '../molecules/PerformanceMenu';
 
-class PerformanceView extends React.Component {
+export default class PerformanceView extends React.Component {
   render () {
     return <div>
       <div className="center">
@@ -12,5 +12,3 @@ class PerformanceView extends React.Component {
     </div>;
   }
 }
-
-export default PerformanceView;
