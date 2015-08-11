@@ -1,40 +1,37 @@
 /* global R */
 import capitalize from 'capitalize';
-import connectToStores from 'alt/utils/connectToStores';
 import React from 'react';
 const {map} = R;
 
-@connectToStores
 export default class EffectSelector extends React.Component {
-  static getStores() {
-    return [ArpeggiatorStore];
-  }
-
-  static getPropsFromStores() {
-    return ArpeggiatorStore.getState();
-  }
-
-  handleChange (e) {
-    ArpeggiatorActions.updateArpeggiatorIsOn(e.currentTarget.checked);
-  }
-
-  handleSelect (e) {
-    ArpeggiatorActions.updateSelectedPattern(e.currentTarget.value);
-  }
-
   render () {
+    const {
+      arpeggiatorIsOn,
+      handleArpeggiatorIsOnChange,
+      handlePatternSelect,
+      patterns,
+      selectedPattern,
+    } = this.props;
     return (
       <div>
         <label><span>Arpeggiator</span>
-          <input type="checkbox" defaultChecked={this.props.arpeggiatorIsOn} onChange={this.handleChange}></input>
+          <input
+            defaultChecked={arpeggiatorIsOn}
+            onChange={handleArpeggiatorIsOnChange}
+            type="checkbox"
+          />
         </label>
         <label>
           <span>Pattern</span>
-          <select disabled={!this.props.arpeggiatorIsOn} defaultValue={this.props.selectedPattern} onChange={this.handleSelect}>
+          <select
+            disabled={!arpeggiatorIsOn}
+            defaultValue={selectedPattern}
+            onChange={handlePatternSelect}
+          >
             {map(item =>
               <option value={item} key={item}>
                 {capitalize(item)}
-              </option>, this.props.patterns)}
+              </option>, patterns)}
           </select>
         </label>
       </div>
