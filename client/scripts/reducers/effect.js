@@ -1,4 +1,4 @@
-import {UPDATE_SELECTED_EFFECT} from '../actions/types';
+import {UPDATE_SELECTED_EFFECT} from '../actions';
 
 const initialState = {
   effects: [

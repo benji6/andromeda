@@ -1,4 +1,4 @@
-import {UPDATE_SELECTED_SCALE} from '../actions/types';
+import {UPDATE_SELECTED_SCALE} from '../actions';
 
 const initialState = {
   scales: {

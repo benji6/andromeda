@@ -10,7 +10,7 @@ import {
   updateSelectedPattern,
   updateSelectedRootNote,
   updateSelectedScale,
-} from '../../actions/creators';
+} from '../../actions';
 
 const {compose, path} = R;
 const eventValuePath = path(['currentTarget', 'value']);

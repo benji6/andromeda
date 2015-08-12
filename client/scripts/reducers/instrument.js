@@ -1,4 +1,4 @@
-import {UPDATE_SELECTED_INSTRUMENT} from '../actions/types';
+import {UPDATE_SELECTED_INSTRUMENT} from '../actions';
 
 const initialState = {
   instruments: [

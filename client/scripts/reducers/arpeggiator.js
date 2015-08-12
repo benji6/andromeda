@@ -1,7 +1,7 @@
 import {
   UPDATE_ARPEGGIATOR_IS_ON,
   UPDATE_SELECTED_PATTERN
-} from '../actions/types';
+} from '../actions';
 
 const initialState = {
   arpeggiatorIsOn: false,

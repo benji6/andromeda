@@ -1,23 +1,25 @@
 /* global R */
 import React from 'react';
-// import render from '../tools/render';
-const {addIndex, curry, map} = R;
+import {connect} from 'react-redux';
 
-const mapIndexed = addIndex(map);
-
-const patternModel = map(() => Array.apply(0, {length:8}), Array.apply(0, {length:8}));
+const {curry} = R;
 
 const handleOnClick = curry((i, j, e) => console.log(i, j, e));
 
+@connect(x => x)
 export default class PatternEditor extends React.Component {
   render () {
+    const {pattern} = this.props;
+    console.log(pattern);
     return (
       <div className="pattern-editor">
-        {mapIndexed((x, i) => mapIndexed((y, j) => <div className="step"
-                                                        key={`${i}-${j}`}
-                                                        onClick={handleOnClick(i, j)}></div>,
-                                         x),
-                    patternModel)}
+        {pattern.map((x, i) =>
+          x.map((y, j) =>
+            <div
+              className="step"
+              key={`${i}-${j}`}
+              onClick={handleOnClick(i, j)}
+            />))}
       </div>
     );
   }

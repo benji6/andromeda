@@ -7,7 +7,7 @@ import ModalOKButton from '../atoms/ModalOKButton';
 import {
   updateSelectedEffect,
   updateSelectedInstrument,
-} from '../../actions/creators';
+} from '../../actions';
 
 const {compose, path} = R;
 const eventValuePath = path(['currentTarget', 'value']);

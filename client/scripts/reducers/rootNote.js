@@ -1,4 +1,4 @@
-import {UPDATE_ROOT_NOTE} from '../actions/types';
+import {UPDATE_ROOT_NOTE} from '../actions';
 
 export default (state = 0, {type, value}) => {
   switch (type) {
