@@ -16,7 +16,8 @@ const {compose, path} = R;
 const eventValuePath = path(['currentTarget', 'value']);
 const eventCheckedPath = path(['currentTarget', 'checked']);
 
-class RootNoteContainer extends React.Component {
+@connect(x => x)
+export default class RootNoteContainer extends React.Component {
   render() {
     const {arpeggiator, dispatch, rootNote, scale} = this.props;
     const {scaleName, scales} = scale;
@@ -66,5 +67,3 @@ class RootNoteContainer extends React.Component {
     );
   }
 }
-
-export default connect(x => x)(RootNoteContainer);

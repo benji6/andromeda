@@ -12,7 +12,8 @@ import {
 const {compose, path} = R;
 const eventValuePath = path(['currentTarget', 'value']);
 
-class RootNoteContainer extends React.Component {
+@connect(x => x)
+export default class RootNoteContainer extends React.Component {
   render() {
     const {dispatch, instrument, effect} = this.props;
     const {instruments, selectedInstrument} = instrument;
@@ -46,5 +47,3 @@ class RootNoteContainer extends React.Component {
     );
   }
 }
-
-export default connect(x => x)(RootNoteContainer);
