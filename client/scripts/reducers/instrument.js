@@ -1,4 +1,5 @@
 /* global R */
+import {UPDATE_SELECTED_INSTRUMENT} from '../actions/types';
 const {merge} = R;
 
 const initialState = {
@@ -13,7 +14,7 @@ const initialState = {
 
 export default (state = initialState, {type, value}) => {
   switch (type) {
-    case 'UPDATE_SELECTED_INSTRUMENT':
+    case UPDATE_SELECTED_INSTRUMENT:
       return merge(state, {selectedInstrument: value});
     default:
       return state;

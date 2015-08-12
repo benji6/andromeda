@@ -1,6 +1,7 @@
 /* global R */
-const {merge} = R;
+import {UPDATE_SELECTED_EFFECT} from '../actions/types';
 
+const {merge} = R;
 const initialState = {
   effects: [
     'pingPongDelay',
@@ -11,7 +12,7 @@ const initialState = {
 
 export default (state = initialState, {type, value}) => {
   switch (type) {
-    case 'UPDATE_SELECTED_EFFECT':
+    case UPDATE_SELECTED_EFFECT:
       return merge(state, {selectedEffect: value});
     default:
       return state;
