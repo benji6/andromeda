@@ -1,3 +1,4 @@
+/* global R */
 import React from 'react';
 import {connect} from 'react-redux';
 import EffectSelector from '../molecules/EffectSelector';
@@ -7,6 +8,9 @@ import {
   updateSelectedEffect,
   updateSelectedInstrument,
 } from '../../actions/creators';
+
+const {compose, path} = R;
+const eventValuePath = path(['currentTarget', 'value']);
 
 class RootNoteContainer extends React.Component {
   render() {
@@ -18,12 +22,20 @@ class RootNoteContainer extends React.Component {
         <div className="modal-window">
           <div className="modal-contents">
             <InstrumentSelector
-              handleSelectInstrument={({currentTarget: {value}}) => dispatch(updateSelectedInstrument(value))}
+              handleSelectInstrument={compose(
+                dispatch,
+                updateSelectedInstrument,
+                eventValuePath
+              )}
               instruments={instruments}
               selectedInstrument={selectedInstrument}
             />
             <EffectSelector
-              handleSelectEffect={({currentTarget: {value}}) => dispatch(updateSelectedEffect(value))}
+              handleSelectEffect={compose(
+                dispatch,
+                updateSelectedEffect,
+                eventValuePath
+              )}
               effects={effects}
               selectedEffect={selectedEffect}
             />

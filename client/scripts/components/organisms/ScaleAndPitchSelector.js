@@ -1,3 +1,4 @@
+/* global R */
 import React from 'react';
 import {connect} from 'react-redux';
 import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector';
@@ -9,8 +10,11 @@ import {
   updateSelectedPattern,
   updateSelectedRootNote,
   updateSelectedScale,
-
 } from '../../actions/creators';
+
+const {compose, path} = R;
+const eventValuePath = path(['currentTarget', 'value']);
+const eventCheckedPath = path(['currentTarget', 'checked']);
 
 class RootNoteContainer extends React.Component {
   render() {
@@ -23,10 +27,19 @@ class RootNoteContainer extends React.Component {
           <div className="modal-contents">
             <RootNoteSelector
               rootNote={rootNote}
-              handleRootNoteChange={({currentTarget: {value}}) => dispatch(updateSelectedRootNote(Number(value)))}
+              handleRootNoteChange={compose(
+                dispatch,
+                updateSelectedRootNote,
+                Number,
+                eventValuePath
+              )}
             />
             <ScaleSelector
-              handleScaleChange={({currentTarget: {value}}) => dispatch(updateSelectedScale(value))}
+              handleScaleChange={compose(
+                dispatch,
+                updateSelectedScale,
+                eventValuePath
+              )}
               scaleName={scaleName}
               scales={scales}
             />
@@ -35,10 +48,16 @@ class RootNoteContainer extends React.Component {
               dispatch={dispatch}
               patterns={patterns}
               selectedPattern={selectedPattern}
-              handleArpeggiatorIsOnChange={
-                ({currentTarget: {checked}}) => dispatch(updateArpeggiatorIsOn(checked))
-              }
-              handlePatternSelect={({currentTarget: {value}}) => dispatch(updateSelectedPattern(value))}
+              handleArpeggiatorIsOnChange={compose(
+                dispatch,
+                updateArpeggiatorIsOn,
+                eventCheckedPath
+              )}
+              handlePatternSelect={compose(
+                dispatch,
+                updateSelectedPattern,
+                eventValuePath
+              )}
             />
             <ModalOKButton />
           </div>
