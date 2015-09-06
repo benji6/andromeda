@@ -86,20 +86,20 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
       }
     }
   }
-  const instrumentCustomNodeParams = {
-    output: ['output', 0],
-    node: getState().instrument.selectedInstrument,
-    params: {
+  const instrumentCustomNodeParams = [
+    getState().instrument.selectedInstrument,
+    ['output', 0],
+    {
       frequency: calculateFrequency(pitch + rootNote),
       gain: (1 - modulation) / 4,
     },
-  };
+  ];
 
   if (startTime) {
-    instrumentCustomNodeParams.params.startTime = startTime;
+    instrumentCustomNodeParams[2].startTime = startTime;
   }
   if (stopTime) {
-    instrumentCustomNodeParams.params.stopTime = stopTime;
+    instrumentCustomNodeParams[2].stopTime = stopTime;
   }
   return instrumentCustomNodeParams;
 };
@@ -111,10 +111,7 @@ const computeNextStopTime = startTime => startTime + beatDuration;
 export const playNote = ({id, pitch, modulation = 0.5}) => {
   const {arpeggiator, effect, rootNote, scale} = getState();
 
-  currentVirtualAudioGraph[0] = {
-    output: 'output',
-    node: effect.selectedEffect,
-  };
+  currentVirtualAudioGraph[0] = [effect.selectedEffect, 'output'];
 
   delete currentVirtualAudioGraph[id];
 
