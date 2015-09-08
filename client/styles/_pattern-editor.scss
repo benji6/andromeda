@@ -1,15 +1,17 @@
 .pattern-editor {
+  align-content: center;
   display: flex;
+  justify-content: center;
   flex-wrap: wrap;
   .step {
-    $total-width: 100vw;
+    $total-width: 95vw;
     $side-length: $total-width / 8;
-    $color: #11c;
+    $color: #15a;
     width: $side-length;
     height: $side-length;
     background-color: $color;
     box-sizing: border-box;
-    border: $side-length / 16 solid #fff;
+    border: $side-length / 16 solid #eee;
     &.selected {
       background: darken($color, 20%);
     }
