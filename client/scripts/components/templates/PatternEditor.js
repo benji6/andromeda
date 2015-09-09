@@ -15,14 +15,17 @@ export default class PatternEditor extends React.Component {
   render () {
     const {dispatch, pattern} = this.props;
     return (
-      <div className="pattern-editor">
-        {pattern.map((x, i) =>
-          x.map((y, j) =>
-            <div
-              className={y === false ? 'step' : 'step selected'}
-              key={`${i}-${j}`}
-              onClick={handleOnClick(dispatch, pattern, i, j)}
-            />))}
+      <div>
+        <div className="pattern-editor">
+          {pattern.map((x, i) =>
+            x.map((y, j) =>
+              <div
+                className={y === false ? 'step' : 'step selected'}
+                key={`${i}-${j}`}
+                onClick={handleOnClick(dispatch, pattern, i, j)}
+              />))}
+        </div>
+        <div className="play-button"></div>
       </div>
     );
   }

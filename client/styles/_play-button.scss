@@ -1,0 +1,12 @@
+.play-button {
+  $color: #15a;
+	border-bottom: 2rem solid transparent;
+	border-left: 3rem solid $color;
+	height: 0;
+	width: 0;
+  border-top: 2rem solid transparent;
+  margin: 1rem auto;
+  &.selected {
+  	border-left: 6rem solid darken($color, 20%);
+  }
+}
