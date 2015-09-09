@@ -4,14 +4,14 @@
   justify-content: center;
   flex-wrap: wrap;
   .step {
-    $total-width: 95vw;
+    $total-width: 90vw;
     $side-length: $total-width / 8;
     $color: #15a;
     width: $side-length;
-    height: $side-length;
+    height: $side-length / 2;
     background-color: $color;
     box-sizing: border-box;
-    border: $side-length / 16 solid #eee;
+    border: $side-length / 32 solid #eee;
     &.selected {
       background: darken($color, 20%);
     }
