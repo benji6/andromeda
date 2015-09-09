@@ -2,9 +2,7 @@
   "name": "elemental",
   "version": "0.0.0",
   "description": "Make music in your browser!",
-  "scripts": {
-    "test": "babel-node --stage 1 ./tests/index.js | node_modules/.bin/tap-nyan"
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "https://github.com/benji6/elemental.git"
@@ -45,8 +43,6 @@
     "gulp-util": "^3.0.6",
     "ramda": "^0.17.1",
     "run-sequence": "^1.1.2",
-    "tap-nyan": "0.0.2",
-    "tape": "^4.2.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.4.0",
