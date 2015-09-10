@@ -4,7 +4,7 @@ import render from '../../tools/render';
 import {Provider} from 'react-redux';
 import store from '../../store';
 
-export default class ModalOKButton extends React.Component {
+export default class extends React.Component {
   handleClick () {
     render(
       <Provider store={store}>

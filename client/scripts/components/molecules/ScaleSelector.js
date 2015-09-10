@@ -3,7 +3,7 @@ import capitalize from 'capitalize';
 import React from 'react';
 const {keys, map} = R;
 
-export default class ScaleSelector extends React.Component {
+export default class extends React.Component {
   render () {
     const {handleScaleChange, scaleName, scales} = this.props;
     return (

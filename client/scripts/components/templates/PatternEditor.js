@@ -12,7 +12,7 @@ const handleOnClick = (dispatch, pattern, i, j) => () =>
                                                            row),
                                     pattern)));
 @connect(identity)
-export default class PatternEditor extends React.Component {
+export default class extends React.Component {
   render () {
     const {dispatch, pattern} = this.props;
     return (

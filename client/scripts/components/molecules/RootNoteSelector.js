@@ -8,7 +8,7 @@ const computeNoteNameFromPitch = (pitch) => {
   return AlphabeticalComponents[abs(pitch) % numberOfNotes] + octave;
 };
 
-export default class RootNoteSelector extends React.Component {
+export default class extends React.Component {
   render () {
     const {handleRootNoteChange, rootNote} = this.props;
     return (

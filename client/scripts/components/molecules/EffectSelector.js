@@ -3,7 +3,7 @@ import capitalize from 'capitalize';
 import React from 'react';
 const {map} = R;
 
-export default class EffectSelector extends React.Component {
+export default class extends React.Component {
   render () {
     const {
       effects,
