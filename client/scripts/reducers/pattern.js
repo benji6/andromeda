@@ -1,9 +1,9 @@
+/* global R */
 import {UPDATE_PATTERN} from '../actions';
 
-const initialState = Array.apply(0, {length:8})
-  .map(() => Array.apply(0, {length:8}));
+const {repeat} = R;
 
-export default (state = initialState, {type, value}) => {
+export default (state = repeat(repeat(false, 8), 8), {type, value}) => {
   switch (type) {
     case UPDATE_PATTERN:
       return value;

@@ -86,7 +86,7 @@ const renderLoop = function renderLoop () {
   renderer.render(scene, camera);
 };
 
-export default class ControlPad extends React.Component {
+export default class extends React.Component {
   componentDidMount () {
     controlPadElement = document.querySelector('.control-pad');
     const input$ = merge(fromEvent(controlPadElement, 'touchstart'),

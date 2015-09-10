@@ -1,10 +1,11 @@
 @import 'vars';
-@import 'performance-menu';
 @import 'control-pad';
-@import 'modal-container';
-@import 'pattern-editor';
 @import 'inputs';
 @import 'loading-spinner';
+@import 'modal-container';
+@import 'pattern-editor';
+@import 'performance-menu';
+@import 'play-button';
 
 body {
   background: #012;
