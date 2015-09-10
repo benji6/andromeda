@@ -7,6 +7,9 @@
   border-top: 2rem solid transparent;
   margin: 1rem auto;
   &.selected {
-  	border-left: 6rem solid darken($color, 20%);
+    background: 3rem solid darken($color, 20%);
+    border: 0;
+    height: 3rem;
+    width: 3rem;
   }
 }
