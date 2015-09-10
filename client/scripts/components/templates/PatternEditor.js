@@ -3,6 +3,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {updatePattern} from '../../actions';
 import mapIndexed from '../../tools/mapIndexed';
+import PlayButton from '../atoms/PlayButton';
 
 const {identity} = R;
 
@@ -25,7 +26,7 @@ export default class PatternEditor extends React.Component {
                 onClick={handleOnClick(dispatch, pattern, i, j)}
               />))}
         </div>
-        <div className="play-button"></div>
+        <PlayButton />
       </div>
     );
   }
