@@ -1,14 +1,12 @@
-import React from 'react';
+import React from 'react'; // eslint-disable-line
 import ControlPad from '../atoms/ControlPad';
-import PerformanceMenu from '../molecules/PerformanceMenu';
+import PerformanceMenu from '../templates/PerformanceMenu';
 
-export default class extends React.Component {
-  render () {
-    return <div>
-      <div className="center">
-        <ControlPad />
-      </div>
-      <PerformanceMenu />
-    </div>;
-  }
-}
+export default () => (
+  <div>
+    <div className="center">
+      <ControlPad />
+    </div>
+    <PerformanceMenu />
+  </div>
+);

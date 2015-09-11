@@ -1,7 +1,4 @@
-import React from 'react';
+import React from 'react'; // eslint-disable-line
 
-export default class extends React.Component {
-  render () {
-    return <h1 className="upgrade-browser-message">Requires the latest version of Chrome to run...</h1>;
-  }
-}
+export default () =>
+  <h1 className="upgrade-browser-message">Requires the latest version of Chrome to run...</h1>;

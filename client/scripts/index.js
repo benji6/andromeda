@@ -11,7 +11,7 @@ import render from './tools/render';
 if (navigator.serviceWorker) {
   // render(
   //   <Provider store={store}>
-  //     {() => <PatternEditor />}
+  //     <PatternEditor />
   //   </Provider>
   // );
   render(<PerformanceView />);
