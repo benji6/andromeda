@@ -9,7 +9,7 @@ const getState = ::store.getState;
 let currentlyPlayingPitch = null;
 let stopLastNoteOnNoteChange = true;
 
-const calculatePitch = (xRatio) => {
+const calculatePitch = xRatio => {
   const {scaleName, scales} = getState().scale;
   const scale = scales[scaleName];
   if (isNil(scale)) {
@@ -23,7 +23,7 @@ const calculatePitch = (xRatio) => {
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
 const getNoteFromXYRatios = compose(assoc('id', 'controlPad'), calculatePitchAndMod);
 
-export const handleControlPadInput = (xYRatios) => {
+export const handleControlPadInput = xYRatios => {
   const note = getNoteFromXYRatios(xYRatios);
   const {id, pitch} = note;
   if (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null && stopLastNoteOnNoteChange) {
@@ -33,7 +33,7 @@ export const handleControlPadInput = (xYRatios) => {
   playNote(note);
 };
 
-export const handleControlPadInputEnd = (xYRatios) => {
+export const handleControlPadInputEnd = xYRatios => {
   currentlyPlayingPitch = null;
   stopNote(getNoteFromXYRatios(xYRatios));
 };

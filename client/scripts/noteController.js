@@ -8,8 +8,8 @@ const {Observable, Subject} = Rx;
 const {interval} = Observable;
 const getState = ::store.getState;
 
-const calculateFrequency = (pitch) => 440 * 2 ** (pitch / 12);
-const pickRandom = (arr) => Random.pick(Random.engines.browserCrypto, arr);
+const calculateFrequency = pitch => 440 * 2 ** (pitch / 12);
+const pickRandom = arr => Random.pick(Random.engines.browserCrypto, arr);
 const bpm = 140;
 const beatDuration = 60 / bpm / 4;
 
@@ -21,7 +21,7 @@ const getVirtualNodeId = (() => {
   };
 }());
 
-let currentVirtualAudioGraph = {};
+const currentVirtualAudioGraph = {};
 let lastStartTime = null;
 const arpStop$ = new Subject();
 arpStop$.subscribe();
@@ -48,15 +48,16 @@ let ascending = true;
 const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, startTime, stopTime) => {
   const {arpeggiator, scale} = getState();
   const {arpeggiatorIsOn, selectedPattern} = arpeggiator;
+  let pitchToPlay = pitch;
 
   if (arpeggiatorIsOn && scale.scaleName !== 'none') {
     const arpeggiatorPitches = [
-      incrementScalePitch(pitch, 0),
-      incrementScalePitch(pitch, 2),
-      incrementScalePitch(pitch, 4),
-      incrementScalePitch(pitch, 7),
-      incrementScalePitch(pitch, 9),
-      incrementScalePitch(pitch, 11),
+      incrementScalePitch(pitchToPlay, 0),
+      incrementScalePitch(pitchToPlay, 2),
+      incrementScalePitch(pitchToPlay, 4),
+      incrementScalePitch(pitchToPlay, 7),
+      incrementScalePitch(pitchToPlay, 9),
+      incrementScalePitch(pitchToPlay, 11),
     ];
     if (selectedPattern === 'up') {
       ascending = true;
@@ -71,26 +72,24 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
     }
 
     if (selectedPattern === 'random') {
-      pitch = pickRandom(arpeggiatorPitches);
+      pitchToPlay = pickRandom(arpeggiatorPitches);
+    } else if (ascending) {
+      pitchToPlay = arpeggiatorPitches[currentIndex];
+      currentIndex = ++currentIndex === arpeggiatorPitches.length ?
+        0 :
+        currentIndex;
     } else {
-      if (ascending) {
-        pitch = arpeggiatorPitches[currentIndex];
-        currentIndex = ++currentIndex === arpeggiatorPitches.length ?
-          0 :
-          currentIndex;
-      } else {
-        currentIndex = currentIndex === 0 ?
-          arpeggiatorPitches.length - 1 :
-          --currentIndex;
-        pitch = arpeggiatorPitches[currentIndex];
-      }
+      currentIndex = currentIndex === 0 ?
+        arpeggiatorPitches.length - 1 :
+        --currentIndex;
+      pitchToPlay = arpeggiatorPitches[currentIndex];
     }
   }
   const instrumentCustomNodeParams = [
     getState().instrument.selectedInstrument,
     ['output', 0],
     {
-      frequency: calculateFrequency(pitch + rootNote),
+      frequency: calculateFrequency(pitchToPlay + rootNote),
       gain: (1 - modulation) / 4,
     },
   ];
@@ -113,7 +112,7 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
 
   currentVirtualAudioGraph[0] = [effect.selectedEffect, 'output'];
 
-  delete currentVirtualAudioGraph[id];
+  Reflect.deleteProperty(currentVirtualAudioGraph, id);
 
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     interval(Math.floor(beatDuration / 2))
@@ -150,6 +149,6 @@ export const stopNote = ({id}) => {
   }
   currentIndex = 0;
   lastStartTime = null;
-  delete currentVirtualAudioGraph[id];
+  Reflect.deleteProperty(currentVirtualAudioGraph, id);
   virtualAudioGraph.update(currentVirtualAudioGraph);
 };

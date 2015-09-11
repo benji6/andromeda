@@ -1,7 +1,7 @@
 import React from 'react';
 const {abs, floor} = Math;
 
-const computeNoteNameFromPitch = (pitch) => {
+const computeNoteNameFromPitch = pitch => {
   const AlphabeticalComponents = ['A', 'A#/Bb', 'B', 'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab'];
   const numberOfNotes = AlphabeticalComponents.length;
   const octave = floor(pitch / numberOfNotes) + 4;

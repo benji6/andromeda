@@ -48,7 +48,7 @@ const keyCodesToPitches = {
 
 const pressedKeys = new Set();
 
-const computeNoteParams = (pitch) => ({id: `keyboard: ${pitch}`,
+const computeNoteParams = pitch => ({id: `keyboard: ${pitch}`,
                                        pitch});
 
 const computeNoteParamsFromKeyCode = compose(map(flip(prop)(keyCodesToPitches)),
@@ -56,7 +56,7 @@ const computeNoteParamsFromKeyCode = compose(map(flip(prop)(keyCodesToPitches)),
                                              map(computeNoteParams));
 
 fromEvent(document.body, 'keydown')
-  .transduce(compose(map(tap((e) => e.keyCode === 191 && e.preventDefault())),
+  .transduce(compose(map(tap(e => e.keyCode === 191 && e.preventDefault())),
                     map(prop('keyCode')),
                     reject(::pressedKeys.has),
                     map(tap(::pressedKeys.add)),

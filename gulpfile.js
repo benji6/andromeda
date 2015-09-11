@@ -38,7 +38,7 @@ gulp.task('css', () => gulp.src('client/styles/index.scss')
     cascade: false,
   }))
   .pipe(minifyCSS())
-  .pipe(gulp.dest(publicPath + '/styles'))
+  .pipe(gulp.dest(`${publicPath}/styles`))
   .pipe(connect.reload()));
 
 gulp.task('htmlDev', () => gulp.src('client/index.html')
@@ -74,24 +74,24 @@ gulp.task('htmlProd', () => gulp.src('client/index.html')
 
 gulp.task('scriptsDev',
           () => watchify(browserify(browserifyEntryPath, R.assoc('debug', true, watchify.args)))
-            .transform(babelify, {stage: 0})
+            .transform(babelify, {optional: ['runtime'], stage: 0})
             .bundle()
             .on('error', gutil.log.bind(gutil, 'Browserify Error'))
             .pipe(source('index.js'))
             .pipe(buffer())
             .pipe(sourcemaps.init({loadMaps: true}))
             .pipe(sourcemaps.write('./'))
-            .pipe(gulp.dest(publicPath + '/scripts'))
+            .pipe(gulp.dest(`${publicPath}/scripts`))
             .pipe(connect.reload()));
 
 gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
-  .transform(babelify, {stage: 0})
+  .transform(babelify, {optional: ['runtime'], stage: 0})
   .bundle()
   .on('error', gutil.log.bind(gutil, 'Browserify Error'))
   .pipe(source('index.js'))
   .pipe(buffer())
   .pipe(uglify())
-  .pipe(gulp.dest(publicPath + '/scripts')));
+  .pipe(gulp.dest(`${publicPath}/scripts`)));
 
 gulp.task('lint', () => gulp.src('client/scripts/**/*')
   .pipe(eslint())

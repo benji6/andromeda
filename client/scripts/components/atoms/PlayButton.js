@@ -12,4 +12,4 @@ export default class extends React.Component {
     return <div className={`play-button ${playing ? 'selected' : ''}`}
                 onClick={() => dispatch(updatePlaying(!playing))}></div>;
   }
-};
+}

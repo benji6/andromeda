@@ -14,7 +14,7 @@ const eventValuePath = path(['currentTarget', 'value']);
 
 @connect(x => x)
 export default class extends React.Component {
-  render() {
+  render () {
     const {dispatch, instrument, effect} = this.props;
     const {instruments, selectedInstrument} = instrument;
     const {effects, selectedEffect} = effect;

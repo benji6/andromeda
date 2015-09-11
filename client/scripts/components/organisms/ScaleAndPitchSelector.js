@@ -18,7 +18,7 @@ const eventCheckedPath = path(['currentTarget', 'checked']);
 
 @connect(x => x)
 export default class extends React.Component {
-  render() {
+  render () {
     const {arpeggiator, dispatch, rootNote, scale} = this.props;
     const {scaleName, scales} = scale;
     const {arpeggiatorIsOn, patterns, selectedPattern} = arpeggiator;
