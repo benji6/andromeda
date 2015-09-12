@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {updatePattern} from '../../actions';
 import mapIndexed from '../../tools/mapIndexed';
 import PlayButton from '../atoms/PlayButton';
+import Navigation from '../organisms/Navigation';
 
 const {identity} = R;
 
@@ -12,8 +13,9 @@ const handleOnClick = (dispatch, pattern, i, j) => () =>
                                                            row),
                                     pattern)));
 
-export default connect(identity)(({dispatch, pattern}) => (
+export default connect(identity)(({dispatch, pattern}) =>
   <div>
+    <Navigation />
     <div className="pattern-editor">
       {pattern.map((x, i) =>
         x.map((y, j) =>
@@ -24,5 +26,4 @@ export default connect(identity)(({dispatch, pattern}) => (
           />))}
     </div>
     <PlayButton />
-  </div>
-));
+  </div>);
