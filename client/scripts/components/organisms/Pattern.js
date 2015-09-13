@@ -1,6 +1,6 @@
 import React from 'react'; // eslint-disable-line
 import {updatePattern} from '../../actions';
-import mapIndexed from '../../tools/mapIndexed';
+import {mapIndexed} from '../../tools/indexedIterators';
 
 const handleOnClick = (dispatch, pattern, i, j) =>
   dispatch(updatePattern(mapIndexed((row, x) => mapIndexed((cell, y) => x === i && y === j ?

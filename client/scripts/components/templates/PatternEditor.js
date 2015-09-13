@@ -2,36 +2,55 @@
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 const {timer} = Rx.Observable;
+import {playNote, stopNote} from '../../noteController';
 import store from '../../store';
 import {updatePattern} from '../../actions';
-import mapIndexed from '../../tools/mapIndexed';
+import {forEachIndexed, mapIndexed} from '../../tools/indexedIterators';
 import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
-const {identity} = R;
+const {compose, identity, filter, map, transduce} = R;
 
 const bpm = 140;
 const timeInterval = 60000 / bpm;
 
 const playStopSubject = new Rx.Subject();
 
+const stopAllNotes = forEachIndexed((row, rowIndex) =>
+  forEachIndexed((cell, cellIndex) => stopNote({id: `${rowIndex}${cellIndex}`}),
+                 row));
+
 const onPlay = dispatch =>
   timer(0, timeInterval)
     .takeUntil(playStopSubject)
-    .subscribe(count => {
+    .map(count => {
       const {pattern} = store.getState();
-      dispatch(updatePattern(mapIndexed(row => mapIndexed((cell, y) => y === count % pattern.length ?
+      return {pattern, position: count % pattern.length};
+    })
+    .do(({pattern, position}) =>
+      dispatch(updatePattern(mapIndexed(row => mapIndexed((cell, y) => y === position ?
                                                             {...cell, active: true} :
                                                             {...cell, active: false},
                                                           row),
-                                        pattern)));
-                                      });
+                                        pattern))))
+    .do(compose(stopAllNotes, x => x.pattern))
+    .subscribe(({pattern, position}) =>
+      transduce(compose(mapIndexed((row, rowIndex) => ({id: `${rowIndex}${position}`,
+                                                        pitch: rowIndex,
+                                                        selected: row[position].selected})),
+                                   filter(({selected}) => selected),
+                                   map(playNote)),
+                            () => {},
+                            null,
+                            pattern));
 
 const onStop = dispatch => {
+  const {pattern} = store.getState();
+  stopAllNotes(pattern);
   playStopSubject.onNext();
   dispatch(updatePattern(mapIndexed(row => mapIndexed(cell => ({...cell, active: false}),
                                                       row),
-                                    store.getState().pattern)));
+                                    pattern)));
 };
 
 export default connect(identity)(({dispatch, pattern}) =>
