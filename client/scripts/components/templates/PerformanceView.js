@@ -3,12 +3,11 @@ import ControlPad from '../atoms/ControlPad';
 import PerformanceMenu from '../templates/PerformanceMenu';
 import Navigation from '../organisms/Navigation';
 
-export default () => (
+export default () =>
   <div>
     <Navigation />
     <div className="center">
       <ControlPad />
     </div>
     <PerformanceMenu />
-  </div>
-);
+  </div>;

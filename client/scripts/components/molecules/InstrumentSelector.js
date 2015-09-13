@@ -5,7 +5,7 @@ const {map} = R;
 
 export default ({handleSelectInstrument,
                  instruments,
-                 selectedInstrument}) => (
+                 selectedInstrument}) =>
   <label>
     <span>Instrument</span>
     <select onChange={handleSelectInstrument}
@@ -15,5 +15,4 @@ export default ({handleSelectInstrument,
           {capitalize(item)}
         </option>, instruments)}
     </select>
-  </label>
-);
+  </label>;

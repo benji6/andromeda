@@ -8,7 +8,7 @@ const computeNoteNameFromPitch = pitch => {
   return AlphabeticalComponents[abs(pitch) % numberOfNotes] + octave;
 };
 
-export default ({handleRootNoteChange, rootNote}) => (
+export default ({handleRootNoteChange, rootNote}) =>
   <label>
     <div>
       <span></span>
@@ -20,5 +20,4 @@ export default ({handleRootNoteChange, rootNote}) => (
            onChange={handleRootNoteChange}
            type="range"
            value={rootNote} />
-  </label>
-);
+  </label>;

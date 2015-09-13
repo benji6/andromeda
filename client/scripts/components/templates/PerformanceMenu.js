@@ -5,7 +5,7 @@ import render from '../../tools/render';
 import {Provider} from 'react-redux';
 import store from '../../store';
 
-export default () => (
+export default () =>
   <div className="performance-menu">
     <div className="buttons-container">
       <button onClick={() => render(
@@ -18,5 +18,4 @@ export default () => (
         </Provider>
       )}>Scale & Pitch</button>
     </div>
-  </div>
-);
+  </div>;
