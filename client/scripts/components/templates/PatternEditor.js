@@ -5,16 +5,11 @@ const {timer} = Rx.Observable;
 import store from '../../store';
 import {updatePattern} from '../../actions';
 import mapIndexed from '../../tools/mapIndexed';
+import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
 const {identity} = R;
 
-const handleOnClick = (dispatch, pattern, i, j) =>
-  dispatch(updatePattern(mapIndexed((row, x) => mapIndexed((cell, y) => x === i && y === j ?
-                                      {...cell, selected: !cell.selected} :
-                                      cell,
-                                                           row),
-                                    pattern)));
 const bpm = 140;
 const timeInterval = 60000 / bpm;
 
@@ -39,19 +34,11 @@ const onStop = dispatch => {
                                     store.getState().pattern)));
 };
 
-const selectedClass = ({selected}) => selected === true ? 'selected' : '';
-const activeClass = ({active}) => active === true ? 'active' : '';
-
 export default connect(identity)(({dispatch, pattern}) =>
   <div>
     <Navigation />
-    <div className="pattern-editor">
-      {pattern.map((x, i) =>
-        x.map((cell, j) =>
-          <div className={`step ${selectedClass(cell)} ${activeClass(cell)}`}
-               key={`${i}-${j}`}
-               onClick={() => handleOnClick(dispatch, pattern, i, j)} />))}
-    </div>
+    <Pattern dispatch={dispatch}
+             pattern={pattern} />
     <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
   </div>);
