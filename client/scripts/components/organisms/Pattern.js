@@ -14,9 +14,9 @@ const activeClass = ({active}) => active === true ? 'active' : '';
 
 export default ({dispatch, pattern}) =>
     <div className="pattern-editor">
-      {pattern.map((x, i) =>
-        x.map((cell, j) =>
+      {mapIndexed((x, i) =>
+        mapIndexed((cell, j) =>
           <div className={`step ${selectedClass(cell)} ${activeClass(cell)}`}
                key={`${i}-${j}`}
-               onClick={() => handleOnClick(dispatch, pattern, i, j)} />))}
+               onClick={() => handleOnClick(dispatch, pattern, i, j)} />, x), pattern)}
     </div>;

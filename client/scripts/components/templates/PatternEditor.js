@@ -9,15 +9,15 @@ import {forEachIndexed, mapIndexed} from '../../tools/indexedIterators';
 import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
+import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
 const {compose, identity, filter, map, transduce} = R;
-
 const bpm = 140;
 const timeInterval = 60000 / bpm;
 
 const playStopSubject = new Rx.Subject();
 
 const stopAllNotes = forEachIndexed((row, rowIndex) =>
-  forEachIndexed((cell, cellIndex) => stopNote({id: `${rowIndex}${cellIndex}`}),
+  forEachIndexed((cell, cellIndex) => stopNote({id: `pattern-editor-${rowIndex}${cellIndex}`}),
                  row));
 
 const onPlay = dispatch =>
@@ -35,8 +35,8 @@ const onPlay = dispatch =>
                                         pattern))))
     .do(compose(stopAllNotes, x => x.pattern))
     .subscribe(({pattern, position}) =>
-      transduce(compose(mapIndexed((row, rowIndex) => ({id: `${rowIndex}${position}`,
-                                                        pitch: rowIndex,
+      transduce(compose(mapIndexed((row, rowIndex) => ({id: `pattern-editor-${rowIndex}${position}`,
+                                                        pitch: pitchFromScaleIndex(pattern.length - 1 - rowIndex),
                                                         selected: row[position].selected})),
                                    filter(({selected}) => selected),
                                    map(playNote)),
