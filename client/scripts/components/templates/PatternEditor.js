@@ -20,12 +20,12 @@ const stopAllNotes = forEachIndexed((row, rowIndex) =>
   forEachIndexed((cell, cellIndex) => stopNote({id: `pattern-editor-${rowIndex}${cellIndex}`}),
                  row));
 
-const onPlay = (dispatch, {scales, scaleName}) =>
+const onPlay = dispatch =>
   timer(0, timeInterval)
     .takeUntil(playStopSubject)
     .map(count => {
-      const {pattern} = store.getState();
-      return {pattern, position: count % pattern.length};
+      const {pattern, scale} = store.getState();
+      return {pattern, position: count % pattern.length, scale};
     })
     .do(({pattern, position}) =>
       dispatch(updatePattern(mapIndexed(row => mapIndexed((cell, y) => y === position ?
@@ -34,9 +34,9 @@ const onPlay = (dispatch, {scales, scaleName}) =>
                                                           row),
                                         pattern))))
     .do(compose(stopAllNotes, x => x.pattern))
-    .subscribe(({pattern, position}) =>
+    .subscribe(({pattern, position, scale}) =>
       transduce(compose(mapIndexed((row, rowIndex) => ({id: `pattern-editor-${rowIndex}${position}`,
-                                                        pitch: pitchFromScaleIndex(scales[scaleName], pattern.length - 1 - rowIndex),
+                                                        pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], pattern.length - 1 - rowIndex),
                                                         selected: row[position].selected})),
                                    filter(({selected}) => selected),
                                    map(playNote)),
