@@ -20,7 +20,7 @@ const stopAllNotes = forEachIndexed((row, rowIndex) =>
   forEachIndexed((cell, cellIndex) => stopNote({id: `pattern-editor-${rowIndex}${cellIndex}`}),
                  row));
 
-const onPlay = dispatch =>
+const onPlay = (dispatch, {scales, scaleName}) =>
   timer(0, timeInterval)
     .takeUntil(playStopSubject)
     .map(count => {
@@ -36,7 +36,7 @@ const onPlay = dispatch =>
     .do(compose(stopAllNotes, x => x.pattern))
     .subscribe(({pattern, position}) =>
       transduce(compose(mapIndexed((row, rowIndex) => ({id: `pattern-editor-${rowIndex}${position}`,
-                                                        pitch: pitchFromScaleIndex(pattern.length - 1 - rowIndex),
+                                                        pitch: pitchFromScaleIndex(scales[scaleName], pattern.length - 1 - rowIndex),
                                                         selected: row[position].selected})),
                                    filter(({selected}) => selected),
                                    map(playNote)),
@@ -53,11 +53,13 @@ const onStop = dispatch => {
                                     pattern)));
 };
 
-export default connect(identity)(({dispatch, pattern}) =>
+export default connect(identity)(({dispatch, pattern, rootNote, scale}) =>
   <div>
     <Navigation />
     <Pattern dispatch={dispatch}
-             pattern={pattern} />
-    <PlayButton onPlay={() => onPlay(dispatch)}
+             pattern={pattern}
+             rootNote={rootNote}
+             scale={scale} />
+           <PlayButton onPlay={() => onPlay(dispatch, scale)}
                 onStop={() => onStop(dispatch)} />
   </div>);

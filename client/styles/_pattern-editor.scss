@@ -1,5 +1,6 @@
 .pattern-editor {
   $total-width: 50vw;
+  $side-length: $total-width / 9;
   align-content: center;
   display: flex;
   flex-wrap: wrap;
@@ -7,7 +8,6 @@
   margin: auto;
   width: $total-width;
   .step {
-    $side-length: $total-width / 8;
     $color: #15a;
     background-color: $color;
     border: $side-length / 32 solid #eee;
@@ -23,5 +23,23 @@
     &.active.selected {
       background: darken($color, 15%);
     }
+  }
+  .label-x {
+    color: $white;
+    font-size: $small-font;
+    padding: 0.3rem 0;
+    text-align: center;
+    width: $side-length;
+  }
+  .label-y {
+    align-items: center;
+    box-sizing: border-box;
+    color: $white;
+    display: flex;
+    font-size: $small-font;
+    height: $side-length / 2;
+    justify-content: flex-start;
+    padding: 0.2rem;
+    width: $side-length;
   }
 }

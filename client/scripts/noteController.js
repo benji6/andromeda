@@ -2,6 +2,7 @@
 import Random from 'random-js';
 import store from './store';
 import virtualAudioGraph from './virtualAudioGraph';
+
 const {compose, dropLast, map, reject, tap} = R;
 const {Observable, Subject} = Rx;
 
