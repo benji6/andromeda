@@ -3,7 +3,7 @@ import store from './store';
 import virtualAudioGraph from './virtualAudioGraph';
 import createInstrumentCustomNodeParams, {resetArpeggiator} from './tools/createInstrumentCustomNodeParams';
 
-const {compose, map, reject, tap} = R;
+const {assoc, compose, dissoc, map, reject, tap} = R;
 const {Observable, Subject} = Rx;
 
 const {interval} = Observable;
@@ -20,7 +20,7 @@ const getVirtualNodeId = (() => {
   };
 }());
 
-const currentVirtualAudioGraph = {};
+let currentVirtualAudioGraph = {};
 let lastStartTime = null;
 const arpStop$ = new Subject();
 arpStop$.subscribe();
@@ -30,7 +30,9 @@ const computeNextStartTime = currentTime => Math.ceil(currentTime / noteDuration
 export const playNote = ({id, pitch, modulation = 0.5}) => {
   const {arpeggiator, effect, rootNote, scale} = getState();
 
-  currentVirtualAudioGraph[0] = [effect.selectedEffect, 'output'];
+  currentVirtualAudioGraph = assoc(0,
+                                   [effect.selectedEffect, 'output'],
+                                   currentVirtualAudioGraph);
 
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     arpStop$.onNext();
@@ -42,20 +44,16 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
                          map(startTime => ({startTime, stopTime: startTime + noteDuration})),
                          reject(({stopTime}) => stopTime < virtualAudioGraph.currentTime),
                          map(({startTime, stopTime}) =>
-                           currentVirtualAudioGraph[getVirtualNodeId(id)] = createInstrumentCustomNodeParams(pitch,
-                                                                                                             id,
-                                                                                                             rootNote,
-                                                                                                             modulation,
-                                                                                                             startTime,
-                                                                                                             stopTime)),
+                           currentVirtualAudioGraph = assoc(getVirtualNodeId(id),
+                                                            createInstrumentCustomNodeParams(pitch, id, rootNote, modulation, startTime, stopTime),
+                                                            currentVirtualAudioGraph)),
                          map(() => virtualAudioGraph.update(currentVirtualAudioGraph))))
       .takeUntil(arpStop$)
       .subscribe();
   } else {
-    currentVirtualAudioGraph[id] = createInstrumentCustomNodeParams(pitch,
-                                                                    id,
-                                                                    rootNote,
-                                                                    modulation);
+    currentVirtualAudioGraph = assoc(id,
+                                     createInstrumentCustomNodeParams(pitch, id, rootNote, modulation),
+                                     currentVirtualAudioGraph);
     virtualAudioGraph.update(currentVirtualAudioGraph);
   }
 };
@@ -67,6 +65,6 @@ export const stopNote = ({id}) => {
   }
   resetArpeggiator();
   lastStartTime = null;
-  Reflect.deleteProperty(currentVirtualAudioGraph, id);
+  currentVirtualAudioGraph = dissoc(id, currentVirtualAudioGraph);
   virtualAudioGraph.update(currentVirtualAudioGraph);
 };
