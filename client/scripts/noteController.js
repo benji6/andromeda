@@ -12,7 +12,7 @@ const getState = ::store.getState;
 const calculateFrequency = pitch => 440 * 2 ** (pitch / 12);
 const pickRandom = arr => Random.pick(Random.engines.browserCrypto, arr);
 const bpm = 140;
-const beatDuration = 60 / bpm / 4;
+const noteDuration = 60 / bpm / 4;
 
 const getVirtualNodeId = (() => {
   let currentId = 0;
@@ -52,14 +52,8 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
   let pitchToPlay = pitch;
 
   if (arpeggiatorIsOn && scale.scaleName !== 'none') {
-    const arpeggiatorPitches = [
-      incrementScalePitch(pitchToPlay, 0),
-      incrementScalePitch(pitchToPlay, 2),
-      incrementScalePitch(pitchToPlay, 4),
-      incrementScalePitch(pitchToPlay, 7),
-      incrementScalePitch(pitchToPlay, 9),
-      incrementScalePitch(pitchToPlay, 11),
-    ];
+    const arpeggiatorPitches = map(x => incrementScalePitch(pitchToPlay, x),
+                                   [0, 2, 4, 7, 9, 11]);
     if (selectedPattern === 'up') {
       ascending = true;
     } else if (selectedPattern === 'down') {
@@ -104,35 +98,31 @@ const createInstrumentCustomNodeParams = (pitch, id, rootNote, modulation, start
   return instrumentCustomNodeParams;
 };
 
-const computeNextStartTime = currentTime =>
-  Math.ceil(currentTime / beatDuration) * beatDuration;
-const computeNextStopTime = startTime => startTime + beatDuration;
+const computeNextStartTime = currentTime => Math.ceil(currentTime / noteDuration) * noteDuration;
 
 export const playNote = ({id, pitch, modulation = 0.5}) => {
   const {arpeggiator, effect, rootNote, scale} = getState();
 
   currentVirtualAudioGraph[0] = [effect.selectedEffect, 'output'];
 
-  Reflect.deleteProperty(currentVirtualAudioGraph, id);
-
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
-    interval(Math.floor(beatDuration / 2))
-      .timeInterval()
-      .startWith(virtualAudioGraph.currentTime)
-      .takeUntil(arpStop$)
-      .map(() => virtualAudioGraph.currentTime)
-      .transduce(compose(map(computeNextStartTime),
+    arpStop$.onNext();
+    interval(noteDuration)
+      .transduce(compose(map(() => virtualAudioGraph.currentTime),
+                         map(computeNextStartTime),
                          reject(startTime => startTime === lastStartTime),
                          map(tap(startTime => lastStartTime = startTime)),
-                         map(startTime => ({startTime, stopTime: computeNextStopTime(startTime)})),
-                         map(tap(({startTime, stopTime}) =>
+                         map(startTime => ({startTime, stopTime: startTime + noteDuration})),
+                         reject(({stopTime}) => stopTime < virtualAudioGraph.currentTime),
+                         map(({startTime, stopTime}) =>
                            currentVirtualAudioGraph[getVirtualNodeId(id)] = createInstrumentCustomNodeParams(pitch,
                                                                                                              id,
                                                                                                              rootNote,
                                                                                                              modulation,
                                                                                                              startTime,
-                                                                                                             stopTime))),
+                                                                                                             stopTime)),
                          map(() => virtualAudioGraph.update(currentVirtualAudioGraph))))
+      .takeUntil(arpStop$)
       .subscribe();
   } else {
     currentVirtualAudioGraph[id] = createInstrumentCustomNodeParams(pitch,
