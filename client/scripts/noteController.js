@@ -59,14 +59,12 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
 };
 
 export const stopNote = ({id}) => {
-  const {arpeggiator, effect, scale} = getState();
+  const {arpeggiator, scale} = getState();
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     arpStop$.onNext();
-    currentVirtualAudioGraph = {0: [effect.selectedEffect, 'output']};
     resetArpeggiator();
     lastStartTime = null;
-  } else {
-    currentVirtualAudioGraph = dissoc(id, currentVirtualAudioGraph);
   }
+  currentVirtualAudioGraph = dissoc(id, currentVirtualAudioGraph);
   virtualAudioGraph.update(currentVirtualAudioGraph);
 };
