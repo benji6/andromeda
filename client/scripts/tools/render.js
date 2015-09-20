@@ -1,4 +1,4 @@
 /* global R */
-import ReactDOM from 'react-dom';
+import {render} from 'react-dom';
 const {curry, flip} = R;
-export default curry(flip(ReactDOM.render))(document.querySelector('#app'));
+export default curry(flip(render))(document.querySelector('#app'));

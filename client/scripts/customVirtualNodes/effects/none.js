@@ -1,6 +1,3 @@
 export default () => ({
-  0: {
-    node: 'gain',
-    output: 'output',
-  },
+  0: ['gain', 'output'],
 });

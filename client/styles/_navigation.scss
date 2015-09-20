@@ -1,0 +1,12 @@
+.navigation {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  .button {
+    color: #fff;
+    width: 8rem;
+    height: 1.5rem;
+    font-size: 0.9rem;
+    background: rgba(0,0,0,0);
+  }
+}

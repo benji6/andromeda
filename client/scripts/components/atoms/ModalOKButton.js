@@ -1,13 +1,13 @@
-import React from 'react';
-import PerformanceView from '../pages/PerformanceView';
+import React from 'react'; // eslint-disable-line
+import PerformanceView from '../templates/PerformanceView';
 import render from '../../tools/render';
+import {Provider} from 'react-redux';
+import store from '../../store';
 
-export default class ModalOKButton extends React.Component {
-  handleClick () {
-    render(<PerformanceView />);
-  }
+const handleClick = () => render(
+  <Provider store={store}>
+    <PerformanceView />
+  </Provider>
+);
 
-  render () {
-    return <button onClick={this.handleClick}>OK</button>;
-  }
-}
+export default () => <button onClick={handleClick}>OK</button>;

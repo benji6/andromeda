@@ -23,111 +23,91 @@ const watchify = require('watchify');
 const browserifyEntryPath = 'client/scripts/index.js';
 const publicPath = 'public';
 
-gulp.task('connect', function () {
-  return connect.server({
-    livereload: true,
-    root: publicPath,
-  });
+gulp.task('connect', () => connect.server({
+  livereload: true,
+  root: publicPath,
+}));
+
+gulp.task('clean', () => del('public/scripts/index*'));
+
+gulp.task('css', () => gulp.src('client/styles/index.scss')
+  .pipe(plumber())
+  .pipe(sass())
+  .pipe(autoprefixer({
+    browsers: ['last 2 Firefox versions', 'last 2 Chrome versions'],
+    cascade: false,
+  }))
+  .pipe(minifyCSS())
+  .pipe(gulp.dest(`${publicPath}/styles`))
+  .pipe(connect.reload()));
+
+gulp.task('htmlDev', () => gulp.src('client/index.html')
+  .pipe(plumber())
+  .pipe(minifyInline())
+  .pipe(minifyHTML())
+  .pipe(gulp.dest(publicPath))
+  .pipe(connect.reload()));
+
+gulp.task('htmlProd', () => gulp.src('client/index.html')
+  .pipe(cdnizer({
+    allowRev: false,
+    allowMin: true,
+    files: [
+      {
+        file: 'scripts/lib/three.min.js',
+        cdn: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js',
+      },
+      {
+        file: 'scripts/lib/rx.all.min.js',
+        cdn: 'https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.5.3/rx.all.min.js',
+      },
+      {
+        file: 'scripts/lib/ramda.min.js',
+        cdn: 'https://cdnjs.cloudflare.com/ajax/libs/ramda/0.17.1/ramda.min.js',
+      },
+    ],
+  }))
+  .pipe(minifyInline())
+  .pipe(minifyHTML())
+  .pipe(gulp.dest(publicPath))
+  .pipe(connect.reload()));
+
+gulp.task('scriptsDev',
+          () => watchify(browserify(browserifyEntryPath, R.assoc('debug', true, watchify.args)))
+            .transform(babelify, {optional: ['runtime'], stage: 0})
+            .bundle()
+            .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+            .pipe(source('index.js'))
+            .pipe(buffer())
+            .pipe(sourcemaps.init({loadMaps: true}))
+            .pipe(sourcemaps.write('./'))
+            .pipe(gulp.dest(`${publicPath}/scripts`))
+            .pipe(connect.reload()));
+
+gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
+  .transform(babelify, {optional: ['runtime'], stage: 0})
+  .bundle()
+  .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+  .pipe(source('index.js'))
+  .pipe(buffer())
+  .pipe(uglify())
+  .pipe(gulp.dest(`${publicPath}/scripts`)));
+
+gulp.task('lint', () => gulp.src('client/scripts/**/*')
+  .pipe(eslint())
+  .pipe(eslint.formatEach()));
+
+gulp.task('watch', () => {
+  gulp.watch('client/index.html', () => runSequence('htmlDev'));
+  gulp.watch('client/styles/**/*', () => runSequence('css'));
+  gulp.watch('client/scripts/**/*', () => runSequence(['scriptsDev', 'lint']));
 });
 
-gulp.task('clean', function () {
-  return del('public/scripts/index*');
-});
+gulp.task('build',
+          () => runSequence('clean',
+                            ['css', 'htmlProd', 'scriptsProd', 'lint']));
 
-gulp.task('css', function () {
-  gulp.src('client/styles/index.scss')
-    .pipe(plumber())
-    .pipe(sass())
-    .pipe(autoprefixer({
-      browsers: ['last 2 Firefox versions', 'last 2 Chrome versions'],
-      cascade: false,
-    }))
-    .pipe(minifyCSS())
-    .pipe(gulp.dest(publicPath + '/styles'))
-    .pipe(connect.reload());
-});
-
-gulp.task('htmlDev', function () {
-  return gulp.src('client/index.html')
-    .pipe(plumber())
-    .pipe(minifyInline())
-    .pipe(minifyHTML())
-    .pipe(gulp.dest(publicPath))
-    .pipe(connect.reload());
-});
-
-gulp.task('htmlProd', function () {
-  return gulp.src('client/index.html')
-    .pipe(cdnizer({
-      allowRev: false,
-      allowMin: true,
-      files: [
-        {
-          file: 'scripts/lib/three.min.js',
-          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js',
-        },
-        {
-          file: 'scripts/lib/rx.all.min.js',
-          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.5.3/rx.all.min.js',
-        },
-        {
-          file: 'scripts/lib/ramda.min.js',
-          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/ramda/0.17.1/ramda.min.js',
-        },
-      ],
-    }))
-    .pipe(minifyInline())
-    .pipe(minifyHTML())
-    .pipe(gulp.dest(publicPath))
-    .pipe(connect.reload());
-});
-
-gulp.task('scriptsDev', function () {
-  return watchify(browserify(browserifyEntryPath, R.assoc('debug', true, watchify.args)))
-    .transform(babelify, {stage: 0})
-    .bundle()
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    .pipe(source('index.js'))
-    .pipe(buffer())
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest(publicPath + '/scripts'))
-    .pipe(connect.reload());
-});
-
-gulp.task('scriptsProd', function () {
-  return browserify(browserifyEntryPath)
-    .transform(babelify, {stage: 0})
-    .bundle()
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    .pipe(source('index.js'))
-    .pipe(buffer())
-    .pipe(uglify())
-    .pipe(gulp.dest(publicPath + '/scripts'));
-});
-
-gulp.task('lint', function () {
-  return gulp.src('client/scripts/**/*')
-    .pipe(eslint())
-    .pipe(eslint.formatEach());
-});
-
-gulp.task('watch', function () {
-  gulp.watch('client/index.html', function () {
-    return runSequence('htmlDev');
-  });
-  gulp.watch('client/styles/**/*', function () {
-    return runSequence('css');
-  });
-  gulp.watch('client/scripts/**/*', function () {
-    return runSequence(['scriptsDev', 'lint']);
-  });
-});
-
-gulp.task('build', function () {
-  return runSequence('clean', ['css', 'htmlProd', 'scriptsProd', 'lint']);
-});
-
-gulp.task('default', function () {
-  return runSequence('clean', ['css', 'htmlDev', 'scriptsDev', 'lint', 'watch'], 'connect');
-});
+gulp.task('default',
+          () => runSequence('clean',
+                            ['css', 'htmlDev', 'scriptsDev', 'lint', 'watch'],
+                            'connect'));

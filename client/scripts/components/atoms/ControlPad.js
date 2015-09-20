@@ -10,13 +10,13 @@ const minZ = -128;
 const sideLength = 1;
 const maxDepth = 3 * sideLength ** 2 ** 0.5;
 
-const validRatio = (x) => x < 0 ?
+const validRatio = x => x < 0 ?
   0 :
   x >= 1 ?
     1 - EPSILON :
     x;
 
-const calculateXAndYRatio = (e) => {
+const calculateXAndYRatio = e => {
   const {top, right, bottom, left} = e.target.getBoundingClientRect();
   const clientXAndClientYObj = e.changedTouches && e.changedTouches[0] || e;
   const {clientX, clientY} = clientXAndClientYObj;
@@ -86,7 +86,7 @@ const renderLoop = function renderLoop () {
   renderer.render(scene, camera);
 };
 
-export default class ControlPad extends React.Component {
+export default class extends React.Component {
   componentDidMount () {
     controlPadElement = document.querySelector('.control-pad');
     const input$ = merge(fromEvent(controlPadElement, 'touchstart'),
@@ -97,17 +97,17 @@ export default class ControlPad extends React.Component {
                             fromEvent(controlPadElement, 'mouseup'));
 
       input$
-        .transduce(compose(map(tap((e) => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
-                           reject((e) => e instanceof MouseEvent && !mouseInputEnabled),
+        .transduce(compose(map(tap(e => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
+                           reject(e => e instanceof MouseEvent && !mouseInputEnabled),
                            map(tap(() => controlPadActive = true)),
-                           map((e) => currentXYRatios = calculateXAndYRatio(e)),
+                           map(e => currentXYRatios = calculateXAndYRatio(e)),
                            map(handleControlPadInput)))
         .subscribe();
 
     endInput$
       .transduce(compose(map(tap(() => mouseInputEnabled = false)),
                          map(tap(() => controlPadActive = false)),
-                         map((e) => currentXYRatios = calculateXAndYRatio(e)),
+                         map(e => currentXYRatios = calculateXAndYRatio(e)),
                          map(handleControlPadInputEnd)))
       .subscribe();
 
@@ -138,7 +138,7 @@ export default class ControlPad extends React.Component {
     setRendererSize();
     onresize = setRendererSize;
 
-    controlPadElement.oncontextmenu = (e) => e.preventDefault();
+    controlPadElement.oncontextmenu = e => e.preventDefault();
 
     renderLoop();
   }
@@ -149,9 +149,6 @@ export default class ControlPad extends React.Component {
   }
 
   render () {
-    return (
-      <canvas width="768" height="768" className="control-pad">
-      </canvas>
-    );
+    return <canvas width="768" height="768" className="control-pad"></canvas>;
   }
 }
