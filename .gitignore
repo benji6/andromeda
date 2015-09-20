@@ -2,3 +2,4 @@ node_modules
 public/styles
 public/scripts/index*
 public/index.html
+*.log

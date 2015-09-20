@@ -5,7 +5,7 @@ const {map} = R;
 
 export default ({effects,
                  handleSelectEffect,
-                 selectedEffect}) => (
+                 selectedEffect}) =>
   <label>
     <span>Effect</span>
     <select defaultValue={selectedEffect}
@@ -15,5 +15,4 @@ export default ({effects,
           {capitalize(item)}
         </option>, effects)}
     </select>
-  </label>
-);
+  </label>;

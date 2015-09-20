@@ -7,7 +7,7 @@ export default ({arpeggiatorIsOn,
                  handleArpeggiatorIsOnChange,
                  handlePatternSelect,
                  patterns,
-                 selectedPattern}) => (
+                 selectedPattern}) =>
   <div>
     <label><span>Arpeggiator</span>
       <input defaultChecked={arpeggiatorIsOn}
@@ -25,5 +25,4 @@ export default ({arpeggiatorIsOn,
           </option>, patterns)}
       </select>
     </label>
-  </div>
-);
+  </div>;

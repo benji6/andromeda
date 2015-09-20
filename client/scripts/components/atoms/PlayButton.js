@@ -5,6 +5,13 @@ import {updatePlaying} from '../../actions';
 
 const {identity} = R;
 
-export default connect(identity)(({dispatch, playing}) =>
+export default connect(identity)(({onPlay, onStop, dispatch, playing}) =>
   <div className={`play-button ${playing ? 'selected' : ''}`}
-       onClick={() => dispatch(updatePlaying(!playing))}></div>);
+       onClick={() => {
+         if (playing) {
+           onStop();
+         } else {
+           onPlay();
+         }
+         dispatch(updatePlaying(!playing));
+       }}></div>);

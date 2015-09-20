@@ -1,5 +1,6 @@
 .pattern-editor {
   $total-width: 50vw;
+  $side-length: $total-width / 9;
   align-content: center;
   display: flex;
   flex-wrap: wrap;
@@ -7,15 +8,38 @@
   margin: auto;
   width: $total-width;
   .step {
-    $side-length: $total-width / 8;
     $color: #15a;
-    width: $side-length;
-    height: $side-length / 2;
     background-color: $color;
-    box-sizing: border-box;
     border: $side-length / 32 solid #eee;
-    &.selected {
-      background: darken($color, 20%);
+    box-sizing: border-box;
+    height: $side-length / 2;
+    width: $side-length;
+    &.active {
+      background: lighten($color, 20%);
     }
+    &.selected {
+      background: darken($color, 25%);
+    }
+    &.active.selected {
+      background: darken($color, 15%);
+    }
+  }
+  .label-x {
+    color: $white;
+    font-size: $small-font;
+    padding: 0.3rem 0;
+    text-align: center;
+    width: $side-length;
+  }
+  .label-y {
+    align-items: center;
+    box-sizing: border-box;
+    color: $white;
+    display: flex;
+    font-size: $small-font;
+    height: $side-length / 2;
+    justify-content: flex-start;
+    padding: 0.2rem;
+    width: $side-length;
   }
 }

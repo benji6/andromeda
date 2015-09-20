@@ -14,11 +14,7 @@ const initialState = {
   scaleName: 'major',
 };
 
-export default (state = initialState, {type, value}) => {
-  switch (type) {
-    case UPDATE_SELECTED_SCALE:
-      return {...state, scaleName: value};
-    default:
-      return state;
-  }
-};
+export default (state = initialState, {type, value}) =>
+  type === UPDATE_SELECTED_SCALE ?
+    {...state, scaleName: value} :
+    state;

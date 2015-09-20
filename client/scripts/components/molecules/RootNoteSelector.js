@@ -1,18 +1,11 @@
 import React from 'react'; // eslint-disable-line
-const {abs, floor} = Math;
+import noteNameFromPitch from '../../tools/noteNameFromPitch';
 
-const computeNoteNameFromPitch = pitch => {
-  const AlphabeticalComponents = ['A', 'A#/Bb', 'B', 'C', 'C#/Db', 'D', 'D#/Eb', 'E', 'F', 'F#/Gb', 'G', 'G#/Ab'];
-  const numberOfNotes = AlphabeticalComponents.length;
-  const octave = floor(pitch / numberOfNotes) + 4;
-  return AlphabeticalComponents[abs(pitch) % numberOfNotes] + octave;
-};
-
-export default ({handleRootNoteChange, rootNote}) => (
+export default ({handleRootNoteChange, rootNote}) =>
   <label>
     <div>
       <span></span>
-      <output>{computeNoteNameFromPitch(rootNote)}</output>
+      <output>{noteNameFromPitch(rootNote)}</output>
     </div>
     <span>Root Note</span>
     <input max="24"
@@ -20,5 +13,4 @@ export default ({handleRootNoteChange, rootNote}) => (
            onChange={handleRootNoteChange}
            type="range"
            value={rootNote} />
-  </label>
-);
+  </label>;
