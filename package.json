@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "capitalize": "^1.0.0",
+    "circular-iterable": "^1.0.8",
     "random-js": "^1.0.5",
     "react": "^0.14.0-rc1",
     "react-dom": "^0.14.0-rc1",
