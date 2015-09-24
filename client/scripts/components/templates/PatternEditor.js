@@ -11,8 +11,6 @@ import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
 import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
 const {compose, identity, filter, map, transduce} = R;
-const bpm = 140;
-const timeInterval = 60000 / bpm;
 
 const playStopSubject = new Rx.Subject();
 
@@ -20,8 +18,8 @@ const stopAllNotes = forEachIndexed((row, rowIndex) =>
   forEachIndexed((cell, cellIndex) => stopNote({id: `pattern-editor-${rowIndex}${cellIndex}`}),
                  row));
 
-const onPlay = dispatch =>
-  timer(0, timeInterval)
+const onPlay = (dispatch, bpm) =>
+  timer(0, 60000 / bpm)
     .takeUntil(playStopSubject)
     .map(count => {
       const {pattern, scale} = store.getState();
@@ -53,13 +51,13 @@ const onStop = dispatch => {
                                     pattern)));
 };
 
-export default connect(identity)(({dispatch, pattern, rootNote, scale}) =>
+export default connect(identity)(({bpm, dispatch, pattern, rootNote, scale}) =>
   <div>
     <Navigation />
     <Pattern dispatch={dispatch}
              pattern={pattern}
              rootNote={rootNote}
              scale={scale} />
-           <PlayButton onPlay={() => onPlay(dispatch, scale)}
+           <PlayButton onPlay={() => onPlay(dispatch, bpm)}
                 onStop={() => onStop(dispatch)} />
   </div>);
