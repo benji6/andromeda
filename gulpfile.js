@@ -59,7 +59,7 @@ gulp.task('htmlProd', () => gulp.src('client/index.html')
       },
       {
         file: 'scripts/lib/rx.all.min.js',
-        cdn: 'https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.5.3/rx.all.min.js',
+        cdn: 'https://cdnjs.cloudflare.com/ajax/libs/rxjs/3.1.2/rx.all.min.js',
       },
       {
         file: 'scripts/lib/ramda.min.js',

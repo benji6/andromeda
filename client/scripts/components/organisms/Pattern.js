@@ -1,4 +1,3 @@
-/* global R */
 import React from 'react'; // eslint-disable-line
 import {updatePattern} from '../../actions';
 import {mapIndexed} from '../../tools/indexedIterators';

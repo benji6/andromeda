@@ -1,5 +1,7 @@
 @import 'vars';
+
 @import 'control-pad';
+@import 'globals';
 @import 'inputs';
 @import 'loading-spinner';
 @import 'modal-container';
@@ -7,6 +9,7 @@
 @import 'performance-menu';
 @import 'play-button';
 @import 'navigation';
+@import 'settings-view';
 
 body {
   background: #012;
@@ -22,8 +25,4 @@ body {
   text-align: center;
   margin: 0;
   padding: 2rem 0;
-}
-
-.center {
-  text-align: center;
 }

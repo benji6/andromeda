@@ -1,7 +1,5 @@
-/* global R Rx*/
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
-const {timer} = Rx.Observable;
 import {playNote, stopNote} from '../../noteController';
 import store from '../../store';
 import {updatePattern} from '../../actions';
@@ -11,8 +9,6 @@ import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
 import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
 const {compose, identity, filter, map, transduce} = R;
-const bpm = 140;
-const timeInterval = 60000 / bpm;
 
 const playStopSubject = new Rx.Subject();
 
@@ -21,7 +17,12 @@ const stopAllNotes = forEachIndexed((row, rowIndex) =>
                  row));
 
 const onPlay = dispatch =>
-  timer(0, timeInterval)
+  Rx.Observable
+    .generateWithRelativeTime(0,
+                              () => true,
+                              x => x + 1,
+                              x => x,
+                              () => 60000 / store.getState().bpm)
     .takeUntil(playStopSubject)
     .map(count => {
       const {pattern, scale} = store.getState();
@@ -60,6 +61,6 @@ export default connect(identity)(({dispatch, pattern, rootNote, scale}) =>
              pattern={pattern}
              rootNote={rootNote}
              scale={scale} />
-           <PlayButton onPlay={() => onPlay(dispatch, scale)}
+           <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
   </div>);
