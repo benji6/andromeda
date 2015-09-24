@@ -1,4 +1,3 @@
-/* global R Rx*/
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 const {timer} = Rx.Observable;

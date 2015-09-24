@@ -1,4 +1,3 @@
-/* global R */
 import capitalize from 'capitalize';
 import React from 'react'; // eslint-disable-line
 const {map} = R;

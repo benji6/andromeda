@@ -8,6 +8,11 @@
     "es6": true,
     "node": true
   },
+  "globals": {
+    "R": false,
+    "Rx": false,
+    "THREE": false
+  },
   "parser": "babel-eslint",
   "plugins": [
     "react"

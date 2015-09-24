@@ -1,4 +1,3 @@
-/* global R */
 import {playNote, stopNote} from './noteController';
 import store from './store';
 

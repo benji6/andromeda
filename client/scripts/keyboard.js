@@ -1,4 +1,3 @@
-/* global R Rx */
 import {playNote, stopNote} from './noteController';
 const {compose, flip, isNil, map, prop, reject, tap} = R;
 const {fromEvent} = Rx.Observable;

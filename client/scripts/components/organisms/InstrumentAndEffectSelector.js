@@ -1,4 +1,3 @@
-/* global R */
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import EffectSelector from '../molecules/EffectSelector';

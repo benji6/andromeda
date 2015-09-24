@@ -1,4 +1,3 @@
-/* global R Rx */
 import store from './store';
 import virtualAudioGraph from './virtualAudioGraph';
 import createInstrumentCustomNodeParams, {resetArpeggiator} from './tools/createInstrumentCustomNodeParams';

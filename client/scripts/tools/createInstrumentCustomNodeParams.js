@@ -1,4 +1,3 @@
-/* global R */
 import Random from 'random-js';
 import store from '../store';
 
