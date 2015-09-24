@@ -1,4 +1,3 @@
-/* global R */
 import {playNote, stopNote} from './noteController';
 import store from './store';
 
@@ -16,8 +15,10 @@ const calculatePitch = xRatio => {
     stopLastNoteOnNoteChange = false;
     return xRatio * 12;
   }
+  const {size} = scale;
   stopLastNoteOnNoteChange = true;
-  return scale[floor(scale.length * xRatio)];
+  const i = floor((size + 1) * xRatio);
+  return i < size ? scale(i) : scale(i) + 12;
 };
 
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});

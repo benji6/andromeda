@@ -1,4 +1,3 @@
-/* global R */
 import {UPDATE_PATTERN} from '../actions';
 
 const {repeat} = R;

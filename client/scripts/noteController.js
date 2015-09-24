@@ -1,4 +1,3 @@
-/* global R Rx */
 import store from './store';
 import virtualAudioGraph from './virtualAudioGraph';
 import createInstrumentCustomNodeParams, {resetArpeggiator} from './tools/createInstrumentCustomNodeParams';
@@ -9,8 +8,7 @@ const {Observable, Subject} = Rx;
 const {interval} = Observable;
 const getState = ::store.getState;
 
-const bpm = 140;
-const noteDuration = 60 / bpm / 4;
+const noteDuration = () => 60 / getState().bpm / 4;
 
 const getVirtualNodeId = (() => {
   let currentId = 0;
@@ -25,7 +23,7 @@ let lastStartTime = null;
 const arpStop$ = new Subject();
 arpStop$.subscribe();
 
-const computeNextStartTime = currentTime => Math.ceil(currentTime / noteDuration) * noteDuration;
+const computeNextStartTime = currentTime => Math.ceil(currentTime / noteDuration()) * noteDuration();
 
 export const playNote = ({id, pitch, modulation = 0.5}) => {
   const {arpeggiator, effect, rootNote, scale} = getState();
@@ -36,12 +34,12 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
 
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     arpStop$.onNext();
-    interval(noteDuration)
+    interval(noteDuration())
       .transduce(compose(map(() => virtualAudioGraph.currentTime),
                          map(computeNextStartTime),
                          reject(startTime => startTime === lastStartTime),
                          map(tap(startTime => lastStartTime = startTime)),
-                         map(startTime => ({startTime, stopTime: startTime + noteDuration})),
+                         map(startTime => ({startTime, stopTime: startTime + noteDuration()})),
                          reject(({stopTime}) => stopTime < virtualAudioGraph.currentTime),
                          map(({startTime, stopTime}) =>
                            currentVirtualAudioGraph = assoc(getVirtualNodeId(id),

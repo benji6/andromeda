@@ -1,4 +1,3 @@
-/* global THREE R Rx */
 import React from 'react';
 import {handleControlPadInput, handleControlPadInputEnd} from '../../handleControlPadSignals';
 const {compose, isNil, map, reject, tap} = R;
