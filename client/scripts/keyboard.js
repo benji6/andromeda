@@ -1,7 +1,7 @@
 import {playNote, stopNote} from './noteController';
-const {compose, flip, isNil, map, prop, reject, tap} = R;
+import store from './store';
+const {compose, filter, flip, isNil, map, prop, reject, tap} = R;
 const {fromEvent} = Rx.Observable;
-
 const keyCodesToPitches = {
   220: -10,
   90: -9,
@@ -55,15 +55,16 @@ const computeNoteParamsFromKeyCode = compose(map(flip(prop)(keyCodesToPitches)),
                                              map(computeNoteParams));
 
 fromEvent(document.body, 'keydown')
-  .transduce(compose(map(tap(e => e.keyCode === 191 && e.preventDefault())),
-                    map(prop('keyCode')),
-                    reject(::pressedKeys.has),
-                    map(tap(::pressedKeys.add)),
-                    computeNoteParamsFromKeyCode,
-                    map(playNote))).subscribe();
+  .transduce(compose(filter(() => store.getState().keyboardActive),
+                     map(tap(e => e.keyCode === 191 && e.preventDefault())),
+                     map(prop('keyCode')),
+                     reject(::pressedKeys.has),
+                     map(tap(::pressedKeys.add)),
+                     computeNoteParamsFromKeyCode,
+                     map(playNote))).subscribe();
 
 fromEvent(document.body, 'keyup')
   .transduce(compose(map(prop('keyCode')),
-                    map(tap(::pressedKeys.delete)),
-                    computeNoteParamsFromKeyCode,
-                    map(stopNote))).subscribe();
+                     map(tap(::pressedKeys.delete)),
+                     computeNoteParamsFromKeyCode,
+                     map(stopNote))).subscribe();

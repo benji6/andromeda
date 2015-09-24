@@ -1,6 +1,5 @@
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
-const {timer} = Rx.Observable;
 import {playNote, stopNote} from '../../noteController';
 import store from '../../store';
 import {updatePattern} from '../../actions';
@@ -17,8 +16,13 @@ const stopAllNotes = forEachIndexed((row, rowIndex) =>
   forEachIndexed((cell, cellIndex) => stopNote({id: `pattern-editor-${rowIndex}${cellIndex}`}),
                  row));
 
-const onPlay = (dispatch, bpm) =>
-  timer(0, 60000 / bpm)
+const onPlay = dispatch =>
+  Rx.Observable
+    .generateWithRelativeTime(0,
+                              () => true,
+                              x => x + 1,
+                              x => x,
+                              () => 60000 / store.getState().bpm)
     .takeUntil(playStopSubject)
     .map(count => {
       const {pattern, scale} = store.getState();
@@ -50,13 +54,13 @@ const onStop = dispatch => {
                                     pattern)));
 };
 
-export default connect(identity)(({bpm, dispatch, pattern, rootNote, scale}) =>
+export default connect(identity)(({dispatch, pattern, rootNote, scale}) =>
   <div>
     <Navigation />
     <Pattern dispatch={dispatch}
              pattern={pattern}
              rootNote={rootNote}
              scale={scale} />
-           <PlayButton onPlay={() => onPlay(dispatch, bpm)}
+           <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
   </div>);
