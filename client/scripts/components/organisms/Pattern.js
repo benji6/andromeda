@@ -15,8 +15,8 @@ const handleOnClick = (dispatch, pattern, i, j) =>
 const selectedClass = ({selected}) => selected === true ? 'selected' : '';
 const activeClass = ({active}) => active === true ? 'active' : '';
 
-export default ({dispatch, pattern, scale, rootNote}) => {
-  const patternLength = pattern[0].length;
+export default ({dispatch, patterns, scale, rootNote}) => {
+  const patternLength = patterns[0].length;
   return <div className="pattern-editor">
     {[...mapIndexed((x, i) => <div className="label-x"
                                    key={`label-x-${i}`}>{x || ''}</div>,
@@ -26,6 +26,6 @@ export default ({dispatch, pattern, scale, rootNote}) => {
                     ...mapIndexed((cell, j) =>
         <div className={`step ${selectedClass(cell)} ${activeClass(cell)}`}
              key={`cell-${i}-${j}`}
-             onClick={() => handleOnClick(dispatch, pattern, i, j)} />, x)], pattern)]}
+             onClick={() => handleOnClick(dispatch, patterns, i, j)} />, x)], patterns)]}
   </div>;
 };

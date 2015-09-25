@@ -25,40 +25,40 @@ const onPlay = dispatch =>
                               () => 60000 / store.getState().bpm)
     .takeUntil(playStopSubject)
     .map(count => {
-      const {pattern, scale} = store.getState();
-      return {pattern, position: count % pattern.length, scale};
+      const {patterns, scale} = store.getState();
+      return {patterns, position: count % patterns.length, scale};
     })
-    .do(({pattern, position}) =>
+    .do(({patterns, position}) =>
       dispatch(updatePattern(mapIndexed(row => mapIndexed((cell, y) => y === position ?
                                                             {...cell, active: true} :
                                                             {...cell, active: false},
                                                           row),
-                                        pattern))))
-    .do(compose(stopAllNotes, x => x.pattern))
-    .subscribe(({pattern, position, scale}) =>
+                                        patterns))))
+    .do(compose(stopAllNotes, x => x.patterns))
+    .subscribe(({patterns, position, scale}) =>
       transduce(compose(mapIndexed((row, rowIndex) => ({id: `pattern-editor-${rowIndex}${position}`,
-                                                        pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], pattern.length - 1 - rowIndex),
+                                                        pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], patterns.length - 1 - rowIndex),
                                                         selected: row[position].selected})),
                                    filter(({selected}) => selected),
                                    map(playNote)),
                             () => {},
                             null,
-                            pattern));
+                            patterns));
 
 const onStop = dispatch => {
-  const {pattern} = store.getState();
-  stopAllNotes(pattern);
+  const {patterns} = store.getState();
+  stopAllNotes(patterns);
   playStopSubject.onNext();
   dispatch(updatePattern(mapIndexed(row => mapIndexed(cell => ({...cell, active: false}),
                                                       row),
-                                    pattern)));
+                                    patterns)));
 };
 
-export default connect(identity)(({dispatch, pattern, rootNote, scale}) =>
+export default connect(identity)(({dispatch, patterns, rootNote, scale}) =>
   <div>
     <Navigation />
     <Pattern dispatch={dispatch}
-             pattern={pattern}
+             patterns={patterns}
              rootNote={rootNote}
              scale={scale} />
            <PlayButton onPlay={() => onPlay(dispatch)}
