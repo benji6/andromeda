@@ -12,7 +12,7 @@ const initialState = {
     'phrygian dominant': circularIterable(0, 1, 4, 5, 7, 8, 10),
     wholetone: circularIterable(0, 2, 4, 6, 8, 10),
   },
-  scaleName: 'major',
+  scaleName: 'pentatonic',
 };
 
 export default (state = initialState, {type, value}) =>
