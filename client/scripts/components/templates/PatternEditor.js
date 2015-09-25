@@ -27,7 +27,7 @@ const onPlay = dispatch =>
     .map(count => {
       const {patterns, scale} = store.getState();
       const pattern = patterns.patterns[patterns.activePattern];
-      return {pattern, position: count % patterns.length, scale};
+      return {pattern, position: count % pattern.length, scale};
     })
     .do(({pattern, position}) =>
       dispatch(updateActivePattern(mapIndexed(row => mapIndexed((cell, y) => y === position ?
