@@ -2,7 +2,7 @@ import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import {playNote, stopNote} from '../../noteController';
 import store from '../../store';
-import {updateActivePattern} from '../../actions';
+import {updateActivePatternNotes} from '../../actions';
 import {forEachIndexed, mapIndexed} from '../../tools/indexedIterators';
 import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
@@ -26,34 +26,34 @@ const onPlay = dispatch =>
     .takeUntil(playStopSubject)
     .map(count => {
       const {patterns, scale} = store.getState();
-      const pattern = patterns.patterns[patterns.activePattern];
-      return {pattern, position: count % pattern.length, scale};
+      const {notes} = patterns.patterns[patterns.activePattern];
+      return {notes, position: count % notes.length, scale};
     })
-    .do(({pattern, position}) =>
-      dispatch(updateActivePattern(mapIndexed(row => mapIndexed((cell, y) => y === position ?
+    .do(({notes, position}) =>
+      dispatch(updateActivePatternNotes(mapIndexed(row => mapIndexed((cell, y) => y === position ?
                                                             {...cell, active: true} :
                                                             {...cell, active: false},
                                                           row),
-                                        pattern))))
-    .do(compose(stopAllNotes, x => x.pattern))
-    .subscribe(({pattern, position, scale}) =>
+                                        notes))))
+    .do(compose(stopAllNotes, x => x.notes))
+    .subscribe(({notes, position, scale}) =>
       transduce(compose(mapIndexed((row, rowIndex) => ({id: `pattern-editor-${rowIndex}${position}`,
-                                                        pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], pattern.length - 1 - rowIndex),
+                                                        pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], notes.length - 1 - rowIndex),
                                                         selected: row[position].selected})),
                                    filter(({selected}) => selected),
                                    map(playNote)),
                             () => {},
                             null,
-                            pattern));
+                            notes));
 
 const onStop = dispatch => {
   const {patterns} = store.getState();
-  const pattern = patterns.patterns[patterns.activePattern];
-  stopAllNotes(pattern);
+  const {notes} = patterns.patterns[patterns.activePattern];
+  stopAllNotes(notes);
   playStopSubject.onNext();
-  dispatch(updateActivePattern(mapIndexed(row => mapIndexed(cell => ({...cell, active: false}),
+  dispatch(updateActivePatternNotes(mapIndexed(row => mapIndexed(cell => ({...cell, active: false}),
                                                       row),
-                                    pattern)));
+                                    notes)));
 };
 
 export default connect(identity)(({dispatch, patterns, rootNote, scale}) =>

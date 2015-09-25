@@ -1,6 +1,6 @@
 const typeValueAction = type => value => ({type, value});
 
-export const UPDATE_ACTIVE_PATTERN = 'UPDATE_ACTIVE_PATTERN';
+export const UPDATE_ACTIVE_PATTERN_NOTES = 'UPDATE_ACTIVE_PATTERN_NOTES';
 export const UPDATE_ARPEGGIATOR_IS_ON = 'UPDATE_ARPEGGIATOR_IS_ON';
 export const UPDATE_BPM = 'UPDATE_BPM';
 export const UPDATE_KEYBOARD_ACTIVE = 'UPDATE_ARPEGGIATOR_IS_ON';
@@ -11,7 +11,7 @@ export const UPDATE_SELECTED_INSTRUMENT = 'UPDATE_SELECTED_INSTRUMENT';
 export const UPDATE_SELECTED_PATTERN = 'UPDATE_SELECTED_PATTERN';
 export const UPDATE_SELECTED_SCALE = 'UPDATE_SELECTED_SCALE';
 
-export const updateActivePattern = typeValueAction(UPDATE_ACTIVE_PATTERN);
+export const updateActivePatternNotes = typeValueAction(UPDATE_ACTIVE_PATTERN_NOTES);
 export const updateArpeggiatorIsOn = typeValueAction(UPDATE_ARPEGGIATOR_IS_ON);
 export const updateBpm = typeValueAction(UPDATE_BPM);
 export const updateKeyboardActive = typeValueAction(UPDATE_KEYBOARD_ACTIVE);

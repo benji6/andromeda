@@ -1,6 +1,6 @@
 import {UPDATE_SELECTED_INSTRUMENT} from '../actions';
 
-const initialState = {
+export const initialState = {
   instruments: [
     'detuned',
     'fm',
