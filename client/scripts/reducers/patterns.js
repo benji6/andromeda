@@ -1,7 +1,7 @@
 import {UPDATE_ACTIVE_PATTERN} from '../actions';
 import {repeat, update} from 'ramda';
 
-const initialState = {
+export const initialState = {
   patterns: [repeat(repeat({selected: false,
                             active: false}, 8), 8)],
   activePattern: 0,
