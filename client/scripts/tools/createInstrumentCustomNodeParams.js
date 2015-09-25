@@ -1,7 +1,6 @@
+import {map} from 'ramda';
 import Random from 'random-js';
 import store from '../store';
-
-const {map} = R;
 
 let currentIndex = 0;
 let ascending = true;

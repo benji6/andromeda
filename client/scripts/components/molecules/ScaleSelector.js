@@ -1,6 +1,6 @@
 import capitalize from 'capitalize';
 import React from 'react'; // eslint-disable-line
-const {keys, map} = R;
+import {keys, map} from 'ramda';
 
 export default ({handleScaleChange, scaleName, scales}) =>
   <label>

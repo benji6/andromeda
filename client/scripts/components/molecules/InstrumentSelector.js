@@ -1,6 +1,6 @@
 import capitalize from 'capitalize';
 import React from 'react'; // eslint-disable-line
-const {map} = R;
+import {map} from 'ramda';
 
 export default ({handleSelectInstrument,
                  instruments,

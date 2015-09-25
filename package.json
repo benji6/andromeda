@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node_modules/.bin/babel-node node_modules/.bin/gulp build",
     "dev": "node_modules/.bin/babel-node node_modules/.bin/gulp",
-    "test": "node_modules/.bin/babel-node tests | tnyan"
+    "test": "node_modules/.bin/babel-node node_modules/.bin/tape **/*-spec.js | tnyan"
   },
   "repository": {
     "type": "git",
@@ -59,6 +59,7 @@
   "dependencies": {
     "capitalize": "^1.0.0",
     "circular-iterable": "^1.0.8",
+    "ramda": "^0.17.1",
     "random-js": "^1.0.5",
     "react": "^0.14.0-rc1",
     "react-dom": "^0.14.0-rc1",

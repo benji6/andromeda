@@ -1,12 +1,12 @@
 import React from 'react'; // eslint-disable-line
-import {updatePattern} from '../../actions';
+import {updateActivePattern} from '../../actions';
 import {mapIndexed} from '../../tools/indexedIterators';
 import noteNameFromPitch from '../../tools/noteNameFromPitch';
 import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
-const {range} = R;
+import {range} from 'ramda';
 
 const handleOnClick = (dispatch, pattern, i, j) =>
-  dispatch(updatePattern(mapIndexed((row, x) => mapIndexed((cell, y) => x === i && y === j ?
+  dispatch(updateActivePattern(mapIndexed((row, x) => mapIndexed((cell, y) => x === i && y === j ?
                                       {...cell, selected: !cell.selected} :
                                       cell,
                                                            row),
@@ -16,7 +16,8 @@ const selectedClass = ({selected}) => selected === true ? 'selected' : '';
 const activeClass = ({active}) => active === true ? 'active' : '';
 
 export default ({dispatch, patterns, scale, rootNote}) => {
-  const patternLength = patterns[0].length;
+  const pattern = patterns.patterns[patterns.activePattern];
+  const patternLength = pattern[0].length;
   return <div className="pattern-editor">
     {[...mapIndexed((x, i) => <div className="label-x"
                                    key={`label-x-${i}`}>{x || ''}</div>,
@@ -26,6 +27,6 @@ export default ({dispatch, patterns, scale, rootNote}) => {
                     ...mapIndexed((cell, j) =>
         <div className={`step ${selectedClass(cell)} ${activeClass(cell)}`}
              key={`cell-${i}-${j}`}
-             onClick={() => handleOnClick(dispatch, patterns, i, j)} />, x)], patterns)]}
+             onClick={() => handleOnClick(dispatch, pattern, i, j)} />, x)], pattern)]}
   </div>;
 };

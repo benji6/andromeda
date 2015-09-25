@@ -1,3 +1,4 @@
+import {compose, identity, path} from 'ramda';
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector';
@@ -11,7 +12,6 @@ import {
   updateSelectedScale,
 } from '../../actions';
 
-const {compose, identity, path} = R;
 const eventValuePath = path(['currentTarget', 'value']);
 const eventCheckedPath = path(['currentTarget', 'checked']);
 

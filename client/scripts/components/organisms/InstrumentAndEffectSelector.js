@@ -1,3 +1,4 @@
+import {compose, identity, path} from 'ramda';
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import EffectSelector from '../molecules/EffectSelector';
@@ -6,7 +7,6 @@ import ModalOKButton from '../atoms/ModalOKButton';
 import {updateSelectedEffect,
         updateSelectedInstrument} from '../../actions';
 
-const {compose, identity, path} = R;
 const eventValuePath = path(['currentTarget', 'value']);
 
 export default connect(identity)(({dispatch, instrument, effect}) => {

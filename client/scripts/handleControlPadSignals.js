@@ -1,7 +1,7 @@
+import {assoc, compose, isNil} from 'ramda';
 import {playNote, stopNote} from './noteController';
 import store from './store';
 
-const {assoc, compose, isNil} = R;
 const {floor} = Math;
 const getState = ::store.getState;
 

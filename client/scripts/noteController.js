@@ -1,8 +1,8 @@
+import {assoc, compose, dissoc, map, reject, tap} from 'ramda';
 import store from './store';
 import virtualAudioGraph from './virtualAudioGraph';
 import createInstrumentCustomNodeParams, {resetArpeggiator} from './tools/createInstrumentCustomNodeParams';
 
-const {assoc, compose, dissoc, map, reject, tap} = R;
 const {Observable, Subject} = Rx;
 
 const {interval} = Observable;
