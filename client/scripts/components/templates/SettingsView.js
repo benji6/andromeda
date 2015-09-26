@@ -2,7 +2,10 @@ import React from 'react'; // eslint-disable-line
 import Navigation from '../organisms/Navigation';
 import {connect} from 'react-redux';
 import {updateBpm} from '../../actions';
-const {compose, identity, path} = R;
+import {compose, identity, path} from 'ramda';
+
+const minBpm = 20;
+const enforceMinBpm = bpm => bpm < minBpm ? minBpm : bpm;
 
 export default connect(identity)(({bpm, dispatch}) =>
   <div className="settings-view">
@@ -11,8 +14,8 @@ export default connect(identity)(({bpm, dispatch}) =>
     <div className="settings-container">
       <label>BPM:
       <input defaultValue={bpm}
-             min="1"
-             onChange={compose(dispatch, updateBpm, Number, path(['target', 'value']))}
+             min={minBpm}
+             onChange={compose(dispatch, updateBpm, enforceMinBpm, Number, path(['target', 'value']))}
              type="number"></input>
       </label>
     </div>

@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node_modules/.bin/babel-node node_modules/.bin/gulp build",
     "dev": "node_modules/.bin/babel-node node_modules/.bin/gulp",
-    "test": "node_modules/.bin/babel-node tests | tnyan"
+    "test": "node_modules/.bin/babel-node node_modules/.bin/tape client/scripts/**/*-spec.js"
   },
   "repository": {
     "type": "git",
@@ -49,7 +49,6 @@
     "gulp-util": "^3.0.6",
     "ramda": "^0.17.1",
     "run-sequence": "^1.1.2",
-    "tap-nyan": "0.0.2",
     "tape": "^4.2.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
@@ -59,6 +58,7 @@
   "dependencies": {
     "capitalize": "^1.0.0",
     "circular-iterable": "^1.0.8",
+    "ramda": "^0.17.1",
     "random-js": "^1.0.5",
     "react": "^0.14.0-rc1",
     "react-dom": "^0.14.0-rc1",
