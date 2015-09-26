@@ -27,7 +27,7 @@ const incrementScalePitch = (pitch, increment) => {
 
 export const resetArpeggiator = () => currentIndex = 0;
 
-export default (pitch, id, rootNote, modulation, startTime, stopTime) => {
+export default ({pitch, id, instrument = getState().instrument.selectedInstrument, rootNote, modulation, startTime, stopTime}) => {
   const {arpeggiator, scale} = getState();
   const {arpeggiatorIsOn, selectedPattern} = arpeggiator;
   let pitchToPlay = pitch;
@@ -68,7 +68,7 @@ export default (pitch, id, rootNote, modulation, startTime, stopTime) => {
   }
 
   return [
-    getState().instrument.selectedInstrument,
+    instrument,
     ['output', 0],
     {
       frequency: calculateFrequency(pitchToPlay + rootNote),

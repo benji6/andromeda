@@ -39,6 +39,7 @@ const onPlay = dispatch =>
     .do(compose(stopAllNotes, x => x.notes))
     .subscribe(({notes, position, scale}) =>
       transduce(compose(mapIndexed((row, rowIndex) => ({id: `pattern-editor-${rowIndex}${position}`,
+                                                        instrument: store.getState().patterns.patterns[store.getState().patterns.activePattern].instrument,
                                                         pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], notes.length - 1 - rowIndex),
                                                         selected: row[position].selected})),
                                    filter(({selected}) => selected),
