@@ -1,12 +1,12 @@
 import React from 'react'; // eslint-disable-line
-import {updateSelectedInstrument} from '../../actions';
+import {updateActivePatternInstrument} from '../../actions';
 import Selector from '../molecules/Selector';
 
-export default ({dispatch, instrument}) =>
+export default ({dispatch, instrument, pattern}) =>
   <div className="pattern-options">
     <h2>Settings</h2>
-    <Selector handleChange={({target: {value}}) => dispatch(updateSelectedInstrument(value))}
+    <Selector handleChange={({target: {value}}) => dispatch(updateActivePatternInstrument(value))}
               label="Instrument"
               options={instrument.instruments}
-              defaultValue={instrument.selectedInstrument} />
+              defaultValue={pattern.instrument} />
   </div>;

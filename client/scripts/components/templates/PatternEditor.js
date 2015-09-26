@@ -67,5 +67,6 @@ export default connect(identity)(({dispatch, instrument, patterns, rootNote, sca
     <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
     <PatternOptions dispatch={dispatch}
-                    instrument={instrument} />
+                    instrument={instrument}
+                    pattern={patterns.patterns[patterns.activePattern]} />
   </div>);
