@@ -1,6 +1,6 @@
 import React from 'react';
 import {handleControlPadInput, handleControlPadInputEnd} from '../../handleControlPadSignals';
-const {compose, isNil, map, reject, tap} = R;
+import {compose, isNil, map, reject, tap} from 'ramda';
 const {fromEvent, merge} = Rx.Observable;
 const {EPSILON} = Number;
 

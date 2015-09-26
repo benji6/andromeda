@@ -2,13 +2,14 @@ import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import {playNote, stopNote} from '../../noteController';
 import store from '../../store';
-import {updatePattern} from '../../actions';
+import {updateActivePatternNotes} from '../../actions';
 import {forEachIndexed, mapIndexed} from '../../tools/indexedIterators';
 import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
 import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
-const {compose, identity, filter, map, transduce} = R;
+import {compose, identity, filter, map, transduce} from 'ramda';
+import PatternOptions from '../organisms/PatternOptions';
 
 const playStopSubject = new Rx.Subject();
 
@@ -25,42 +26,48 @@ const onPlay = dispatch =>
                               () => 60000 / store.getState().bpm)
     .takeUntil(playStopSubject)
     .map(count => {
-      const {pattern, scale} = store.getState();
-      return {pattern, position: count % pattern.length, scale};
+      const {patterns, scale} = store.getState();
+      const {notes} = patterns.patterns[patterns.activePattern];
+      return {notes, position: count % notes.length, scale};
     })
-    .do(({pattern, position}) =>
-      dispatch(updatePattern(mapIndexed(row => mapIndexed((cell, y) => y === position ?
+    .do(({notes, position}) =>
+      dispatch(updateActivePatternNotes(mapIndexed(row => mapIndexed((cell, y) => y === position ?
                                                             {...cell, active: true} :
                                                             {...cell, active: false},
                                                           row),
-                                        pattern))))
-    .do(compose(stopAllNotes, x => x.pattern))
-    .subscribe(({pattern, position, scale}) =>
+                                        notes))))
+    .do(compose(stopAllNotes, x => x.notes))
+    .subscribe(({notes, position, scale}) =>
       transduce(compose(mapIndexed((row, rowIndex) => ({id: `pattern-editor-${rowIndex}${position}`,
-                                                        pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], pattern.length - 1 - rowIndex),
+                                                        instrument: store.getState().patterns.patterns[store.getState().patterns.activePattern].instrument,
+                                                        pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], notes.length - 1 - rowIndex),
                                                         selected: row[position].selected})),
                                    filter(({selected}) => selected),
                                    map(playNote)),
                             () => {},
                             null,
-                            pattern));
+                            notes));
 
 const onStop = dispatch => {
-  const {pattern} = store.getState();
-  stopAllNotes(pattern);
+  const {patterns} = store.getState();
+  const {notes} = patterns.patterns[patterns.activePattern];
+  stopAllNotes(notes);
   playStopSubject.onNext();
-  dispatch(updatePattern(mapIndexed(row => mapIndexed(cell => ({...cell, active: false}),
+  dispatch(updateActivePatternNotes(mapIndexed(row => mapIndexed(cell => ({...cell, active: false}),
                                                       row),
-                                    pattern)));
+                                    notes)));
 };
 
-export default connect(identity)(({dispatch, pattern, rootNote, scale}) =>
+export default connect(identity)(({dispatch, instrument, patterns, rootNote, scale}) =>
   <div>
     <Navigation />
     <Pattern dispatch={dispatch}
-             pattern={pattern}
+             patterns={patterns}
              rootNote={rootNote}
              scale={scale} />
-           <PlayButton onPlay={() => onPlay(dispatch)}
+    <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
+    <PatternOptions dispatch={dispatch}
+                    instrument={instrument}
+                    pattern={patterns.patterns[patterns.activePattern]} />
   </div>);

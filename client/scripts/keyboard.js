@@ -1,6 +1,6 @@
 import {playNote, stopNote} from './noteController';
 import store from './store';
-const {compose, filter, flip, isNil, map, prop, reject, tap} = R;
+import {compose, filter, flip, isNil, map, prop, reject, tap} from 'ramda';
 const {fromEvent} = Rx.Observable;
 const keyCodesToPitches = {
   220: -10,

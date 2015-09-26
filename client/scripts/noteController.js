@@ -1,8 +1,8 @@
+import {assoc, compose, dissoc, map, reject, tap} from 'ramda';
 import store from './store';
 import virtualAudioGraph from './virtualAudioGraph';
 import createInstrumentCustomNodeParams, {resetArpeggiator} from './tools/createInstrumentCustomNodeParams';
 
-const {assoc, compose, dissoc, map, reject, tap} = R;
 const {Observable, Subject} = Rx;
 
 const {interval} = Observable;
@@ -25,7 +25,7 @@ arpStop$.subscribe();
 
 const computeNextStartTime = currentTime => Math.ceil(currentTime / noteDuration()) * noteDuration();
 
-export const playNote = ({id, pitch, modulation = 0.5}) => {
+export const playNote = ({id, instrument, pitch, modulation = 0.5}) => {
   const {arpeggiator, effect, rootNote, scale} = getState();
 
   currentVirtualAudioGraph = assoc(0,
@@ -43,14 +43,14 @@ export const playNote = ({id, pitch, modulation = 0.5}) => {
                          reject(({stopTime}) => stopTime < virtualAudioGraph.currentTime),
                          map(({startTime, stopTime}) =>
                            currentVirtualAudioGraph = assoc(getVirtualNodeId(id),
-                                                            createInstrumentCustomNodeParams(pitch, id, rootNote, modulation, startTime, stopTime),
+                                                            createInstrumentCustomNodeParams({pitch, id, rootNote, modulation, startTime, stopTime, instrument}),
                                                             currentVirtualAudioGraph)),
                          map(() => virtualAudioGraph.update(currentVirtualAudioGraph))))
       .takeUntil(arpStop$)
       .subscribe();
   } else {
     currentVirtualAudioGraph = assoc(id,
-                                     createInstrumentCustomNodeParams(pitch, id, rootNote, modulation),
+                                     createInstrumentCustomNodeParams({pitch, id, instrument, rootNote, modulation}),
                                      currentVirtualAudioGraph);
     virtualAudioGraph.update(currentVirtualAudioGraph);
   }
