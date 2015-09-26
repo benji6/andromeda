@@ -2,7 +2,7 @@ import React from 'react'; // eslint-disable-line
 import Navigation from '../organisms/Navigation';
 import {connect} from 'react-redux';
 import {updateBpm} from '../../actions';
-const {compose, identity, path} = R;
+import {compose, identity, path} from 'ramda';
 
 const minBpm = 20;
 const enforceMinBpm = bpm => bpm < minBpm ? minBpm : bpm;

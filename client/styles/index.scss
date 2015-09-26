@@ -1,15 +1,18 @@
 @import 'vars';
+@import 'globals';
 
 @import 'control-pad';
-@import 'globals';
 @import 'inputs';
 @import 'loading-spinner';
 @import 'modal-container';
 @import 'pattern-editor';
 @import 'performance-menu';
+@import 'pattern-options';
 @import 'play-button';
 @import 'navigation';
+@import 'selector';
 @import 'settings-view';
+@import 'upgrade-browser-message';
 
 body {
   background: #012;
@@ -18,11 +21,4 @@ body {
   user-select: none;
   height: 100vh;
   cursor: default;
-}
-
-.upgrade-browser-message {
-  color: $white;
-  text-align: center;
-  margin: 0;
-  padding: 2rem 0;
 }

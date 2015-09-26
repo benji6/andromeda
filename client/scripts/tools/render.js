@@ -1,3 +1,3 @@
 import {render} from 'react-dom';
-const {curry, flip} = R;
+import {curry, flip} from 'ramda';
 export default curry(flip(render))(document.querySelector('#app'));
