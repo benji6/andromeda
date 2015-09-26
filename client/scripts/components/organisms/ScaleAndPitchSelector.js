@@ -1,16 +1,14 @@
-import {compose, identity, path} from 'ramda';
+import {compose, identity, keys, path} from 'ramda';
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector';
 import RootNoteSelector from '../molecules/RootNoteSelector';
-import ScaleSelector from '../molecules/ScaleSelector';
+import Selector from '../molecules/Selector';
 import ModalOKButton from '../atoms/ModalOKButton';
-import {
-  updateArpeggiatorIsOn,
-  updateSelectedPattern,
-  updateSelectedRootNote,
-  updateSelectedScale,
-} from '../../actions';
+import {updateArpeggiatorIsOn,
+        updateSelectedPattern,
+        updateSelectedRootNote,
+        updateSelectedScale} from '../../actions';
 
 const eventValuePath = path(['currentTarget', 'value']);
 const eventCheckedPath = path(['currentTarget', 'checked']);
@@ -31,15 +29,12 @@ export default connect(identity)(({arpeggiator, dispatch, rootNote, scale}) => {
               eventValuePath
             )}
           />
-          <ScaleSelector
-            handleScaleChange={compose(
-              dispatch,
-              updateSelectedScale,
-              eventValuePath
-            )}
-            scaleName={scaleName}
-            scales={scales}
-          />
+        <Selector defaultValue={scaleName}
+                  handleChange={compose(dispatch,
+                                        updateSelectedScale,
+                                        eventValuePath)}
+                  label="Scale"
+                  options={keys(scales)} />
           <ArpeggiatorSelector
             arpeggiatorIsOn={arpeggiatorIsOn}
             dispatch={dispatch}
