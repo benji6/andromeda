@@ -9,6 +9,7 @@ import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
 import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
 import {compose, identity, filter, map, transduce} from 'ramda';
+import PatternOptions from '../organisms/PatternOptions';
 
 const playStopSubject = new Rx.Subject();
 
@@ -56,13 +57,15 @@ const onStop = dispatch => {
                                     notes)));
 };
 
-export default connect(identity)(({dispatch, patterns, rootNote, scale}) =>
+export default connect(identity)(({dispatch, instrument, patterns, rootNote, scale}) =>
   <div>
     <Navigation />
     <Pattern dispatch={dispatch}
              patterns={patterns}
              rootNote={rootNote}
              scale={scale} />
-           <PlayButton onPlay={() => onPlay(dispatch)}
+    <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
+    <PatternOptions dispatch={dispatch}
+                    instrument={instrument} />
   </div>);
