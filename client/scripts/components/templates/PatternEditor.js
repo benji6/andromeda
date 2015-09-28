@@ -62,7 +62,7 @@ export default connect(identity)(({dispatch, instrument, patterns, rootNote, sca
   <div>
     <Navigation />
     <Pattern dispatch={dispatch}
-             patterns={patterns}
+             notes={patterns.patterns[patterns.activePattern].notes}
              rootNote={rootNote}
              scale={scale} />
     <PlayButton onPlay={() => onPlay(dispatch)}

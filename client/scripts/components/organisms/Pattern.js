@@ -15,8 +15,7 @@ const handleOnClick = (dispatch, notes, i, j) =>
 const selectedClass = ({selected}) => selected === true ? 'selected' : '';
 const activeClass = ({active}) => active === true ? 'active' : '';
 
-export default ({dispatch, patterns, scale, rootNote}) => {
-  const {notes} = patterns.patterns[patterns.activePattern];
+export default ({dispatch, notes, scale, rootNote}) => {
   const notesLength = notes[0].length;
   return <div className="pattern-editor">
     {[...mapIndexed((x, i) => <div className="label-x"
