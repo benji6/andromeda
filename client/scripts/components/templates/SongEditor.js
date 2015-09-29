@@ -1,4 +1,3 @@
-import {compose, curry, identity, filter, map, transduce} from 'ramda';
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import {playNote, stopNote} from '../../noteController';
@@ -9,8 +8,7 @@ import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
 import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
-import PatternOptions from '../organisms/PatternOptions';
-import noteNameFromPitch from '../../tools/noteNameFromPitch';
+import {compose, identity, filter, map, transduce} from 'ramda';
 
 const playStopSubject = new Rx.Subject();
 
@@ -59,30 +57,16 @@ const onStop = dispatch => {
                                     notes)));
 };
 
-const yLabel = curry((scale, length, rootNote, i) =>
-  noteNameFromPitch(pitchFromScaleIndex(scale.scales[scale.scaleName],
-                                        length - i - 1) + rootNote));
+const handleClick = () => console.log('song click');
 
-export default connect(identity)(({dispatch, instrument, patterns, rootNote, scale}) => {
-  const {notes} = patterns.patterns[patterns.activePattern];
-  const notesLength = notes[0].length;
-  const handleClick = (i, j) =>
-    dispatch(updateActivePatternNotes(mapIndexed((row, x) => mapIndexed((cell, y) => x === i && y === j ?
-                                        {...cell, selected: !cell.selected} :
-                                        cell,
-                                                             row),
-                                      notes)));
-  return <div>
+export default connect(identity)(({dispatch, patterns, song, rootNote, scale}) =>
+  <div>
     <Navigation />
     <Pattern handleClick={handleClick}
-             notes={notes}
+             notes={song.notes}
              rootNote={rootNote}
              scale={scale}
-             yLabel={yLabel(scale, notesLength, rootNote)} />
+             yLabel={i => patterns.patterns[i].toString()} />
     <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
-    <PatternOptions dispatch={dispatch}
-                    instrument={instrument}
-                    pattern={patterns.patterns[patterns.activePattern]} />
-  </div>;
-});
+  </div>);

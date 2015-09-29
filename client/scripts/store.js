@@ -8,6 +8,7 @@ import patterns from './reducers/patterns';
 import playing from './reducers/playing';
 import rootNote from './reducers/rootNote';
 import scale from './reducers/scale';
+import song from './reducers/song';
 
 export default createStore(combineReducers({
   arpeggiator,
@@ -19,4 +20,5 @@ export default createStore(combineReducers({
   playing,
   rootNote,
   scale,
+  song,
 }));
