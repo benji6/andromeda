@@ -1,6 +1,8 @@
 import {UPDATE_PLAYING} from '../actions';
 
-export default (state = false, {type, value}) => {
+export const initialState = false;
+
+export default (state = initialState, {type, value}) => {
   switch (type) {
     case UPDATE_PLAYING:
       return value;
