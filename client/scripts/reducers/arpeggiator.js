@@ -3,7 +3,7 @@ import {
   UPDATE_SELECTED_PATTERN
 } from '../actions';
 
-const initialState = {
+export const initialState = {
   arpeggiatorIsOn: false,
   patterns: [
     'random',
