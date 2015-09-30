@@ -2,7 +2,7 @@ import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import {playNote, stopNote} from '../../noteController';
 import store from '../../store';
-import {updateActivePatternNotes} from '../../actions';
+import {updateSongNotes} from '../../actions';
 import {forEachIndexed, mapIndexed} from '../../tools/indexedIterators';
 import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
@@ -30,7 +30,7 @@ const onPlay = dispatch =>
       return {notes, position: count % notes.length, scale};
     })
     .do(({notes, position}) =>
-      dispatch(updateActivePatternNotes(mapIndexed(row => mapIndexed((cell, y) => y === position ?
+      dispatch(updateSongNotes(mapIndexed(row => mapIndexed((cell, y) => y === position ?
                                                             {...cell, active: true} :
                                                             {...cell, active: false},
                                                           row),
@@ -52,21 +52,26 @@ const onStop = dispatch => {
   const {notes} = patterns.patterns[patterns.activePattern];
   stopAllNotes(notes);
   playStopSubject.onNext();
-  dispatch(updateActivePatternNotes(mapIndexed(row => mapIndexed(cell => ({...cell, active: false}),
+  dispatch(updateSongNotes(mapIndexed(row => mapIndexed(cell => ({...cell, active: false}),
                                                       row),
                                     notes)));
 };
 
-const handleClick = () => console.log('song click');
-
-export default connect(identity)(({dispatch, patterns, song, rootNote, scale}) =>
-  <div>
+export default connect(identity)(({dispatch, song: {notes}, rootNote, scale}) => {
+  const handleClick = (i, j) =>
+    dispatch(updateSongNotes(mapIndexed((row, x) => mapIndexed((cell, y) => x === i && y === j ?
+                                        {...cell, selected: !cell.selected} :
+                                        cell,
+                                                             row),
+                                      notes)));
+  return <div>
     <Navigation />
     <Pattern handleClick={handleClick}
-             notes={song.notes}
+             notes={notes}
              rootNote={rootNote}
              scale={scale}
-             yLabel={i => patterns.patterns[i].toString()} />
+             yLabel={i => i} />
     <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
-  </div>);
+  </div>;
+});
