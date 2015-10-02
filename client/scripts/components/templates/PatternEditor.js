@@ -1,9 +1,10 @@
-import {compose, curry, identity, filter, map, transduce} from 'ramda';
+import {compose, curry, identity, filter, map,
+  range, repeat, transduce} from 'ramda';
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import {playNote, stopNote} from '../../noteController';
 import store from '../../store';
-import {updateActivePatternNotes} from '../../actions';
+import {activePatternCellClick} from '../../actions';
 import {forEachIndexed, mapIndexed} from '../../tools/indexedIterators';
 import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
@@ -11,6 +12,7 @@ import Navigation from '../organisms/Navigation';
 import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
 import PatternOptions from '../organisms/PatternOptions';
 import noteNameFromPitch from '../../tools/noteNameFromPitch';
+import {noteExists} from '../../reducers/patterns';
 
 const playStopSubject = new Rx.Subject();
 
@@ -32,7 +34,7 @@ const onPlay = dispatch =>
       return {notes, position: count % notes.length, scale};
     })
     .do(({notes, position}) =>
-      dispatch(updateActivePatternNotes(mapIndexed(row => mapIndexed((cell, y) => y === position ?
+      dispatch(activePatternCellClick(mapIndexed(row => mapIndexed((cell, y) => y === position ?
                                                             {...cell, active: true} :
                                                             {...cell, active: false},
                                                           row),
@@ -54,7 +56,7 @@ const onStop = dispatch => {
   const {notes} = patterns.patterns[patterns.activePattern];
   stopAllNotes(notes);
   playStopSubject.onNext();
-  dispatch(updateActivePatternNotes(mapIndexed(row => mapIndexed(cell => ({...cell, active: false}),
+  dispatch(activePatternCellClick(mapIndexed(row => mapIndexed(cell => ({...cell, active: false}),
                                                       row),
                                     notes)));
 };
@@ -66,22 +68,19 @@ const yLabel = curry((scale, length, rootNote, i) =>
 export default connect(identity)(({activePatternIndex, dispatch, instrument, patterns, rootNote, scale}) => {
   const activePattern = patterns[activePatternIndex];
   const {notes} = activePattern;
-  const patternLength = 8;
-  const handleClick = i => j => () =>
-    dispatch(updateActivePatternNotes(mapIndexed((row, x) => mapIndexed((cell, y) => x === i && y === j ?
-                                        {...cell, selected: !cell.selected} :
-                                        cell,
-                                                             row),
-                                      notes)));
+
+  const createEmptyPatternData = compose(map(range(0)),
+                                        length => repeat(length, length));
+  const patternData = mapIndexed((x, i) => map(j => ({active: false, selected: noteExists(notes, i, j)}), x), createEmptyPatternData(8));
+  const onClick = x => y => () => dispatch(activePatternCellClick({x, y}));
   return <div>
     <Navigation />
-    <Pattern handleClick={handleClick}
+    <Pattern patternData={patternData}
+             onClick={onClick}
              notes={notes}
              rootNote={rootNote}
              scale={scale}
-             xLength={8}
-             yLength={8}
-             yLabel={yLabel(scale, patternLength, rootNote)} />
+             yLabel={yLabel(scale, length, rootNote)} />
     <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
     <PatternOptions dispatch={dispatch}
