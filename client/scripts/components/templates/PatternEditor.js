@@ -63,10 +63,11 @@ const yLabel = curry((scale, length, rootNote, i) =>
   noteNameFromPitch(pitchFromScaleIndex(scale.scales[scale.scaleName],
                                         length - i - 1) + rootNote));
 
-export default connect(identity)(({dispatch, instrument, patterns, rootNote, scale}) => {
-  const {notes} = patterns.patterns[patterns.activePattern];
-  const notesLength = notes[0].length;
-  const handleClick = (i, j) =>
+export default connect(identity)(({activePatternIndex, dispatch, instrument, patterns, rootNote, scale}) => {
+  const activePattern = patterns[activePatternIndex];
+  const {notes} = activePattern;
+  const patternLength = 8;
+  const handleClick = i => j => () =>
     dispatch(updateActivePatternNotes(mapIndexed((row, x) => mapIndexed((cell, y) => x === i && y === j ?
                                         {...cell, selected: !cell.selected} :
                                         cell,
@@ -78,11 +79,13 @@ export default connect(identity)(({dispatch, instrument, patterns, rootNote, sca
              notes={notes}
              rootNote={rootNote}
              scale={scale}
-             yLabel={yLabel(scale, notesLength, rootNote)} />
+             xLength={8}
+             yLength={8}
+             yLabel={yLabel(scale, patternLength, rootNote)} />
     <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
     <PatternOptions dispatch={dispatch}
                     instrument={instrument}
-                    pattern={patterns.patterns[patterns.activePattern]} />
+                    pattern={activePattern} />
   </div>;
 });

@@ -1,20 +1,15 @@
+import {map, range} from 'ramda';
 import React from 'react'; // eslint-disable-line
-import {mapIndexed} from '../../tools/indexedIterators';
-import {range} from 'ramda';
+import XLabels from '../molecules/XLabels';
+import PatternRow from '../molecules/PatternRow';
 
-const selectedClass = ({selected}) => selected === true ? 'selected' : '';
-const activeClass = ({active}) => active === true ? 'active' : '';
-
-export default ({handleClick, notes, yLabel}) => {
-  const notesLength = notes[0].length;
-  return <div className="pattern-editor">
-    {[...mapIndexed((x, i) => <div className="label-x"
-                                   key={`label-x-${i}`}>{x || ''}</div>,
-                    range(0, notesLength + 1)),
-      ...mapIndexed((x, i) => [<div className="label-y">{yLabel(i)}</div>,
-                    ...mapIndexed((cell, j) =>
-        <div className={`step ${selectedClass(cell)} ${activeClass(cell)}`}
-             key={`cell-${i}-${j}`}
-             onClick={handleClick.bind(null, i, j)} />, x)], notes)]}
+export default ({handleClick, notes, yLabel, xLength, yLength}) =>
+  <div className="pattern-editor">
+    <XLabels labels={range(0, xLength + 1)} />
+    {map(x => <PatternRow cells={range(0, xLength)}
+                          key={`pattern-row-${x}`}
+                          onClick={handleClick(x)}
+                          rowIndex={x}
+                          yLabel={yLabel(x)} />,
+         range(0, yLength))}
   </div>;
-};
