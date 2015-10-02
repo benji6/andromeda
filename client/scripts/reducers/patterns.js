@@ -7,6 +7,7 @@ import store from '../store';
 
 export const initialState = [{
   instrument: instrumentInitialState.selectedInstrument,
+  patternLength: 8,
   notes: [],
 }];
 
@@ -16,13 +17,13 @@ export default (state = initialState, {type, value}) => {
   switch (type) {
     case ACTIVE_PATTERN_CELL_CLICK:
       const {x, y} = value;
-      const {activePatternIndex, patterns} = store.getState();
-      const activePattern = patterns[activePatternIndex];
+      const {activePatternIndex} = store.getState();
+      const activePattern = state[activePatternIndex];
       const {notes} = activePattern;
 
       return noteExists(notes, x, y) ?
-        update(activePatternIndex, {...state[activePattern], notes: reject(equals(value), notes)}, state) :
-        update(activePatternIndex, {...state[activePattern], notes: append(value, notes)}, state);
+        update(activePatternIndex, {...activePattern, notes: reject(equals(value), notes)}, state) :
+        update(activePatternIndex, {...activePattern, notes: append(value, notes)}, state);
     case UPDATE_ACTIVE_PATTERN_INSTRUMENT:
       return update(activePattern, {...state[activePattern], instrument: value}, state);
     default:

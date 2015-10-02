@@ -29,8 +29,8 @@ const onPlay = dispatch =>
                               () => 60000 / store.getState().bpm)
     .takeUntil(playStopSubject)
     .map(count => {
-      const {patterns, scale} = store.getState();
-      const {notes} = patterns.patterns[patterns.activePattern];
+      const {activePatternIndex, patterns, scale} = store.getState();
+      const {notes} = patterns[activePatternIndex];
       return {notes, position: count % notes.length, scale};
     })
     .do(({notes, position}) =>
@@ -67,11 +67,11 @@ const yLabel = curry((scale, length, rootNote, i) =>
 
 export default connect(identity)(({activePatternIndex, dispatch, instrument, patterns, rootNote, scale}) => {
   const activePattern = patterns[activePatternIndex];
-  const {notes} = activePattern;
-
+  const {patternLength, notes} = activePattern;
   const createEmptyPatternData = compose(map(range(0)),
                                         length => repeat(length, length));
-  const patternData = mapIndexed((x, i) => map(j => ({active: false, selected: noteExists(notes, i, j)}), x), createEmptyPatternData(8));
+
+  const patternData = mapIndexed((x, i) => map(j => ({active: false, selected: noteExists(notes, i, j)}), x), createEmptyPatternData(patternLength));
   const onClick = x => y => () => dispatch(activePatternCellClick({x, y}));
   return <div>
     <Navigation />

@@ -1,6 +1,6 @@
 import test from 'tape';
-import reducer, {initialState} from './activePattern';
-import {updateActivePattern} from '../actions';
+import reducer, {initialState} from './activePatternIndex';
+import {updateActivePatternIndex} from '../actions';
 
 const reducerName = 'activePattern';
 
@@ -11,7 +11,7 @@ test(`${reducerName} reducer returns initial state`, t => {
 });
 
 test(`${reducerName} reducer updates state`, t => {
-  t.deepEqual(reducer(undefined, updateActivePattern(5)),
+  t.deepEqual(reducer(undefined, updateActivePatternIndex(5)),
               5);
   t.end();
 });
