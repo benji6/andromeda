@@ -1,7 +1,7 @@
 import {UPDATE_SELECTED_SCALE} from '../actions';
 import circularIterable from 'circular-iterable';
 
-const initialState = {
+export const initialState = {
   scales: {
     'harmonic minor': circularIterable(0, 2, 3, 5, 7, 8, 11),
     major: circularIterable(0, 2, 4, 5, 7, 9, 11),

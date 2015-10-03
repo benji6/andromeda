@@ -1,6 +1,6 @@
 import {UPDATE_SELECTED_EFFECT} from '../actions';
 
-const initialState = {
+export const initialState = {
   effects: [
     'pingPongDelay',
     'none',

@@ -1,3 +1,1 @@
-export default () => ({
-  0: ['gain', 'output'],
-});
+export default () => ({0: ['gain', 'output']});

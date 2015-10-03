@@ -12,8 +12,8 @@
     background-color: $color;
     border: $side-length / 32 solid #eee;
     box-sizing: border-box;
-    height: $side-length / 2;
-    width: $side-length;
+    height: 100%;
+    width: 100%;;
     &.active {
       background: lighten($color, 20%);
     }
@@ -23,23 +23,5 @@
     &.active.selected {
       background: darken($color, 15%);
     }
-  }
-  .label-x {
-    color: $white;
-    font-size: $small-font;
-    padding: 0.3rem 0;
-    text-align: center;
-    width: $side-length;
-  }
-  .label-y {
-    align-items: center;
-    box-sizing: border-box;
-    color: $white;
-    display: flex;
-    font-size: $small-font;
-    height: $side-length / 2;
-    justify-content: flex-start;
-    padding: 0.2rem;
-    width: $side-length;
   }
 }
