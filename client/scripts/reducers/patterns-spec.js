@@ -1,7 +1,9 @@
 import test from 'tape';
 import {update} from 'ramda';
 import reducer, {initialState} from './patterns';
-import {activePatternCellClick, updateActivePatternInstrument} from '../actions';
+import {activePatternCellClick,
+        updateActivePatternActivePosition,
+        updateActivePatternInstrument} from '../actions';
 
 const reducerName = 'patterns';
 
@@ -35,6 +37,18 @@ test(`${reducerName} reducer updates active pattern instrument`, t => {
   t.deepEqual(reducer(undefined, updateActivePatternInstrument(value)),
               update(activePatternIndex,
                      {...activePattern, instrument: value},
+                     initialState));
+  t.end();
+});
+
+test(`${reducerName} reducer updates active pattern active position`, t => {
+  const activePatternIndex = 0;
+  const activePattern = initialState[activePatternIndex];
+  const value = 3;
+
+  t.deepEqual(reducer(undefined, updateActivePatternActivePosition(value)),
+              update(activePatternIndex,
+                     {...activePattern, activePosition: value},
                      initialState));
   t.end();
 });
