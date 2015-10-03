@@ -19,7 +19,7 @@ const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const watchify = require('watchify');
 
-const browserifyEntryPath = 'client/scripts/index.js';
+const browserifyEntryPath = 'client/index.js';
 const publicPath = 'public';
 
 gulp.task('connect', () => connect.server({
@@ -29,7 +29,7 @@ gulp.task('connect', () => connect.server({
 
 gulp.task('clean', () => del('public/scripts/index*'));
 
-gulp.task('css', () => gulp.src('client/styles/index.scss')
+gulp.task('styles', () => gulp.src('client/index.scss')
   .pipe(plumber())
   .pipe(sass())
   .pipe(autoprefixer({
@@ -88,21 +88,21 @@ gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
   .pipe(uglify())
   .pipe(gulp.dest(`${publicPath}/scripts`)));
 
-gulp.task('lint', () => gulp.src('client/scripts/**/*')
+gulp.task('lint', () => gulp.src('client/**/*.js')
   .pipe(eslint())
   .pipe(eslint.formatEach()));
 
 gulp.task('watch', () => {
   gulp.watch('client/index.html', () => runSequence('htmlDev'));
-  gulp.watch('client/styles/**/*', () => runSequence('css'));
-  gulp.watch('client/scripts/**/*', () => runSequence(['scriptsDev', 'lint']));
+  gulp.watch('client/**/*.scss', () => runSequence('styles'));
+  gulp.watch('client/**/*.js', () => runSequence(['scriptsDev', 'lint']));
 });
 
 gulp.task('build',
           () => runSequence('clean',
-                            ['css', 'htmlProd', 'scriptsProd', 'lint']));
+                            ['styles', 'htmlProd', 'scriptsProd', 'lint']));
 
 gulp.task('default',
           () => runSequence('clean',
-                            ['css', 'htmlDev', 'scriptsDev', 'lint', 'watch'],
+                            ['styles', 'htmlDev', 'scriptsDev', 'lint', 'watch'],
                             'connect'));

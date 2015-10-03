@@ -5,7 +5,7 @@
   "scripts": {
     "build": "node_modules/.bin/babel-node node_modules/.bin/gulp build",
     "dev": "node_modules/.bin/babel-node node_modules/.bin/gulp",
-    "test": "node_modules/.bin/babel-node --ignore node_modules\/!circular-iterable/ node_modules/.bin/tape client/scripts/**/*-spec.js"
+    "test": "node_modules/.bin/babel-node --ignore node_modules\/!circular-iterable/ node_modules/.bin/tape client/**/*-spec.js"
   },
   "repository": {
     "type": "git",
@@ -32,8 +32,8 @@
     "babelify": "^6.3.0",
     "browserify": "^11.1.0",
     "del": "^2.0.2",
-    "eslint": "^1.4.0",
-    "eslint-plugin-react": "^3.3.2",
+    "eslint": "^1.6.0",
+    "eslint-plugin-react": "^3.5.1",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.0.1",
     "gulp-cdnizer": "^1.1.6",
