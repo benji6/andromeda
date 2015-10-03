@@ -54,7 +54,7 @@ const onStop = dispatch => {
 
 const yLabel = curry((scale, length, rootNote, i) =>
   noteNameFromPitch(pitchFromScaleIndex(scale.scales[scale.scaleName],
-                                        length - i - 1) + rootNote));
+                                        length - i + 7) + rootNote));
 
 export default connect(identity)(({activePatternIndex, dispatch, instrument, patterns, rootNote, scale}) => {
   const activePattern = patterns[activePatternIndex];
