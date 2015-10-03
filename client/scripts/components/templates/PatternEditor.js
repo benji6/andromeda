@@ -17,7 +17,7 @@ import {noteExists} from '../../reducers/patterns';
 
 const playStopSubject = new Rx.Subject();
 
-const stopAllNotes = forEach(({x, y}) => stopNote({id: `pattern-editor-${x}${y}`}));
+const stopAllNotes = forEach(({x, y}) => stopNote({id: `pattern-editor-${x}-${y}`}));
 
 const onPlay = dispatch =>
   Rx.Observable
@@ -36,7 +36,7 @@ const onPlay = dispatch =>
     .do(compose(stopAllNotes, ({notes}) => notes))
     .subscribe(({notes, patternLength, position, scale}) =>
       transduce(compose(filter(({y}) => y === position),
-                        map(({x, y}) => ({id: `pattern-editor-${x}${y}`,
+                        map(({x, y}) => ({id: `pattern-editor-${x}-${y}`,
                                           instrument: store.getState().patterns[store.getState().activePatternIndex].instrument,
                                           pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], patternLength - 1 - x)})),
                         map(playNote)),
@@ -65,7 +65,10 @@ export default connect(identity)(({activePatternIndex, dispatch, instrument, pat
                                                       selected: noteExists(notes, i, j)}),
                                                x),
                                  createEmptyPatternData(patternLength));
-  const onClick = x => y => () => dispatch(activePatternCellClick({x, y}));
+  const onClick = x => y => () => {
+    stopNote({id: `pattern-editor-${x}-${y}`});
+    dispatch(activePatternCellClick({x, y}));
+  };
   return <div>
     <Navigation />
     <Pattern patternData={patternData}
