@@ -1,4 +1,4 @@
-import {compose, curry, identity, filter, map,
+import {compose, curry, identity, filter, forEach, map,
   range, repeat, transduce} from 'ramda';
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
@@ -6,7 +6,7 @@ import {playNote, stopNote} from '../../noteController';
 import store from '../../store';
 import {activePatternCellClick,
         updateActivePatternActivePosition} from '../../actions';
-import {forEachIndexed, mapIndexed} from '../../tools/indexedIterators';
+import {mapIndexed} from '../../tools/indexedIterators';
 import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
@@ -17,9 +17,7 @@ import {noteExists} from '../../reducers/patterns';
 
 const playStopSubject = new Rx.Subject();
 
-const stopAllNotes = forEachIndexed((row, rowIndex) =>
-  forEachIndexed((cell, cellIndex) => stopNote({id: `pattern-editor-${rowIndex}${cellIndex}`}),
-                 row));
+const stopAllNotes = forEach(({x, y}) => stopNote({id: `pattern-editor-${x}${y}`}));
 
 const onPlay = dispatch =>
   Rx.Observable
@@ -32,20 +30,19 @@ const onPlay = dispatch =>
     .map(count => {
       const {activePatternIndex, patterns, scale} = store.getState();
       const {notes, patternLength} = patterns[activePatternIndex];
-      return {notes, position: count % patternLength, scale};
+      return {notes, patternLength, position: count % patternLength, scale};
     })
     .do(({position}) => dispatch(updateActivePatternActivePosition(position)))
-    .do(compose(stopAllNotes, x => x.notes))
-    .subscribe(({notes, position, scale}) =>
-      transduce(compose(mapIndexed((row, rowIndex) => ({id: `pattern-editor-${rowIndex}${position}`,
-                                                        instrument: store.getState().patterns.patterns[store.getState().patterns.activePattern].instrument,
-                                                        pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], notes.length - 1 - rowIndex),
-                                                        selected: row[position].selected})),
-                                   filter(({selected}) => selected),
-                                   map(playNote)),
-                            () => {},
-                            null,
-                            notes));
+    .do(compose(stopAllNotes, ({notes}) => notes))
+    .subscribe(({notes, patternLength, position, scale}) =>
+      transduce(compose(filter(({y}) => y === position),
+                        map(({x, y}) => ({id: `pattern-editor-${x}${y}`,
+                                          instrument: store.getState().patterns[store.getState().activePatternIndex].instrument,
+                                          pitch: pitchFromScaleIndex(scale.scales[scale.scaleName], patternLength - 1 - x)})),
+                        map(playNote)),
+                () => {},
+                null,
+                notes));
 
 const onStop = dispatch => {
   const {activePatternIndex, patterns} = store.getState();
