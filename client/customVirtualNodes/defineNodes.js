@@ -1,3 +1,6 @@
+import {addEffect} from '../actions';
+import {dispatch} from '../store';
+import adsr from './tools/adsr';
 import virtualAudioGraph from '../virtualAudioGraph';
 import pingPongDelay from './effects/pingPongDelay';
 import none from './effects/none';
@@ -6,10 +9,9 @@ import fm from './oscillatorBanks/fm';
 import reverbAsync from './effects/reverb-async';
 import sine from './oscillatorBanks/sine';
 import supersaw from './oscillatorBanks/supersaw';
-import {addEffect} from '../actions';
-import {dispatch} from '../store';
 
 virtualAudioGraph
+  .defineNode(adsr, 'adsr')
   .defineNode(detuned, 'detuned')
   .defineNode(fm, 'fm')
   .defineNode(none, 'none')
