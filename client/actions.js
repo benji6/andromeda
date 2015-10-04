@@ -1,6 +1,7 @@
 const typeValueAction = type => value => ({type, value});
 
 export const ACTIVE_PATTERN_CELL_CLICK = 'PATTERN_CELL_CLICK';
+export const ADD_EFFECT = 'ADD_EFFECT';
 export const UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION = 'UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION';
 export const UPDATE_ACTIVE_PATTERN_INDEX = 'UPDATE_ACTIVE_PATTERN_INDEX';
 export const UPDATE_ACTIVE_PATTERN_INSTRUMENT = 'UPDATE_ACTIVE_PATTERN_INSTRUMENT';
@@ -15,6 +16,7 @@ export const UPDATE_SELECTED_SCALE = 'UPDATE_SELECTED_SCALE';
 export const UPDATE_SONG_NOTES = 'UPDATE_SONG_NOTES';
 
 export const activePatternCellClick = typeValueAction(ACTIVE_PATTERN_CELL_CLICK);
+export const addEffect = typeValueAction(ADD_EFFECT);
 export const updateActivePatternActivePosition = typeValueAction(UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION);
 export const updateActivePatternIndex = typeValueAction(UPDATE_ACTIVE_PATTERN_INDEX);
 export const updateActivePatternInstrument = typeValueAction(UPDATE_ACTIVE_PATTERN_INSTRUMENT);

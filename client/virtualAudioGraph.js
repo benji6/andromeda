@@ -1,2 +1,3 @@
-import VirtualAudioGraph from 'virtual-audio-graph';
-export default new VirtualAudioGraph();
+import createVirtualAudioGraph from 'virtual-audio-graph';
+import audioContext from './audioContext';
+export default createVirtualAudioGraph({audioContext});
