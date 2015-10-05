@@ -10,18 +10,13 @@ import reverbAsync from './effects/reverb-async';
 import sine from './oscillatorBanks/sine';
 import supersaw from './oscillatorBanks/supersaw';
 
-virtualAudioGraph
-  .defineNode(adsr, 'adsr')
-  .defineNode(detuned, 'detuned')
-  .defineNode(fm, 'fm')
-  .defineNode(none, 'none')
-  .defineNode(pingPongDelay, 'pingPongDelay')
-  .defineNode(sine, 'sine')
-  .defineNode(supersaw, 'supersaw');
+virtualAudioGraph.defineNodes({
+  adsr, detuned, fm, none, pingPongDelay, sine, supersaw,
+});
 
-reverbAsync('audio/sb.wav').then(reverb => virtualAudioGraph.defineNode(reverb, 'reverb chapel'))
+reverbAsync('audio/sb.wav').then(reverb => virtualAudioGraph.defineNodes({'reverb chapel': reverb}))
                            .then(() => dispatch(addEffect('reverb chapel')));
-reverbAsync('audio/h.wav').then(reverb => virtualAudioGraph.defineNode(reverb, 'reverb mausoleum'))
+reverbAsync('audio/h.wav').then(reverb => virtualAudioGraph.defineNodes({'reverb mausoleum': reverb}))
                           .then(() => dispatch(addEffect('reverb mausoleum')));
-reverbAsync('audio/st.wav').then(reverb => virtualAudioGraph.defineNode(reverb, 'reverb stairwell'))
+reverbAsync('audio/st.wav').then(reverb => virtualAudioGraph.defineNodes({'reverb stairwell': reverb}))
                            .then(() => dispatch(addEffect('reverb stairwell')));
