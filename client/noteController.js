@@ -1,4 +1,4 @@
-import {assoc, compose, dissoc, map, reject, tap} from 'ramda';
+import {compose, dissoc, map, reject, tap} from 'ramda';
 import store from './store';
 import virtualAudioGraph from './virtualAudioGraph';
 import createInstrumentCustomNodeParams, {resetArpeggiator} from './tools/createInstrumentCustomNodeParams';
@@ -28,9 +28,8 @@ const computeNextStartTime = currentTime => Math.ceil(currentTime / noteDuration
 export const playNote = ({id, instrument, pitch, modulation = 0.5}) => {
   const {arpeggiator, effect, rootNote, scale} = getState();
 
-  currentVirtualAudioGraph = assoc(0,
-                                   [effect.selectedEffect, 'output'],
-                                   currentVirtualAudioGraph);
+  currentVirtualAudioGraph = {...currentVirtualAudioGraph,
+                              0: [effect.selectedEffect, 'output']};
 
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     arpStop$.onNext();
@@ -42,16 +41,14 @@ export const playNote = ({id, instrument, pitch, modulation = 0.5}) => {
                          map(startTime => ({startTime, stopTime: startTime + noteDuration()})),
                          reject(({stopTime}) => stopTime < virtualAudioGraph.currentTime),
                          map(({startTime, stopTime}) =>
-                           currentVirtualAudioGraph = assoc(getVirtualNodeId(id),
-                                                            createInstrumentCustomNodeParams({pitch, id, rootNote, modulation, startTime, stopTime, instrument}),
-                                                            currentVirtualAudioGraph)),
+                           currentVirtualAudioGraph = {...currentVirtualAudioGraph,
+                                                       [getVirtualNodeId(id)]: createInstrumentCustomNodeParams({pitch, id, rootNote, modulation, startTime, stopTime, instrument})}),
                          map(() => virtualAudioGraph.update(currentVirtualAudioGraph))))
       .takeUntil(arpStop$)
       .subscribe();
   } else {
-    currentVirtualAudioGraph = assoc(id,
-                                     createInstrumentCustomNodeParams({pitch, id, instrument, rootNote, modulation}),
-                                     currentVirtualAudioGraph);
+    currentVirtualAudioGraph = {...currentVirtualAudioGraph,
+                                [id]: createInstrumentCustomNodeParams({pitch, id, instrument, rootNote, modulation})};
     virtualAudioGraph.update(currentVirtualAudioGraph);
   }
 };
