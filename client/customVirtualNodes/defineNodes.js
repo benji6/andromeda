@@ -14,9 +14,10 @@ virtualAudioGraph.defineNodes({
   adsr, detuned, fm, none, pingPongDelay, sine, supersaw,
 });
 
-reverbAsync('audio/sb.wav').then(reverb => virtualAudioGraph.defineNodes({'reverb chapel': reverb}))
-                           .then(() => dispatch(addEffect('reverb chapel')));
-reverbAsync('audio/h.wav').then(reverb => virtualAudioGraph.defineNodes({'reverb mausoleum': reverb}))
-                          .then(() => dispatch(addEffect('reverb mausoleum')));
-reverbAsync('audio/st.wav').then(reverb => virtualAudioGraph.defineNodes({'reverb stairwell': reverb}))
-                           .then(() => dispatch(addEffect('reverb stairwell')));
+const loadReverb = (uri, name) => reverbAsync(uri)
+  .then(reverb => virtualAudioGraph.defineNodes({[name]: reverb}))
+  .then(() => dispatch(addEffect(name)));
+
+loadReverb('audio/sb.wav', 'reverb chapel');
+loadReverb('audio/h.wav', 'reverb mausoleum');
+loadReverb('audio/st.wav', 'reverb stairwell');
