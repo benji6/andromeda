@@ -6,7 +6,7 @@ import PatternRow from '../molecules/PatternRow';
 
 export default ({onClick, yLabel, patternData}) =>
   <div className="pattern-editor">
-    <XLabels labels={range(0, patternData.length + 1)} />
+    <XLabels labels={range(0, patternData[0].length + 1)} />
     {mapIndexed((cells, i) => <PatternRow cells={cells}
                                           key={`pattern-row-${i}`}
                                           onClick={onClick(i)}

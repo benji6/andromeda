@@ -8,8 +8,9 @@ import store from '../store';
 export const initialState = [{
   activePosition: null,
   instrument: instrumentInitialState.selectedInstrument,
-  patternLength: 8,
   notes: [],
+  xLength: 8,
+  yLength: 8,
 }];
 
 export const noteExists = (notes, x, y) => Boolean(find(both(propEq('x', x), propEq('y', y)), notes));
