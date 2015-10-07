@@ -6,7 +6,7 @@ import Navigation from '../organisms/Navigation';
 export default () =>
   <div>
     <Navigation />
-    <div className="center">
+    <div className="text-center">
       <ControlPad />
     </div>
     <PerformanceMenu />

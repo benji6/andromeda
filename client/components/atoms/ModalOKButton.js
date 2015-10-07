@@ -10,4 +10,6 @@ const handleClick = () => render(
   </Provider>
 );
 
-export default () => <button onClick={handleClick}>OK</button>;
+export default () => <div className="text-right">
+  <button onClick={handleClick}>OK</button>
+</div>;

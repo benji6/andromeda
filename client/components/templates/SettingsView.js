@@ -10,7 +10,7 @@ const enforceMinBpm = bpm => bpm < minBpm ? minBpm : bpm;
 export default connect(identity)(({bpm, dispatch}) =>
   <div className="settings-view">
     <Navigation />
-    <h1 className="center">Settings</h1>
+    <h1 className="text-center">Settings</h1>
     <div className="settings-container">
       <label>BPM:
       <input defaultValue={bpm}
