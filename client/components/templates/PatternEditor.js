@@ -73,7 +73,6 @@ export default connect(identity)(({activePatternIndex, dispatch, instrument, pat
     <Navigation />
     <Pattern patternData={patternData}
              onClick={onClick}
-             notes={notes}
              rootNote={rootNote}
              scale={scale}
              yLabel={yLabel(scale, length, rootNote)} />
