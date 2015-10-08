@@ -3,7 +3,8 @@ import {update} from 'ramda';
 import reducer, {initialState} from './patterns';
 import {activePatternCellClick,
         updateActivePatternActivePosition,
-        updateActivePatternInstrument} from '../actions';
+        updateActivePatternInstrument,
+        updateActivePatternXLength} from '../actions';
 
 const reducerName = 'patterns';
 
@@ -29,6 +30,18 @@ test(`${reducerName} reducer handles active pattern cell click`, t => {
   t.end();
 });
 
+test(`${reducerName} reducer updates active pattern active position`, t => {
+  const activePatternIndex = 0;
+  const activePattern = initialState[activePatternIndex];
+  const value = 3;
+
+  t.deepEqual(reducer(undefined, updateActivePatternActivePosition(value)),
+              update(activePatternIndex,
+                     {...activePattern, activePosition: value},
+                     initialState));
+  t.end();
+});
+
 test(`${reducerName} reducer updates active pattern instrument`, t => {
   const activePatternIndex = 0;
   const activePattern = initialState[activePatternIndex];
@@ -41,14 +54,14 @@ test(`${reducerName} reducer updates active pattern instrument`, t => {
   t.end();
 });
 
-test(`${reducerName} reducer updates active pattern active position`, t => {
+test(`${reducerName} reducer updates active pattern xLength`, t => {
   const activePatternIndex = 0;
   const activePattern = initialState[activePatternIndex];
-  const value = 3;
+  const value = 5;
 
-  t.deepEqual(reducer(undefined, updateActivePatternActivePosition(value)),
+  t.deepEqual(reducer(undefined, updateActivePatternXLength(value)),
               update(activePatternIndex,
-                     {...activePattern, activePosition: value},
+                     {...activePattern, xLength: value},
                      initialState));
   t.end();
 });
