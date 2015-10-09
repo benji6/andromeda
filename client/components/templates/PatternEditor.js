@@ -15,7 +15,7 @@ import PatternOptions from '../organisms/PatternOptions';
 import noteNameFromPitch from '../../tools/noteNameFromPitch';
 import {noteExists} from '../../reducers/patterns';
 
-const playStopSubject = new Rx.Subject();
+const playStopSubject = new Rx.Subject;
 
 const stopAllNotes = forEach(({x, y}) => stopNote({id: `pattern-editor-${x}-${y}`}));
 
