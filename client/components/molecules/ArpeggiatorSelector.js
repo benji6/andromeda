@@ -1,6 +1,7 @@
 import capitalize from 'capitalize';
 import React from 'react'; // eslint-disable-line
 import {map} from 'ramda';
+import InputLabel from '../atoms/InputLabel';
 
 export default ({arpeggiatorIsOn,
                  handleArpeggiatorIsOnChange,
@@ -8,13 +9,14 @@ export default ({arpeggiatorIsOn,
                  patterns,
                  selectedPattern}) =>
   <div>
-    <label><span>Arpeggiator</span>
+    <label>
+      <InputLabel text="Arpeggiator" />
       <input defaultChecked={arpeggiatorIsOn}
              onChange={handleArpeggiatorIsOnChange}
              type="checkbox" />
     </label>
     <label>
-      <span>Pattern</span>
+      <InputLabel text="Pattern" />
       <select disabled={!arpeggiatorIsOn}
               defaultValue={selectedPattern}
               onChange={handlePatternSelect}>

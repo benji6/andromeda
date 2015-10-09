@@ -5,32 +5,28 @@
   .modal-window {
     margin: auto;
     position: relative;
-    text-align: center;
+    text-align: right;
     top: 2rem;
     .modal-contents {
       background: linear-gradient(#015, #001);
       border-radius: 2rem;
-      box-shadow: #02c 0 0 2rem 0.2rem;
-      display: inline-block;
+      box-shadow: $squirtle-dusk 0 0 2rem 0.2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: auto;
       padding: 2rem;
+      width: 20rem;
       label {
-        display: block;
         &:hover span {
-          text-shadow: 0 0 0.5rem #26f;
+          text-shadow: 0 0 0.5rem $squirtle-dawn;
         }
         &:hover output {
-          text-shadow: 0 0 0.5rem #26f;
+          text-shadow: 0 0 0.5rem $squirtle-dawn;
         }
       }
       output {
         color: $white;
-      }
-      span {
-        color: $white;
-        display: inline-block;
-        margin-right: 0.5rem;
-        text-align: right;
-        width: 5rem;
       }
     }
   }
