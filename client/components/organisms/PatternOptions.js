@@ -15,8 +15,8 @@ export default ({dispatch, instrument, pattern, pattern: {xLength}}) =>
     <RangeSelector output={xLength}
                    max="16"
                    min="1"
-                   handleRootNoteChange={({target: {value}}) => compose(dispatch,
-                                                                        updateActivePatternXLength,
-                                                                        Number)(value)}
+                   onChange={({target: {value}}) => compose(dispatch,
+                                                            updateActivePatternXLength,
+                                                            Number)(value)}
                    text="Pattern Length" />
   </div>;

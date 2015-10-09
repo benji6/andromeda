@@ -1,6 +1,6 @@
 import React from 'react'; // eslint-disable-line
 
-export default ({max, min, onChange, rootNote, type, value, output}) =>
+export default ({max, min, onChange, type, value, output}) =>
   <div className="slider">
     <div>
       <output>{output}</output>
@@ -9,5 +9,5 @@ export default ({max, min, onChange, rootNote, type, value, output}) =>
            min={min}
            onChange={onChange}
            type="range"
-           value={rootNote} />
+           value={value} />
   </div>;
