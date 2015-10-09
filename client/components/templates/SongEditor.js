@@ -56,7 +56,6 @@ const yLabel = curry((scale, length, rootNote, i) =>
                                         length - i + 7) + rootNote));
 
 export default connect(x => x)(({dispatch, rootNote, scale, song}) => {
-  // const {activePosition, patternLength, notes} = activePattern;
   const {activePosition, steps, xLength, yLength} = song;
   const emptyPatternData = map(range(0), repeat(xLength, yLength));
   const patternData = mapIndexed((x, i) => map(j => ({active: j === activePosition,

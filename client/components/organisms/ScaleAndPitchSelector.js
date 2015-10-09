@@ -23,7 +23,7 @@ export default connect(identity)(({arpeggiator, dispatch, rootNote, scale}) => {
         <div className="modal-contents">
           <RangeSelector
             rootNote={rootNote}
-            handleRootNoteChange={compose(
+            onChange={compose(
               dispatch,
               updateSelectedRootNote,
               Number,
@@ -33,7 +33,7 @@ export default connect(identity)(({arpeggiator, dispatch, rootNote, scale}) => {
             min="-36"
             output={noteNameFromPitch(rootNote)}
             text="Root Note"
-          />
+            value={rootNote} />
         <Selector defaultValue={scaleName}
                   handleChange={compose(dispatch,
                                         updateSelectedScale,
