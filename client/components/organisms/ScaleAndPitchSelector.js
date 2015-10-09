@@ -2,7 +2,7 @@ import {compose, identity, keys, path} from 'ramda';
 import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector';
-import RootNoteSelector from '../molecules/RootNoteSelector';
+import RangeSelector from '../molecules/RangeSelector';
 import Selector from '../molecules/Selector';
 import ModalOKButton from '../atoms/ModalOKButton';
 import {updateArpeggiatorIsOn,
@@ -20,7 +20,7 @@ export default connect(identity)(({arpeggiator, dispatch, rootNote, scale}) => {
     <div className="modal-container">
       <div className="modal-window">
         <div className="modal-contents">
-          <RootNoteSelector
+          <RangeSelector
             rootNote={rootNote}
             handleRootNoteChange={compose(
               dispatch,
