@@ -1,8 +1,10 @@
 import {UPDATE_SONG_NOTES} from '../actions';
-import {repeat} from 'ramda';
 
 export const initialState = {
-  notes: repeat(repeat({selected: false, active: false}, 8), 1),
+  activePosition: null,
+  xLength: 8,
+  yLength: 3,
+  steps: [],
 };
 
 export default (state = initialState, {type, value}) => {

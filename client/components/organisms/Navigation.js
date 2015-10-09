@@ -6,24 +6,22 @@ import PatternEditor from '../templates/PatternEditor';
 import PerformanceView from '../templates/PerformanceView';
 import SettingsView from '../templates/SettingsView';
 import store from '../../store';
-
-// <button className="button" onClick={() => render(
-//   <Provider store={store}>
-//     <SongEditor />
-//   </Provider>
-// )}>Song Editor</button>
+import HollowButton from '../atoms/HollowButton';
+// <HollowButton onClick={() => render(<Provider store={store}>
+//                                       <SongEditor />
+//                                     </Provider>)}
+//               text="Song Editor" />
 
 export default () =>
   <nav className="navigation">
-    <button className="button" onClick={() => render(<PerformanceView />)}>Control Pad</button>
-    <button className="button" onClick={() => render(
-      <Provider store={store}>
-        <PatternEditor />
-      </Provider>
-    )}>Pattern Editor</button>
-    <button className="button" onClick={() => render(
-      <Provider store={store}>
-        <SettingsView />
-      </Provider>
-    )}>Settings</button>
+    <HollowButton onClick={() => render(<PerformanceView />)}
+                  text="Control Pad" />
+    <HollowButton onClick={() => render(<Provider store={store}>
+                                          <PatternEditor />
+                                        </Provider>)}
+                  text="Pattern Editor" />
+    <HollowButton onClick={() => render(<Provider store={store}>
+                                          <SettingsView />
+                                        </Provider>)}
+                  text="Settings" />
   </nav>;

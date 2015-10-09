@@ -1,0 +1,30 @@
+.slider {
+  @mixin slider-thumb () {
+    appearance: none;
+    background: linear-gradient(to bottom, $white 0%, $off-white 55%, $squirtle-midday 80%);
+    border-radius: 0.3rem;
+    box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    height: 0.8rem;
+    top: 0px;
+    width: 0.8rem;
+  }
+
+  display: inline-block;
+  margin: 1rem 0.5rem;
+  text-align: center;
+  width: 12rem;
+  input[type="range"] {
+    appearance: none;
+    background-color: $white;
+    cursor: pointer;
+    height: 0.1rem;
+    width: 10rem;
+    &::-webkit-slider-thumb {
+      @include slider-thumb();
+    }
+    &::-moz-range-thumb {
+      @include slider-thumb();
+    }
+  }
+}

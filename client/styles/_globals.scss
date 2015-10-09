@@ -1,9 +1,15 @@
-.center {
-  text-align: center;
-}
-
 .flex-row {
   display: flex;
   justify-content: space-around;
   width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
 }

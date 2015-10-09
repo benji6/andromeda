@@ -1,13 +1,14 @@
 import capitalize from 'capitalize';
 import React from 'react'; // eslint-disable-line
 import {map} from 'ramda';
+import InputLabel from '../atoms/InputLabel';
 
 export default ({defaultValue,
                  handleChange,
                  label,
                  options}) =>
   <label className="selector">
-    <span>{capitalize(label)}</span>
+    <InputLabel text={capitalize(label)} />
     <select onChange={handleChange}
             defaultValue={defaultValue}>
       {map(item =>

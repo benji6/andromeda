@@ -2,12 +2,14 @@
 @import 'styles/globals';
 
 @import 'components/atoms/control-pad';
+@import 'components/atoms/hollow-button';
+@import 'components/atoms/input-label';
 @import 'components/atoms/inputs';
 @import 'components/atoms/play-button';
+@import 'components/atoms/slider';
 @import 'components/atoms/x-label';
 @import 'components/atoms/y-label';
 @import 'components/molecules/pattern-row';
-@import 'components/molecules/selector';
 @import 'components/molecules/x-labels';
 @import 'components/organisms/loading-spinner';
 @import 'components/organisms/modal-container';
