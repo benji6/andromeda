@@ -1,15 +1,14 @@
 import React from 'react'; // eslint-disable-line
-import noteNameFromPitch from '../../tools/noteNameFromPitch';
 import Slider from '../atoms/Slider';
 import InputLabel from '../atoms/InputLabel';
 
-export default ({handleRootNoteChange, rootNote}) =>
+export default ({handleRootNoteChange, max, min, output, rootNote, text}) =>
   <label className="selector">
-    <InputLabel text="Root Note" />
-    <Slider max="24"
-            min="-36"
+    <InputLabel text={text} />
+    <Slider max={max}
+            min={min}
             onChange={handleRootNoteChange}
-            output={noteNameFromPitch(rootNote)}
+            output={output}
             rootNote={rootNote}
             type="range"
             value={rootNote} />

@@ -9,6 +9,7 @@ import {updateArpeggiatorIsOn,
         updateSelectedPattern,
         updateSelectedRootNote,
         updateSelectedScale} from '../../actions';
+import noteNameFromPitch from '../../tools/noteNameFromPitch';
 
 const eventValuePath = path(['currentTarget', 'value']);
 const eventCheckedPath = path(['currentTarget', 'checked']);
@@ -28,6 +29,10 @@ export default connect(identity)(({arpeggiator, dispatch, rootNote, scale}) => {
               Number,
               eventValuePath
             )}
+            max="24"
+            min="-36"
+            output={noteNameFromPitch(rootNote)}
+            text="Root Note"
           />
         <Selector defaultValue={scaleName}
                   handleChange={compose(dispatch,

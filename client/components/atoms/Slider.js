@@ -5,8 +5,8 @@ export default ({max, min, onChange, rootNote, type, value, output}) =>
     <div>
       <output>{output}</output>
     </div>
-    <input max="24"
-           min="-36"
+    <input max={max}
+           min={min}
            onChange={onChange}
            type="range"
            value={rootNote} />

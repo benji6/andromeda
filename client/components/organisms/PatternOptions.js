@@ -1,7 +1,9 @@
+import {compose} from 'ramda';
 import React from 'react'; // eslint-disable-line
-import {updateActivePatternInstrument} from '../../actions';
+import {updateActivePatternInstrument,
+        updateActivePatternXLength} from '../../actions';
 import Selector from '../molecules/Selector';
-import Slider from '../atoms/Slider';
+import RangeSelector from '../molecules/RangeSelector';
 
 export default ({dispatch, instrument, pattern, pattern: {xLength}}) =>
   <div className="pattern-options">
@@ -10,5 +12,11 @@ export default ({dispatch, instrument, pattern, pattern: {xLength}}) =>
               label="Instrument"
               options={instrument.instruments}
               defaultValue={pattern.instrument} />
-    Pattern Length<Slider output={xLength} />
+    <RangeSelector output={xLength}
+                   max="16"
+                   min="1"
+                   handleRootNoteChange={({target: {value}}) => compose(dispatch,
+                                                                        updateActivePatternXLength,
+                                                                        Number)(value)}
+                   text="Pattern Length" />
   </div>;
