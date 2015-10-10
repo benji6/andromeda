@@ -1,5 +1,5 @@
-.pattern-editor {
-  $total-width: 50vw;
+.pattern {
+  $total-width: 100vw / 12 * 11;
   $side-length: $total-width / 9;
   align-content: center;
   display: flex;
@@ -10,7 +10,7 @@
   .step {
     $color: #15a;
     background-color: $color;
-    border: $side-length / 32 solid #eee;
+    border: $side-length / 48 solid #eee;
     box-sizing: border-box;
     height: 100%;
     width: 100%;;

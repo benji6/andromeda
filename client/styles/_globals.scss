@@ -1,3 +1,12 @@
+body {
+  background: #012;
+  font-family: sans-serif;
+  margin: 0;
+  user-select: none;
+  height: 100vh;
+  cursor: default;
+}
+
 .flex-row {
   display: flex;
   justify-content: space-around;

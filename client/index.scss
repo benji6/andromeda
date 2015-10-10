@@ -13,16 +13,7 @@
 @import 'components/molecules/x-labels';
 @import 'components/organisms/loading-spinner';
 @import 'components/organisms/navigation';
-@import 'components/pages/pattern-editor';
+@import 'components/organisms/pattern';
 @import 'components/pages/settings-view';
 @import 'components/pages/upgrade-browser-message';
 @import 'components/templates/modal-dialog';
-
-body {
-  background: #012;
-  font-family: sans-serif;
-  margin: 0;
-  user-select: none;
-  height: 100vh;
-  cursor: default;
-}
