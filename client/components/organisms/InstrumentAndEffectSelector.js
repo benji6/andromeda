@@ -1,10 +1,13 @@
 import {compose, identity, path} from 'ramda';
 import React from 'react'; // eslint-disable-line
-import {connect} from 'react-redux';
+import {connect, Provider} from 'react-redux';
 import Selector from '../molecules/Selector';
-import ModalOKButton from '../atoms/ModalOKButton';
+import FullButton from '../atoms/FullButton';
 import {updateSelectedEffect,
         updateSelectedInstrument} from '../../actions';
+import store from '../../store';
+import render from '../../tools/render';
+import PerformanceView from '../templates/PerformanceView';
 
 const eventValuePath = path(['currentTarget', 'value']);
 
@@ -27,7 +30,13 @@ export default connect(identity)(({dispatch, instrument, effect}) => {
                                           eventValuePath)}
                     label="Effect"
                     options={effects} />
-          <ModalOKButton />
+          <div className="text-right">
+            <FullButton onClick={() => render(
+              <Provider store={store}>
+                <PerformanceView />
+              </Provider>
+            )} text="OK" />
+          </div>
         </div>
       </div>
     </div>

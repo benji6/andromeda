@@ -1,15 +1,18 @@
 import {compose, identity, keys, path} from 'ramda';
 import React from 'react'; // eslint-disable-line
-import {connect} from 'react-redux';
+import {connect, Provider} from 'react-redux';
+import FullButton from '../atoms/FullButton';
 import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector';
 import RangeSelector from '../molecules/RangeSelector';
 import Selector from '../molecules/Selector';
-import ModalOKButton from '../atoms/ModalOKButton';
 import {updateArpeggiatorIsOn,
         updateSelectedPattern,
         updateSelectedRootNote,
         updateSelectedScale} from '../../actions';
 import noteNameFromPitch from '../../tools/noteNameFromPitch';
+import store from '../../store';
+import render from '../../tools/render';
+import PerformanceView from '../templates/PerformanceView';
 
 const eventValuePath = path(['currentTarget', 'value']);
 const eventCheckedPath = path(['currentTarget', 'checked']);
@@ -56,7 +59,13 @@ export default connect(identity)(({arpeggiator, dispatch, rootNote, scale}) => {
               eventValuePath
             )}
           />
-          <ModalOKButton />
+          <div className="text-right">
+            <FullButton onClick={() => render(
+              <Provider store={store}>
+                <PerformanceView />
+              </Provider>
+            )} text="OK" />
+          </div>
         </div>
       </div>
     </div>

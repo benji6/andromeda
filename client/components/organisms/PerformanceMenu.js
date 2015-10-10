@@ -4,18 +4,19 @@ import ScaleAndPitchSelector from '../organisms/ScaleAndPitchSelector';
 import render from '../../tools/render';
 import {Provider} from 'react-redux';
 import store from '../../store';
+import FullButton from '../atoms/FullButton';
 
 export default () =>
   <div className="performance-menu">
     <div className="buttons-container">
-      <button onClick={() => render(
+      <FullButton onClick={() => render(
         <Provider store={store}>
           <InstrumentAndEffectSelector />
-        </Provider>)}>Instrument</button>
-      <button onClick={() => render(
+        </Provider>)} text="Instrument" />
+      <FullButton onClick={() => render(
         <Provider store={store}>
           <ScaleAndPitchSelector />
         </Provider>
-      )}>Scale & Pitch</button>
+      )} text="Scale & Pitch" />
     </div>
   </div>;
