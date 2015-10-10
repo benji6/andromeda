@@ -7,21 +7,24 @@ import PerformanceView from '../pages/PerformanceView';
 import SettingsView from '../pages/SettingsView';
 import store from '../../store';
 import HollowButton from '../atoms/HollowButton';
+import Menu from './Menu';
 // <HollowButton onClick={() => render(<Provider store={store}>
 //                                       <SongEditor />
 //                                     </Provider>)}
 //               text="Song Editor" />
 
 export default () =>
-  <nav className="navigation">
-    <HollowButton onClick={() => render(<PerformanceView />)}
-                  text="Control Pad" />
-    <HollowButton onClick={() => render(<Provider store={store}>
-                                          <PatternEditor />
-                                        </Provider>)}
-                  text="Pattern Editor" />
-    <HollowButton onClick={() => render(<Provider store={store}>
-                                          <SettingsView />
-                                        </Provider>)}
-                  text="Settings" />
-  </nav>;
+  <Menu components={
+    <div>
+      <HollowButton onClick={() => render(<PerformanceView />)}
+                    text="Control Pad" />
+      <HollowButton onClick={() => render(<Provider store={store}>
+                                            <PatternEditor />
+                                          </Provider>)}
+                    text="Pattern Editor" />
+      <HollowButton onClick={() => render(<Provider store={store}>
+                                            <SettingsView />
+                                          </Provider>)}
+                    text="Settings" />
+    </div>
+  } />;

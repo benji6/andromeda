@@ -11,7 +11,7 @@ import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
 import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
-import PatternOptions from '../organisms/PatternOptions';
+import PatternMenu from '../organisms/PatternMenu';
 import noteNameFromPitch from '../../tools/noteNameFromPitch';
 import {noteExists} from '../../reducers/patterns';
 
@@ -78,7 +78,7 @@ export default connect(identity)(({activePatternIndex, dispatch, instrument, pat
              yLabel={yLabel(scale, yLength, rootNote)} />
     <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
-    <PatternOptions dispatch={dispatch}
+    <PatternMenu dispatch={dispatch}
                     instrument={instrument}
                     pattern={activePattern} />
   </div>;
