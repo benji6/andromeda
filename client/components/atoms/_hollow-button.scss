@@ -1,5 +1,5 @@
 .hollow-button {
-  background: linear-gradient($squirtle-midnight, $black, $squirtle-midnight);
+  background: linear-gradient($squirtle-night, $black, $squirtle-night);
   border-radius: 1rem;
   border: 1px solid #058;
   box-shadow: $squirtle-dusk 0 0 0.5rem 0.1rem;
@@ -12,6 +12,6 @@
     box-shadow: $squirtle-dusk 0 0 1rem 0.1rem;
   }
   &:active {
-    background: linear-gradient($black, $black, $squirtle-midnight);
+    background: linear-gradient($black, $black, $squirtle-night);
   }
 }
