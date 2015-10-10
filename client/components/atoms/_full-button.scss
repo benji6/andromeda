@@ -16,3 +16,11 @@
     background: linear-gradient($squirtle-dusk, $squirtle-dawn);
   }
 }
+
+select.full-button {
+  appearance: none;
+  text-indent: 1rem;
+  &[disabled] {
+    visibility: hidden;
+  }
+}

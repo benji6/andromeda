@@ -9,7 +9,7 @@ export default ({defaultValue,
                  options}) =>
   <label className="selector">
     <InputLabel text={capitalize(label)} />
-    <select onChange={handleChange}
+    <select className="full-button" onChange={handleChange}
             defaultValue={defaultValue}>
       {map(item =>
         <option value={item} key={item}>

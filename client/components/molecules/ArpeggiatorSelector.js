@@ -17,7 +17,8 @@ export default ({arpeggiatorIsOn,
     </label>
     <label>
       <InputLabel text="Pattern" />
-      <select disabled={!arpeggiatorIsOn}
+      <select className="full-button"
+              disabled={!arpeggiatorIsOn}
               defaultValue={selectedPattern}
               onChange={handlePatternSelect}>
         {map(item =>
