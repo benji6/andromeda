@@ -9,13 +9,13 @@ import Menu from './Menu';
 
 export default () =>
   <Menu components={[
-      <FullButton key="1" onClick={() => render(
-        <Provider store={store}>
-          <InstrumentAndEffectSelector />
-        </Provider>)} text="Instrument" />,
-      <FullButton key="2" onClick={() => render(
-        <Provider store={store}>
-          <ScaleAndPitchSelector />
-        </Provider>
-      )} text="Scale & Pitch" />,
+    <FullButton key="1" onClick={() => render(
+      <Provider store={store}>
+        <InstrumentAndEffectSelector />
+      </Provider>)} text="Instrument" />,
+    <FullButton key="2" onClick={() => render(
+      <Provider store={store}>
+        <ScaleAndPitchSelector />
+      </Provider>
+    )} text="Scale & Pitch" />,
   ]} />;
