@@ -1,11 +1,17 @@
 .hollow-button {
-  background: rgba(0,0,0,0);
+  background: linear-gradient($squirtle-midnight, $black, $squirtle-midnight);
   border-radius: 1rem;
   border: 1px solid #058;
-  box-shadow: #05a 0 0 1.5rem 0.1rem;
+  box-shadow: $squirtle-dusk 0 0 0.5rem 0.1rem;
   color: $white;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: $small-font;
   margin: 1rem 0.5rem;
   padding: 0.25rem 1rem;
+  &:hover {
+    box-shadow: $squirtle-dusk 0 0 1rem 0.1rem;
+  }
+  &:active {
+    background: linear-gradient($black, $black, $squirtle-midnight);
+  }
 }
