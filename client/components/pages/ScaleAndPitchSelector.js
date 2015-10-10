@@ -3,13 +3,10 @@ import React from 'react'; // eslint-disable-line
 import {connect} from 'react-redux';
 import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector';
 import ModalDialog from '../templates/ModalDialog';
-import RangeSelector from '../molecules/RangeSelector';
 import Selector from '../molecules/Selector';
 import {updateArpeggiatorIsOn,
         updateSelectedPattern,
-        updateSelectedRootNote,
         updateSelectedScale} from '../../actions';
-import noteNameFromPitch from '../../tools/noteNameFromPitch';
 import {Provider} from 'react-redux';
 import store from '../../store';
 import render from '../../tools/render';
@@ -20,15 +17,9 @@ const eventCheckedPath = path(['currentTarget', 'checked']);
 
 export default connect(identity)(({arpeggiator: {arpeggiatorIsOn, patterns, selectedPattern},
                                    dispatch,
-                                   rootNote, scale: {scaleName, scales}}) =>
+                                   scale: {scaleName, scales}}) =>
   <ModalDialog components={
     <div>
-      <RangeSelector max="24"
-                     min="-36"
-                     onChange={compose(dispatch, updateSelectedRootNote, Number, eventValuePath)}
-                     output={noteNameFromPitch(rootNote)}
-                     text="Root Note"
-                     value={rootNote} />
       <Selector defaultValue={scaleName}
                 handleChange={compose(dispatch, updateSelectedScale, eventValuePath)}
                 label="Scale"
