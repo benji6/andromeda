@@ -8,16 +8,14 @@ import FullButton from '../atoms/FullButton';
 import Menu from './Menu';
 
 export default () =>
-  <Menu components={
-    <div>
-      <FullButton onClick={() => render(
+  <Menu components={[
+      <FullButton key="1" onClick={() => render(
         <Provider store={store}>
           <InstrumentAndEffectSelector />
         </Provider>)} text="Instrument" />,
-      <FullButton onClick={() => render(
+      <FullButton key="2" onClick={() => render(
         <Provider store={store}>
           <ScaleAndPitchSelector />
         </Provider>
       )} text="Scale & Pitch" />,
-    </div>
-  } />;
+  ]} />;

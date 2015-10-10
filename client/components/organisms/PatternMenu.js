@@ -7,11 +7,9 @@ import FullButton from '../atoms/FullButton';
 import Menu from './Menu';
 
 export default () =>
-  <Menu components={
-    <div>
-      <FullButton onClick={() => render(
+  <Menu components={[
+      <FullButton key="1" onClick={() => render(
         <Provider store={store}>
           <PatternSettings />
-        </Provider>)} text="Options" />
-    </div>
-  } />;
+        </Provider>)} text="Options" />,
+  ]} />;

@@ -14,17 +14,18 @@ import Menu from './Menu';
 //               text="Song Editor" />
 
 export default () =>
-  <Menu components={
-    <div>
-      <HollowButton onClick={() => render(<PerformanceView />)}
-                    text="Control Pad" />
-      <HollowButton onClick={() => render(<Provider store={store}>
+  <Menu components={[
+      <HollowButton key="1"
+                    onClick={() => render(<PerformanceView />)}
+                    text="Control Pad" />,
+      <HollowButton key="2"
+                    onClick={() => render(<Provider store={store}>
                                             <PatternEditor />
                                           </Provider>)}
-                    text="Pattern Editor" />
-      <HollowButton onClick={() => render(<Provider store={store}>
+                    text="Pattern Editor" />,
+      <HollowButton key="3"
+                    onClick={() => render(<Provider store={store}>
                                             <SettingsView />
                                           </Provider>)}
-                    text="Settings" />
-    </div>
-  } />;
+                    text="Settings" />,
+  ]} />;
