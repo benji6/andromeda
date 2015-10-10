@@ -58,6 +58,7 @@
   "dependencies": {
     "capitalize": "^1.0.0",
     "circular-iterable": "^1.0.10",
+    "express": "^4.13.3",
     "ramda": "^0.17.1",
     "random-js": "^1.0.6",
     "react": "^0.14.0",
