@@ -15,10 +15,10 @@
 @import 'components/organisms/modal-container';
 @import 'components/organisms/navigation';
 @import 'components/organisms/pattern-options';
-@import 'components/templates/pattern-editor';
-@import 'components/templates/performance-menu';
-@import 'components/templates/settings-view';
-@import 'components/templates/upgrade-browser-message';
+@import 'components/pages/pattern-editor';
+@import 'components/pages/performance-menu';
+@import 'components/pages/settings-view';
+@import 'components/pages/upgrade-browser-message';
 
 body {
   background: #012;

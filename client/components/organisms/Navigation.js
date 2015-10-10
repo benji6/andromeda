@@ -1,10 +1,10 @@
 import React from 'react'; // eslint-disable-line
 import {Provider} from 'react-redux';
 import render from '../../tools/render';
-import PatternEditor from '../templates/PatternEditor';
-// import SongEditor from '../templates/SongEditor';
-import PerformanceView from '../templates/PerformanceView';
-import SettingsView from '../templates/SettingsView';
+import PatternEditor from '../pages/PatternEditor';
+// import SongEditor from '../pages/SongEditor';
+import PerformanceView from '../pages/PerformanceView';
+import SettingsView from '../pages/SettingsView';
 import store from '../../store';
 import HollowButton from '../atoms/HollowButton';
 // <HollowButton onClick={() => render(<Provider store={store}>

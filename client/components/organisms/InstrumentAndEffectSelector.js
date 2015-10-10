@@ -7,7 +7,7 @@ import {updateSelectedEffect,
         updateSelectedInstrument} from '../../actions';
 import store from '../../store';
 import render from '../../tools/render';
-import PerformanceView from '../templates/PerformanceView';
+import PerformanceView from '../pages/PerformanceView';
 
 const eventValuePath = path(['currentTarget', 'value']);
 

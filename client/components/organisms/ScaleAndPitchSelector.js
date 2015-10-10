@@ -12,7 +12,7 @@ import {updateArpeggiatorIsOn,
 import noteNameFromPitch from '../../tools/noteNameFromPitch';
 import store from '../../store';
 import render from '../../tools/render';
-import PerformanceView from '../templates/PerformanceView';
+import PerformanceView from '../pages/PerformanceView';
 
 const eventValuePath = path(['currentTarget', 'value']);
 const eventCheckedPath = path(['currentTarget', 'checked']);
