@@ -1,6 +1,6 @@
 import React from 'react'; // eslint-disable-line
-import InstrumentAndEffectSelector from '../organisms/InstrumentAndEffectSelector';
-import ScaleAndPitchSelector from '../organisms/ScaleAndPitchSelector';
+import InstrumentAndEffectSelector from '../pages/InstrumentAndEffectSelector';
+import ScaleAndPitchSelector from '../pages/ScaleAndPitchSelector';
 import render from '../../tools/render';
 import {Provider} from 'react-redux';
 import store from '../../store';
