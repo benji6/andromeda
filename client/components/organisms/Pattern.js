@@ -5,7 +5,7 @@ import XLabels from '../molecules/XLabels';
 import PatternRow from '../molecules/PatternRow';
 
 export default ({onClick, yLabel, patternData}) =>
-  <div className="pattern-editor">
+  <div className="pattern">
     <XLabels labels={range(0, patternData[0].length + 1)} />
     {mapIndexed((cells, i) => <PatternRow cells={cells}
                                           key={`pattern-row-${i}`}

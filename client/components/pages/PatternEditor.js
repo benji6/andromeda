@@ -11,7 +11,7 @@ import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
 import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
-import PatternOptions from '../organisms/PatternOptions';
+import PatternMenu from '../organisms/PatternMenu';
 import noteNameFromPitch from '../../tools/noteNameFromPitch';
 import {noteExists} from '../../reducers/patterns';
 
@@ -29,17 +29,17 @@ const onPlay = dispatch =>
     .takeUntil(playStopSubject)
     .map(count => {
       const {activePatternIndex, patterns, scale} = store.getState();
-      const {notes, xLength, yLength} = patterns[activePatternIndex];
-      return {notes, yLength, position: count % xLength, scale};
+      const {notes, octave, xLength, yLength} = patterns[activePatternIndex];
+      return {notes, octave, yLength, position: count % xLength, scale};
     })
     .do(({position}) => dispatch(updateActivePatternActivePosition(position)))
     .do(compose(stopAllNotes, ({notes}) => notes))
-    .subscribe(({notes, yLength, position, scale}) =>
+    .subscribe(({notes, octave, yLength, position, scale}) =>
       transduce(compose(filter(({y}) => y === position),
                         map(({x, y}) => ({id: `pattern-editor-${x}-${y}`,
                                           instrument: store.getState().patterns[store.getState().activePatternIndex].instrument,
                                           pitch: pitchFromScaleIndex(scale.scales[scale.scaleName],
-                                                                     yLength - 1 - x)})),
+                                                                     yLength - 1 - x) + 12 * octave})),
                         map(playNote)),
                 () => {},
                 null,
@@ -78,7 +78,7 @@ export default connect(identity)(({activePatternIndex, dispatch, instrument, pat
              yLabel={yLabel(scale, yLength, rootNote)} />
     <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
-    <PatternOptions dispatch={dispatch}
+    <PatternMenu dispatch={dispatch}
                     instrument={instrument}
                     pattern={activePattern} />
   </div>;

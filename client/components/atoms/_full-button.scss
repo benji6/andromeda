@@ -1,0 +1,18 @@
+.full-button {
+  background: linear-gradient($squirtle-dawn, $squirtle-dusk);
+  border-radius: 1rem;
+  border: 1px solid #058;
+  box-shadow: $squirtle-dusk 0 0 0.5rem 0.1rem;
+  color: $black;
+  cursor: pointer;
+  font-size: $normal-font;
+  height: 2.5rem;
+  margin: 1rem 0.5rem;
+  width: 12rem;
+  &:hover {
+    box-shadow: $squirtle-dusk 0 0 1rem 0.1rem;
+  }
+  &:active {
+    background: linear-gradient($squirtle-dusk, $squirtle-dawn);
+  }
+}

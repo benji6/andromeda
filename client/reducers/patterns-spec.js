@@ -3,6 +3,7 @@ import reducer, {initialState} from './patterns';
 import {activePatternCellClick,
         updateActivePatternActivePosition,
         updateActivePatternInstrument,
+        updateActivePatternOctave,
         updateActivePatternXLength} from '../actions';
 
 const reducerName = 'patterns';
@@ -49,6 +50,18 @@ test(`${reducerName} reducer updates active pattern instrument`, t => {
   t.deepEqual(reducer(undefined, updateActivePatternInstrument(value)),
               [...initialState.slice(0, activePatternIndex),
                {...activePattern, instrument: value},
+               ...initialState.slice(activePatternIndex + 1)]);
+  t.end();
+});
+
+test(`${reducerName} reducer updates active pattern octave`, t => {
+  const activePatternIndex = 0;
+  const activePattern = initialState[activePatternIndex];
+  const value = 5;
+
+  t.deepEqual(reducer(undefined, updateActivePatternOctave(value)),
+              [...initialState.slice(0, activePatternIndex),
+               {...activePattern, octave: value},
                ...initialState.slice(activePatternIndex + 1)]);
   t.end();
 });

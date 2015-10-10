@@ -2,9 +2,9 @@
 @import 'styles/globals';
 
 @import 'components/atoms/control-pad';
+@import 'components/atoms/full-button';
 @import 'components/atoms/hollow-button';
 @import 'components/atoms/input-label';
-@import 'components/atoms/inputs';
 @import 'components/atoms/play-button';
 @import 'components/atoms/slider';
 @import 'components/atoms/x-label';
@@ -12,19 +12,8 @@
 @import 'components/molecules/pattern-row';
 @import 'components/molecules/x-labels';
 @import 'components/organisms/loading-spinner';
-@import 'components/organisms/modal-container';
 @import 'components/organisms/navigation';
-@import 'components/organisms/pattern-options';
-@import 'components/templates/pattern-editor';
-@import 'components/templates/performance-menu';
-@import 'components/templates/settings-view';
-@import 'components/templates/upgrade-browser-message';
-
-body {
-  background: #012;
-  font-family: sans-serif;
-  margin: 0;
-  user-select: none;
-  height: 100vh;
-  cursor: default;
-}
+@import 'components/organisms/pattern';
+@import 'components/pages/settings-view';
+@import 'components/pages/upgrade-browser-message';
+@import 'components/templates/modal-dialog';
