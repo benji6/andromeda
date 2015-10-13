@@ -1,16 +1,26 @@
+import {compose, identity, keys, path} from 'ramda';
 import React from 'react'; // eslint-disable-line
+import {connect} from 'react-redux';
+import {updateArpeggiatorIsOn,
+        updateBpm,
+        updateSelectedRootNote,
+        updateSelectedScale,
+        updateSelectedPattern} from '../../actions';
 import Navigation from '../organisms/Navigation';
 import RangeSelector from '../molecules/RangeSelector';
-import {connect} from 'react-redux';
-import {updateBpm, updateSelectedRootNote, updateSelectedScale} from '../../actions';
-import {compose, identity, keys, path} from 'ramda';
 import noteNameFromPitch from '../../tools/noteNameFromPitch';
 import Selector from '../molecules/Selector';
+import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector';
 
 const minBpm = 32;
 const eventValuePath = path(['currentTarget', 'value']);
+const eventCheckedPath = path(['currentTarget', 'checked']);
 
-export default connect(identity)(({bpm, dispatch, rootNote, scale: {scaleName, scales}}) =>
+export default connect(identity)(({arpeggiator: {arpeggiatorIsOn, patterns, selectedPattern},
+                                   bpm,
+                                   dispatch,
+                                   rootNote,
+                                   scale: {scaleName, scales}}) =>
   <div className="settings-view">
     <Navigation />
     <h1 className="text-center">Settings</h1>
@@ -31,5 +41,11 @@ export default connect(identity)(({bpm, dispatch, rootNote, scale: {scaleName, s
                 handleChange={compose(dispatch, updateSelectedScale, eventValuePath)}
                 label="Scale"
                 options={keys(scales)} />
+      <ArpeggiatorSelector arpeggiatorIsOn={arpeggiatorIsOn}
+                           dispatch={dispatch}
+                           patterns={patterns}
+                           selectedPattern={selectedPattern}
+                           handleArpeggiatorIsOnChange={compose(dispatch, updateArpeggiatorIsOn, eventCheckedPath)}
+                           handlePatternSelect={compose(dispatch, updateSelectedPattern, eventValuePath)} />
     </div>
   </div>);

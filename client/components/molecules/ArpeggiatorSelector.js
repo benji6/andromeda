@@ -8,7 +8,7 @@ export default ({arpeggiatorIsOn,
                  handlePatternSelect,
                  patterns,
                  selectedPattern}) =>
-  <div>
+  <div className="flex-column">
     <label>
       <InputLabel text="Arpeggiator" />
       <input defaultChecked={arpeggiatorIsOn}
