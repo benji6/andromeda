@@ -1,6 +1,6 @@
 {
   "name": "elemental",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Make music in your browser!",
   "scripts": {
     "build": "node_modules/.bin/babel-node node_modules/.bin/gulp build",
