@@ -15,10 +15,10 @@ const calculatePitch = xRatio => {
     stopLastNoteOnNoteChange = false;
     return xRatio * 12;
   }
-  const {size} = scale;
+  const {length} = scale.toArray();
   stopLastNoteOnNoteChange = true;
-  const i = floor((size + 1) * xRatio);
-  return i < size ? scale(i) : scale(i) + 12;
+  const i = floor((length + 1) * xRatio);
+  return i < length ? scale(i) : scale(i) + 12;
 };
 
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});

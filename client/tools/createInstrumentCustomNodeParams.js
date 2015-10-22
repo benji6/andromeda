@@ -17,9 +17,9 @@ const incrementScalePitch = (pitch, increment) => {
     return pitch;
   }
   return (function recur (index, pitchIncrement) {
-    const {size} = scale;
-    if (index >= size) {
-      return recur(index - size, pitchIncrement + 12);
+    const {length} = scale.toArray();
+    if (index >= length) {
+      return recur(index - length, pitchIncrement + 12);
     }
     return scale(index) + pitchIncrement;
   }(scaleArray.indexOf(pitch % 12) + increment, Math.floor(pitch / 12) * 12));
