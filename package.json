@@ -57,14 +57,14 @@
   },
   "dependencies": {
     "capitalize": "^1.0.0",
-    "circular-iterable": "^2.0.0",
+    "circular-iterable": "^2.0.1",
     "express": "^4.13.3",
     "ramda": "^0.18.0",
     "random-js": "^1.0.8",
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
-    "redux": "^3.0.3",
+    "redux": "^3.0.4",
     "virtual-audio-graph": "^0.15.2"
   }
 }
