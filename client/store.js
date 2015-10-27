@@ -4,6 +4,7 @@ import arpeggiator from './reducers/arpeggiator';
 import bpm from './reducers/bpm';
 import effect from './reducers/effect';
 import instrument from './reducers/instrument';
+import microphone from './reducers/microphone';
 import patterns from './reducers/patterns';
 import playing from './reducers/playing';
 import rootNote from './reducers/rootNote';
@@ -16,6 +17,7 @@ export default createStore(combineReducers({
   bpm,
   effect,
   instrument,
+  microphone,
   patterns,
   playing,
   rootNote,
