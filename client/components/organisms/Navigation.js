@@ -1,4 +1,4 @@
-  import React from 'react';
+import React from 'react';
 // import SongEditor from '../pages/SongEditor';
 import HollowButton from '../atoms/HollowButton';
 import Menu from './Menu';
@@ -17,6 +17,9 @@ export default () =>
                     text="Pattern Editor"
                     to="/pattern-editor" />,
       <HollowButton key="3"
+                    text="Channels"
+                    to="/channels" />,
+      <HollowButton key="4"
                     text="Settings"
                     to="/settings" />,
   ]} />;
