@@ -1,12 +1,16 @@
-import React from 'react'; // eslint-disable-line no-unused-vars
+import React from 'react';
+import {Provider} from 'react-redux';
 import './customVirtualNodes/defineNodes';
 import './keyboard';
-import PerformanceView from './components/pages/PerformanceView';
 import UpgradeBrowserView from './components/pages/UpgradeBrowserView';
 import render from './tools/render';
+import store from './store';
+import routes from './routes';
+
+const app = <Provider store={store}>{routes}</Provider>;
 
 if (navigator.serviceWorker) {
-  render(<PerformanceView />);
+  render(app);
 } else {
   render(<UpgradeBrowserView />);
 }

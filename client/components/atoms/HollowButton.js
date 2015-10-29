@@ -1,2 +1,4 @@
-import React from 'react'; // eslint-disable-line
-export default ({onClick, text}) => <button className="hollow-button" onClick={onClick}>{text}</button>;
+import React from 'react';
+import {Link} from 'react-router';
+export default ({text, to}) => <Link className="hollow-button"
+                                              to={to}>{text}</Link>;

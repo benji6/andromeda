@@ -3,14 +3,20 @@
   border-radius: 1rem;
   border: 1px solid #058;
   box-shadow: $squirtle-dusk 0 0 0.5rem 0.1rem;
+  box-sizing: border-box;
   color: $black;
   cursor: pointer;
+  display: inline-block;
   font-size: $normal-font;
-  height: 2.5rem;
+  padding: 0.67rem;
   margin: 1rem 0.5rem;
   width: 12rem;
+  text-align: center;
+  text-decoration: none;
+  transition-duration: $fast-transition;
   &:hover {
     box-shadow: $squirtle-dusk 0 0 1rem 0.1rem;
+    transition-duration: $fast-transition;
   }
   &:active {
     background: linear-gradient($squirtle-dusk, $squirtle-dawn);

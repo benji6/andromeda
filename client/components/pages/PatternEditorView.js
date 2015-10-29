@@ -1,6 +1,6 @@
 import {compose, curry, identity, filter, forEach, map,
   range, repeat, transduce} from 'ramda';
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 import {connect} from 'react-redux';
 import {playNote, stopNote} from '../../noteController';
 import store from '../../store';
@@ -79,7 +79,7 @@ export default connect(identity)(({activePatternIndex, dispatch, instrument, pat
     <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
     <PatternMenu dispatch={dispatch}
-                    instrument={instrument}
-                    pattern={activePattern} />
+                 instrument={instrument}
+                 pattern={activePattern} />
   </div>;
 });

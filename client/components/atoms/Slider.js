@@ -1,4 +1,4 @@
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 
 export default ({max, min, onChange, value, output}) =>
   <div className="slider">
