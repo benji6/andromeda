@@ -18,6 +18,8 @@ export const UPDATE_SELECTED_INSTRUMENT = 'UPDATE_SELECTED_INSTRUMENT';
 export const UPDATE_SELECTED_PATTERN = 'UPDATE_SELECTED_PATTERN';
 export const UPDATE_SELECTED_SCALE = 'UPDATE_SELECTED_SCALE';
 export const UPDATE_SONG_NOTES = 'UPDATE_SONG_NOTES';
+export const REMOVE_CHANNEL_EFFECT = 'REMOVE_CHANNEL_EFFECT';
+export const REMOVE_CHANNEL_SOURCE = 'REMOVE_CHANNEL_SOURCE';
 
 export const activePatternCellClick = typeValueAction(ACTIVE_PATTERN_CELL_CLICK);
 export const addEffect = typeValueAction(ADD_EFFECT);
@@ -38,3 +40,5 @@ export const updateSelectedInstrument = typeValueAction(UPDATE_SELECTED_INSTRUME
 export const updateSelectedScale = typeValueAction(UPDATE_SELECTED_SCALE);
 export const updateSelectedRootNote = typeValueAction(UPDATE_ROOT_NOTE);
 export const updateSongNotes = typeValueAction(UPDATE_SONG_NOTES);
+export const removeChannelEffect = typeValueAction(REMOVE_CHANNEL_EFFECT);
+export const removeChannelSource = typeValueAction(REMOVE_CHANNEL_SOURCE);

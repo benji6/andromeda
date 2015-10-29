@@ -1,13 +1,15 @@
 import React from 'react';
-import ControlPadView from './components/pages/ControlPadView';
 import {Router, Route} from 'react-router';
-import PatternEditorView from './components/pages/PatternEditorView';
-import PatternEditorSettings from './components/pages/PatternEditorSettings';
-import SettingsView from './components/pages/SettingsView';
-import ControlPadSettings from './components/pages/ControlPadSettings';
 import ChannelsView from './components/pages/ChannelsView';
+import ChannelView from './components/pages/ChannelView';
+import ControlPadSettings from './components/pages/ControlPadSettings';
+import ControlPadView from './components/pages/ControlPadView';
+import PatternEditorSettings from './components/pages/PatternEditorSettings';
+import PatternEditorView from './components/pages/PatternEditorView';
+import SettingsView from './components/pages/SettingsView';
 
 export default <Router>
+  <Route path="/channel/:channelId" component={ChannelView} />
   <Route path="/channels" component={ChannelsView} />
   <Route path="/control-pad" component={ControlPadView} />
   <Route path="/control-pad/settings" component={ControlPadSettings} />
