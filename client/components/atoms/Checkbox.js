@@ -1,4 +1,4 @@
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 module.exports = ({checked,
                    disabled,
                    onChange}) => <input defaultChecked={checked}

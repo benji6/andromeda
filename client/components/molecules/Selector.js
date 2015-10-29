@@ -1,5 +1,5 @@
 import capitalize from 'capitalize';
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 import {map} from 'ramda';
 import InputLabel from '../atoms/InputLabel';
 

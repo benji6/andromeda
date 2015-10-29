@@ -1,6 +1,6 @@
 import {compose, curry, filter, forEach, map,
   range, repeat, transduce} from 'ramda';
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 import {connect} from 'react-redux';
 import {playNote, stopNote} from '../../noteController';
 import store from '../../store';

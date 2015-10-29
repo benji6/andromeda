@@ -1,5 +1,5 @@
 import {compose, identity, path} from 'ramda';
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 import {connect} from 'react-redux';
 import Selector from '../molecules/Selector';
 import ModalDialog from '../templates/ModalDialog';
@@ -7,10 +7,6 @@ import {updateActivePatternInstrument,
         updateActivePatternOctave,
         updateActivePatternXLength} from '../../actions';
 import RangeSelector from '../molecules/RangeSelector';
-import {Provider} from 'react-redux';
-import store from '../../store';
-import render from '../../tools/render';
-import PatternEditor from '../pages/PatternEditor';
 
 const eventValuePath = path(['currentTarget', 'value']);
 
@@ -40,9 +36,5 @@ export default connect(identity)(({activePatternIndex,
                    output={octave}
                    text="Octave"
                    value={octave} />,
-  ]} onClose={() => render(
-   <Provider store={store}>
-     <PatternEditor />
-   </Provider>
-  )} />;
+               ]} to="/pattern-editor" />;
 });

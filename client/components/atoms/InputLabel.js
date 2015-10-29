@@ -1,2 +1,2 @@
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 export default ({text}) => <span className="inline-label-text">{text}</span>;

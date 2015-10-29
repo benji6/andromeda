@@ -1,4 +1,4 @@
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 import {connect} from 'react-redux';
 import {updatePlaying} from '../../actions';
 

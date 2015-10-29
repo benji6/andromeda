@@ -1,13 +1,10 @@
 import {compose, identity, path} from 'ramda';
-import React from 'react'; // eslint-disable-line
-import {connect, Provider} from 'react-redux';
+import React from 'react';
+import {connect} from 'react-redux';
 import Selector from '../molecules/Selector';
 import {updateSelectedEffect,
         updateSelectedInstrument} from '../../actions';
 import ModalDialog from '../templates/ModalDialog';
-import PerformanceView from '../pages/PerformanceView';
-import render from '../../tools/render';
-import store from '../../store';
 
 const eventValuePath = path(['currentTarget', 'value']);
 
@@ -25,8 +22,4 @@ export default connect(identity)(({dispatch,
                 label="Effect"
                 options={effects} />
     </div>
-  } onClose={() => render(
-    <Provider store={store}>
-      <PerformanceView />
-    </Provider>
-  )}/>);
+  } to="/control-pad" />);

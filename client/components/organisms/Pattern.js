@@ -1,6 +1,6 @@
 import {range} from 'ramda';
 import {mapIndexed} from '../../tools/indexedIterators';
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 import XLabels from '../molecules/XLabels';
 import PatternRow from '../molecules/PatternRow';
 

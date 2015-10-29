@@ -1,4 +1,4 @@
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 import {mapIndexed} from '../../tools/indexedIterators';
 
 export default ({labels}) => <div className="x-labels flex-row">

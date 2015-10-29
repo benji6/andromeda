@@ -1,5 +1,5 @@
 import {compose, identity, keys, path, tap} from 'ramda';
-import React from 'react'; // eslint-disable-line
+import React from 'react';
 import {connect} from 'react-redux';
 import {updateArpeggiatorIsOn,
         updateBpm,
