@@ -28,7 +28,7 @@ export default connect(identity)(({arpeggiator: {arpeggiatorIsOn, patterns, sele
   <div className="settings-view">
     <Navigation />
     <h1 className="text-center">Settings</h1>
-    <div className="settings-container">
+    <div className="flex-column text-center">
       <RangeSelector output={bpm}
                      max="512"
                      min={minBpm}
