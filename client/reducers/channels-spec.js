@@ -1,9 +1,11 @@
 import test from 'tape';
 import reducer, {initialState} from './channels';
-import {moveChannelSourceDown,
+import {addChannelEffect,
+        addChannelSource,
+        moveChannelSourceDown,
         moveChannelSourceUp,
-        moveEffectSourceDown,
-        moveEffectSourceUp,
+        moveChannelEffectDown,
+        moveChannelEffectUp,
         removeChannelSource,
         removeChannelEffect,
         updateSelectedAddEffect,
@@ -14,6 +16,32 @@ const reducerName = 'channels';
 test(`${reducerName} reducer returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState);
   t.deepEqual(reducer(undefined, {}), initialState);
+  t.end();
+});
+
+test(`${reducerName} reducer addChannelSource`, t => {
+  const channelId = 0;
+  const source = 'testVal';
+  const value = {channelId, source};
+  const channel = initialState[channelId];
+  const {sources} = channel;
+  t.deepEqual(reducer(undefined, addChannelSource(value)),
+              [...initialState.slice(0, channelId),
+               {...channel, sources: [...sources, source]},
+               ...initialState.slice(channelId + 1)]);
+  t.end();
+});
+
+test(`${reducerName} reducer addChannelEffect`, t => {
+  const channelId = 0;
+  const effect = 'testVal';
+  const value = {channelId, effect};
+  const channel = initialState[channelId];
+  const {effects} = channel;
+  t.deepEqual(reducer(undefined, addChannelEffect(value)),
+              [...initialState.slice(0, channelId),
+               {...channel, effects: [...effects, effect]},
+               ...initialState.slice(channelId + 1)]);
   t.end();
 });
 
@@ -55,7 +83,7 @@ test(`${reducerName} reducer moveEffectSourceDown`, t => {
   const value = {channelId, effectId};
   const channel = initialState[channelId];
   const {effects} = channel;
-  t.deepEqual(reducer(undefined, moveEffectSourceDown(value)),
+  t.deepEqual(reducer(undefined, moveChannelEffectDown(value)),
               [...initialState.slice(0, channelId),
                {...channel, effects: [...effects.slice(0, effectId),
                                       effects[effectId + 1],
@@ -71,7 +99,7 @@ test(`${reducerName} reducer moveEffectSourceUp`, t => {
   const value = {channelId, effectId};
   const channel = initialState[channelId];
   const {effects} = channel;
-  t.deepEqual(reducer(undefined, moveEffectSourceUp(value)),
+  t.deepEqual(reducer(undefined, moveChannelEffectUp(value)),
               [...initialState.slice(0, channelId),
                {...channel, effects: [...effects.slice(0, effectId - 1),
                                       effects[effectId],

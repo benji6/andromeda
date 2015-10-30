@@ -9,10 +9,12 @@ import Cross from '../atoms/icon-buttons/Cross';
 import Down from '../atoms/icon-buttons/Down';
 import Plus from '../atoms/icon-buttons/Plus';
 import Up from '../atoms/icon-buttons/Up';
-import {moveChannelSourceDown,
+import {addChannelEffect,
+        addChannelSource,
+        moveChannelSourceDown,
         moveChannelSourceUp,
-        moveEffectSourceDown,
-        moveEffectSourceUp,
+        moveChannelEffectDown,
+        moveChannelEffectUp,
         removeChannelSource,
         removeChannelEffect,
         updateSelectedAddEffect,
@@ -40,9 +42,15 @@ export default connect(identity)(({channels,
           {mapIndexed((source, sourceId) =>
             <tr key={sourceId}>
               <td>{capitalize.words(source)}</td>
-              <td><Cross onClick={() => compose(dispatch, removeChannelSource)({channelId, sourceId})} /></td>
-              <td>{sourceId ? <Up onClick={() => compose(dispatch, moveChannelSourceUp)({channelId, sourceId})} /> : ''}</td>
-              <td>{sourceId === sources.length - 1 ? '' : <Down onClick={() => compose(dispatch, moveChannelSourceDown)({channelId, sourceId})} />}</td>
+              <td><Cross onClick={compose(dispatch,
+                                          removeChannelSource,
+                                          () => ({channelId, sourceId}))} /></td>
+              <td>{sourceId ? <Up onClick={compose(dispatch,
+                                           moveChannelSourceUp,
+                                           () => ({channelId, sourceId}))} /> : ''}</td>
+              <td>{sourceId === sources.length - 1 ? '' : <Down onClick={compose(dispatch,
+                                                                         moveChannelSourceDown,
+                                                                         () => ({channelId, sourceId}))} />}</td>
             </tr>, sources)}
           <tr key={sources.length}>
             <td><FullSelect defaultValue={selectedAddSource}
@@ -52,7 +60,10 @@ export default connect(identity)(({channels,
                                               targetValue)}
                             options={map(value => ({text: capitalize.words(value),
                                                     value}), difference(instruments, sources))} /></td>
-            <td><Plus onClick={() => console.log('add source')} /></td>
+            <td><Plus onClick={compose(dispatch,
+                                       addChannelSource,
+                                       () => ({channelId,
+                                               source: selectedAddSource}))} /></td>
           </tr>
         </tbody>
       </table>
@@ -62,9 +73,15 @@ export default connect(identity)(({channels,
           {mapIndexed((mapEffect, effectId) =>
             <tr key={effectId}>
               <td>{capitalize.words(mapEffect)}</td>
-              <td><Cross onClick={() => compose(dispatch, removeChannelEffect)({channelId, effectId})} /></td>
-              <td>{effectId ? <Up onClick={() => compose(dispatch, moveEffectSourceUp)({channelId, effectId})} /> : ''}</td>
-              <td>{effectId === effects.length - 1 ? '' : <Down onClick={() => compose(dispatch, moveEffectSourceDown)({channelId, effectId})} />}</td>
+              <td><Cross onClick={compose(dispatch,
+                                          removeChannelEffect,
+                                          () => ({channelId, effectId}))} /></td>
+              <td>{effectId ? <Up onClick={compose(dispatch,
+                                                   moveChannelEffectUp,
+                                                   () => ({channelId, effectId}))} /> : ''}</td>
+              <td>{effectId === effects.length - 1 ? '' : <Down onClick={compose(dispatch,
+                                                                                 moveChannelEffectDown,
+                                                                                 () => ({channelId, effectId}))} />}</td>
             </tr>, effects)}
           <tr key={effects.length}>
             <td><FullSelect defaultValue={selectedAddEffect}
@@ -74,7 +91,10 @@ export default connect(identity)(({channels,
                                               targetValue)}
                             options={map(value => ({text: capitalize.words(value),
                                                     value}), appEffects)} /></td>
-            <td><Plus onClick={() => console.log('add effect')} /></td>
+            <td><Plus onClick={compose(dispatch,
+                                       addChannelEffect,
+                                       () => ({channelId,
+                                               effect: selectedAddEffect}))} /></td>
           </tr>
         </tbody>
       </table>

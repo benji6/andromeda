@@ -1,7 +1,9 @@
-import {MOVE_CHANNEL_SOURCE_DOWN,
+import {ADD_CHANNEL_EFFECT,
+        ADD_CHANNEL_SOURCE,
+        MOVE_CHANNEL_EFFECT_DOWN,
+        MOVE_CHANNEL_EFFECT_UP,
+        MOVE_CHANNEL_SOURCE_DOWN,
         MOVE_CHANNEL_SOURCE_UP,
-        MOVE_EFFECT_SOURCE_DOWN,
-        MOVE_EFFECT_SOURCE_UP,
         REMOVE_CHANNEL_SOURCE,
         REMOVE_CHANNEL_EFFECT,
         UPDATE_SELECTED_ADD_EFFECT,
@@ -12,6 +14,7 @@ export const initialState = [
     effects: [
       'pingPongDelay',
       'reverb mausoleum',
+      'reverb chapel',
     ],
     selectedAddSource: null,
     sources: [
@@ -33,6 +36,22 @@ export const initialState = [
 
 export default (state = initialState, {type, value}) => {
   switch (type) {
+    case ADD_CHANNEL_SOURCE: {
+      const {channelId, source} = value;
+      const channel = state[channelId];
+      const {sources} = channel;
+      return [...state.slice(0, channelId),
+              {...channel, sources: [...sources, source]},
+              ...state.slice(channelId + 1)];
+    }
+    case ADD_CHANNEL_EFFECT: {
+      const {channelId, effect} = value;
+      const channel = state[channelId];
+      const {effects} = channel;
+      return [...state.slice(0, channelId),
+              {...channel, effects: [...effects, effect]},
+              ...state.slice(channelId + 1)];
+    }
     case MOVE_CHANNEL_SOURCE_DOWN: {
       const {channelId, sourceId} = value;
       const channel = state[channelId];
@@ -55,18 +74,18 @@ export default (state = initialState, {type, value}) => {
                                      ...sources.slice(sourceId + 1)]},
               ...state.slice(channelId + 1)];
     }
-    case MOVE_EFFECT_SOURCE_DOWN: {
+    case MOVE_CHANNEL_EFFECT_DOWN: {
       const {channelId, effectId} = value;
       const channel = state[channelId];
       const {effects} = channel;
-      return [...state.slice(0, effectId),
+      return [...state.slice(0, channelId),
               {...channel, effects: [...effects.slice(0, effectId),
                                      effects[effectId + 1],
                                      effects[effectId],
                                      ...effects.slice(effectId + 2)]},
               ...state.slice(channelId + 1)];
     }
-    case MOVE_EFFECT_SOURCE_UP: {
+    case MOVE_CHANNEL_EFFECT_UP: {
       const {channelId, effectId} = value;
       const channel = state[channelId];
       const {effects} = channel;
