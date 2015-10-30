@@ -5,7 +5,9 @@ import {moveChannelSourceDown,
         moveEffectSourceDown,
         moveEffectSourceUp,
         removeChannelSource,
-        removeChannelEffect} from '../actions';
+        removeChannelEffect,
+        updateSelectedAddEffect,
+        updateSelectedAddSource} from '../actions';
 
 const reducerName = 'channels';
 
@@ -103,6 +105,30 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
               [...initialState.slice(0, channelId),
                {...channel, effects: [...effects.slice(0, effectId),
                                       ...effects.slice(effectId + 1)]},
+               ...initialState.slice(channelId + 1)]);
+  t.end();
+});
+
+test(`${reducerName} reducer updateSelectedAddSource`, t => {
+  const channelId = 0;
+  const selectedAddSource = 'testVal';
+  const value = {channelId, selectedAddSource};
+  const channel = initialState[channelId];
+  t.deepEqual(reducer(undefined, updateSelectedAddSource(value)),
+              [...initialState.slice(0, channelId),
+               {...channel, selectedAddSource},
+               ...initialState.slice(channelId + 1)]);
+  t.end();
+});
+
+test(`${reducerName} reducer updateSelectedAddEffect`, t => {
+  const channelId = 0;
+  const selectedAddEffect = 'testVal';
+  const value = {channelId, selectedAddEffect};
+  const channel = initialState[channelId];
+  t.deepEqual(reducer(undefined, updateSelectedAddEffect(value)),
+              [...initialState.slice(0, channelId),
+               {...channel, selectedAddEffect},
                ...initialState.slice(channelId + 1)]);
   t.end();
 });

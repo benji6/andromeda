@@ -12,5 +12,6 @@ export default ({defaultValue,
     <InputLabel text={capitalize(label)} />
     <FullSelect defaultValue={defaultValue}
                 onChange={handleChange}
-                options={map(capitalize.words, options)} />
+                options={map(value => ({text: capitalize.words(value),
+                                        value}), options)} />
   </label>;

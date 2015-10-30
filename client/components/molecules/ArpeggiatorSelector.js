@@ -21,6 +21,7 @@ export default ({arpeggiatorIsOn,
       <FullSelect defaultValue={selectedPattern}
                   disabled={!arpeggiatorIsOn}
                   onChange={handlePatternSelect}
-                  options={map(capitalize, patterns)} />
+                  options={map(value => ({text: capitalize.words(value),
+                                          value}), patterns)} />
     </label>
   </div>;

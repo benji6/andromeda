@@ -3,27 +3,30 @@ import {MOVE_CHANNEL_SOURCE_DOWN,
         MOVE_EFFECT_SOURCE_DOWN,
         MOVE_EFFECT_SOURCE_UP,
         REMOVE_CHANNEL_SOURCE,
-        REMOVE_CHANNEL_EFFECT} from '../actions';
+        REMOVE_CHANNEL_EFFECT,
+        UPDATE_SELECTED_ADD_EFFECT,
+        UPDATE_SELECTED_ADD_SOURCE} from '../actions';
 
 export const initialState = [
   {
-    sources: [
-      'sawtooth',
-      'sine',
-      'square',
-      'triangle',
-    ],
     effects: [
       'pingPongDelay',
       'reverb mausoleum',
     ],
-  },
-  {
+    selectedAddSource: null,
     sources: [
+      'detuned',
+      'fm',
       'sine',
     ],
+  },
+  {
     effects: [
       'pingPongDelay',
+    ],
+    selectedAddSource: null,
+    sources: [
+      'sine',
     ],
   },
 ];
@@ -90,6 +93,20 @@ export default (state = initialState, {type, value}) => {
       return [...state.slice(0, channelId),
               {...channel, effects: [...effects.slice(0, effectId),
                                      ...effects.slice(effectId + 1)]},
+              ...state.slice(channelId + 1)];
+    }
+    case UPDATE_SELECTED_ADD_SOURCE: {
+      const {channelId, selectedAddSource} = value;
+      const channel = state[channelId];
+      return [...state.slice(0, channelId),
+              {...channel, selectedAddSource},
+              ...state.slice(channelId + 1)];
+    }
+    case UPDATE_SELECTED_ADD_EFFECT: {
+      const {channelId, selectedAddEffect} = value;
+      const channel = state[channelId];
+      return [...state.slice(0, channelId),
+              {...channel, selectedAddEffect},
               ...state.slice(channelId + 1)];
     }
     default:

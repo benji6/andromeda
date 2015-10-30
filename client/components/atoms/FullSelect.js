@@ -6,8 +6,8 @@ export default ({defaultValue, disabled, onChange, options}) =>
           defaultValue={defaultValue}
           disabled={disabled}
           onChange={onChange}>
-    {mapIndexed((item, i) =>
-      <option value={item} key={i}>
-        {item}
+    {mapIndexed(({text, value}, i) =>
+      <option value={value} key={i}>
+        {text}
       </option>, options)}
   </select>;
