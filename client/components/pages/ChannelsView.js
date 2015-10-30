@@ -15,5 +15,6 @@ export default connect(identity)(({channels}) =>
           <FullButton text={`Channel ${i}`}
                       to={`/channel/${i}`} />
         </div>, channels)}
+        <div>Add new Channel</div>
     </div>
   </div>);

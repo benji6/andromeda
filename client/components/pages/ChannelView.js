@@ -8,7 +8,11 @@ import Cross from '../atoms/icon-buttons/Cross';
 import Down from '../atoms/icon-buttons/Down';
 import Plus from '../atoms/icon-buttons/Plus';
 import Up from '../atoms/icon-buttons/Up';
-import {removeChannelSource,
+import {moveChannelSourceDown,
+        moveChannelSourceUp,
+        moveEffectSourceDown,
+        moveEffectSourceUp,
+        removeChannelSource,
         removeChannelEffect} from '../../actions';
 
 export default connect(identity)(({channels, dispatch, params: {channelId}}) => {
@@ -24,10 +28,12 @@ export default connect(identity)(({channels, dispatch, params: {channelId}}) => 
             <tr key={sourceId}>
               <td>{capitalize.words(source)}</td>
               <td><Cross onClick={() => compose(dispatch, removeChannelSource)({channelId, sourceId})} /></td>
+              <td>{sourceId ? <Up onClick={() => compose(dispatch, moveChannelSourceUp)({channelId, sourceId})} /> : ''}</td>
+              <td>{sourceId === sources.length - 1 ? '' : <Down onClick={() => compose(dispatch, moveChannelSourceDown)({channelId, sourceId})} />}</td>
             </tr>, sources)}
           <tr key={sources.length}>
-            <td>Add Source</td>
-            <td><Plus onClick={() => console.log('add')} /></td>
+            <td>drop down if options are available</td>
+            <td><Plus onClick={() => console.log('add source')} /></td>
           </tr>
         </tbody>
       </table>
@@ -38,12 +44,12 @@ export default connect(identity)(({channels, dispatch, params: {channelId}}) => 
             <tr key={effectId}>
               <td>{capitalize.words(effect)}</td>
               <td><Cross onClick={() => compose(dispatch, removeChannelEffect)({channelId, effectId})} /></td>
-              <td><Up onClick={() => console.log('up', effectId)} /></td>
-              <td><Down onClick={() => console.log('Down', effectId)} /></td>
+              <td>{effectId ? <Up onClick={() => compose(dispatch, moveEffectSourceUp)({channelId, effectId})} /> : ''}</td>
+              <td>{effectId === effects.length - 1 ? '' : <Down onClick={() => compose(dispatch, moveEffectSourceDown)({channelId, effectId})} />}</td>
             </tr>, effects)}
           <tr key={effects.length}>
-            <td>Add Effect</td>
-            <td><Plus onClick={() => console.log('add')} /></td>
+            <td>drop down if options are available</td>
+            <td><Plus onClick={() => console.log('add effect')} /></td>
           </tr>
         </tbody>
       </table>

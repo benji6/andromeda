@@ -9,13 +9,8 @@ export const initialState = {
   selectedEffect: 'pingPongDelay',
 };
 
-export default (state = initialState, {type, value}) => {
-  switch (type) {
-    case UPDATE_SELECTED_EFFECT:
-      return {...state, selectedEffect: value};
-    case ADD_EFFECT:
-      return {...state, effects: [...state.effects, value]};
-    default:
-      return state;
-  }
-};
+const actions = {[UPDATE_SELECTED_EFFECT]: (state, value) => ({...state, selectedEffect: value}),
+                 [ADD_EFFECT]: (state, value) => ({...state, effects: [...state.effects, value]})};
+
+export default (state = initialState, {type, value}) =>
+  actions[type] ? actions[type](state, value) : state;
