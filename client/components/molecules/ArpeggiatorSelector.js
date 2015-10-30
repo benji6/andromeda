@@ -3,6 +3,7 @@ import React from 'react';
 import {map} from 'ramda';
 import InputLabel from '../atoms/InputLabel';
 import Checkbox from '../atoms/Checkbox';
+import FullSelect from '../atoms/FullSelect';
 
 export default ({arpeggiatorIsOn,
                  handleArpeggiatorIsOnChange,
@@ -17,14 +18,9 @@ export default ({arpeggiatorIsOn,
     </label>
     <label>
       <InputLabel text="Pattern" />
-      <select className="full-button"
-              disabled={!arpeggiatorIsOn}
-              defaultValue={selectedPattern}
-              onChange={handlePatternSelect}>
-        {map(item =>
-          <option value={item} key={item}>
-            {capitalize(item)}
-          </option>, patterns)}
-      </select>
+      <FullSelect defaultValue={selectedPattern}
+                  disabled={!arpeggiatorIsOn}
+                  onChange={handlePatternSelect}
+                  options={map(capitalize, patterns)} />
     </label>
   </div>;
