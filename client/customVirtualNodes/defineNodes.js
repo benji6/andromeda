@@ -1,17 +1,18 @@
 import {addEffect} from '../actions';
 import {dispatch} from '../store';
 import adsr from './tools/adsr';
-import virtualAudioGraph from '../virtualAudioGraph';
-import pingPongDelay from './effects/pingPongDelay';
-import none from './effects/none';
 import detuned from './oscillatorBanks/detuned';
 import fm from './oscillatorBanks/fm';
+import none from './effects/none';
+import pingPongDelay from './effects/pingPongDelay';
 import reverbAsync from './effects/reverb-async';
 import sine from './oscillatorBanks/sine';
 import supersaw from './oscillatorBanks/supersaw';
+import triangles from './oscillatorBanks/triangles';
+import virtualAudioGraph from '../virtualAudioGraph';
 
 virtualAudioGraph.defineNodes({
-  adsr, detuned, fm, none, pingPongDelay, sine, supersaw,
+  adsr, detuned, fm, none, pingPongDelay, sine, supersaw, triangles,
 });
 
 const loadReverb = (uri, name) => reverbAsync(uri)

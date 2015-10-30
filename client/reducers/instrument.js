@@ -6,6 +6,7 @@ export const initialState = {
     'fm',
     'sine',
     'supersaw',
+    'triangles',
   ],
   selectedInstrument: 'sine',
 };
