@@ -1,5 +1,5 @@
 import capitalize from 'capitalize';
-import {compose, identity, map, difference} from 'ramda';
+import {compose, equals, identity, map, difference, reject} from 'ramda';
 import React from 'react';
 import {connect} from 'react-redux';
 import {mapIndexed} from '../../tools/indexedIterators';
@@ -32,6 +32,7 @@ export default connect(identity)(({channels,
          selectedAddEffect,
          selectedAddSource,
          sources} = channels[channelId];
+  const availableSources = difference(instruments, sources);
   return <div>
     <Navigation />
     <div className="flex-column text-center justify-center">
@@ -52,19 +53,30 @@ export default connect(identity)(({channels,
                                                                          moveChannelSourceDown,
                                                                          () => ({channelId, sourceId}))} />}</td>
             </tr>, sources)}
-          <tr key={sources.length}>
-            <td><FullSelect defaultValue={selectedAddSource}
-                            onChange={compose(dispatch,
-                                              updateSelectedAddSource,
-                                              value => ({channelId, selectedAddSource: value}),
-                                              targetValue)}
-                            options={map(value => ({text: capitalize.words(value),
-                                                    value}), difference(instruments, sources))} /></td>
-            <td><Plus onClick={compose(dispatch,
-                                       addChannelSource,
-                                       () => ({channelId,
-                                               source: selectedAddSource}))} /></td>
-          </tr>
+            {availableSources.length ?
+            <tr key={sources.length}>
+              <td>
+              <FullSelect defaultValue={selectedAddSource}
+                          onChange={compose(dispatch,
+                                            updateSelectedAddSource,
+                                            value => ({channelId, selectedAddSource: value}),
+                                            targetValue)}
+                          options={map(value => ({text: capitalize.words(value),
+                                                  value}), availableSources)} />
+              </td>
+            <td><Plus onClick={() => {
+              compose(dispatch,
+                      addChannelSource,
+                      () => ({channelId,
+                              source: selectedAddSource}))();
+              compose(dispatch,
+                      updateSelectedAddSource,
+                      () => ({channelId,
+                              selectedAddSource: reject(equals(selectedAddSource),
+                                                        availableSources)[0]}))();
+            }} /></td>
+          </tr> :
+          null}
         </tbody>
       </table>
       <h2>Effects</h2>

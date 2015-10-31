@@ -16,7 +16,8 @@ export const initialState = [
       'reverb mausoleum',
       'reverb chapel',
     ],
-    selectedAddSource: null,
+    selectedAddEffect: 'pingPongDelay',
+    selectedAddSource: 'supersaw',
     sources: [
       'detuned',
       'fm',
@@ -27,7 +28,8 @@ export const initialState = [
     effects: [
       'pingPongDelay',
     ],
-    selectedAddSource: null,
+    selectedAddEffect: 'pingPongDelay',
+    selectedAddSource: 'detuned',
     sources: [
       'sine',
     ],
@@ -99,10 +101,13 @@ export default (state = initialState, {type, value}) => {
     case REMOVE_CHANNEL_SOURCE: {
       const {channelId, sourceId} = value;
       const channel = state[channelId];
-      const {sources} = channel;
+      const {selectedAddSource, sources} = channel;
+      const source = sources[sourceId];
       return [...state.slice(0, channelId),
-              {...channel, sources: [...sources.slice(0, sourceId),
-                                     ...sources.slice(sourceId + 1)]},
+              {...channel,
+               sources: [...sources.slice(0, sourceId),
+                         ...sources.slice(sourceId + 1)],
+               selectedAddSource: selectedAddSource || source},
               ...state.slice(channelId + 1)];
     }
     case REMOVE_CHANNEL_EFFECT: {
