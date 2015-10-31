@@ -5,10 +5,7 @@ import {connect} from 'react-redux';
 import {mapIndexed} from '../../tools/indexedIterators';
 import Navigation from '../organisms/Navigation';
 import FullSelect from '../atoms/FullSelect';
-import Cross from '../atoms/icon-buttons/Cross';
-import Down from '../atoms/icon-buttons/Down';
-import Plus from '../atoms/icon-buttons/Plus';
-import Up from '../atoms/icon-buttons/Up';
+import {Cross, Down, Plus, Up} from '../atoms/IconButtons';
 import {addChannelEffect,
         addChannelSource,
         moveChannelSourceDown,

@@ -4,8 +4,7 @@ import {mapIndexed} from '../../tools/indexedIterators';
 import {connect} from 'react-redux';
 import Navigation from '../organisms/Navigation';
 import FullButton from '../atoms/FullButton';
-import Plus from '../atoms/icon-buttons/Plus';
-import Cross from '../atoms/icon-buttons/Cross';
+import {Cross, Plus} from '../atoms/IconButtons';
 import {addChannel, removeChannel} from '../../actions';
 
 export default connect(identity)(({channels, dispatch}) =>
