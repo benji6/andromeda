@@ -11,34 +11,13 @@ import {ADD_CHANNEL,
         UPDATE_SELECTED_ADD_EFFECT,
         UPDATE_SELECTED_ADD_SOURCE} from '../actions';
 
-export const defaultChannel = {
-  effects: [
-    'pingPongDelay',
-  ],
-  selectedAddEffect: 'pingPongDelay',
-  selectedAddSource: 'detuned',
-  sources: [
-    'sine',
-  ],
-};
+export const defaultChannel = {effects: ['pingPongDelay'],
+                               selectedAddEffect: 'pingPongDelay',
+                               selectedAddSource: 'detuned',
+                               sources: ['sine']};
 
-export const initialState = [
-  {
-    effects: [
-      'pingPongDelay',
-      'reverb mausoleum',
-      'reverb chapel',
-    ],
-    selectedAddEffect: 'pingPongDelay',
-    selectedAddSource: 'supersaw',
-    sources: [
-      'detuned',
-      'fm',
-      'sine',
-    ],
-  },
-  defaultChannel,
-];
+export const initialState = [defaultChannel,
+                             defaultChannel];
 
 export default (state = initialState, {type, value}) => {
   switch (type) {
