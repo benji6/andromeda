@@ -1,13 +1,26 @@
-import {ADD_CHANNEL_EFFECT,
+import {ADD_CHANNEL,
+        ADD_CHANNEL_EFFECT,
         ADD_CHANNEL_SOURCE,
         MOVE_CHANNEL_EFFECT_DOWN,
         MOVE_CHANNEL_EFFECT_UP,
         MOVE_CHANNEL_SOURCE_DOWN,
         MOVE_CHANNEL_SOURCE_UP,
+        REMOVE_CHANNEL,
         REMOVE_CHANNEL_SOURCE,
         REMOVE_CHANNEL_EFFECT,
         UPDATE_SELECTED_ADD_EFFECT,
         UPDATE_SELECTED_ADD_SOURCE} from '../actions';
+
+export const defaultChannel = {
+  effects: [
+    'pingPongDelay',
+  ],
+  selectedAddEffect: 'pingPongDelay',
+  selectedAddSource: 'detuned',
+  sources: [
+    'sine',
+  ],
+};
 
 export const initialState = [
   {
@@ -24,20 +37,14 @@ export const initialState = [
       'sine',
     ],
   },
-  {
-    effects: [
-      'pingPongDelay',
-    ],
-    selectedAddEffect: 'pingPongDelay',
-    selectedAddSource: 'detuned',
-    sources: [
-      'sine',
-    ],
-  },
+  defaultChannel,
 ];
 
 export default (state = initialState, {type, value}) => {
   switch (type) {
+    case ADD_CHANNEL:
+      return [...state,
+              defaultChannel];
     case ADD_CHANNEL_SOURCE: {
       const {channelId, source} = value;
       const channel = state[channelId];
@@ -110,6 +117,9 @@ export default (state = initialState, {type, value}) => {
                selectedAddSource: selectedAddSource || source},
               ...state.slice(channelId + 1)];
     }
+    case REMOVE_CHANNEL:
+      return [...state.slice(0, value),
+              ...state.slice(value + 1)];
     case REMOVE_CHANNEL_EFFECT: {
       const {channelId, effectId} = value;
       const channel = state[channelId];

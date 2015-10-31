@@ -1,11 +1,13 @@
 import test from 'tape';
-import reducer, {initialState} from './channels';
-import {addChannelEffect,
+import reducer, {defaultChannel, initialState} from './channels';
+import {addChannel,
+        addChannelEffect,
         addChannelSource,
         moveChannelSourceDown,
         moveChannelSourceUp,
         moveChannelEffectDown,
         moveChannelEffectUp,
+        removeChannel,
         removeChannelSource,
         removeChannelEffect,
         updateSelectedAddEffect,
@@ -16,6 +18,13 @@ const reducerName = 'channels';
 test(`${reducerName} reducer returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState);
   t.deepEqual(reducer(undefined, {}), initialState);
+  t.end();
+});
+
+test(`${reducerName} reducer addChannel`, t => {
+  t.deepEqual(reducer(undefined, addChannel()),
+              [...initialState,
+               defaultChannel]);
   t.end();
 });
 
@@ -106,6 +115,14 @@ test(`${reducerName} reducer moveEffectSourceUp`, t => {
                                       effects[effectId - 1],
                                       ...effects.slice(effectId + 1)]},
                ...initialState.slice(channelId + 1)]);
+  t.end();
+});
+
+test(`${reducerName} reducer removeChannel `, t => {
+  const value = 0;
+  t.deepEqual(reducer(undefined, removeChannel(value)),
+              [...initialState.slice(0, value),
+               ...initialState.slice(value + 1)]);
   t.end();
 });
 

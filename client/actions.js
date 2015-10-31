@@ -1,6 +1,7 @@
 const typeValueAction = type => value => ({type, value});
 
 export const ACTIVE_PATTERN_CELL_CLICK = 'PATTERN_CELL_CLICK';
+export const ADD_CHANNEL = 'ADD_CHANNEL';
 export const ADD_CHANNEL_EFFECT = 'ADD_CHANNEL_EFFECT';
 export const ADD_CHANNEL_SOURCE = 'ADD_CHANNEL_SOURCE';
 export const ADD_EFFECT = 'ADD_EFFECT';
@@ -8,6 +9,7 @@ export const MOVE_CHANNEL_EFFECT_DOWN = 'MOVE_CHANNEL_EFFECT_DOWN';
 export const MOVE_CHANNEL_EFFECT_UP = 'MOVE_CHANNEL_EFFECT_UP';
 export const MOVE_CHANNEL_SOURCE_DOWN = 'MOVE_CHANNEL_SOURCE_DOWN';
 export const MOVE_CHANNEL_SOURCE_UP = 'MOVE_CHANNEL_SOURCE_UP';
+export const REMOVE_CHANNEL = 'REMOVE_CHANNEL';
 export const REMOVE_CHANNEL_EFFECT = 'REMOVE_CHANNEL_EFFECT';
 export const REMOVE_CHANNEL_SOURCE = 'REMOVE_CHANNEL_SOURCE';
 export const UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION = 'UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION';
@@ -30,13 +32,15 @@ export const UPDATE_SELECTED_SCALE = 'UPDATE_SELECTED_SCALE';
 export const UPDATE_SONG_NOTES = 'UPDATE_SONG_NOTES';
 
 export const activePatternCellClick = typeValueAction(ACTIVE_PATTERN_CELL_CLICK);
-export const addEffect = typeValueAction(ADD_EFFECT);
+export const addChannel = typeValueAction(ADD_CHANNEL);
 export const addChannelEffect = typeValueAction(ADD_CHANNEL_EFFECT);
 export const addChannelSource = typeValueAction(ADD_CHANNEL_SOURCE);
+export const addEffect = typeValueAction(ADD_EFFECT);
 export const moveChannelEffectDown = typeValueAction(MOVE_CHANNEL_EFFECT_DOWN);
 export const moveChannelEffectUp = typeValueAction(MOVE_CHANNEL_EFFECT_UP);
 export const moveChannelSourceDown = typeValueAction(MOVE_CHANNEL_SOURCE_DOWN);
 export const moveChannelSourceUp = typeValueAction(MOVE_CHANNEL_SOURCE_UP);
+export const removeChannel = typeValueAction(REMOVE_CHANNEL);
 export const removeChannelEffect = typeValueAction(REMOVE_CHANNEL_EFFECT);
 export const removeChannelSource = typeValueAction(REMOVE_CHANNEL_SOURCE);
 export const updateActivePatternActivePosition = typeValueAction(UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION);
