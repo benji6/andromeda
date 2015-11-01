@@ -6,5 +6,5 @@ const numberOfNotes = alphabeticalComponents.toArray().length;
 
 export default pitch => {
   const octave = floor(pitch / numberOfNotes) + 4;
-  return alphabeticalComponents(pitch % numberOfNotes) + octave;
+  return alphabeticalComponents(pitch) + String(octave);
 };

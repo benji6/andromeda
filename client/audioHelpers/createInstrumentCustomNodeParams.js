@@ -1,16 +1,14 @@
 import {map} from 'ramda';
 import Random from 'random-js';
-import store from '../store';
+import computeAscending from './computeAscending';
 
 let currentIndex = 0;
 let ascending = true;
 
-const getState = ::store.getState;
 const calculateFrequency = pitch => 440 * 2 ** (pitch / 12);
 const pickRandom = arr => Random.pick(Random.engines.browserCrypto, arr);
 
-const incrementScalePitch = (pitch, increment) => {
-  const {scales, scaleName} = getState().scale;
+const incrementScalePitch = (pitch, increment, {scales, scaleName}) => {
   const scale = scales[scaleName];
   const scaleArray = scale.toArray();
   if (scaleArray.indexOf(pitch % 12) === -1) {
@@ -27,41 +25,36 @@ const incrementScalePitch = (pitch, increment) => {
 
 export const resetArpeggiator = () => currentIndex = 0;
 
-export default ({pitch, instrument = getState().instrument.selectedInstrument, rootNote, modulation, startTime, stopTime}) => {
-  const {arpeggiator, scale} = getState();
+export default ({arpeggiator,
+                 effectsLength,
+                 modulation,
+                 pitch,
+                 scale,
+                 startTime,
+                 stopTime}) => instrument => {
   const {arpeggiatorIsOn, selectedPattern} = arpeggiator;
   let pitchToPlay = pitch;
 
   if (arpeggiatorIsOn && scale.scaleName !== 'none') {
-    const arpeggiatorPitches = map(x => incrementScalePitch(pitchToPlay, x),
+    const arpeggiatorPitches = map(x => incrementScalePitch(pitchToPlay, x, scale),
                                    [0, 2, 4, 7, 9, 11]);
+    const {length} = arpeggiatorPitches;
 
-    switch (selectedPattern) {
-      case 'up':
-        ascending = true;
-        break;
-      case 'down':
-        ascending = false;
-        break;
-      case 'up and down':
-        if (currentIndex === 0) {
-          ascending = true;
-        } else if (currentIndex === arpeggiatorPitches.length - 1) {
-          ascending = false;
-        }
-        break;
-    }
+    ascending = computeAscending(selectedPattern,
+                                 currentIndex,
+                                 length,
+                                 ascending);
 
     if (selectedPattern === 'random') {
       pitchToPlay = pickRandom(arpeggiatorPitches);
     } else if (ascending) {
       pitchToPlay = arpeggiatorPitches[currentIndex];
-      currentIndex = ++currentIndex === arpeggiatorPitches.length ?
+      currentIndex = ++currentIndex === length ?
         0 :
         currentIndex;
     } else {
       currentIndex = currentIndex === 0 ?
-        arpeggiatorPitches.length - 1 :
+        length - 1 :
         --currentIndex;
       pitchToPlay = arpeggiatorPitches[currentIndex];
     }
@@ -69,9 +62,9 @@ export default ({pitch, instrument = getState().instrument.selectedInstrument, r
 
   return [
     instrument,
-    ['output', 0],
+    effectsLength - 1,
     {
-      frequency: calculateFrequency(pitchToPlay + rootNote),
+      frequency: calculateFrequency(pitchToPlay),
       gain: (1 - modulation) / 4,
       startTime,
       stopTime,

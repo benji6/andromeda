@@ -2,7 +2,7 @@ import test from 'tape';
 import reducer, {initialState} from './patterns';
 import {activePatternCellClick,
         updateActivePatternActivePosition,
-        updateActivePatternInstrument,
+        updateActivePatternChannel,
         updateActivePatternOctave,
         updateActivePatternXLength} from '../actions';
 
@@ -42,14 +42,14 @@ test(`${reducerName} reducer updates active pattern active position`, t => {
   t.end();
 });
 
-test(`${reducerName} reducer updates active pattern instrument`, t => {
+test(`${reducerName} reducer updateActivePatternChannel`, t => {
   const activePatternIndex = 0;
   const activePattern = initialState[activePatternIndex];
-  const value = 'tubaphone';
+  const value = 3;
 
-  t.deepEqual(reducer(undefined, updateActivePatternInstrument(value)),
+  t.deepEqual(reducer(undefined, updateActivePatternChannel(value)),
               [...initialState.slice(0, activePatternIndex),
-               {...activePattern, instrument: value},
+               {...activePattern, channel: value},
                ...initialState.slice(activePatternIndex + 1)]);
   t.end();
 });

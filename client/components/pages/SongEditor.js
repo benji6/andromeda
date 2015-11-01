@@ -10,8 +10,8 @@ import {mapIndexed} from '../../tools/indexedIterators';
 import Pattern from '../organisms/Pattern';
 import PlayButton from '../atoms/PlayButton';
 import Navigation from '../organisms/Navigation';
-import pitchFromScaleIndex from '../../tools/pitchFromScaleIndex';
-import noteNameFromPitch from '../../tools/noteNameFromPitch';
+import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex';
+import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch';
 import {noteExists} from '../../reducers/patterns';
 
 const playStopSubject = new Rx.Subject();

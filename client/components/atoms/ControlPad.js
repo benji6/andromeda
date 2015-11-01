@@ -87,6 +87,7 @@ const renderLoop = function renderLoop () {
 
 export default class extends React.Component {
   componentDidMount () {
+    const {instrument} = this.props;
     controlPadElement = document.querySelector('.control-pad');
     const input$ = merge(fromEvent(controlPadElement, 'touchstart'),
                          fromEvent(controlPadElement, 'touchmove'),
@@ -100,7 +101,7 @@ export default class extends React.Component {
                            reject(e => e instanceof MouseEvent && !mouseInputEnabled),
                            map(tap(() => controlPadActive = true)),
                            map(e => currentXYRatios = calculateXAndYRatio(e)),
-                           map(handleControlPadInput)))
+                           map(handleControlPadInput(instrument))))
         .subscribe();
 
     endInput$

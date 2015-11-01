@@ -16,7 +16,7 @@ export const defaultChannel = {effects: ['pingPongDelay'],
                                selectedAddSource: 'detuned',
                                sources: ['sine']};
 
-export const initialState = [defaultChannel,
+export const initialState = [{...defaultChannel, sources: ['detuned']},
                              defaultChannel];
 
 export default (state = initialState, {type, value}) => {

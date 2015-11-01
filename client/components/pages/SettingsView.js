@@ -1,4 +1,5 @@
-import {compose, identity, keys, path, tap} from 'ramda';
+import capitalize from 'capitalize';
+import {compose, identity, keys, map, path, tap} from 'ramda';
 import React from 'react';
 import {connect} from 'react-redux';
 import {updateArpeggiatorIsOn,
@@ -10,7 +11,7 @@ import {updateArpeggiatorIsOn,
 import Navigation from '../organisms/Navigation';
 import CheckboxSelector from '../molecules/CheckboxSelector';
 import RangeSelector from '../molecules/RangeSelector';
-import noteNameFromPitch from '../../tools/noteNameFromPitch';
+import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch';
 import Selector from '../molecules/Selector';
 import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector';
 import switchMicrophone from '../../switchMicrophone';
@@ -44,7 +45,8 @@ export default connect(identity)(({arpeggiator: {arpeggiatorIsOn, patterns, sele
       <Selector defaultValue={scaleName}
                 handleChange={compose(dispatch, updateSelectedScale, eventValuePath)}
                 label="Scale"
-                options={keys(scales)} />
+                options={map(value => ({text: capitalize.words(value),
+                                        value}), keys(scales))} />
       <CheckboxSelector checked={microphone.isOn}
                         disabled={!microphone.isAvailable}
                         onChange={compose(dispatch, updateMicrophoneIsOn, tap(switchMicrophone(dispatch)), eventCheckedPath)}

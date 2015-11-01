@@ -3,8 +3,9 @@ import activePatternIndex from './reducers/activePatternIndex';
 import arpeggiator from './reducers/arpeggiator';
 import bpm from './reducers/bpm';
 import channels from './reducers/channels';
-import effect from './reducers/effect';
-import instrument from './reducers/instrument';
+import controlPad from './reducers/controlPad';
+import effects from './reducers/effects';
+import instruments from './reducers/instruments';
 import microphone from './reducers/microphone';
 import patterns from './reducers/patterns';
 import playing from './reducers/playing';
@@ -17,8 +18,9 @@ export default createStore(combineReducers({
   arpeggiator,
   bpm,
   channels,
-  effect,
-  instrument,
+  controlPad,
+  effects,
+  instruments,
   microphone,
   patterns,
   playing,

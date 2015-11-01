@@ -22,7 +22,7 @@ const targetValue = e => e.target.value;
 export default connect(identity)(({channels,
                                    dispatch,
                                    effect,
-                                   instrument: {instruments},
+                                   instruments,
                                    params: {channelId}}) => {
   const appEffects = effect.effects;
   const {effects,
