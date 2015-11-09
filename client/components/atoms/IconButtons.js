@@ -1,7 +1,7 @@
 import React from 'react';
 
-const createButton = text => ({onClick}) => <button className="icon-button"
-                                                    onClick={onClick}>{text}</button>;
+const createButton = text => ({...props}) => <button className="icon-button"
+                                                    {...props}>{text}</button>;
 
 export const Cross = createButton('x');
 export const Down = createButton('\u2193');

@@ -8,6 +8,6 @@ export default ({cells, onClick, yLabel}) =>
   <div className="flex-row pattern-row">
     <div className="y-label" key={"flex-row-y-label"}>{yLabel}</div>
     {mapIndexed((cell, i) => <div className={`step ${selectedClass(cell)} ${activeClass(cell)}`}
-                                key={`flex-row-${i}`}
-                                onClick={onClick(i)} />, cells)}
+                                  key={`flex-row-${i}`}
+                                  onClick={onClick(i)} />, cells)}
   </div>;

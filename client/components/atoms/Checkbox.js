@@ -1,8 +1,6 @@
 import React from 'react';
 module.exports = ({checked,
-                   disabled,
-                   onChange}) => <input className="checkbox"
+                   ...props}) => <input className="checkbox"
                                         defaultChecked={checked}
-                                        disabled={disabled}
-                                        onChange={onChange}
+                                        {...props}
                                         type="checkbox" />;

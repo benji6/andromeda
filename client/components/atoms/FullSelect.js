@@ -1,11 +1,9 @@
 import {mapIndexed} from '../../tools/indexedIterators';
 import React from 'react';
 
-export default ({defaultValue, disabled, onChange, options}) =>
+export default ({options, ...props}) =>
   <select className="full-button full-select"
-          defaultValue={defaultValue}
-          disabled={disabled}
-          onChange={onChange}>
+          {...props}>
     {mapIndexed(({text, value}, i) =>
       <option value={value} key={i}>
         {text}
