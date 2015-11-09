@@ -21,10 +21,10 @@ const targetValue = e => e.target.value;
 
 export default connect(identity)(({channels,
                                    dispatch,
-                                   effect,
                                    instruments,
-                                   params: {channelId}}) => {
-  const appEffects = effect.effects;
+                                   params: {channelId},
+                                   ...props}) => {
+  const appEffects = props.effects;
   const {effects,
          selectedAddEffect,
          selectedAddSource,
