@@ -52,7 +52,8 @@ export const playNote = ({id, instrument, pitch, modulation = 0.5}) => {
     return;
   }
 
-  forEach(({sources, effects}) => currentAudioGraph = computeAudioGraph({currentAudioGraph,
+  forEach(({sources, effects}) => currentAudioGraph = computeAudioGraph({arpeggiator,
+                                                                         currentAudioGraph,
                                                                          effects,
                                                                          id,
                                                                          instrument,
