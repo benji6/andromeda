@@ -68,7 +68,7 @@ gulp.task('htmlProd', () => gulp.src('client/index.html')
   .pipe(connect.reload()));
 
 gulp.task('scriptsDev',
-          () => watchify(browserify(browserifyEntryPath, {...watchify.args, debug: true}))
+          () => watchify(browserify(browserifyEntryPath, Object.assign({}, watchify.args, {debug: true})))
             .transform(babelify, {optional: ['runtime'], stage: 0})
             .bundle()
             .on('error', gutil.log.bind(gutil, 'Browserify Error'))
