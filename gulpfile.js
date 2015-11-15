@@ -69,7 +69,21 @@ gulp.task('htmlProd', () => gulp.src('client/index.html')
 
 gulp.task('scriptsDev',
           () => watchify(browserify(browserifyEntryPath, Object.assign({}, watchify.args, {debug: true})))
-            .transform(babelify, {optional: ['runtime'], stage: 0})
+            .transform(babelify, {
+              optional: [
+                'runtime',
+              ],
+              stage: 0,
+              blacklist: [
+                'es6.arrowFunctions',
+                'es6.spread',
+                'es6.templateLiterals',
+                'regenerator',
+                'es6.forOf',
+                'es6.blockScoping',
+                'es6.constants',
+              ],
+            })
             .bundle()
             .on('error', gutil.log.bind(gutil, 'Browserify Error'))
             .pipe(source('index.js'))
