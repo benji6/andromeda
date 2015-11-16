@@ -29,10 +29,14 @@ export default ({arpeggiator,
   // assign ids based on index in this array
   const customNodeParams = [...effectCustomNodeParams,
                             ...sourceCustomNodeParams];
+  const newKeys = mapIndexed((_, i) => `${instrument}-${pitch}-${i}`,
+                             customNodeParams);
+
   // ids of newAudioGraphChunk should also contain controller
   // (ie control pad / pattern-editor etc)
-  const newAudioGraphChunk = zipObj(mapIndexed((_, i) => `${instrument}-${pitch}-${i}`,
-                                               customNodeParams),
-                                    customNodeParams);
+  const newAudioGraphChunk = zipObj(newKeys,
+                                    map(([name, output, ...rest]) => newKeys[output] ?
+                                      [name, newKeys[output], ...rest] : [name, output, ...rest],
+                                        customNodeParams));
   return {...currentAudioGraph, ...newAudioGraphChunk};
 };

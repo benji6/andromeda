@@ -24,7 +24,7 @@ const calculatePitch = xRatio => {
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
 const getNoteFromXYRatios = compose(assoc('id', 'controlPad'), calculatePitchAndMod);
 
-export const handleControlPadInput = xYRatios => {
+export const handleControlPadInput = instrument => xYRatios => {
   const note = getNoteFromXYRatios(xYRatios);
   const {id, pitch} = note;
   if (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null && stopLastNoteOnNoteChange) {

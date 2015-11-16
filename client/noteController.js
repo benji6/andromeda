@@ -26,14 +26,13 @@ arpStop$.subscribe();
 
 const computeNextStartTime = currentTime => Math.ceil(currentTime / noteDuration()) * noteDuration();
 
-export const playNote = ({id, instrument, pitch, modulation = 0.5}) => {
+export const playNote = ({id, instrument = 'sine', pitch, modulation = 0.5}) => {
   const {arpeggiator, channels, rootNote, scale} = getState();
   const relevantChannels = filter(({sources}) => contains(instrument,
                                                           sources),
                                   channels);
   const sourcesAndEffects = map(({effects, sources}) => ({effects, sources}),
                                 relevantChannels);
-
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     arpStop$.onNext();
     interval(noteDuration())

@@ -59,15 +59,15 @@ export default ({arpeggiator,
       pitchToPlay = arpeggiatorPitches[currentIndex];
     }
   }
-
-  return [
-    instrument,
-    effectsLength - 1,
-    {
-      frequency: calculateFrequency(pitchToPlay),
-      gain: (1 - modulation) / 4,
-      startTime,
-      stopTime,
-    },
-  ];
+  const params = [instrument,
+                  effectsLength - 1,
+                  {frequency: calculateFrequency(pitchToPlay),
+                   gain: (1 - modulation) / 4}];
+  if (startTime !== undefined) {
+    params[2].startTime = startTime;
+  }
+  if (stopTime !== undefined) {
+    params[2].stopTime = stopTime;
+  }
+  return params;
 };
