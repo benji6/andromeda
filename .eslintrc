@@ -148,7 +148,6 @@
     "quotes": [2, "single"],
     "require-yield": 2,
     "semi-spacing": 2,
-    "semi": [2, "always"],
     "sort-vars": 2,
     "space-after-keywords": 2,
     "space-before-blocks": 2,
