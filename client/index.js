@@ -6,11 +6,8 @@ import UpgradeBrowserView from './components/pages/UpgradeBrowserView';
 import render from './tools/render';
 import store from './store';
 import routes from './routes';
+import './updateAudioGraph';
 
 const app = <Provider store={store}>{routes}</Provider>;
 
-if (navigator.serviceWorker) {
-  render(app);
-} else {
-  render(<UpgradeBrowserView />);
-}
+if (navigator.serviceWorker) render(app); else render(<UpgradeBrowserView />);

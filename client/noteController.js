@@ -1,13 +1,14 @@
-import {compose, contains, dissoc, filter, forEach, map, reject, tap} from 'ramda';
-import store from './store';
-import virtualAudioGraph from './virtualAudioGraph';
+import {compose, contains, filter, forEach, map, reject, tap} from 'ramda';
+import store, {dispatch} from './store';
+import audioContext from './audioContext';
 import createInstrumentCustomNodeParams, {resetArpeggiator} from './audioHelpers/createInstrumentCustomNodeParams';
 import computeAudioGraph from './audioHelpers/computeAudioGraph';
+import {mergeIntoAudioGraph, removeKeysFromAudioGraphContaining} from './actions';
 
-const {Observable, Subject} = Rx;
+const {Observable: interval, Subject} = Rx;
 
-const {interval} = Observable;
 const getState = ::store.getState;
+const dispatchMergeIntoAudioGraph = compose(dispatch, mergeIntoAudioGraph);
 
 const noteDuration = () => 60 / getState().bpm / 4;
 
@@ -19,7 +20,6 @@ const getVirtualNodeId = (() => {
   };
 }());
 
-let currentAudioGraph = {};
 let lastStartTime = null;
 const arpStop$ = new Subject();
 arpStop$.subscribe();
@@ -36,42 +36,36 @@ export const playNote = ({id, instrument = 'sine', pitch, modulation = 0.5}) => 
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     arpStop$.onNext();
     interval(noteDuration())
-      .transduce(compose(map(() => virtualAudioGraph.currentTime),
+      .transduce(compose(map(() => audioContext.currentTime),
                          map(computeNextStartTime),
                          reject(startTime => startTime === lastStartTime),
                          map(tap(startTime => lastStartTime = startTime)),
                          map(startTime => ({startTime, stopTime: startTime + noteDuration()})),
-                         reject(({stopTime}) => stopTime < virtualAudioGraph.currentTime),
-                         map(({startTime, stopTime}) =>
-                           currentAudioGraph = {...currentAudioGraph,
-                                                       [getVirtualNodeId(id)]: createInstrumentCustomNodeParams({pitch, id, rootNote, modulation, startTime, stopTime, instrument})}),
-                         map(() => virtualAudioGraph.update(currentAudioGraph))))
+                         reject(({stopTime}) => stopTime < audioContext.currentTime),
+                         map(({startTime, stopTime}) => ({[getVirtualNodeId(id)]: createInstrumentCustomNodeParams({pitch, id, rootNote, modulation, startTime, stopTime, instrument})}))),
+                         map(dispatchMergeIntoAudioGraph))
       .takeUntil(arpStop$)
       .subscribe();
     return;
   }
 
-  forEach(({sources, effects}) => currentAudioGraph = computeAudioGraph({arpeggiator,
-                                                                         currentAudioGraph,
-                                                                         effects,
-                                                                         id,
-                                                                         instrument,
-                                                                         modulation,
-                                                                         pitch,
-                                                                         rootNote,
-                                                                         sources}),
+  forEach(({sources, effects}) => dispatchMergeIntoAudioGraph(computeAudioGraph({arpeggiator,
+                                                                                 effects,
+                                                                                 id,
+                                                                                 instrument,
+                                                                                 modulation,
+                                                                                 pitch,
+                                                                                 rootNote,
+                                                                                 sources})),
           sourcesAndEffects);
-
-  virtualAudioGraph.update(currentAudioGraph);
 };
 
-export const stopNote = ({id}) => {
+export const stopNote = ({id, instrument = 'sine', pitch}) => {
   const {arpeggiator, scale} = getState();
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     arpStop$.onNext();
     resetArpeggiator();
     lastStartTime = null;
   }
-  currentAudioGraph = dissoc(id, currentAudioGraph);
-  virtualAudioGraph.update(currentAudioGraph);
+  dispatch(removeKeysFromAudioGraphContaining(`${id}-${instrument}-${pitch}`));
 };

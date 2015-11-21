@@ -1,6 +1,7 @@
-import {assoc, compose, isNil} from 'ramda';
+import {assoc, compose, curry, isNil} from 'ramda';
 import {playNote, stopNote} from './noteController';
-import store from './store';
+import store, {dispatch} from './store';
+import {removeKeysFromAudioGraphContaining} from './actions';
 
 const {floor} = Math;
 const getState = ::store.getState;
@@ -24,15 +25,15 @@ const calculatePitch = xRatio => {
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
 const getNoteFromXYRatios = compose(assoc('id', 'controlPad'), calculatePitchAndMod);
 
-export const handleControlPadInput = instrument => xYRatios => {
+export const handleControlPadInput = curry((instrument, xYRatios) => {
   const note = getNoteFromXYRatios(xYRatios);
   const {id, pitch} = note;
   if (currentlyPlayingPitch !== pitch && currentlyPlayingPitch !== null && stopLastNoteOnNoteChange) {
-    stopNote({id});
+    dispatch(removeKeysFromAudioGraphContaining(id));
   }
   currentlyPlayingPitch = pitch;
   playNote(note);
-};
+});
 
 export const handleControlPadInputEnd = xYRatios => {
   currentlyPlayingPitch = null;
