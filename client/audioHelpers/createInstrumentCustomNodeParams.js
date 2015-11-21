@@ -11,9 +11,7 @@ const pickRandom = arr => Random.pick(Random.engines.browserCrypto, arr);
 const incrementScalePitch = (pitch, increment, {scales, scaleName}) => {
   const scale = scales[scaleName];
   const scaleArray = scale.toArray();
-  if (scaleArray.indexOf(pitch % 12) === -1) {
-    return pitch;
-  }
+  if (scaleArray.indexOf(pitch % 12) === -1) return pitch;
   return (function recur (index, pitchIncrement) {
     const {length} = scale.toArray();
     if (index >= length) {

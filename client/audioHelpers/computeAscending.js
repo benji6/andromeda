@@ -5,11 +5,8 @@ export default (pattern, currentIndex, length, ascendingVal) => {
     case 'down':
       return false;
     case 'up and down':
-      if (currentIndex === 0) {
-        return true;
-      } else if (currentIndex === length - 1) {
-        return false;
-      }
+      if (currentIndex === 0) return true;
+      else if (currentIndex === length - 1) return false;
   }
   return ascendingVal;
 };
