@@ -30,7 +30,7 @@
     "computed-property-spacing": [2, "never"],
     "consistent-return": 2,
     "constructor-super": 2,
-    "curly": 2,
+    "curly": [2, "multi-line"],
     "dot-location": [2, "property"],
     "dot-notation": 2,
     "eol-last": 2,
