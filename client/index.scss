@@ -2,7 +2,6 @@
 @import 'styles/globals';
 
 @import 'components/atoms/checkbox';
-@import 'components/atoms/control-pad';
 @import 'components/atoms/full-button';
 @import 'components/atoms/full-select';
 @import 'components/atoms/hollow-button';
@@ -14,6 +13,7 @@
 @import 'components/atoms/y-label';
 @import 'components/molecules/pattern-row';
 @import 'components/molecules/x-labels';
+@import 'components/organisms/control-pad';
 @import 'components/organisms/loading-spinner';
 @import 'components/organisms/navigation';
 @import 'components/organisms/pattern';
