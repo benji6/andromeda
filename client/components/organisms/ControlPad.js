@@ -1,8 +1,15 @@
+import {assoc, compose, isNil, map, reject, tap} from 'ramda';
 import React from 'react';
-import {handleControlPadInput, handleControlPadInputEnd} from '../../handleControlPadSignals';
-import {compose, isNil, map, reject, tap} from 'ramda';
+import {playNote, stopNote} from '../../noteController';
+import store, {dispatch} from '../../store';
+import {removeKeysFromAudioGraphContaining} from '../../actions';
+
 const {fromEvent, merge} = Rx.Observable;
 const {EPSILON} = Number;
+
+const controlPadId = 'controlPad';
+let currentlyPlayingPitch = null;
+let stopLastNoteOnNoteChange = true;
 
 const cameraZ = 16;
 const minZ = -128;
@@ -24,14 +31,11 @@ const calculateXAndYRatio = e => {
   const width = right - left;
   const height = bottom - top;
 
-  return {
-    xRatio: validRatio(x / width),
-    yRatio: validRatio(y / height),
-  };
+  return {xRatio: validRatio(x / width),
+          yRatio: validRatio(y / height)};
 };
 
 let mouseInputEnabled = false;
-let controlPadActive = false;
 let currentXYRatios = null;
 let controlPadElement = null;
 let renderLoopActive = null;
@@ -47,20 +51,14 @@ const setRendererSize = () => {
   renderer.setSize(rendererSize, rendererSize);
 };
 
-const renderLoop = function renderLoop () {
-  if (!renderLoopActive) {
-    return;
-  }
+const renderLoop = _ => {
+  if (!renderLoopActive) return;
   requestAnimationFrame(() => renderLoop());
   const controlPadHasNotBeenUsed = isNil(currentXYRatios);
   const {z} = cube.position;
-  if (controlPadHasNotBeenUsed) {
-    return;
-  }
-  if (!controlPadActive) {
-    if (z > minZ - maxDepth) {
-      cube.position.z -= 1;
-    }
+  if (controlPadHasNotBeenUsed) return;
+  if (currentlyPlayingPitch === null) {
+    if (z > minZ - maxDepth) cube.position.z -= 1;
     renderer.render(scene, camera);
     return;
   }
@@ -79,11 +77,25 @@ const renderLoop = function renderLoop () {
   cube.position.x = (xRatio - 0.5) * cameraZ;
   cube.position.y = (0.5 - yRatio) * cameraZ;
   const returnVelocity = 8;
-  if (z < 0) {
-    cube.position.z += z > -returnVelocity ? -z : returnVelocity;
-  }
+  if (z < 0) cube.position.z += z > -returnVelocity ? -z : returnVelocity;
   renderer.render(scene, camera);
 };
+
+const calculatePitch = xRatio => {
+  const {scaleName, scales} = store.getState().scale;
+  const scale = scales[scaleName];
+  if (isNil(scale)) {
+    stopLastNoteOnNoteChange = false;
+    return xRatio * 12;
+  }
+  const {length} = scale.toArray();
+  stopLastNoteOnNoteChange = true;
+  const i = Math.floor((length + 1) * xRatio);
+  return i < length ? scale(i) : scale(i) + 12;
+};
+
+const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
+const getNoteFromXYRatios = compose(assoc('id', controlPadId), calculatePitchAndMod);
 
 export default class extends React.Component {
   componentDidMount () {
@@ -96,19 +108,25 @@ export default class extends React.Component {
     const endInput$ = merge(fromEvent(controlPadElement, 'touchend'),
                             fromEvent(controlPadElement, 'mouseup'));
 
-      input$
-        .transduce(compose(map(tap(e => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
-                           reject(e => e instanceof MouseEvent && !mouseInputEnabled),
-                           map(tap(() => controlPadActive = true)),
-                           map(e => currentXYRatios = calculateXAndYRatio(e)),
-                           map(handleControlPadInput(instrument))))
-        .subscribe();
+    input$
+      .transduce(compose(map(tap(e => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
+                         reject(e => e instanceof MouseEvent && !mouseInputEnabled),
+                         map(e => currentXYRatios = calculateXAndYRatio(e)),
+                         map(xYRatios => ({...getNoteFromXYRatios(xYRatios), instrument})),
+                         map(tap(({id, pitch}) => (currentlyPlayingPitch !== pitch &&
+                                                   currentlyPlayingPitch !== null &&
+                                                   stopLastNoteOnNoteChange) &&
+                                                     dispatch(removeKeysFromAudioGraphContaining(id)))),
+                         map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
+                         map(playNote)))
+      .subscribe();
 
     endInput$
       .transduce(compose(map(tap(() => mouseInputEnabled = false)),
-                         map(tap(() => controlPadActive = false)),
+                         map(tap(() => currentlyPlayingPitch = null)),
                          map(e => currentXYRatios = calculateXAndYRatio(e)),
-                         map(handleControlPadInputEnd)))
+                         map(compose(stopNote, getNoteFromXYRatios)),
+                         map(_ => dispatch(removeKeysFromAudioGraphContaining(controlPadId)))))
       .subscribe();
 
     renderLoopActive = true;
@@ -121,18 +139,15 @@ export default class extends React.Component {
     );
     renderer = new THREE.WebGLRenderer({canvas: controlPadElement});
     const geometry = new THREE.BoxGeometry(sideLength, sideLength, sideLength);
-    const material = new THREE.MeshLambertMaterial({
-      color: 'rgb(20, 200, 255)',
-    });
+    const material = new THREE.MeshLambertMaterial({color: 'rgb(20, 200, 255)'});
     const directionalLight = new THREE.DirectionalLight(0xffffff);
     cube = new THREE.Mesh(geometry, material);
     cube.position.z = minZ - maxDepth;
 
     directionalLight.position.set(16, 16, 24).normalize();
-    scene
-      .add(new THREE.AmbientLight(0x333333))
-      .add(directionalLight)
-      .add(cube);
+    scene.add(new THREE.AmbientLight(0x333333))
+         .add(directionalLight)
+         .add(cube);
     camera.position.z = cameraZ;
 
     setRendererSize();

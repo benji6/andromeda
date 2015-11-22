@@ -3,7 +3,7 @@ import store, {dispatch} from './store';
 import audioContext from './audioContext';
 import createInstrumentCustomNodeParams, {resetArpeggiator} from './audioHelpers/createInstrumentCustomNodeParams';
 import computeAudioGraph from './audioHelpers/computeAudioGraph';
-import {mergeIntoAudioGraph, removeKeysFromAudioGraphContaining} from './actions';
+import {mergeIntoAudioGraph} from './actions';
 
 const {Observable: interval, Subject} = Rx;
 
@@ -26,11 +26,22 @@ arpStop$.subscribe();
 
 const computeNextStartTime = currentTime => Math.ceil(currentTime / noteDuration()) * noteDuration();
 
-export const playNote = ({id, instrument = 'sine', pitch, modulation = 0.5}) => {
+export const playNote = ({id, instrument, pitch, modulation = 0.5}) => {
   const {arpeggiator, channels, rootNote, scale} = getState();
   const relevantChannels = filter(({sources}) => contains(instrument,
                                                           sources),
                                   channels);
+  if (!relevantChannels.length) {
+    dispatchMergeIntoAudioGraph(computeAudioGraph({arpeggiator,
+                                                   effects: ['none'],
+                                                   id,
+                                                   instrument,
+                                                   modulation,
+                                                   pitch,
+                                                   rootNote,
+                                                   sources: [instrument]}))
+    return;
+  }
   const sourcesAndEffects = map(({effects, sources}) => ({effects, sources}),
                                 relevantChannels);
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
@@ -60,12 +71,12 @@ export const playNote = ({id, instrument = 'sine', pitch, modulation = 0.5}) => 
           sourcesAndEffects);
 };
 
-export const stopNote = ({id, instrument = 'sine', pitch}) => {
+// this is being deprecated
+export const stopNote = () => {
   const {arpeggiator, scale} = getState();
   if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
     arpStop$.onNext();
     resetArpeggiator();
     lastStartTime = null;
   }
-  dispatch(removeKeysFromAudioGraphContaining(`${id}-${instrument}-${pitch}`));
 };
