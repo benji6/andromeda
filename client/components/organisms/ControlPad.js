@@ -1,8 +1,8 @@
-import {assoc, compose, isNil, map, reject, tap} from 'ramda';
+import {assoc, compose, contains, filter, forEach, isNil, map, reject, tap} from 'ramda';
+import {mergeIntoAudioGraph, removeKeysFromAudioGraphContaining} from '../../actions';
+import computeAudioGraph from '../../audioHelpers/computeAudioGraph';
 import React from 'react';
-import {playNote} from '../../noteController';
 import store, {dispatch} from '../../store';
-import {removeKeysFromAudioGraphContaining} from '../../actions';
 
 const {fromEvent, merge} = Rx.Observable;
 const {EPSILON} = Number;
@@ -92,6 +92,40 @@ const calculatePitch = xRatio => {
 
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
 const getNoteFromXYRatios = compose(assoc('id', controlPadId), calculatePitchAndMod);
+
+const computeDispatchMergeAudioGraph = compose(dispatch,
+                                               mergeIntoAudioGraph,
+                                               computeAudioGraph);
+
+const playNote = ({id, instrument, pitch, modulation = 0.5}) => {
+  const {arpeggiator, channels, rootNote} = store.getState();
+  const relevantChannels = filter(({sources}) => contains(instrument,
+                                                          sources),
+                                  channels);
+  if (!relevantChannels.length) {
+    computeDispatchMergeAudioGraph({arpeggiator,
+                                    effects: ['none'],
+                                    id,
+                                    instrument,
+                                    modulation,
+                                    pitch,
+                                    rootNote,
+                                    sources: [instrument]})
+    return;
+  }
+  const sourcesAndEffects = map(({effects, sources}) => ({effects, sources}),
+                                relevantChannels);
+
+  forEach(({sources, effects}) => computeDispatchMergeAudioGraph({arpeggiator,
+                                                                  effects,
+                                                                  id,
+                                                                  instrument,
+                                                                  modulation,
+                                                                  pitch,
+                                                                  rootNote,
+                                                                  sources}),
+          sourcesAndEffects);
+}
 
 export default class extends React.Component {
   componentDidMount () {

@@ -2,7 +2,6 @@ import {compose, curry, identity, filter, map,
   range, repeat, transduce} from 'ramda';
 import React from 'react';
 import {connect} from 'react-redux';
-import {playNote} from '../../noteController';
 import store from '../../store';
 import {activePatternCellClick,
         updateActivePatternActivePosition} from '../../actions';
@@ -39,8 +38,8 @@ const onPlay = dispatch =>
                         map(({x, y}) => ({id: `pattern-editor-${x}-${y}`,
                                           instrument: store.getState().patterns[store.getState().activePatternIndex].instrument,
                                           pitch: pitchFromScaleIndex(scale.scales[scale.scaleName],
-                                                                     yLength - 1 - x) + 12 * octave})),
-                        map(playNote)),
+                                                                     yLength - 1 - x) + 12 * octave}))),
+                        // map(playNote)),
                 () => {},
                 null,
                 notes));

@@ -1,4 +1,3 @@
-import {playNote} from './noteController';
 import {compose, flip, isNil, map, prop, reject, tap} from 'ramda';
 const {fromEvent} = Rx.Observable;
 const keyCodesToPitches = {
@@ -58,8 +57,8 @@ fromEvent(document.body, 'keydown')
                      map(prop('keyCode')),
                      reject(::pressedKeys.has),
                      map(tap(::pressedKeys.add)),
-                     computeNoteParamsFromKeyCode,
-                     map(playNote))).subscribe();
+                     computeNoteParamsFromKeyCode))
+                    //  map(playNote))).subscribe();
 
 fromEvent(document.body, 'keyup')
   .transduce(compose(map(prop('keyCode')),
