@@ -116,7 +116,7 @@ export default class extends React.Component {
                          map(tap(({id, pitch}) => (currentlyPlayingPitch !== pitch &&
                                                    currentlyPlayingPitch !== null &&
                                                    stopLastNoteOnNoteChange) &&
-                                                     dispatch(removeKeysFromAudioGraphContaining(id)))),
+                                                     dispatch(removeKeysFromAudioGraphContaining(`${id}-source`)))),
                          map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
                          map(({id, pitch, modulation = 0.5}) => {
                            const {arpeggiator, channels, rootNote} = store.getState()
@@ -140,7 +140,7 @@ export default class extends React.Component {
       .transduce(compose(map(tap(() => mouseInputEnabled = false)),
                          map(tap(() => currentlyPlayingPitch = null)),
                          map(e => currentXYRatios = calculateXAndYRatio(e)),
-                         map(_ => dispatch(removeKeysFromAudioGraphContaining(controlPadId)))))
+                         map(_ => dispatch(removeKeysFromAudioGraphContaining(`${controlPadId}-source`)))))
       .subscribe();
 
     renderLoopActive = true;

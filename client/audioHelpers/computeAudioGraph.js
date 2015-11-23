@@ -28,8 +28,11 @@ export default ({arpeggiator,
   // assign ids based on index in this array
   const customNodeParams = [...effectCustomNodeParams,
                             ...sourceCustomNodeParams];
-  const newKeys = mapIndexed((_, i) => `${id}-${instrument}-${pitch}-${i}`,
-                             customNodeParams);
+  const newKeys = mapIndexed((x, i) => `${x}-${i}`,
+                             [...map(_ => `${id}-effect-${instrument}-${pitch}`,
+                                     effectCustomNodeParams),
+                              ...map(_ => `${id}-source-${instrument}-${pitch}`,
+                                     sourceCustomNodeParams)]);
 
   // ids of newAudioGraphChunk should also contain controller
   // (ie control pad / pattern-editor etc)
