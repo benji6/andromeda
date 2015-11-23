@@ -1,8 +1,8 @@
-import {compose, curry, identity, filter, forEach, map,
+import {compose, curry, identity, filter, map,
   range, repeat, transduce} from 'ramda';
 import React from 'react';
 import {connect} from 'react-redux';
-import {playNote, stopNote} from '../../noteController';
+import {playNote} from '../../noteController';
 import store from '../../store';
 import {activePatternCellClick,
         updateActivePatternActivePosition} from '../../actions';
@@ -17,7 +17,7 @@ import {noteExists} from '../../reducers/patterns';
 
 const playStopSubject = new Rx.Subject;
 
-const stopAllNotes = forEach(({x, y}) => stopNote({id: `pattern-editor-${x}-${y}`}));
+// const stopAllNotes = forEach(({x, y}) => stopNote({id: `pattern-editor-${x}-${y}`}));
 
 const onPlay = dispatch =>
   Rx.Observable
@@ -33,7 +33,7 @@ const onPlay = dispatch =>
       return {notes, octave, yLength, position: count % xLength, scale};
     })
     .do(({position}) => dispatch(updateActivePatternActivePosition(position)))
-    .do(compose(stopAllNotes, ({notes}) => notes))
+    // .do(compose(stopAllNotes, ({notes}) => notes))
     .subscribe(({notes, octave, yLength, position, scale}) =>
       transduce(compose(filter(({y}) => y === position),
                         map(({x, y}) => ({id: `pattern-editor-${x}-${y}`,
@@ -46,9 +46,9 @@ const onPlay = dispatch =>
                 notes));
 
 const onStop = dispatch => {
-  const {activePatternIndex, patterns} = store.getState();
-  const {notes} = patterns[activePatternIndex];
-  stopAllNotes(notes);
+  // const {activePatternIndex, patterns} = store.getState();
+  // const {notes} = patterns[activePatternIndex];
+  // stopAllNotes(notes);
   playStopSubject.onNext();
   dispatch(updateActivePatternActivePosition(null));
 };
@@ -66,7 +66,7 @@ export default connect(identity)(({activePatternIndex, dispatch, instrument, pat
                                                x),
                                  emptyPatternData);
   const onClick = x => y => () => {
-    stopNote({id: `pattern-editor-${x}-${y}`});
+    // stopNote({id: `pattern-editor-${x}-${y}`});
     dispatch(activePatternCellClick({x, y}));
   };
   return <div>

@@ -1,6 +1,6 @@
 import {assoc, compose, isNil, map, reject, tap} from 'ramda';
 import React from 'react';
-import {playNote, stopNote} from '../../noteController';
+import {playNote} from '../../noteController';
 import store, {dispatch} from '../../store';
 import {removeKeysFromAudioGraphContaining} from '../../actions';
 
@@ -125,7 +125,6 @@ export default class extends React.Component {
       .transduce(compose(map(tap(() => mouseInputEnabled = false)),
                          map(tap(() => currentlyPlayingPitch = null)),
                          map(e => currentXYRatios = calculateXAndYRatio(e)),
-                         map(compose(stopNote, getNoteFromXYRatios)),
                          map(_ => dispatch(removeKeysFromAudioGraphContaining(controlPadId)))))
       .subscribe();
 

@@ -1,7 +1,7 @@
 import {compose, contains, filter, forEach, map, reject, tap} from 'ramda';
 import store, {dispatch} from './store';
 import audioContext from './audioContext';
-import createInstrumentCustomNodeParams, {resetArpeggiator} from './audioHelpers/createInstrumentCustomNodeParams';
+import createInstrumentCustomNodeParams from './audioHelpers/createInstrumentCustomNodeParams';
 import computeAudioGraph from './audioHelpers/computeAudioGraph';
 import {mergeIntoAudioGraph} from './actions';
 
@@ -69,14 +69,4 @@ export const playNote = ({id, instrument, pitch, modulation = 0.5}) => {
                                                                                  rootNote,
                                                                                  sources})),
           sourcesAndEffects);
-};
-
-// this is being deprecated
-export const stopNote = () => {
-  const {arpeggiator, scale} = getState();
-  if (arpeggiator.arpeggiatorIsOn && scale.scaleName !== 'none') {
-    arpStop$.onNext();
-    resetArpeggiator();
-    lastStartTime = null;
-  }
 };
