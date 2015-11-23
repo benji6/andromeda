@@ -24,5 +24,12 @@ test('createEffectCustomNodeParams', t => {
                                                  arpeggiator})('testInstrument', 0),
                ['testInstrument', 3, {frequency: 739.9888454232688,
                                       gain: 0.125}]);
+  t.deepEquals(createInstrumentCustomNodeParams({effectsLength: 0,
+                                                 modulation: 0.5,
+                                                 pitch: 9,
+                                                 scale: majorScale,
+                                                 arpeggiator})('testInstrument', 0),
+               ['testInstrument', 'output', {frequency: 739.9888454232688,
+                                             gain: 0.125}]);
   t.end();
 });

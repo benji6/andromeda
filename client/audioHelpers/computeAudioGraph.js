@@ -13,9 +13,9 @@ export default ({arpeggiator,
                  sources,
                  startTime,
                  stopTime}) => {
-  const effectsLength = effects.length;
-  const effectCustomNodeParams = mapIndexed(createEffectCustomNodeParams,
-                                            effects);
+  const effectsLength = effects ? effects.length : 0;
+  const effectCustomNodeParams = effects ? mapIndexed(createEffectCustomNodeParams,
+                                                      effects) : {}
   const sourceCustomNodeParams = map(createInstrumentCustomNodeParams({arpeggiator,
                                                                        effectsLength,
                                                                        modulation,
@@ -23,7 +23,7 @@ export default ({arpeggiator,
                                                                        rootNote,
                                                                        startTime,
                                                                        stopTime}),
-                                     sources);
+                                     sources)
 
   // assign ids based on index in this array
   const customNodeParams = [...effectCustomNodeParams,

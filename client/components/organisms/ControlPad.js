@@ -120,17 +120,18 @@ export default class extends React.Component {
                          map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
                          map(({id, pitch, modulation = 0.5}) => {
                            const {arpeggiator, channels, rootNote} = store.getState()
-                           const relevantChannels = filter(({sources}) => contains(instrument,
+                           let relevantChannels = filter(({sources}) => contains(instrument,
                                                                                    sources),
                                                            channels)
+                           if (!relevantChannels.length) relevantChannels = [{sources: [instrument]}]
                            const staticParams = {arpeggiator,
                                                  id,
                                                  instrument,
                                                  modulation,
                                                  pitch,
                                                  rootNote}
-                           return map(({effects, sources}) => ({...staticParams, effects, sources}),
-                                                                relevantChannels)
+                           return map(({effects = [], sources}) => ({...staticParams, effects, sources}),
+                                                                     relevantChannels)
                          }),
                          map(forEach(computeDispatchMergeAudioGraph))))
       .subscribe();

@@ -33,5 +33,14 @@ test('computeAudioGraph', t => {
                 'test id-sine-4-1': ['none', 'test id-sine-4-0'],
                 'test id-sine-4-2': ['sine', 'test id-sine-4-1', {frequency: 587.3295358348151,
                                                                   gain: 0.125}]});
+  t.deepEquals(computeAudioGraph({arpeggiator,
+                                  id: 'test id',
+                                  instrument: 'sine',
+                                  modulation: 0.5,
+                                  pitch: 4,
+                                  rootNote: 1,
+                                  sources: defaultChannel.sources}),
+               {'test id-sine-4-0': ['sine', 'output', {frequency: 587.3295358348151,
+                                                                  gain: 0.125}]});
   t.end();
 });

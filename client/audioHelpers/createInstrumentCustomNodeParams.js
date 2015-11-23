@@ -58,7 +58,7 @@ export default ({arpeggiator,
     }
   }
   const params = [instrument,
-                  effectsLength - 1,
+                  effectsLength ? effectsLength - 1 : 'output',
                   {frequency: calculateFrequency(pitchToPlay),
                    gain: (1 - modulation) / 4}];
   if (startTime !== undefined) {
