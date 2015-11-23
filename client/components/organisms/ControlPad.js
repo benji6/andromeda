@@ -14,7 +14,7 @@ let stopLastNoteOnNoteChange = true;
 const cameraZ = 16;
 const minZ = -128;
 const sideLength = 1;
-const maxDepth = 3 * sideLength ** 2 ** 0.5;
+const maxDepth = 3 * sideLength;
 
 const validRatio = x => x < 0 ?
   0 :
@@ -24,13 +24,9 @@ const validRatio = x => x < 0 ?
 
 const calculateXAndYRatio = e => {
   const {top, right, bottom, left} = e.target.getBoundingClientRect();
-  const clientXAndClientYObj = e.changedTouches && e.changedTouches[0] || e;
-  const {clientX, clientY} = clientXAndClientYObj;
-  const x = clientX - left;
-  const y = clientY - top;
-  const width = right - left;
-  const height = bottom - top;
-
+  const [width, height] = [right - left, bottom - top];
+  const {clientX, clientY} = e.changedTouches && e.changedTouches[0] || e;
+  const [x, y] = [clientX - left, clientY - top];
   return {xRatio: validRatio(x / width),
           yRatio: validRatio(y / height)};
 };
