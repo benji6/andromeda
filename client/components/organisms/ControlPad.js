@@ -97,36 +97,6 @@ const computeDispatchMergeAudioGraph = compose(dispatch,
                                                mergeIntoAudioGraph,
                                                computeAudioGraph);
 
-const playNote = ({id, instrument, pitch, modulation = 0.5}) => {
-  const {arpeggiator, channels, rootNote} = store.getState();
-  const relevantChannels = filter(({sources}) => contains(instrument,
-                                                          sources),
-                                  channels);
-  if (!relevantChannels.length) {
-    computeDispatchMergeAudioGraph({arpeggiator,
-                                    effects: ['none'],
-                                    id,
-                                    instrument,
-                                    modulation,
-                                    pitch,
-                                    rootNote,
-                                    sources: [instrument]})
-    return;
-  }
-  const sourcesAndEffects = map(({effects, sources}) => ({effects, sources}),
-                                relevantChannels);
-
-  forEach(({sources, effects}) => computeDispatchMergeAudioGraph({arpeggiator,
-                                                                  effects,
-                                                                  id,
-                                                                  instrument,
-                                                                  modulation,
-                                                                  pitch,
-                                                                  rootNote,
-                                                                  sources}),
-          sourcesAndEffects);
-}
-
 export default class extends React.Component {
   componentDidMount () {
     const {instrument} = this.props;
@@ -142,13 +112,27 @@ export default class extends React.Component {
       .transduce(compose(map(tap(e => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
                          reject(e => e instanceof MouseEvent && !mouseInputEnabled),
                          map(e => currentXYRatios = calculateXAndYRatio(e)),
-                         map(xYRatios => ({...getNoteFromXYRatios(xYRatios), instrument})),
+                         map(xYRatios => ({...getNoteFromXYRatios(xYRatios)})),
                          map(tap(({id, pitch}) => (currentlyPlayingPitch !== pitch &&
                                                    currentlyPlayingPitch !== null &&
                                                    stopLastNoteOnNoteChange) &&
                                                      dispatch(removeKeysFromAudioGraphContaining(id)))),
                          map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
-                         map(playNote)))
+                         map(({id, pitch, modulation = 0.5}) => {
+                           const {arpeggiator, channels, rootNote} = store.getState()
+                           const relevantChannels = filter(({sources}) => contains(instrument,
+                                                                                   sources),
+                                                           channels)
+                           const staticParams = {arpeggiator,
+                                                 id,
+                                                 instrument,
+                                                 modulation,
+                                                 pitch,
+                                                 rootNote}
+                           return map(({effects, sources}) => ({...staticParams, effects, sources}),
+                                                                relevantChannels)
+                         }),
+                         map(forEach(computeDispatchMergeAudioGraph))))
       .subscribe();
 
     endInput$
