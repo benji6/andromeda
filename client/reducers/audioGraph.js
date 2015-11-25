@@ -11,8 +11,8 @@ import {initialState as channelsInitialState} from './channels'
 const computeChannelKey = (channelId, index) => `channel:${channelId}-index:${index}`
 
 export const computeInitialState = reduceIndexed((acc, {effects}, channelId) => ({...acc, ...reduceIndexed((acc1, effect, i) => ({...acc1, [computeChannelKey(channelId, i)]: [effect, i === 0 ? 'output' : computeChannelKey(channelId, i - 1)]}),
-                                                                                              {},
-                                                                                              effects)}),
+                                                                                                           {},
+                                                                                                           effects)}),
        {})
 
 export const initialState = computeInitialState(channelsInitialState);
