@@ -5,11 +5,16 @@ import {ADD_CHANNEL,
         MOVE_CHANNEL_EFFECT_UP,
         MOVE_CHANNEL_SOURCE_DOWN,
         MOVE_CHANNEL_SOURCE_UP,
-        REMOVE_CHANNEL,
-        REMOVE_CHANNEL_SOURCE,
         REMOVE_CHANNEL_EFFECT,
+        REMOVE_CHANNEL_SOURCE,
+        REMOVE_CHANNEL,
         UPDATE_SELECTED_ADD_EFFECT,
         UPDATE_SELECTED_ADD_SOURCE} from '../actions';
+
+export const emptyChannel = {effects: [],
+                             selectedAddEffect: 'pingPongDelay',
+                             selectedAddSource: 'detuned',
+                             sources: []};
 
 export const defaultChannel = {effects: ['pingPongDelay'],
                                selectedAddEffect: 'pingPongDelay',
@@ -23,7 +28,7 @@ export default (state = initialState, {type, value}) => {
   switch (type) {
     case ADD_CHANNEL:
       return [...state,
-              defaultChannel];
+              emptyChannel];
     case ADD_CHANNEL_SOURCE: {
       const {channelId, source} = value;
       const channel = state[channelId];

@@ -1,5 +1,5 @@
 import test from 'tape';
-import reducer, {defaultChannel, initialState} from './channels';
+import reducer, {emptyChannel, initialState} from './channels';
 import {addChannel,
         addChannelEffect,
         addChannelSource,
@@ -24,7 +24,7 @@ test(`${reducerName} reducer returns initial state`, t => {
 test(`${reducerName} reducer addChannel`, t => {
   t.deepEqual(reducer(undefined, addChannel()),
               [...initialState,
-               defaultChannel]);
+               emptyChannel]);
   t.end();
 });
 
