@@ -2,6 +2,7 @@ import test from 'tape';
 import reducer, {computeInitialState, initialState} from './audioGraph';
 import {addChannelEffect,
         mergeIntoAudioGraph,
+        moveChannelEffectDown,
         removeKeysFromAudioGraphContaining} from '../actions';
 
 const reducerName = 'audioGraph';
@@ -65,5 +66,23 @@ test(`${reducerName} reducer addChannelEffect`, t => {
                'channel:0-index:1': ['effect1', 'channel:0-index:0'],
                'channel:0-index:2': ['effect2', 'channel:0-index:1'],
                'source-index:2': ['source0', 'channel:0-index:2']});
+  t.end();
+});
+
+test(`${reducerName} reducer moveChannelEffectDown`, t => {
+  t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
+                       'channel:0-index:1': ['effect1', 'channel:0-index:0'],
+                       'channel:0-index:2': ['effect2', 'channel:0-index:1']},
+                        moveChannelEffectDown({channelId: 0, effectId: 2})),
+              {'channel:0-index:0': ['effect0', 'output'],
+               'channel:0-index:1': ['effect1', 'channel:0-index:2'],
+               'channel:0-index:2': ['effect2', 'channel:0-index:0']});
+  t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
+                       'channel:0-index:1': ['effect1', 'channel:0-index:2'],
+                       'channel:0-index:2': ['effect2', 'channel:0-index:0']},
+                        moveChannelEffectDown({channelId: 0, effectId: 2})),
+              {'channel:0-index:0': ['effect0', 'channel:0-index:2'],
+               'channel:0-index:1': ['effect1', 'channel:0-index:0'],
+               'channel:0-index:2': ['effect2', 'output']});
   t.end();
 });
