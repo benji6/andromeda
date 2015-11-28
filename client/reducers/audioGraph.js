@@ -1,4 +1,5 @@
 import {
+  dissoc,
   equals,
   filter,
   find,
@@ -17,6 +18,7 @@ import {
   MOVE_CHANNEL_EFFECT_DOWN,
   MOVE_CHANNEL_EFFECT_UP,
   REMOVE_CHANNEL,
+  REMOVE_CHANNEL_EFFECT,
   REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING,
 } from '../actions'
 import {reduceIndexed} from '../tools/indexedIterators'
@@ -42,8 +44,7 @@ export default (state = initialState, {type, value}) => {
       const childOutput = state[childKey][1]
       const parentPairs = find(([_, [__, output]]) => equals(targetKey, output), toPairs(state))
       if (parentPairs) {
-        const parentKey = parentPairs[0]
-        const parent = state[parentKey]
+        const [parentKey, parent] = parentPairs
         return {...state,
                 [targetKey]: update(1, childOutput, target),
                 [childKey]: update(1, targetKey, child),
@@ -62,8 +63,7 @@ export default (state = initialState, {type, value}) => {
       const childKey = state[targetKey][1]
       const grandParentPairs = find(([_, [__, output]]) => equals(parentKey, output), toPairs(state))
       if (grandParentPairs) {
-        const grandParentKey = grandParentPairs[0]
-        const grandParent = state[grandParentKey]
+        const [grandParentKey, grandParent] = grandParentPairs
         return {...state,
                 [targetKey]: update(1, parentKey, target),
                 [parentKey]: update(1, childKey, parent),
@@ -77,6 +77,15 @@ export default (state = initialState, {type, value}) => {
       return reduce((acc, val) => ({...acc, [val]: state[val]}),
                     {},
                     filter(x => x.indexOf(`channel:${value}`) === -1, keys(state)))
+    case REMOVE_CHANNEL_EFFECT: {
+      const {channelId, effectId} = value
+      const targetKey = computeKey(channelId, effectId)
+      const parentPairs = find(([_, [__, output]]) => equals(targetKey, output), toPairs(state))
+      if (!parentPairs) return dissoc(targetKey, state)
+      const [parentKey, parent] = parentPairs
+      const childKey = state[targetKey][1]
+      return {...dissoc(targetKey, state), [parentKey]: update(1, childKey, parent)}
+    }
     case REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING:
       const keysToKeep = filter(key => key.indexOf(value) === -1, keys(state))
       return zipObj(keysToKeep, map(key => state[key], keysToKeep))

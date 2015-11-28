@@ -1,11 +1,14 @@
 import test from 'tape';
 import reducer, {computeInitialState, initialState} from './audioGraph';
-import {addChannelEffect,
-        mergeIntoAudioGraph,
-        moveChannelEffectDown,
-        moveChannelEffectUp,
-        removeChannel,
-        removeKeysFromAudioGraphContaining} from '../actions';
+import {
+  addChannelEffect,
+  mergeIntoAudioGraph,
+  moveChannelEffectDown,
+  moveChannelEffectUp,
+  removeChannel,
+  removeChannelEffect,
+  removeKeysFromAudioGraphContaining,
+} from '../actions';
 
 const reducerName = 'audioGraph';
 
@@ -118,5 +121,27 @@ test(`${reducerName} reducer removeChannel`, t => {
               {'channel:0-index:0': ['effect0', 'output'],
                'channel:0-index:1': ['effect1', 'channel:0-index:0'],
                'channel:0-index:2': ['effect2', 'channel:0-index:1']});
+  t.end();
+});
+
+test(`${reducerName} reducer removeChannelEffect`, t => {
+  t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
+                       'channel:0-index:1': ['effect1', 'channel:0-index:0'],
+                       'channel:0-index:2': ['effect2', 'channel:0-index:1']},
+                        removeChannelEffect({channelId: 0, effectId: 0})),
+              {'channel:0-index:1': ['effect1', 'output'],
+               'channel:0-index:2': ['effect2', 'channel:0-index:1']});
+  t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
+                       'channel:0-index:1': ['effect1', 'channel:0-index:0'],
+                       'channel:0-index:2': ['effect2', 'channel:0-index:1']},
+                        removeChannelEffect({channelId: 0, effectId: 1})),
+              {'channel:0-index:0': ['effect0', 'output'],
+               'channel:0-index:2': ['effect2', 'channel:0-index:0']});
+  t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
+                       'channel:0-index:1': ['effect1', 'channel:0-index:0'],
+                       'channel:0-index:2': ['effect2', 'channel:0-index:1']},
+                        removeChannelEffect({channelId: 0, effectId: 2})),
+              {'channel:0-index:0': ['effect0', 'output'],
+               'channel:0-index:1': ['effect1', 'channel:0-index:0']});
   t.end();
 });
