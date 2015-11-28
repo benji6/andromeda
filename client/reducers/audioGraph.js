@@ -1,13 +1,25 @@
 import {
-  equals, filter, find, isEmpty, keys, length, map, reduce, toPairs, update, zipObj,
+  equals,
+  filter,
+  find,
+  isEmpty,
+  keys,
+  length,
+  map,
+  reduce,
+  toPairs,
+  update,
+  zipObj,
 } from 'ramda';
+import {
+  ADD_CHANNEL_EFFECT,
+  MERGE_INTO_AUDIO_GRAPH,
+  MOVE_CHANNEL_EFFECT_DOWN,
+  MOVE_CHANNEL_EFFECT_UP,
+  REMOVE_CHANNEL,
+  REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING,
+} from '../actions'
 import {reduceIndexed} from '../tools/indexedIterators'
-
-import {ADD_CHANNEL_EFFECT,
-        MERGE_INTO_AUDIO_GRAPH,
-        MOVE_CHANNEL_EFFECT_DOWN,
-        MOVE_CHANNEL_EFFECT_UP,
-        REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING} from '../actions'
 import {initialState as channelsInitialState} from './channels'
 
 const computeKey = (channelId, index) => `channel:${channelId}-index:${index}`
@@ -61,6 +73,10 @@ export default (state = initialState, {type, value}) => {
               [targetKey]: update(1, parentKey, target),
               [parentKey]: update(1, childKey, parent)}
     }
+    case REMOVE_CHANNEL:
+      return reduce((acc, val) => ({...acc, [val]: state[val]}),
+                    {},
+                    filter(x => x.indexOf(`channel:${value}`) === -1, keys(state)))
     case REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING:
       const keysToKeep = filter(key => key.indexOf(value) === -1, keys(state))
       return zipObj(keysToKeep, map(key => state[key], keysToKeep))
