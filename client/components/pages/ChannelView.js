@@ -8,8 +8,6 @@ import FullSelect from '../atoms/FullSelect';
 import {Cross, Down, Plus, Up} from '../atoms/IconButtons';
 import {addChannelEffect,
         addChannelSource,
-        moveChannelSourceDown,
-        moveChannelSourceUp,
         moveChannelEffectDown,
         moveChannelEffectUp,
         removeChannelSource,
@@ -43,12 +41,6 @@ export default connect(identity)(({channels,
               <td><Cross onClick={compose(dispatch,
                                           removeChannelSource,
                                           () => ({channelId, sourceId}))} /></td>
-              <td>{sourceId ? <Up onClick={compose(dispatch,
-                                           moveChannelSourceUp,
-                                           () => ({channelId, sourceId}))} /> : ''}</td>
-              <td>{sourceId === sources.length - 1 ? '' : <Down onClick={compose(dispatch,
-                                                                         moveChannelSourceDown,
-                                                                         () => ({channelId, sourceId}))} />}</td>
             </tr>, sources)}
             {availableSources.length ?
             <tr key={sources.length}>

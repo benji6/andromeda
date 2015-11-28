@@ -3,8 +3,6 @@ import {ADD_CHANNEL,
         ADD_CHANNEL_SOURCE,
         MOVE_CHANNEL_EFFECT_DOWN,
         MOVE_CHANNEL_EFFECT_UP,
-        MOVE_CHANNEL_SOURCE_DOWN,
-        MOVE_CHANNEL_SOURCE_UP,
         REMOVE_CHANNEL_EFFECT,
         REMOVE_CHANNEL_SOURCE,
         REMOVE_CHANNEL,
@@ -43,28 +41,6 @@ export default (state = initialState, {type, value}) => {
       const {effects} = channel;
       return [...state.slice(0, channelId),
               {...channel, effects: [...effects, effect]},
-              ...state.slice(channelId + 1)];
-    }
-    case MOVE_CHANNEL_SOURCE_DOWN: {
-      const {channelId, sourceId} = value;
-      const channel = state[channelId];
-      const {sources} = channel;
-      return [...state.slice(0, channelId),
-              {...channel, sources: [...sources.slice(0, sourceId),
-                                     sources[sourceId + 1],
-                                     sources[sourceId],
-                                     ...sources.slice(sourceId + 2)]},
-              ...state.slice(channelId + 1)];
-    }
-    case MOVE_CHANNEL_SOURCE_UP: {
-      const {channelId, sourceId} = value;
-      const channel = state[channelId];
-      const {sources} = channel;
-      return [...state.slice(0, channelId),
-              {...channel, sources: [...sources.slice(0, sourceId - 1),
-                                     sources[sourceId],
-                                     sources[sourceId - 1],
-                                     ...sources.slice(sourceId + 1)]},
               ...state.slice(channelId + 1)];
     }
     case MOVE_CHANNEL_EFFECT_DOWN: {
