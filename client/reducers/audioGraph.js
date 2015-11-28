@@ -6,6 +6,7 @@ import {reduceIndexed} from '../tools/indexedIterators'
 import {ADD_CHANNEL_EFFECT,
         MERGE_INTO_AUDIO_GRAPH,
         MOVE_CHANNEL_EFFECT_DOWN,
+        MOVE_CHANNEL_EFFECT_UP,
         REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING} from '../actions'
 import {initialState as channelsInitialState} from './channels'
 
@@ -22,23 +23,43 @@ export default (state = initialState, {type, value}) => {
       return {...state, ...value}
     case MOVE_CHANNEL_EFFECT_DOWN: {
       const {channelId, effectId} = value
-      const connectorKey = computeKey(channelId, effectId);
-      const connector = state[connectorKey];
-      const connecteeKey = state[connectorKey][1]
-      const connectee = state[connecteeKey];
-      const connecteeOutput = state[connecteeKey][1]
-      const pairsConnectedToConnector = find(([_, [__, output]]) => equals(connectorKey, output), toPairs(state))
-      if (pairsConnectedToConnector) {
-        const keyConnectedToConnector = pairsConnectedToConnector[0]
-        const connectedToConnector = state[keyConnectedToConnector]
+      const targetKey = computeKey(channelId, effectId);
+      const target = state[targetKey];
+      const childKey = state[targetKey][1]
+      const child = state[childKey];
+      const childOutput = state[childKey][1]
+      const parentPairs = find(([_, [__, output]]) => equals(targetKey, output), toPairs(state))
+      if (parentPairs) {
+        const parentKey = parentPairs[0]
+        const parent = state[parentKey]
         return {...state,
-                [connectorKey]: update(1, connecteeOutput, connector),
-                [connecteeKey]: update(1, connectorKey, connectee),
-                [keyConnectedToConnector]: update(1, connecteeKey, connectedToConnector)}
+                [targetKey]: update(1, childOutput, target),
+                [childKey]: update(1, targetKey, child),
+                [parentKey]: update(1, childKey, parent)}
       }
       return {...state,
-              [connectorKey]: update(1, connecteeOutput, connector),
-              [connecteeKey]: update(1, connectorKey, connectee)}
+              [targetKey]: update(1, childOutput, target),
+              [childKey]: update(1, targetKey, child)}
+    }
+    case MOVE_CHANNEL_EFFECT_UP: {
+      const {channelId, effectId} = value
+      const targetKey = computeKey(channelId, effectId);
+      const target = state[targetKey];
+      const parentKey = find(([_, [__, output]]) => equals(targetKey, output), toPairs(state))[0]
+      const parent = state[parentKey]
+      const childKey = state[targetKey][1]
+      const grandParentPairs = find(([_, [__, output]]) => equals(parentKey, output), toPairs(state))
+      if (grandParentPairs) {
+        const grandParentKey = grandParentPairs[0]
+        const grandParent = state[grandParentKey]
+        return {...state,
+                [targetKey]: update(1, parentKey, target),
+                [parentKey]: update(1, childKey, parent),
+                [grandParentKey]: update(1, targetKey, grandParent)}
+      }
+      return {...state,
+              [targetKey]: update(1, parentKey, target),
+              [parentKey]: update(1, childKey, parent)}
     }
     case REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING:
       const keysToKeep = filter(key => key.indexOf(value) === -1, keys(state))
