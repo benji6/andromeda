@@ -1,13 +1,15 @@
-import {ADD_CHANNEL,
-        ADD_CHANNEL_EFFECT,
-        ADD_CHANNEL_SOURCE,
-        MOVE_CHANNEL_EFFECT_DOWN,
-        MOVE_CHANNEL_EFFECT_UP,
-        REMOVE_CHANNEL_EFFECT,
-        REMOVE_CHANNEL_SOURCE,
-        REMOVE_CHANNEL,
-        UPDATE_SELECTED_ADD_EFFECT,
-        UPDATE_SELECTED_ADD_SOURCE} from '../actions';
+import {
+  ADD_CHANNEL,
+  ADD_CHANNEL_EFFECT,
+  ADD_CHANNEL_SOURCE,
+  MOVE_CHANNEL_EFFECT_DOWN,
+  MOVE_CHANNEL_EFFECT_UP,
+  REMOVE_CHANNEL_EFFECT,
+  REMOVE_CHANNEL_SOURCE,
+  REMOVE_CHANNEL,
+  UPDATE_SELECTED_ADD_EFFECT,
+  UPDATE_SELECTED_ADD_SOURCE,
+} from '../actions';
 
 export const emptyChannel = {effects: [],
                              selectedAddEffect: 'pingPongDelay',
@@ -16,7 +18,7 @@ export const emptyChannel = {effects: [],
 
 export const defaultChannel = {effects: ['pingPongDelay'],
                                selectedAddEffect: 'pingPongDelay',
-                               selectedAddSource: 'detuned',
+                               selectedAddSource: 'fm',
                                sources: ['sine']};
 
 export const initialState = [{...defaultChannel, sources: ['detuned']},
