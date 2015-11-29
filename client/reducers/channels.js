@@ -1,3 +1,4 @@
+import {remove, update} from 'ramda'
 import {
   ADD_CHANNEL,
   ADD_CHANNEL_EFFECT,
@@ -9,103 +10,93 @@ import {
   REMOVE_CHANNEL,
   UPDATE_SELECTED_ADD_EFFECT,
   UPDATE_SELECTED_ADD_SOURCE,
-} from '../actions';
-
+} from '../actions'
 export const emptyChannel = {effects: [],
                              selectedAddEffect: 'pingPongDelay',
                              selectedAddSource: 'detuned',
-                             sources: []};
+                             sources: []}
 
 export const defaultChannel = {effects: ['pingPongDelay'],
                                selectedAddEffect: 'pingPongDelay',
                                selectedAddSource: 'fm',
-                               sources: ['sine']};
+                               sources: ['sine']}
 
 export const initialState = [{...defaultChannel, sources: ['detuned']},
-                             defaultChannel];
+                             defaultChannel]
 
 export default (state = initialState, {type, value}) => {
   switch (type) {
     case ADD_CHANNEL:
-      return [...state,
-              emptyChannel];
+      return [...state, emptyChannel]
     case ADD_CHANNEL_SOURCE: {
-      const {channelId, source} = value;
-      const channel = state[channelId];
-      const {sources} = channel;
+      const {channelId, source} = value
+      const channel = state[channelId]
+      const {sources} = channel
       return [...state.slice(0, channelId),
               {...channel, sources: [...sources, source]},
-              ...state.slice(channelId + 1)];
+              ...state.slice(channelId + 1)]
     }
     case ADD_CHANNEL_EFFECT: {
-      const {channelId, effect} = value;
-      const channel = state[channelId];
-      const {effects} = channel;
-      return [...state.slice(0, channelId),
-              {...channel, effects: [...effects, effect]},
-              ...state.slice(channelId + 1)];
+      const {channelId, effect} = value
+      const channel = state[channelId]
+      const {effects} = channel
+      return update(channelId,
+                    {...channel, effects: [...effects, effect]},
+                    state)
     }
     case MOVE_CHANNEL_EFFECT_DOWN: {
-      const {channelId, effectId} = value;
-      const channel = state[channelId];
-      const {effects} = channel;
-      return [...state.slice(0, channelId),
-              {...channel, effects: [...effects.slice(0, effectId),
-                                     effects[effectId + 1],
-                                     effects[effectId],
-                                     ...effects.slice(effectId + 2)]},
-              ...state.slice(channelId + 1)];
+      const {channelId, effectId} = value
+      const channel = state[channelId]
+      const {effects} = channel
+      return update(channelId,
+                    {...channel,
+                     effects: [...effects.slice(0, effectId),
+                               effects[effectId + 1],
+                               effects[effectId],
+                               ...effects.slice(effectId + 2)]},
+                    state)
     }
     case MOVE_CHANNEL_EFFECT_UP: {
-      const {channelId, effectId} = value;
-      const channel = state[channelId];
-      const {effects} = channel;
-      return [...state.slice(0, channelId),
-              {...channel, effects: [...effects.slice(0, effectId - 1),
-                                     effects[effectId],
-                                     effects[effectId - 1],
-                                     ...effects.slice(effectId + 1)]},
-              ...state.slice(channelId + 1)];
+      const {channelId, effectId} = value
+      const channel = state[channelId]
+      const {effects} = channel
+      return update(channelId,
+                    {...channel,
+                     effects: [...effects.slice(0, effectId - 1),
+                               effects[effectId],
+                               effects[effectId - 1],
+                               ...effects.slice(effectId + 1)]},
+                    state)
     }
     case REMOVE_CHANNEL_SOURCE: {
-      const {channelId, sourceId} = value;
-      const channel = state[channelId];
-      const {selectedAddSource, sources} = channel;
-      const source = sources[sourceId];
-      return [...state.slice(0, channelId),
-              {...channel,
-               sources: [...sources.slice(0, sourceId),
-                         ...sources.slice(sourceId + 1)],
-               selectedAddSource: selectedAddSource || source},
-              ...state.slice(channelId + 1)];
+      const {channelId, sourceId} = value
+      const channel = state[channelId]
+      const {selectedAddSource, sources} = channel
+      return update(channelId,
+                    {...channel,
+                     sources: remove(sourceId, 1, sources),
+                     selectedAddSource: selectedAddSource || sources[sourceId]},
+                    state)
     }
     case REMOVE_CHANNEL:
-      return [...state.slice(0, value),
-              ...state.slice(value + 1)];
+      return remove(value, 1, state)
     case REMOVE_CHANNEL_EFFECT: {
-      const {channelId, effectId} = value;
-      const channel = state[channelId];
-      const {effects} = channel;
-      return [...state.slice(0, channelId),
-              {...channel, effects: [...effects.slice(0, effectId),
-                                     ...effects.slice(effectId + 1)]},
-              ...state.slice(channelId + 1)];
+      const {channelId, effectId} = value
+      const channel = state[channelId]
+      const {effects} = channel
+      return update(channelId,
+                    {...channel, effects: remove(effectId, 1, effects)},
+                    state)
     }
     case UPDATE_SELECTED_ADD_SOURCE: {
-      const {channelId, selectedAddSource} = value;
-      const channel = state[channelId];
-      return [...state.slice(0, channelId),
-              {...channel, selectedAddSource},
-              ...state.slice(channelId + 1)];
+      const {channelId, selectedAddSource} = value
+      return update(channelId, {...state[channelId], selectedAddSource}, state)
     }
     case UPDATE_SELECTED_ADD_EFFECT: {
-      const {channelId, selectedAddEffect} = value;
-      const channel = state[channelId];
-      return [...state.slice(0, channelId),
-              {...channel, selectedAddEffect},
-              ...state.slice(channelId + 1)];
+      const {channelId, selectedAddEffect} = value
+      return update(channelId, {...state[channelId], selectedAddEffect}, state)
     }
     default:
-      return state;
+      return state
   }
-};
+}
