@@ -1,4 +1,10 @@
-import {remove, update} from 'ramda'
+import {
+  append,
+  findIndex,
+  reject,
+  remove,
+  update,
+} from 'ramda'
 import {
   ADD_CHANNEL,
   ADD_CHANNEL_EFFECT,
@@ -11,12 +17,14 @@ import {
   UPDATE_SELECTED_ADD_EFFECT,
   UPDATE_SELECTED_ADD_SOURCE,
 } from '../actions'
+import {computeId} from './_tools'
+
 export const emptyChannel = {effects: [],
                              selectedAddEffect: 'pingPongDelay',
                              selectedAddSource: 'detuned',
                              sources: []}
 
-export const defaultChannel = {effects: ['pingPongDelay'],
+export const defaultChannel = {effects: [{id: computeId([]), name: 'pingPongDelay'}],
                                selectedAddEffect: 'pingPongDelay',
                                selectedAddSource: 'fm',
                                sources: ['sine']}
@@ -26,8 +34,7 @@ export const initialState = [{...defaultChannel, sources: ['detuned']},
 
 export default (state = initialState, {type, value}) => {
   switch (type) {
-    case ADD_CHANNEL:
-      return [...state, emptyChannel]
+    case ADD_CHANNEL: return append(emptyChannel, state)
     case ADD_CHANNEL_SOURCE: {
       const {channelId, source} = value
       const channel = state[channelId]
@@ -41,31 +48,36 @@ export default (state = initialState, {type, value}) => {
       const channel = state[channelId]
       const {effects} = channel
       return update(channelId,
-                    {...channel, effects: [...effects, effect]},
+                    {...channel,
+                     effects: append({id: computeId(effects), name: effect},
+                                     effects)},
                     state)
     }
     case MOVE_CHANNEL_EFFECT_DOWN: {
       const {channelId, effectId} = value
       const channel = state[channelId]
       const {effects} = channel
+      const effectsIndex = findIndex(({id}) => id === effectId, effects)
       return update(channelId,
                     {...channel,
-                     effects: [...effects.slice(0, effectId),
-                               effects[effectId + 1],
-                               effects[effectId],
-                               ...effects.slice(effectId + 2)]},
+                     effects: [...effects.slice(0, effectsIndex),
+                               effects[effectsIndex + 1],
+                               effects[effectsIndex],
+                               ...effects.slice(effectsIndex + 2)]},
                     state)
     }
     case MOVE_CHANNEL_EFFECT_UP: {
       const {channelId, effectId} = value
       const channel = state[channelId]
       const {effects} = channel
+      const effectsIndex = findIndex(({id}) => id === effectId, effects)
+
       return update(channelId,
                     {...channel,
-                     effects: [...effects.slice(0, effectId - 1),
-                               effects[effectId],
-                               effects[effectId - 1],
-                               ...effects.slice(effectId + 1)]},
+                     effects: [...effects.slice(0, effectsIndex - 1),
+                               effects[effectsIndex],
+                               effects[effectsIndex - 1],
+                               ...effects.slice(effectsIndex + 1)]},
                     state)
     }
     case REMOVE_CHANNEL_SOURCE: {
@@ -78,14 +90,14 @@ export default (state = initialState, {type, value}) => {
                      selectedAddSource: selectedAddSource || sources[sourceId]},
                     state)
     }
-    case REMOVE_CHANNEL:
-      return remove(value, 1, state)
+    case REMOVE_CHANNEL: return remove(value, 1, state)
     case REMOVE_CHANNEL_EFFECT: {
       const {channelId, effectId} = value
       const channel = state[channelId]
       const {effects} = channel
       return update(channelId,
-                    {...channel, effects: remove(effectId, 1, effects)},
+                    {...channel,
+                     effects: reject(({id}) => id === effectId, effects)},
                     state)
     }
     case UPDATE_SELECTED_ADD_SOURCE: {
@@ -96,7 +108,6 @@ export default (state = initialState, {type, value}) => {
       const {channelId, selectedAddEffect} = value
       return update(channelId, {...state[channelId], selectedAddEffect}, state)
     }
-    default:
-      return state
+    default: return state
   }
 }

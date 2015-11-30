@@ -13,10 +13,10 @@ import {
 const reducerName = 'audioGraph';
 
 test(`${reducerName} computeInitialState`, t => {
-  const defaultChannel = {effects: ['none', 'pingPongDelay'],
-                                 selectedAddEffect: 'pingPongDelay',
-                                 selectedAddSource: 'detuned',
-                                 sources: ['sine']};
+  const defaultChannel = {effects: [{id: 0, name: 'none'}, {id: 1, name: 'pingPongDelay'}],
+                          selectedAddEffect: 'pingPongDelay',
+                          selectedAddSource: 'detuned',
+                          sources: ['sine']};
 
   const channelsState = [{...defaultChannel, sources: ['detuned']},
                          defaultChannel];
@@ -53,20 +53,26 @@ test(`${reducerName} reducer stopNotesWithId`, t => {
 test(`${reducerName} reducer addChannelEffect`, t => {
   t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
                        'channel:0-index:1': ['effect1', 'channel:0-index:0']},
-                      addChannelEffect({channelId: 1, effect: 'effect2'})),
+                      addChannelEffect({channelId: 1,
+                                        effect: 'effect2',
+                                        effects: []})),
               {'channel:0-index:0': ['effect0', 'output'],
                'channel:0-index:1': ['effect1', 'channel:0-index:0'],
                'channel:1-index:0': ['effect2', 'output']});
   t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
                        'channel:0-index:1': ['effect1', 'channel:0-index:0']},
-                      addChannelEffect({channelId: 0, effect: 'effect2'})),
+                      addChannelEffect({channelId: 0,
+                                        effect: 'effect2',
+                                        effects: [{id: 0}, {id: 1}]})),
               {'channel:0-index:0': ['effect0', 'output'],
                'channel:0-index:1': ['effect1', 'channel:0-index:0'],
                'channel:0-index:2': ['effect2', 'channel:0-index:1']});
   t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
                        'channel:0-index:1': ['effect1', 'channel:0-index:0'],
                        'source-index:2': ['source0', 'channel:0-index:1']},
-                      addChannelEffect({channelId: 0, effect: 'effect2'})),
+                      addChannelEffect({channelId: 0,
+                                        effect: 'effect2',
+                                        effects: [{id: 0}, {id: 1}]})),
               {'channel:0-index:0': ['effect0', 'output'],
                'channel:0-index:1': ['effect1', 'channel:0-index:0'],
                'channel:0-index:2': ['effect2', 'channel:0-index:1'],
@@ -78,17 +84,17 @@ test(`${reducerName} reducer moveChannelEffectDown`, t => {
   t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
                        'channel:0-index:1': ['effect1', 'channel:0-index:0'],
                        'channel:0-index:2': ['effect2', 'channel:0-index:1']},
-                        moveChannelEffectDown({channelId: 0, effectId: 2})),
-              {'channel:0-index:0': ['effect0', 'output'],
-               'channel:0-index:1': ['effect1', 'channel:0-index:2'],
+                        moveChannelEffectDown({channelId: 0, effectId: 0})),
+              {'channel:0-index:0': ['effect0', 'channel:0-index:1'],
+               'channel:0-index:1': ['effect1', 'output'],
                'channel:0-index:2': ['effect2', 'channel:0-index:0']});
-  t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
-                       'channel:0-index:1': ['effect1', 'channel:0-index:2'],
+  t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'channel:0-index:1'],
+                       'channel:0-index:1': ['effect1', 'output'],
                        'channel:0-index:2': ['effect2', 'channel:0-index:0']},
-                        moveChannelEffectDown({channelId: 0, effectId: 2})),
+                        moveChannelEffectDown({channelId: 0, effectId: 0})),
               {'channel:0-index:0': ['effect0', 'channel:0-index:2'],
-               'channel:0-index:1': ['effect1', 'channel:0-index:0'],
-               'channel:0-index:2': ['effect2', 'output']});
+               'channel:0-index:1': ['effect1', 'output'],
+               'channel:0-index:2': ['effect2', 'channel:0-index:1']});
   t.end();
 });
 
@@ -96,17 +102,17 @@ test(`${reducerName} reducer moveChannelEffectUp`, t => {
   t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
                        'channel:0-index:1': ['effect1', 'channel:0-index:0'],
                        'channel:0-index:2': ['effect2', 'channel:0-index:1']},
-                        moveChannelEffectUp({channelId: 0, effectId: 0})),
-              {'channel:0-index:0': ['effect0', 'channel:0-index:1'],
-               'channel:0-index:1': ['effect1', 'output'],
+                        moveChannelEffectUp({channelId: 0, effectId: 2})),
+              {'channel:0-index:0': ['effect0', 'output'],
+               'channel:0-index:1': ['effect1', 'channel:0-index:2'],
                'channel:0-index:2': ['effect2', 'channel:0-index:0']});
-  t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'channel:0-index:1'],
-                       'channel:0-index:1': ['effect1', 'output'],
+  t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
+                       'channel:0-index:1': ['effect1', 'channel:0-index:2'],
                        'channel:0-index:2': ['effect2', 'channel:0-index:0']},
-                        moveChannelEffectUp({channelId: 0, effectId: 0})),
+                        moveChannelEffectUp({channelId: 0, effectId: 2})),
               {'channel:0-index:0': ['effect0', 'channel:0-index:2'],
-               'channel:0-index:1': ['effect1', 'output'],
-               'channel:0-index:2': ['effect2', 'channel:0-index:1']});
+               'channel:0-index:1': ['effect1', 'channel:0-index:0'],
+               'channel:0-index:2': ['effect2', 'output']});
   t.end();
 });
 
