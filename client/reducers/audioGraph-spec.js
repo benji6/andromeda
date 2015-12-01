@@ -1,6 +1,7 @@
 import test from 'tape';
 import reducer, {computeInitialState, initialState} from './audioGraph';
 import {
+  addAudioGraphSource,
   addChannelEffect,
   mergeIntoAudioGraph,
   moveChannelEffectDown,
@@ -32,6 +33,29 @@ test(`${reducerName} computeInitialState`, t => {
 test(`${reducerName} reducer returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState);
   t.deepEqual(reducer(undefined, {}), initialState);
+  t.end();
+});
+
+test(`${reducerName} reducer addAudioGraphSource`, t => {
+  const instrument = 'some instrument'
+  const params = {someParams: true}
+  const value = {
+    instrument,
+    params,
+    channelIds: [0],
+  }
+  t.deepEqual(reducer({'channel:0-index:0': ['effect0', 'output'],
+                       'channel:0-index:1': ['effect1', 'channel:0-index:0'],
+                       'channel:0-index:2': ['effect2', 'channel:0-index:1'],
+                       'channel:1-index:10': ['effect0', 'output'],
+                       'source-id:0': ['source0', 'channel:0-index:2', {a: 5}]},
+                      addAudioGraphSource(value)),
+              {'channel:0-index:0': ['effect0', 'output'],
+               'channel:0-index:1': ['effect1', 'channel:0-index:0'],
+               'channel:0-index:2': ['effect2', 'channel:0-index:1'],
+               'channel:1-index:10': ['effect0', 'output'],
+               'source-id:0': ['source0', 'channel:0-index:2', {a: 5}],
+               'source-id:1': [instrument, 'channel:0-index:2', params]});
   t.end();
 });
 
