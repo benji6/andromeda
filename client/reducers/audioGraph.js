@@ -1,4 +1,5 @@
 import {
+  curry,
   dissoc,
   equals,
   filter,
@@ -24,8 +25,10 @@ import {reduceIndexed} from '../tools/indexedIterators'
 import {initialState as channelsInitialState} from './channels'
 import {computeId} from './_tools'
 
-const computeKey = (channelId, index) => `channel:${channelId}-index:${index}`
-export const computeInitialState = reduceIndexed((acc, {effects}, channelId) => ({...acc, ...reduceIndexed((acc1, effect, i) => ({...acc1, [computeKey(channelId, i)]: [effect.name, i === 0 ? 'output' : computeKey(channelId, i - 1)]}),
+const computeKey = curry((type, channelId, id) => `channel:${channelId}-type:${type}-id:${id}`)
+const computeEffectKey = computeKey('effect')
+const computeSourceKey = computeKey('source')
+export const computeInitialState = reduceIndexed((acc, {effects}, channelId) => ({...acc, ...reduceIndexed((acc1, effect, i) => ({...acc1, [computeEffectKey(channelId, i)]: [effect.name, i === 0 ? 'output' : computeEffectKey(channelId, i - 1)]}),
                                                                                                            {},
                                                                                                            effects)}),
        {})
@@ -37,7 +40,7 @@ export default (state = initialState, {type, value}) => {
       return {...state, ...value}
     case MOVE_CHANNEL_EFFECT_DOWN: {
       const {channelId, effectId} = value
-      const targetKey = computeKey(channelId, effectId);
+      const targetKey = computeEffectKey(channelId, effectId);
       const target = state[targetKey];
       const parentKey = find(([_, [__, output]]) => equals(targetKey, output), toPairs(state))[0]
       const parent = state[parentKey]
@@ -56,7 +59,7 @@ export default (state = initialState, {type, value}) => {
     }
     case MOVE_CHANNEL_EFFECT_UP: {
       const {channelId, effectId} = value
-      const targetKey = computeKey(channelId, effectId);
+      const targetKey = computeEffectKey(channelId, effectId);
       const target = state[targetKey];
       const childKey = state[targetKey][1]
       const child = state[childKey];
@@ -79,7 +82,7 @@ export default (state = initialState, {type, value}) => {
                     filter(x => x.indexOf(`channel:${value}`) === -1, keys(state)))
     case REMOVE_CHANNEL_EFFECT: {
       const {channelId, effectId} = value
-      const targetKey = computeKey(channelId, effectId)
+      const targetKey = computeEffectKey(channelId, effectId)
       const parentPairs = find(([_, [__, output]]) => equals(targetKey, output), toPairs(state))
       if (!parentPairs) return dissoc(targetKey, state)
       const [parentKey, parent] = parentPairs
@@ -92,11 +95,11 @@ export default (state = initialState, {type, value}) => {
     case ADD_CHANNEL_EFFECT: {
       const {channelId, effect, effects} = value
       const effectId = computeId(effects)
-      const channelKey = computeKey(channelId, effectId)
+      const channelKey = computeEffectKey(channelId, effectId)
       if (effectId === 0) {
         return {...state, [channelKey]: [effect, 'output']};
       }
-      const output = computeKey(channelId, effectId - 1)
+      const output = computeEffectKey(channelId, effectId - 1)
       const keyValuesConnectedToPreviousTail = filter(([_, [__, currentOutput]]) => currentOutput === output,
                                                       toPairs(state))
       if (isEmpty(keyValuesConnectedToPreviousTail)) {
