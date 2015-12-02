@@ -5,7 +5,7 @@
   "scripts": {
     "build": "gulp build",
     "dev": "gulp",
-    "test": "node_modules/.bin/babel-node --ignore node_modules/!circular-iterable/ node_modules/.bin/tape client/**/*-spec.js"
+    "test": "babel-node --ignore node_modules/!circular-iterable/ node_modules/.bin/tape client/**/*-spec.js | faucet"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
     "del": "^2.0.2",
     "eslint": "^1.7.3",
     "eslint-plugin-react": "^3.6.3",
+    "faucet": "0.0.1",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
     "gulp-cdnizer": "^1.1.6",
