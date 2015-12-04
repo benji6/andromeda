@@ -1,8 +1,18 @@
-import {assoc, compose, contains, filter, forEach, isNil, map, reject, tap} from 'ramda';
-import {mergeIntoAudioGraph, removeKeysFromAudioGraphContaining} from '../../actions';
-import computeAudioGraph from '../../audioHelpers/computeAudioGraph';
+import {
+  assoc,
+  compose,
+  isNil,
+  map,
+  reject,
+  tap,
+} from 'ramda';
+import {
+  addAudioGraphSource,
+  removeKeysFromAudioGraphContaining,
+} from '../../actions';
 import React from 'react';
 import store, {dispatch} from '../../store';
+import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 
 const {fromEvent, merge} = Rx.Observable;
 const {EPSILON} = Number;
@@ -93,10 +103,6 @@ const calculatePitch = xRatio => {
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio});
 const getNoteFromXYRatios = compose(assoc('id', controlPadId), calculatePitchAndMod);
 
-const computeDispatchMergeAudioGraph = compose(dispatch,
-                                               mergeIntoAudioGraph,
-                                               computeAudioGraph);
-
 export default class extends React.Component {
   componentDidMount () {
     const {instrument} = this.props;
@@ -118,22 +124,16 @@ export default class extends React.Component {
                                                    stopLastNoteOnNoteChange) &&
                                                      dispatch(removeKeysFromAudioGraphContaining(`${id}-source`)))),
                          map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
-                         map(({id, pitch, modulation = 0.5}) => {
-                           const {arpeggiator, channels, rootNote} = store.getState()
-                           let relevantChannels = filter(({sources}) => contains(instrument,
-                                                                                   sources),
-                                                           channels)
-                           if (!relevantChannels.length) relevantChannels = [{sources: [instrument]}]
-                           const staticParams = {arpeggiator,
-                                                 id,
-                                                 instrument,
-                                                 modulation,
-                                                 pitch,
-                                                 rootNote}
-                           return map(({effects = [], sources}) => ({...staticParams, effects, sources}),
-                                                                     relevantChannels)
-                         }),
-                         map(forEach(computeDispatchMergeAudioGraph))))
+                         map(({id, pitch, modulation}) => ({
+                           channelIds: [0],
+                           id,
+                           instrument,
+                           params: {
+                             frequency: pitchToFrequency(pitch),
+                             gain: 1 - modulation,
+                           },
+                         })),
+                         map(compose(dispatch, addAudioGraphSource))))
       .subscribe();
 
     endInput$
