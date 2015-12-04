@@ -1,18 +1,23 @@
 import {
+  compose,
   curry,
   dissoc,
   equals,
+  head,
   filter,
   find,
   isEmpty,
+  isNil,
   keys,
   map,
+  nth,
   reduce,
   toPairs,
   update,
   zipObj,
 } from 'ramda';
 import {
+  ADD_AUDIO_GRAPH_SOURCE,
   ADD_CHANNEL_EFFECT,
   MERGE_INTO_AUDIO_GRAPH,
   MOVE_CHANNEL_EFFECT_DOWN,
@@ -28,6 +33,9 @@ import {computeId} from './_tools'
 const computeKey = curry((type, channelId, id) => `channel:${channelId}-type:${type}-id:${id}`)
 const computeEffectKey = computeKey('effect')
 const computeSourceKey = computeKey('source')
+const second = nth(1)
+const findParentPairs = curry((targetKey, statePairs) => find(compose(equals(targetKey), second, second), statePairs))
+
 export const computeInitialState = reduceIndexed((acc, {effects}, channelId) => ({...acc, ...reduceIndexed((acc1, effect, i) => ({...acc1, [computeEffectKey(channelId, i)]: [effect.name, i === 0 ? 'output' : computeEffectKey(channelId, i - 1)]}),
                                                                                                            {},
                                                                                                            effects)}),
@@ -36,16 +44,39 @@ export const initialState = computeInitialState(channelsInitialState);
 
 export default (state = initialState, {type, value}) => {
   switch (type) {
+    case ADD_AUDIO_GRAPH_SOURCE: {
+      const {channelIds, id, instrument, params} = value
+      const statePairs = toPairs(state)
+      const computeChannelEffectPairs = channelId =>
+        filter(([x]) => x.indexOf(`channel:${channelId}-`) !== -1 &&
+                        x.indexOf('effect') !== -1,
+               statePairs)
+      const computeChannelEffectTails = channelEffectPairs =>
+        filter(([key]) => isNil(findParentPairs(key, channelEffectPairs)),
+               channelEffectPairs)
+      const channelEffectTails = map(
+        compose(head, head, computeChannelEffectTails, computeChannelEffectPairs),
+        channelIds
+      )
+      return {
+        ...state,
+        [computeSourceKey(`[${channelIds.sort().join(' ')}]`, id)]: [
+          instrument,
+          channelEffectTails,
+          params,
+        ],
+      }
+    }
     case MERGE_INTO_AUDIO_GRAPH:
       return {...state, ...value}
     case MOVE_CHANNEL_EFFECT_DOWN: {
       const {channelId, effectId} = value
       const targetKey = computeEffectKey(channelId, effectId);
       const target = state[targetKey];
-      const parentKey = find(([_, [__, output]]) => equals(targetKey, output), toPairs(state))[0]
+      const parentKey = findParentPairs(targetKey, toPairs(state))[0]
       const parent = state[parentKey]
       const childKey = state[targetKey][1]
-      const grandParentPairs = find(([_, [__, output]]) => equals(parentKey, output), toPairs(state))
+      const grandParentPairs = findParentPairs(parentKey, toPairs(state))
       if (grandParentPairs) {
         const [grandParentKey, grandParent] = grandParentPairs
         return {...state,
@@ -64,7 +95,7 @@ export default (state = initialState, {type, value}) => {
       const childKey = state[targetKey][1]
       const child = state[childKey];
       const childOutput = state[childKey][1]
-      const parentPairs = find(([_, [__, output]]) => equals(targetKey, output), toPairs(state))
+      const parentPairs = findParentPairs(targetKey, toPairs(state))
       if (parentPairs) {
         const [parentKey, parent] = parentPairs
         return {...state,
@@ -79,11 +110,11 @@ export default (state = initialState, {type, value}) => {
     case REMOVE_CHANNEL:
       return reduce((acc, val) => ({...acc, [val]: state[val]}),
                     {},
-                    filter(x => x.indexOf(`channel:${value}`) === -1, keys(state)))
+                    filter(x => x.indexOf(`channel:${value}-`) === -1, keys(state)))
     case REMOVE_CHANNEL_EFFECT: {
       const {channelId, effectId} = value
       const targetKey = computeEffectKey(channelId, effectId)
-      const parentPairs = find(([_, [__, output]]) => equals(targetKey, output), toPairs(state))
+      const parentPairs = findParentPairs(targetKey, toPairs(state))
       if (!parentPairs) return dissoc(targetKey, state)
       const [parentKey, parent] = parentPairs
       const childKey = state[targetKey][1]

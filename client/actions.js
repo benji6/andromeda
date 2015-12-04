@@ -1,6 +1,7 @@
 const createAction = type => value => ({type, value});
 
 export const ACTIVE_PATTERN_CELL_CLICK = 'PATTERN_CELL_CLICK';
+export const ADD_AUDIO_GRAPH_SOURCE = 'ADD_AUDIO_GRAPH_SOURCE';
 export const ADD_CHANNEL = 'ADD_CHANNEL';
 export const ADD_CHANNEL_EFFECT = 'ADD_CHANNEL_EFFECT';
 export const ADD_CHANNEL_SOURCE = 'ADD_CHANNEL_SOURCE';
@@ -31,6 +32,7 @@ export const UPDATE_SELECTED_SCALE = 'UPDATE_SELECTED_SCALE';
 export const UPDATE_SONG_NOTES = 'UPDATE_SONG_NOTES';
 
 export const activePatternCellClick = createAction(ACTIVE_PATTERN_CELL_CLICK);
+export const addAudioGraphSource = createAction(ADD_AUDIO_GRAPH_SOURCE);
 export const addChannel = createAction(ADD_CHANNEL);
 export const addChannelEffect = createAction(ADD_CHANNEL_EFFECT);
 export const addChannelSource = createAction(ADD_CHANNEL_SOURCE);
