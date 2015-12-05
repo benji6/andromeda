@@ -1,4 +1,4 @@
-import {compose, identity, path} from 'ramda';
+import {compose, identity} from 'ramda';
 import React from 'react';
 import {connect} from 'react-redux';
 import {mapIndexed} from '../../tools/indexedIterators';
@@ -8,8 +8,7 @@ import {updateActivePatternChannel,
 import Selector from '../molecules/Selector';
 import RangeSelector from '../molecules/RangeSelector';
 import FullButton from '../atoms/FullButton';
-
-const eventValuePath = path(['currentTarget', 'value']);
+import {eventValuePath} from '../../tools/paths'
 
 export default connect(identity)(({activePatternIndex,
                                    channels,

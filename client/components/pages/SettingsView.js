@@ -15,10 +15,12 @@ import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch';
 import Selector from '../molecules/Selector';
 import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector';
 import switchMicrophone from '../../switchMicrophone';
+import {
+  eventValuePath,
+  eventCheckedPath,
+} from '../../tools/paths'
 
 const minBpm = 32;
-const eventValuePath = path(['currentTarget', 'value']);
-const eventCheckedPath = path(['currentTarget', 'checked']);
 
 export default connect(identity)(({arpeggiator: {arpeggiatorIsOn, patterns, selectedPattern},
                                    bpm,

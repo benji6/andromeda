@@ -5,11 +5,11 @@ import ControlPad from '../organisms/ControlPad';
 import PerformanceMenu from '../organisms/PerformanceMenu';
 import Navigation from '../organisms/Navigation';
 
-export default connect(identity)(({controlPad: {instrument}}) =>
+export default connect(identity)(({controlPad}) =>
   <div>
     <Navigation />
     <div className="text-center">
-      <ControlPad instrument={instrument}/>
+      <ControlPad {...controlPad}/>
     </div>
     <PerformanceMenu />
   </div>);

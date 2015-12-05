@@ -105,43 +105,48 @@ const getNoteFromXYRatios = compose(assoc('id', controlPadId), calculatePitchAnd
 
 export default class extends React.Component {
   componentDidMount () {
-    const {instrument} = this.props;
+    const {instrument, portamento} = this.props;
     controlPadElement = document.querySelector('.control-pad');
+
     const input$ = merge(fromEvent(controlPadElement, 'touchstart'),
                          fromEvent(controlPadElement, 'touchmove'),
                          fromEvent(controlPadElement, 'mousedown'),
                          fromEvent(controlPadElement, 'mousemove'));
     const endInput$ = merge(fromEvent(controlPadElement, 'touchend'),
-                            fromEvent(controlPadElement, 'mouseup'));
+                            fromEvent(controlPadElement, 'mouseup'))
 
-    input$
-      .transduce(compose(map(tap(e => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
-                         reject(e => e instanceof MouseEvent && !mouseInputEnabled),
-                         map(e => currentXYRatios = calculateXAndYRatio(e)),
-                         map(xYRatios => ({...getNoteFromXYRatios(xYRatios)})),
-                         map(tap(({id, pitch}) => (currentlyPlayingPitch !== pitch &&
-                                                   currentlyPlayingPitch !== null &&
-                                                   stopLastNoteOnNoteChange) &&
-                                                     dispatch(removeKeysFromAudioGraphContaining(`${id}-source`)))),
-                         map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
-                         map(({id, pitch, modulation}) => ({
-                           channelIds: [0],
-                           id,
-                           instrument,
-                           params: {
-                             frequency: pitchToFrequency(pitch),
-                             gain: 1 - modulation,
-                           },
-                         })),
-                         map(compose(dispatch, addAudioGraphSource))))
-      .subscribe();
+    const inputTransducer = compose(
+      map(tap(e => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
+      reject(e => e instanceof MouseEvent && !mouseInputEnabled),
+      map(e => currentXYRatios = calculateXAndYRatio(e)),
+      map(xYRatios => ({...getNoteFromXYRatios(xYRatios)})),
+      map(tap(({pitch}) => !portamento && (
+        currentlyPlayingPitch !== pitch &&
+        currentlyPlayingPitch !== null &&
+        stopLastNoteOnNoteChange
+      ) && dispatch(removeKeysFromAudioGraphContaining(controlPadId)))),
+      map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
+      map(({id, pitch, modulation}) => ({
+        channelIds: [0],
+        id,
+        instrument,
+        params: {
+          frequency: pitchToFrequency(pitch),
+          gain: (1 - modulation) / 2,
+        },
+      })),
+      map(compose(dispatch, addAudioGraphSource))
+    )
 
-    endInput$
-      .transduce(compose(map(tap(() => mouseInputEnabled = false)),
-                         map(tap(() => currentlyPlayingPitch = null)),
-                         map(e => currentXYRatios = calculateXAndYRatio(e)),
-                         map(_ => dispatch(removeKeysFromAudioGraphContaining(`${controlPadId}`)))))
-      .subscribe();
+    const endInputTransducer = compose(
+      map(tap(() => mouseInputEnabled = false)),
+      map(tap(() => currentlyPlayingPitch = null)),
+      map(e => currentXYRatios = calculateXAndYRatio(e)),
+      map(_ => dispatch(removeKeysFromAudioGraphContaining(controlPadId)))
+    )
+
+    input$.transduce(inputTransducer).subscribe();
+    endInput$.transduce(endInputTransducer).subscribe();
 
     renderLoopActive = true;
     scene = new THREE.Scene();

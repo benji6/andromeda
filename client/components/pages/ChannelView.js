@@ -22,8 +22,7 @@ import {addChannelEffect,
         removeChannelEffect,
         updateSelectedAddEffect,
         updateSelectedAddSource} from '../../actions';
-
-const targetValue = e => e.target.value;
+import {eventValuePath} from '../../tools/paths'
 
 export default connect(identity)(({channels,
                                    dispatch,
@@ -58,7 +57,7 @@ export default connect(identity)(({channels,
                           onChange={compose(dispatch,
                                             updateSelectedAddSource,
                                             value => ({channelId, selectedAddSource: value}),
-                                            targetValue)}
+                                            eventValuePath)}
                           options={map(value => ({text: capitalize.words(value),
                                                   value}), availableSources)} />
               </td>
@@ -98,7 +97,7 @@ export default connect(identity)(({channels,
                             onChange={compose(dispatch,
                                               updateSelectedAddEffect,
                                               value => ({channelId, selectedAddEffect: value}),
-                                              targetValue)}
+                                              eventValuePath)}
                             options={map(value => ({text: capitalize.words(value),
                                                     value}), appEffects)} /></td>
             <td><Plus onClick={compose(dispatch,
