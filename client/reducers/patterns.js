@@ -9,6 +9,7 @@ import store from '../store';
 export const initialState = [{
   activePosition: null,
   channel: 2,
+  instrument: 'sine',
   notes: [],
   octave: 0,
   xLength: 8,
