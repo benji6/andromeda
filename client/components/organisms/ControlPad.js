@@ -140,7 +140,7 @@ export default class extends React.Component {
       .transduce(compose(map(tap(() => mouseInputEnabled = false)),
                          map(tap(() => currentlyPlayingPitch = null)),
                          map(e => currentXYRatios = calculateXAndYRatio(e)),
-                         map(_ => dispatch(removeKeysFromAudioGraphContaining(`${controlPadId}-source`)))))
+                         map(_ => dispatch(removeKeysFromAudioGraphContaining(`${controlPadId}`)))))
       .subscribe();
 
     renderLoopActive = true;

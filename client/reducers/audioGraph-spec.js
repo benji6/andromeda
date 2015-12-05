@@ -3,7 +3,6 @@ import reducer, {computeInitialState, initialState} from './audioGraph';
 import {
   addAudioGraphSource,
   addChannelEffect,
-  mergeIntoAudioGraph,
   moveChannelEffectDown,
   moveChannelEffectUp,
   removeChannel,
