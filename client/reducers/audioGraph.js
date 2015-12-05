@@ -19,7 +19,6 @@ import {
 import {
   ADD_AUDIO_GRAPH_SOURCE,
   ADD_CHANNEL_EFFECT,
-  MERGE_INTO_AUDIO_GRAPH,
   MOVE_CHANNEL_EFFECT_DOWN,
   MOVE_CHANNEL_EFFECT_UP,
   REMOVE_CHANNEL,
@@ -67,8 +66,6 @@ export default (state = initialState, {type, value}) => {
         ],
       }
     }
-    case MERGE_INTO_AUDIO_GRAPH:
-      return {...state, ...value}
     case MOVE_CHANNEL_EFFECT_DOWN: {
       const {channelId, effectId} = value
       const targetKey = computeEffectKey(channelId, effectId);

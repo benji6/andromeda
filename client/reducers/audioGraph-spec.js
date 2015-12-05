@@ -84,12 +84,6 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
   t.end();
 });
 
-test(`${reducerName} reducer mergeIntoAudioGraph`, t => {
-  t.deepEqual(reducer({a: 5}, mergeIntoAudioGraph({someKey: 'someNote'})),
-              {a: 5, someKey: 'someNote'});
-  t.end();
-});
-
 test(`${reducerName} reducer stopNotesWithId`, t => {
   t.deepEqual(reducer({aaa: 'someNote',
                        'someKey-sdfuisofhshfdushu': 'someNote',
