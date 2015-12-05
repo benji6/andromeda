@@ -58,7 +58,7 @@ const onPlay = dispatch =>
           id: `pattern-editor-${y}-${x}`,
           instrument: store.getState().patterns[store.getState().activePatternIndex].instrument,
           params: {
-            gain: 0.5,
+            gain: 1 / 3,
             frequency: scaleIndexToFrequency(
                 scale.scales[scale.scaleName],
                 yLength - 1 - x
