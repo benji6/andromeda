@@ -2,6 +2,7 @@ import test from 'tape'
 import reducer, {initialState} from './controlPad'
 import {
   updateControlPadInstrument,
+  updateControlPadNoScale,
   updateControlPadOctave,
   updateControlPadPortamento,
 } from '../actions'
@@ -34,5 +35,13 @@ test(`${reducerName} reducer updateControlPadOctave`, t => {
               {...initialState, octave: 3})
   t.deepEqual(reducer(undefined, updateControlPadOctave(-1)),
               {...initialState, octave: -1})
+  t.end()
+})
+
+test(`${reducerName} reducer updateControlNoScale`, t => {
+  t.deepEqual(reducer(undefined, updateControlPadNoScale(false)),
+              {...initialState, noScale: false})
+  t.deepEqual(reducer(undefined, updateControlPadNoScale(true)),
+              {...initialState, noScale: true})
   t.end()
 })

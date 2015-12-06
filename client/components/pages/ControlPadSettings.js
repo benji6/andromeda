@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import Selector from '../molecules/Selector'
 import {
   updateControlPadInstrument,
+  updateControlPadNoScale,
   updateControlPadOctave,
   updateControlPadPortamento,
 } from '../../actions'
@@ -41,6 +42,11 @@ export default connect(identity)(({controlPad,
       checked={controlPad.portamento}
       onChange={compose(dispatch, updateControlPadPortamento, eventCheckedPath)}
       text="Portamento"
+    />
+    <CheckboxSelector
+      checked={controlPad.noScale}
+      onChange={compose(dispatch, updateControlPadNoScale, eventCheckedPath)}
+      text="No Scale"
     />
     <div>
       <span className="inline-label-text"></span><FullButton text="OK" to="/control-pad" />

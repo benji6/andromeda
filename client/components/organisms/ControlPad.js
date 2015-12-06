@@ -1,6 +1,7 @@
 import {
   assoc,
   compose,
+  ifElse,
   isNil,
   map,
   reject,
@@ -102,11 +103,16 @@ const calculatePitch = xRatio => {
 
 const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio})
 const getNoteFromXYRatios = compose(assoc('id', controlPadId), calculatePitchAndMod)
-
+const xYRatiosToNoScaleNote = ({xRatio, yRatio}) => ({
+  id: controlPadId,
+  pitch: 12 * xRatio,
+  modulation: yRatio,
+})
 export default class extends React.Component {
   componentDidMount () {
     const {
       instrument,
+      noScale,
       octave,
       portamento,
     } = this.props
@@ -123,8 +129,8 @@ export default class extends React.Component {
       map(tap(e => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
       reject(e => e instanceof MouseEvent && !mouseInputEnabled),
       map(e => currentXYRatios = calculateXAndYRatio(e)),
-      map(xYRatios => ({...getNoteFromXYRatios(xYRatios)})),
-      map(tap(({pitch}) => !portamento && (
+      map(ifElse(_ => noScale, xYRatiosToNoScaleNote, getNoteFromXYRatios)),
+      map(tap(({pitch}) => !noScale && !portamento && (
         currentlyPlayingPitch !== pitch &&
         currentlyPlayingPitch !== null &&
         stopLastNoteOnNoteChange
