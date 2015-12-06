@@ -1,8 +1,8 @@
-import {compose, identity} from 'ramda';
+import capitalize from 'capitalize'
+import {compose, identity, map} from 'ramda';
 import React from 'react';
 import {connect} from 'react-redux';
-import {mapIndexed} from '../../tools/indexedIterators';
-import {updateActivePatternChannel,
+import {updateActivePatternInstrument,
         updateActivePatternOctave,
         updateActivePatternXLength} from '../../actions';
 import Selector from '../molecules/Selector';
@@ -11,21 +11,23 @@ import FullButton from '../atoms/FullButton';
 import {eventValuePath} from '../../tools/paths'
 
 export default connect(identity)(({activePatternIndex,
-                                   channels,
+                                   instruments,
                                    dispatch,
                                    patterns}) => {
   const activePattern = patterns[activePatternIndex];
-  const {channel, octave, xLength} = activePattern;
+  const {instrument, octave, xLength} = activePattern;
   return <div className="flex-column text-center">
     <h2 className="text-center">Pattern Editor Settings</h2>
-    <Selector defaultValue={channel}
+    <Selector defaultValue={instrument}
               handleChange={(compose(dispatch,
-                                     updateActivePatternChannel,
-                                     Number,
+                                     updateActivePatternInstrument,
                                      eventValuePath))}
-              label="Channel"
-              options={mapIndexed((_, i) => ({text: `Channel ${i}`,
-                                              value: i}), channels)} />
+              label="Instrument"
+              options={map(instr => ({
+                text: capitalize.words(instr),
+                value: instr,
+              }), instruments)}
+    />
     <RangeSelector key="2"
                    max="16"
                    min="1"

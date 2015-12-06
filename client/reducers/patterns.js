@@ -1,14 +1,13 @@
 import {both, equals, find, propEq, reject} from 'ramda';
 import {ACTIVE_PATTERN_CELL_CLICK,
         UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION,
-        UPDATE_ACTIVE_PATTERN_CHANNEL,
+        UPDATE_ACTIVE_PATTERN_INSTRUMENT,
         UPDATE_ACTIVE_PATTERN_OCTAVE,
         UPDATE_ACTIVE_PATTERN_X_LENGTH} from '../actions';
 import store from '../store';
 
 export const initialState = [{
   activePosition: null,
-  channel: 2,
   instrument: 'sine',
   notes: [],
   octave: 0,
@@ -40,11 +39,11 @@ export default (state = initialState, {type, value}) => {
               {...activePattern, activePosition: value},
               ...state.slice(activePatternIndex + 1)];
     }
-    case UPDATE_ACTIVE_PATTERN_CHANNEL: {
+    case UPDATE_ACTIVE_PATTERN_INSTRUMENT: {
       const {activePatternIndex} = store.getState();
       const activePattern = state[activePatternIndex];
       return [...state.slice(0, activePatternIndex),
-              {...activePattern, channel: value},
+              {...activePattern, instrument: value},
               ...state.slice(activePatternIndex + 1)];
     }
     case UPDATE_ACTIVE_PATTERN_OCTAVE: {
