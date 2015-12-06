@@ -5,7 +5,8 @@
   "scripts": {
     "build": "gulp build",
     "dev": "gulp",
-    "test": "babel-node node_modules/.bin/tape client/**/*-spec.js | faucet"
+    "test": "babel-node node_modules/.bin/tape client/**/*-spec.js | faucet",
+    "watch-test": "nodemon --exec npm test"
   },
   "repository": {
     "type": "git",
@@ -48,6 +49,7 @@
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.4.2",
     "gulp-util": "^3.0.7",
+    "nodemon": "^1.8.1",
     "run-sequence": "^1.1.4",
     "tape": "^4.2.2",
     "vinyl-buffer": "^1.0.0",
