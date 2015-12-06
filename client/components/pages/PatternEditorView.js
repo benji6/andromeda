@@ -61,8 +61,8 @@ const onPlay = dispatch =>
             gain: 1 / 3,
             frequency: scaleIndexToFrequency(
                 scale.scales[scale.scaleName],
-                yLength - 1 - x
-              ) + 12 * octave,
+                yLength - 1 - x + scale.scales[scale.scaleName].length * octave
+              ),
           },
         })),
         map(compose(dispatch, addAudioGraphSource))
