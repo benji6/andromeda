@@ -5,7 +5,7 @@
   "scripts": {
     "build": "gulp build",
     "dev": "gulp",
-    "test": "babel-node --ignore node_modules/!circular-iterable/ node_modules/.bin/tape client/**/*-spec.js | faucet"
+    "test": "babel-node node_modules/.bin/tape client/**/*-spec.js | faucet"
   },
   "repository": {
     "type": "git",
@@ -57,7 +57,6 @@
   },
   "dependencies": {
     "capitalize": "^1.0.0",
-    "circular-iterable": "^2.0.1",
     "compression": "^1.6.0",
     "express": "^4.13.3",
     "history": "^1.13.0",

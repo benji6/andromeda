@@ -89,10 +89,10 @@ const renderLoop = _ => {
 const calculatePitch = ratio => {
   const {scaleName, scales} = store.getState().scale
   const scale = scales[scaleName]
-  const {length} = scale.toArray()
+  const {length} = scale
   stopLastNoteOnNoteChange = true
   const i = Math.floor((length + 1) * ratio)
-  return scale(i) + 12 * Math.floor(i / length)
+  return scale[(i % length + length) % length] + 12 * Math.floor(i / length)
 }
 
 const xYRatiosToNote = ({range, xRatio, yRatio}) => ({
