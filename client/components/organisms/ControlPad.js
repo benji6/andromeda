@@ -52,9 +52,7 @@ let camera = null
 let scene = null
 
 const setRendererSize = () => {
-  const rendererSize = innerWidth < innerHeight ?
-    innerWidth :
-    innerHeight * 0.8
+  const rendererSize = innerWidth < innerHeight ? innerWidth : innerHeight * 0.8
   renderer.setSize(rendererSize, rendererSize)
 }
 
@@ -88,24 +86,21 @@ const renderLoop = _ => {
   renderer.render(scene, camera)
 }
 
-const calculatePitch = xRatio => {
+const calculatePitch = ratio => {
   const {scaleName, scales} = store.getState().scale
   const scale = scales[scaleName]
-  if (isNil(scale)) {
-    stopLastNoteOnNoteChange = false
-    return xRatio * 12
-  }
   const {length} = scale.toArray()
   stopLastNoteOnNoteChange = true
-  const i = Math.floor((length + 1) * xRatio)
-  return i < length ? scale(i) : scale(i) + 12
+  const i = Math.floor((length + 1) * ratio)
+  return scale(i) + 12 * Math.floor(i / length)
 }
 
-const calculatePitchAndMod = ({xRatio, yRatio}) => ({pitch: calculatePitch(xRatio), modulation: yRatio})
-const getNoteFromXYRatios = compose(assoc('id', controlPadId), calculatePitchAndMod)
-const xYRatiosToNoScaleNote = ({xRatio, yRatio}) => ({
-  id: controlPadId,
-  pitch: 12 * xRatio,
+const xYRatiosToNote = ({range, xRatio, yRatio}) => ({
+  pitch: calculatePitch(range * xRatio),
+  modulation: yRatio,
+})
+const xYRatiosToNoScaleNote = ({range, xRatio, yRatio}) => ({
+  pitch: 12 * range * xRatio,
   modulation: yRatio,
 })
 export default class extends React.Component {
@@ -115,6 +110,7 @@ export default class extends React.Component {
       noScale,
       octave,
       portamento,
+      range,
     } = this.props
     controlPadElement = document.querySelector('.control-pad')
 
@@ -129,7 +125,9 @@ export default class extends React.Component {
       map(tap(e => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
       reject(e => e instanceof MouseEvent && !mouseInputEnabled),
       map(e => currentXYRatios = calculateXAndYRatio(e)),
-      map(ifElse(_ => noScale, xYRatiosToNoScaleNote, getNoteFromXYRatios)),
+      map(assoc('range', range)),
+      map(ifElse(_ => noScale, xYRatiosToNoScaleNote, xYRatiosToNote)),
+      map(assoc('id', controlPadId)),
       map(tap(({pitch}) => !noScale && !portamento && (
         currentlyPlayingPitch !== pitch &&
         currentlyPlayingPitch !== null &&

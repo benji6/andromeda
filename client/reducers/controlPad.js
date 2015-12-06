@@ -3,6 +3,7 @@ import {
   UPDATE_CONTROL_PAD_NO_SCALE,
   UPDATE_CONTROL_PAD_OCTAVE,
   UPDATE_CONTROL_PAD_PORTAMENTO,
+  UPDATE_CONTROL_PAD_RANGE,
 } from '../actions'
 import {initialState as instrumentInitialState} from './instruments'
 
@@ -11,19 +12,16 @@ export const initialState = {
   noScale: false,
   octave: 0,
   portamento: false,
+  range: 1,
 }
 
 export default (state = initialState, {type, value}) => {
   switch (type) {
-    case UPDATE_CONTROL_PAD_INSTRUMENT:
-      return {...state, instrument: value}
-    case UPDATE_CONTROL_PAD_NO_SCALE:
-      return {...state, noScale: value}
-    case UPDATE_CONTROL_PAD_OCTAVE:
-      return {...state, octave: value}
-    case UPDATE_CONTROL_PAD_PORTAMENTO:
-      return {...state, portamento: value}
-    default:
-      return state
+    case UPDATE_CONTROL_PAD_INSTRUMENT: return {...state, instrument: value}
+    case UPDATE_CONTROL_PAD_NO_SCALE: return {...state, noScale: value}
+    case UPDATE_CONTROL_PAD_OCTAVE: return {...state, octave: value}
+    case UPDATE_CONTROL_PAD_PORTAMENTO: return {...state, portamento: value}
+    case UPDATE_CONTROL_PAD_RANGE: return {...state, range: value}
+    default: return state
   }
 }

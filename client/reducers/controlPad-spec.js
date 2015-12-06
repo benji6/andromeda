@@ -5,6 +5,7 @@ import {
   updateControlPadNoScale,
   updateControlPadOctave,
   updateControlPadPortamento,
+  updateControlPadRange,
 } from '../actions'
 
 const reducerName = 'controlPad'
@@ -43,5 +44,13 @@ test(`${reducerName} reducer updateControlNoScale`, t => {
               {...initialState, noScale: false})
   t.deepEqual(reducer(undefined, updateControlPadNoScale(true)),
               {...initialState, noScale: true})
+  t.end()
+})
+
+test(`${reducerName} reducer updateControlPadRange`, t => {
+  t.deepEqual(reducer(undefined, updateControlPadRange(2)),
+              {...initialState, range: 2})
+  t.deepEqual(reducer(undefined, updateControlPadRange(3)),
+              {...initialState, range: 3})
   t.end()
 })

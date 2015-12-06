@@ -8,6 +8,7 @@ import {
   updateControlPadNoScale,
   updateControlPadOctave,
   updateControlPadPortamento,
+  updateControlPadRange,
 } from '../../actions'
 import FullButton from '../atoms/FullButton'
 import CheckboxSelector from '../molecules/CheckboxSelector'
@@ -37,6 +38,14 @@ export default connect(identity)(({controlPad,
       output={controlPad.octave}
       text="Octave"
       value={controlPad.octave}
+    />
+    <RangeSelector
+      max="3"
+      min="1"
+      onChange={compose(dispatch, updateControlPadRange, Number, eventValuePath)}
+      output={controlPad.range}
+      text="Range"
+      value={controlPad.range}
     />
     <CheckboxSelector
       checked={controlPad.portamento}
