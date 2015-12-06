@@ -29,6 +29,7 @@ import PatternMenu from '../organisms/PatternMenu'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import {noteExists} from '../../reducers/patterns'
 
+let lastPosition
 const playStopSubject = new Rx.Subject
 
 const onPlay = dispatch =>
@@ -46,7 +47,6 @@ const onPlay = dispatch =>
         notes,
         octave,
         yLength,
-        lastPosition: (count - 1) % xLength,
         position: count % xLength,
         scale,
       }
@@ -59,8 +59,9 @@ const onPlay = dispatch =>
     .do(compose(
       dispatch,
       removeKeysFromAudioGraphContaining,
-      ({lastPosition}) => `pattern-editor-${lastPosition}`)
+      _ => `pattern-editor-${lastPosition}`)
     )
+    .do(({position}) => lastPosition = position)
     .subscribe(({
       notes,
       octave,
