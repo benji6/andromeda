@@ -1,9 +1,11 @@
 import {
   compose,
   curry,
-  identity,
   filter,
+  identity,
   map,
+  partial,
+  prop,
   range,
   repeat,
   transduce,
@@ -40,10 +42,25 @@ const onPlay = dispatch =>
     .map(count => {
       const {activePatternIndex, patterns, scale} = store.getState()
       const {notes, octave, xLength, yLength} = patterns[activePatternIndex]
-      return {notes, octave, yLength, lastPosition: (count - 1) % xLength, position: count % xLength, scale}
+      return {
+        notes,
+        octave,
+        yLength,
+        lastPosition: (count - 1) % xLength,
+        position: count % xLength,
+        scale,
+      }
     })
-    .do(({position}) => dispatch(updateActivePatternActivePosition(position)))
-    .do(compose(dispatch, removeKeysFromAudioGraphContaining, ({lastPosition}) => `pattern-editor-${lastPosition}`))
+    .do(compose(
+      dispatch,
+      updateActivePatternActivePosition,
+      prop('position')
+    ))
+    .do(compose(
+      dispatch,
+      removeKeysFromAudioGraphContaining,
+      ({lastPosition}) => `pattern-editor-${lastPosition}`)
+    )
     .subscribe(({
       notes,
       octave,
@@ -94,15 +111,21 @@ export default connect(identity)(({activePatternIndex, dispatch, instrument, pat
 
   return <div>
     <Navigation />
-    <Pattern patternData={patternData}
-             onClick={onClick}
-             rootNote={rootNote}
-             scale={scale}
-             yLabel={yLabel(scale, yLength, rootNote)} />
-    <PlayButton onPlay={() => onPlay(dispatch)}
-                onStop={() => onStop(dispatch)} />
-    <PatternMenu dispatch={dispatch}
-                 instrument={instrument}
-                 pattern={activePattern} />
+    <Pattern
+      onClick={onClick}
+      patternData={patternData}
+      rootNote={rootNote}
+      scale={scale}
+      yLabel={yLabel(scale, yLength, rootNote)}
+    />
+    <PlayButton
+      onPlay={partial(onPlay, [dispatch])}
+      onStop={partial(onStop, [dispatch])}
+    />
+    <PatternMenu
+      dispatch={dispatch}
+      instrument={instrument}
+      pattern={activePattern}
+    />
   </div>
 })
