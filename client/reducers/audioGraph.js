@@ -41,10 +41,10 @@ export const computeInitialState = reduceIndexed((acc, {effects}, channelId) => 
        {})
 export const initialState = computeInitialState(channelsInitialState);
 
-export default (state = initialState, {type, value}) => {
+export default (state = initialState, {type, payload}) => {
   switch (type) {
     case ADD_AUDIO_GRAPH_SOURCE: {
-      const {channelIds, id, instrument, params} = value
+      const {channelIds, id, instrument, params} = payload
       const statePairs = toPairs(state)
       const computeChannelEffectPairs = channelId =>
         filter(([x]) => x.indexOf(`channel:${channelId}-`) !== -1 &&
@@ -67,7 +67,7 @@ export default (state = initialState, {type, value}) => {
       }
     }
     case MOVE_CHANNEL_EFFECT_DOWN: {
-      const {channelId, effectId} = value
+      const {channelId, effectId} = payload
       const targetKey = computeEffectKey(channelId, effectId);
       const target = state[targetKey];
       const parentKey = findParentPairs(targetKey, toPairs(state))[0]
@@ -86,7 +86,7 @@ export default (state = initialState, {type, value}) => {
               [parentKey]: update(1, childKey, parent)}
     }
     case MOVE_CHANNEL_EFFECT_UP: {
-      const {channelId, effectId} = value
+      const {channelId, effectId} = payload
       const targetKey = computeEffectKey(channelId, effectId);
       const target = state[targetKey];
       const childKey = state[targetKey][1]
@@ -107,9 +107,9 @@ export default (state = initialState, {type, value}) => {
     case REMOVE_CHANNEL:
       return reduce((acc, val) => ({...acc, [val]: state[val]}),
                     {},
-                    filter(x => x.indexOf(`channel:${value}-`) === -1, keys(state)))
+                    filter(x => x.indexOf(`channel:${payload}-`) === -1, keys(state)))
     case REMOVE_CHANNEL_EFFECT: {
-      const {channelId, effectId} = value
+      const {channelId, effectId} = payload
       const targetKey = computeEffectKey(channelId, effectId)
       const parentPairs = findParentPairs(targetKey, toPairs(state))
       if (!parentPairs) return dissoc(targetKey, state)
@@ -118,19 +118,19 @@ export default (state = initialState, {type, value}) => {
       return {...dissoc(targetKey, state), [parentKey]: update(1, childKey, parent)}
     }
     case REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING:
-      const keysToKeep = filter(key => key.indexOf(value) === -1, keys(state))
+      const keysToKeep = filter(key => key.indexOf(payload) === -1, keys(state))
       return zipObj(keysToKeep, map(key => state[key], keysToKeep))
     case ADD_CHANNEL_EFFECT: {
-      const {channelId, effect, effects} = value
+      const {channelId, effect, effects} = payload
       const effectId = computeId(effects)
       const channelKey = computeEffectKey(channelId, effectId)
       if (effectId === 0) {
         return {...state, [channelKey]: [effect, 'output']};
       }
       const output = computeEffectKey(channelId, effectId - 1)
-      const keyValuesConnectedToPreviousTail = filter(([_, [__, currentOutput]]) => currentOutput === output,
+      const keypayloadsConnectedToPreviousTail = filter(([_, [__, currentOutput]]) => currentOutput === output,
                                                       toPairs(state))
-      if (isEmpty(keyValuesConnectedToPreviousTail)) {
+      if (isEmpty(keypayloadsConnectedToPreviousTail)) {
         return {...state, [channelKey]: [effect, output]};
       }
       return {...reduce((acc, [key, [name, _, ...rest]]) => ({...acc,
@@ -138,7 +138,7 @@ export default (state = initialState, {type, value}) => {
                                                                       channelKey,
                                                                       ...rest]}),
                         state,
-                        keyValuesConnectedToPreviousTail),
+                        keypayloadsConnectedToPreviousTail),
               [channelKey]: [effect, output]}
     }
     default:

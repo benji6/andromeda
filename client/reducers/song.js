@@ -7,10 +7,10 @@ export const initialState = {
   steps: [],
 };
 
-export default (state = initialState, {type, value}) => {
+export default (state = initialState, {type, payload}) => {
   switch (type) {
     case UPDATE_SONG_NOTES:
-      return {...state, notes: value};
+      return {...state, notes: payload};
     default:
       return state;
   }

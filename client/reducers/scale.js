@@ -13,5 +13,5 @@ export const initialState = {
   scaleName: 'pentatonic',
 }
 
-export default (state = initialState, {type, value}) =>
-  type === UPDATE_SELECTED_SCALE ? {...state, scaleName: value} : state
+export default (state = initialState, {type, payload}) =>
+  type === UPDATE_SELECTED_SCALE ? {...state, scaleName: payload} : state

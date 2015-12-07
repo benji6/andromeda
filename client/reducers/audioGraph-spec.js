@@ -39,7 +39,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
   const instrument = 'some instrument'
   const params = {someParams: true}
   const id = 'some id'
-  const value0 = {
+  const payload0 = {
     channelIds: [0],
     id,
     instrument,
@@ -50,14 +50,14 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
                        'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],
                        'channel:1-type:effect-id:10': ['effect0', 'output'],
                        'channel:[0]-type:source-id:0': ['source0', 'channel:0-type:effect-id:2', {a: 5}]},
-                      addAudioGraphSource(value0)),
+                      addAudioGraphSource(payload0)),
               {'channel:0-type:effect-id:0': ['effect0', 'output'],
                'channel:0-type:effect-id:1': ['effect1', 'channel:0-type:effect-id:0'],
                'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],
                'channel:1-type:effect-id:10': ['effect0', 'output'],
                'channel:[0]-type:source-id:0': ['source0', 'channel:0-type:effect-id:2', {a: 5}],
                'channel:[0]-type:source-id:some id': [instrument, ['channel:0-type:effect-id:2'], params]})
-  const value1 = {
+  const payload1 = {
     channelIds: [0, 1],
     id,
     instrument,
@@ -68,7 +68,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
                        'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],
                        'channel:1-type:effect-id:10': ['effect0', 'output'],
                        'channel:[0]-type:source-id:some id': ['source0', 'channel:0-type:effect-id:2', {a: 5}]},
-                      addAudioGraphSource(value1)), {
+                      addAudioGraphSource(payload1)), {
     'channel:0-type:effect-id:0': ['effect0', 'output'],
     'channel:0-type:effect-id:1': ['effect1', 'channel:0-type:effect-id:0'],
     'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],

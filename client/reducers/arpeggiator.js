@@ -12,12 +12,12 @@ export const initialState = {
   selectedPattern: 'up and down',
 };
 
-export default (state = initialState, {type, value}) => {
+export default (state = initialState, {type, payload}) => {
   switch (type) {
     case UPDATE_ARPEGGIATOR_IS_ON:
-      return {...state, arpeggiatorIsOn: value};
+      return {...state, arpeggiatorIsOn: payload};
     case UPDATE_SELECTED_PATTERN:
-      return {...state, selectedPattern: value};
+      return {...state, selectedPattern: payload};
     default:
       return state;
   }

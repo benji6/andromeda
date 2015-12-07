@@ -17,13 +17,13 @@ test(`${reducerName} reducer returns initial state`, t => {
 test(`${reducerName} reducer handles active pattern cell click`, t => {
   const activePatternIndex = 0;
   const activePattern = initialState[activePatternIndex];
-  const value = {x: 1, y: 2};
+  const payload = {x: 1, y: 2};
   const testState = [...initialState.slice(0, activePatternIndex),
-                     {...activePattern, notes: [value]},
+                     {...activePattern, notes: [payload]},
                      ...initialState.slice(activePatternIndex + 1)];
-  t.deepEqual(reducer(undefined, activePatternCellClick(value)),
+  t.deepEqual(reducer(undefined, activePatternCellClick(payload)),
               testState);
-  t.deepEqual(reducer(testState, activePatternCellClick(value)),
+  t.deepEqual(reducer(testState, activePatternCellClick(payload)),
               [...initialState.slice(0, activePatternIndex),
                {...activePattern, notes: []},
                ...initialState.slice(activePatternIndex + 1)]);
@@ -33,11 +33,11 @@ test(`${reducerName} reducer handles active pattern cell click`, t => {
 test(`${reducerName} reducer updates active pattern active position`, t => {
   const activePatternIndex = 0;
   const activePattern = initialState[activePatternIndex];
-  const value = 3;
+  const payload = 3;
 
-  t.deepEqual(reducer(undefined, updateActivePatternActivePosition(value)),
+  t.deepEqual(reducer(undefined, updateActivePatternActivePosition(payload)),
               [...initialState.slice(0, activePatternIndex),
-               {...activePattern, activePosition: value},
+               {...activePattern, activePosition: payload},
                ...initialState.slice(activePatternIndex + 1)]);
   t.end();
 });
@@ -45,11 +45,11 @@ test(`${reducerName} reducer updates active pattern active position`, t => {
 test(`${reducerName} reducer updateActivePatternInstrument`, t => {
   const activePatternIndex = 0;
   const activePattern = initialState[activePatternIndex];
-  const value = 3;
+  const payload = 3;
 
-  t.deepEqual(reducer(undefined, updateActivePatternInstrument(value)),
+  t.deepEqual(reducer(undefined, updateActivePatternInstrument(payload)),
               [...initialState.slice(0, activePatternIndex),
-               {...activePattern, instrument: value},
+               {...activePattern, instrument: payload},
                ...initialState.slice(activePatternIndex + 1)]);
   t.end();
 });
@@ -57,11 +57,11 @@ test(`${reducerName} reducer updateActivePatternInstrument`, t => {
 test(`${reducerName} reducer updates active pattern octave`, t => {
   const activePatternIndex = 0;
   const activePattern = initialState[activePatternIndex];
-  const value = 5;
+  const payload = 5;
 
-  t.deepEqual(reducer(undefined, updateActivePatternOctave(value)),
+  t.deepEqual(reducer(undefined, updateActivePatternOctave(payload)),
               [...initialState.slice(0, activePatternIndex),
-               {...activePattern, octave: value},
+               {...activePattern, octave: payload},
                ...initialState.slice(activePatternIndex + 1)]);
   t.end();
 });
@@ -69,11 +69,11 @@ test(`${reducerName} reducer updates active pattern octave`, t => {
 test(`${reducerName} reducer updates active pattern xLength`, t => {
   const activePatternIndex = 0;
   const activePattern = initialState[activePatternIndex];
-  const value = 5;
+  const payload = 5;
 
-  t.deepEqual(reducer(undefined, updateActivePatternXLength(value)),
+  t.deepEqual(reducer(undefined, updateActivePatternXLength(payload)),
               [...initialState.slice(0, activePatternIndex),
-               {...activePattern, xLength: value},
+               {...activePattern, xLength: payload},
                ...initialState.slice(activePatternIndex + 1)]);
   t.end();
 });

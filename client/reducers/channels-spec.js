@@ -169,10 +169,10 @@ test(`${reducerName} reducer moveChannelEffectUp`, t => {
 });
 
 test(`${reducerName} reducer removeChannel `, t => {
-  const value = 0;
-  t.deepEqual(reducer(undefined, removeChannel(value)),
-              [...initialState.slice(0, value),
-               ...initialState.slice(value + 1)]);
+  const payload = 0;
+  t.deepEqual(reducer(undefined, removeChannel(payload)),
+              [...initialState.slice(0, payload),
+               ...initialState.slice(payload + 1)]);
   t.end();
 });
 
@@ -220,9 +220,9 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
 test(`${reducerName} reducer updateSelectedAddSource`, t => {
   const channelId = 0;
   const selectedAddSource = 'testVal';
-  const value = {channelId, selectedAddSource};
+  const payload = {channelId, selectedAddSource};
   const channel = initialState[channelId];
-  t.deepEqual(reducer(undefined, updateSelectedAddSource(value)),
+  t.deepEqual(reducer(undefined, updateSelectedAddSource(payload)),
               [...initialState.slice(0, channelId),
                {...channel, selectedAddSource},
                ...initialState.slice(channelId + 1)]);

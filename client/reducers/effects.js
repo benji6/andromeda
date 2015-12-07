@@ -5,7 +5,7 @@ export const initialState = [
   'none',
 ];
 
-const actions = {[ADD_EFFECT]: (state, value) => ([...state, value])};
+const actions = {[ADD_EFFECT]: (state, payload) => ([...state, payload])};
 
-export default (state = initialState, {type, value}) =>
-  actions[type] ? actions[type](state, value) : state;
+export default (state = initialState, {type, payload}) =>
+  actions[type] ? actions[type](state, payload) : state;

@@ -1,4 +1,4 @@
-const createAction = type => value => ({type, value})
+const createAction = type => payload => ({type, payload})
 
 export const ACTIVE_PATTERN_CELL_CLICK = 'PATTERN_CELL_CLICK'
 export const ADD_AUDIO_GRAPH_SOURCE = 'ADD_AUDIO_GRAPH_SOURCE'

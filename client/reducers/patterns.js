@@ -17,47 +17,47 @@ export const initialState = [{
 
 export const noteExists = (notes, x, y) => Boolean(find(both(propEq('x', x), propEq('y', y)), notes));
 
-export default (state = initialState, {type, value}) => {
+export default (state = initialState, {type, payload}) => {
   switch (type) {
     case ACTIVE_PATTERN_CELL_CLICK: {
-      const {x, y} = value;
+      const {x, y} = payload;
       const {activePatternIndex} = store.getState();
       const activePattern = state[activePatternIndex];
       const {notes} = activePattern;
       return noteExists(notes, x, y) ?
         [...state.slice(0, activePatternIndex),
-         {...activePattern, notes: reject(equals(value), notes)},
+         {...activePattern, notes: reject(equals(payload), notes)},
          ...state.slice(activePatternIndex + 1)] :
         [...state.slice(0, activePatternIndex),
-         {...activePattern, notes: [...notes, value]},
+         {...activePattern, notes: [...notes, payload]},
          ...state.slice(activePatternIndex + 1)];
     }
     case UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION: {
       const {activePatternIndex} = store.getState();
       const activePattern = state[activePatternIndex];
       return [...state.slice(0, activePatternIndex),
-              {...activePattern, activePosition: value},
+              {...activePattern, activePosition: payload},
               ...state.slice(activePatternIndex + 1)];
     }
     case UPDATE_ACTIVE_PATTERN_INSTRUMENT: {
       const {activePatternIndex} = store.getState();
       const activePattern = state[activePatternIndex];
       return [...state.slice(0, activePatternIndex),
-              {...activePattern, instrument: value},
+              {...activePattern, instrument: payload},
               ...state.slice(activePatternIndex + 1)];
     }
     case UPDATE_ACTIVE_PATTERN_OCTAVE: {
       const {activePatternIndex} = store.getState();
       const activePattern = state[activePatternIndex];
       return [...state.slice(0, activePatternIndex),
-              {...activePattern, octave: value},
+              {...activePattern, octave: payload},
               ...state.slice(activePatternIndex + 1)];
     }
     case UPDATE_ACTIVE_PATTERN_X_LENGTH: {
       const {activePatternIndex} = store.getState();
       const activePattern = state[activePatternIndex];
       return [...state.slice(0, activePatternIndex),
-              {...activePattern, xLength: value},
+              {...activePattern, xLength: payload},
               ...state.slice(activePatternIndex + 1)];
     }
     default:
