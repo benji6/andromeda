@@ -7,6 +7,7 @@ import channels from './reducers/channels';
 import controlPad from './reducers/controlPad';
 import effects from './reducers/effects';
 import instruments from './reducers/instruments';
+import keyboard from './reducers/keyboard';
 import microphone from './reducers/microphone';
 import patterns from './reducers/patterns';
 import playing from './reducers/playing';
@@ -23,6 +24,7 @@ export default createStore(combineReducers({
   controlPad,
   effects,
   instruments,
+  keyboard,
   microphone,
   patterns,
   playing,

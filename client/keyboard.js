@@ -1,5 +1,5 @@
 import {compose, flip, isNil, map, prop, reject, tap} from 'ramda'
-import {dispatch} from './store'
+import {dispatch, getState} from './store'
 import pitchToFrequency from './audioHelpers/pitchToFrequency'
 import {
   addAudioGraphSource,
@@ -53,15 +53,18 @@ const pressedKeys = new Set()
 
 const computeId = pitch => `keyboard: ${pitch}`
 
-const computeNoteParams = pitch => ({
-  channelIds: [0],
-  id: computeId(pitch),
-  instrument: 'sine',
-  params: {
-    gain: 1 / 3,
-    frequency: pitchToFrequency(pitch),
-  },
-})
+const computeNoteParams = pitch => {
+  const {keyboard} = getState()
+  return {
+    channelIds: [0],
+    id: computeId(pitch),
+    instrument: keyboard.instrument,
+    params: {
+      gain: 1 / 3,
+      frequency: pitchToFrequency(pitch + 12 * keyboard.octave),
+    },
+  }
+};
 
 fromEvent(document.body, 'keydown')
   .transduce(compose(
