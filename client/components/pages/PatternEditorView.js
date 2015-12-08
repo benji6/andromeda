@@ -71,18 +71,21 @@ const onPlay = dispatch =>
     }) => transduce(
       compose(
         filter(({y}) => y === position),
-        map(({x, y}) => ({
-          channelIds: [0],
-          id: `pattern-editor-${y}-${x}`,
-          instrument: store.getState().patterns[store.getState().activePatternIndex].instrument,
-          params: {
-            gain: 1 / 3,
-            frequency: scaleIndexToFrequency(
-                scale.scales[scale.scaleName],
-                yLength - 1 - x + scale.scales[scale.scaleName].length * octave
-              ),
-          },
-        })),
+        map(({x, y}) => {
+          const {instrument, volume} = store.getState().patterns[store.getState().activePatternIndex]
+          return {
+            channelIds: [0],
+            id: `pattern-editor-${y}-${x}`,
+            instrument,
+            params: {
+              gain: volume,
+              frequency: scaleIndexToFrequency(
+                  scale.scales[scale.scaleName],
+                  yLength - 1 - x + scale.scales[scale.scaleName].length * octave
+                ),
+            },
+          }
+        }),
         map(compose(dispatch, addAudioGraphSource))
       ),
       () => {},
