@@ -1,17 +1,19 @@
-import test from 'tape';
-import reducer, {emptyChannel, initialState} from './channels';
-import {addChannel,
-        addChannelEffect,
-        addChannelSource,
-        moveChannelEffectDown,
-        moveChannelEffectUp,
-        removeChannel,
-        removeChannelSource,
-        removeChannelEffect,
-        updateSelectedAddEffect,
-        updateSelectedAddSource} from '../actions';
+import test from 'tape'
+import reducer, {emptyChannel, initialState} from './channels'
+import {
+  addChannel,
+  addChannelEffect,
+  addChannelSource,
+  moveChannelEffectDown,
+  moveChannelEffectUp,
+  removeChannel,
+  removeChannelEffect,
+  removeChannelSource,
+  updateSelectedAddEffect,
+  updateSelectedAddSource,
+} from '../actions'
 
-const reducerName = 'channels';
+const reducerName = 'channels'
 
 const testState = Object.freeze([
   {
@@ -36,32 +38,32 @@ const testState = Object.freeze([
 ])
 
 test(`${reducerName} reducer returns initial state`, t => {
-  t.deepEqual(reducer(undefined, {}), initialState);
-  t.deepEqual(reducer(undefined, {}), initialState);
-  t.end();
-});
+  t.deepEqual(reducer(undefined, {}), initialState)
+  t.deepEqual(reducer(undefined, {}), initialState)
+  t.end()
+})
 
 test(`${reducerName} reducer addChannel`, t => {
   t.deepEqual(reducer(undefined, addChannel()),
               [...initialState,
-               emptyChannel]);
-  t.end();
-});
+               emptyChannel])
+  t.end()
+})
 
 test(`${reducerName} reducer addChannelSource`, t => {
-  const channelId = 0;
-  const source = 'testVal';
-  const channel = initialState[channelId];
-  const {sources} = channel;
+  const channelId = 0
+  const source = 'testVal'
+  const channel = initialState[channelId]
+  const {sources} = channel
   t.deepEqual(reducer(undefined, addChannelSource({channelId, source})),
               [...initialState.slice(0, channelId),
                {...channel, sources: [...sources, source]},
-               ...initialState.slice(channelId + 1)]);
-  t.end();
-});
+               ...initialState.slice(channelId + 1)])
+  t.end()
+})
 
 test(`${reducerName} reducer addChannelEffect`, t => {
-  const channelId = 1;
+  const channelId = 1
   const expectedState = [
     {
       effects: [
@@ -86,9 +88,9 @@ test(`${reducerName} reducer addChannelEffect`, t => {
   ]
   t.deepEqual(reducer(testState,
                       addChannelEffect({channelId, effect: 'magic effect'})),
-              expectedState);
-  t.end();
-});
+              expectedState)
+  t.end()
+})
 
 test(`${reducerName} reducer moveChannelEffectDown`, t => {
   t.deepEqual(reducer(testState,
@@ -113,7 +115,7 @@ test(`${reducerName} reducer moveChannelEffectDown`, t => {
                           selectedAddSource: 'fm',
                           sources: ['sine'],
                         },
-                      ]);
+                      ])
   t.deepEqual(reducer(testState,
                       moveChannelEffectDown({channelId: 1, effectId: 42})),
                       [
@@ -136,9 +138,9 @@ test(`${reducerName} reducer moveChannelEffectDown`, t => {
                           selectedAddSource: 'fm',
                           sources: ['sine'],
                         },
-                      ]);
-  t.end();
-});
+                      ])
+  t.end()
+})
 
 test(`${reducerName} reducer moveChannelEffectUp`, t => {
   const expectedState = [
@@ -164,30 +166,30 @@ test(`${reducerName} reducer moveChannelEffectUp`, t => {
   ]
   t.deepEqual(reducer(testState,
                       moveChannelEffectUp({channelId: 1, effectId: 42})),
-              expectedState);
-  t.end();
-});
+              expectedState)
+  t.end()
+})
 
 test(`${reducerName} reducer removeChannel `, t => {
-  const payload = 0;
+  const payload = 0
   t.deepEqual(reducer(undefined, removeChannel(payload)),
               [...initialState.slice(0, payload),
-               ...initialState.slice(payload + 1)]);
-  t.end();
-});
+               ...initialState.slice(payload + 1)])
+  t.end()
+})
 
 test(`${reducerName} reducer removeChannelSource`, t => {
-  const channelId = 0;
-  const sourceId = 0;
-  const channel = initialState[channelId];
-  const {sources} = channel;
+  const channelId = 0
+  const sourceId = 0
+  const channel = initialState[channelId]
+  const {sources} = channel
   t.deepEqual(reducer(undefined, removeChannelSource({channelId, sourceId})),
               [...initialState.slice(0, channelId),
                {...channel, sources: [...sources.slice(0, sourceId),
                                       ...sources.slice(sourceId + 1)]},
-               ...initialState.slice(channelId + 1)]);
-  t.end();
-});
+               ...initialState.slice(channelId + 1)])
+  t.end()
+})
 
 test(`${reducerName} reducer removeChannelEffect`, t => {
   const expectedState = [
@@ -213,29 +215,29 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
 
   t.deepEqual(reducer(testState,
                       removeChannelEffect({channelId: 1, effectId: 42})),
-              expectedState);
-  t.end();
-});
+              expectedState)
+  t.end()
+})
 
 test(`${reducerName} reducer updateSelectedAddSource`, t => {
-  const channelId = 0;
-  const selectedAddSource = 'testVal';
-  const payload = {channelId, selectedAddSource};
-  const channel = initialState[channelId];
+  const channelId = 0
+  const selectedAddSource = 'testVal'
+  const payload = {channelId, selectedAddSource}
+  const channel = initialState[channelId]
   t.deepEqual(reducer(undefined, updateSelectedAddSource(payload)),
               [...initialState.slice(0, channelId),
                {...channel, selectedAddSource},
-               ...initialState.slice(channelId + 1)]);
-  t.end();
-});
+               ...initialState.slice(channelId + 1)])
+  t.end()
+})
 
 test(`${reducerName} reducer updateSelectedAddEffect`, t => {
-  const channelId = 0;
-  const selectedAddEffect = 'testVal';
-  const channel = initialState[channelId];
+  const channelId = 0
+  const selectedAddEffect = 'testVal'
+  const channel = initialState[channelId]
   t.deepEqual(reducer(undefined, updateSelectedAddEffect({channelId, selectedAddEffect})),
               [...initialState.slice(0, channelId),
                {...channel, selectedAddEffect},
-               ...initialState.slice(channelId + 1)]);
-  t.end();
-});
+               ...initialState.slice(channelId + 1)])
+  t.end()
+})

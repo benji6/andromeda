@@ -15,7 +15,7 @@ import {
   toPairs,
   update,
   zipObj,
-} from 'ramda';
+} from 'ramda'
 import {
   ADD_AUDIO_GRAPH_SOURCE,
   ADD_CHANNEL_EFFECT,
@@ -39,7 +39,7 @@ export const computeInitialState = reduceIndexed((acc, {effects}, channelId) => 
                                                                                                            {},
                                                                                                            effects)}),
        {})
-export const initialState = computeInitialState(channelsInitialState);
+export const initialState = computeInitialState(channelsInitialState)
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
@@ -68,8 +68,8 @@ export default (state = initialState, {type, payload}) => {
     }
     case MOVE_CHANNEL_EFFECT_DOWN: {
       const {channelId, effectId} = payload
-      const targetKey = computeEffectKey(channelId, effectId);
-      const target = state[targetKey];
+      const targetKey = computeEffectKey(channelId, effectId)
+      const target = state[targetKey]
       const parentKey = findParentPairs(targetKey, toPairs(state))[0]
       const parent = state[parentKey]
       const childKey = state[targetKey][1]
@@ -87,10 +87,10 @@ export default (state = initialState, {type, payload}) => {
     }
     case MOVE_CHANNEL_EFFECT_UP: {
       const {channelId, effectId} = payload
-      const targetKey = computeEffectKey(channelId, effectId);
-      const target = state[targetKey];
+      const targetKey = computeEffectKey(channelId, effectId)
+      const target = state[targetKey]
       const childKey = state[targetKey][1]
-      const child = state[childKey];
+      const child = state[childKey]
       const childOutput = state[childKey][1]
       const parentPairs = findParentPairs(targetKey, toPairs(state))
       if (parentPairs) {
@@ -125,13 +125,13 @@ export default (state = initialState, {type, payload}) => {
       const effectId = computeId(effects)
       const channelKey = computeEffectKey(channelId, effectId)
       if (effectId === 0) {
-        return {...state, [channelKey]: [effect, 'output']};
+        return {...state, [channelKey]: [effect, 'output']}
       }
       const output = computeEffectKey(channelId, effectId - 1)
       const keypayloadsConnectedToPreviousTail = filter(([_, [__, currentOutput]]) => currentOutput === output,
                                                       toPairs(state))
       if (isEmpty(keypayloadsConnectedToPreviousTail)) {
-        return {...state, [channelKey]: [effect, output]};
+        return {...state, [channelKey]: [effect, output]}
       }
       return {...reduce((acc, [key, [name, _, ...rest]]) => ({...acc,
                                                               [key]: [name,
@@ -142,6 +142,6 @@ export default (state = initialState, {type, payload}) => {
               [channelKey]: [effect, output]}
     }
     default:
-      return state;
+      return state
   }
-};
+}
