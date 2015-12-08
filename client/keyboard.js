@@ -60,7 +60,7 @@ const computeNoteParams = pitch => {
     id: computeId(pitch),
     instrument: keyboard.instrument,
     params: {
-      gain: 1 / 3,
+      gain: keyboard.volume,
       frequency: pitchToFrequency(pitch + 12 * keyboard.octave),
     },
   }

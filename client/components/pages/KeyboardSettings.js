@@ -6,6 +6,7 @@ import Selector from '../molecules/Selector'
 import {
   updateKeyboardInstrument,
   updateKeyboardOctave,
+  updateKeyboardVolume,
 } from '../../actions'
 import FullButton from '../atoms/FullButton'
 import RangeSelector from '../molecules/RangeSelector'
@@ -23,6 +24,15 @@ export default connect(identity)(({keyboard,
       options={map(instrument => ({text: capitalize.words(instrument),
                                    value: instrument}),
                    instruments)}
+    />
+    <RangeSelector
+      max="1"
+      min="0"
+      step="0.01"
+      onChange={compose(dispatch, updateKeyboardVolume, Number, eventValuePath)}
+      output={Math.round(keyboard.volume * 100)}
+      text="Volume"
+      value={keyboard.volume}
     />
     <RangeSelector
       max="2"
