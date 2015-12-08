@@ -11,10 +11,10 @@ import Menu from './Menu';
 export default () =>
   <Menu components={[
       <HollowButton key="1"
-                    text="Control Pad"
+                    text="Pad"
                     to="/control-pad" />,
       <HollowButton key="2"
-                    text="Pattern Editor"
+                    text="Pattern"
                     to="/pattern-editor" />,
       <HollowButton key="3"
                     text="Channels"
