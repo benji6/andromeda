@@ -5,7 +5,7 @@
   "scripts": {
     "build": "gulp build",
     "dev": "gulp",
-    "test": "babel-node node_modules/.bin/tape client/**/*-spec.js | faucet",
+    "test": "babel-node node_modules/.bin/tape 'client/**/*-spec.js' | faucet",
     "watch-test": "nodemon --exec npm test"
   },
   "repository": {
