@@ -7,7 +7,7 @@ import FullButton from '../atoms/FullButton';
 import {Cross, Plus} from '../atoms/IconButtons';
 import {addChannel, removeChannel} from '../../actions';
 
-export default connect(identity)(({channels, dispatch}) =>
+export default connect(identity)(({audioGraphAndChannels: {channels}, dispatch}) =>
   <div>
     <Navigation />
     <div className="flex-column text-center">

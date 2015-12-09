@@ -24,10 +24,10 @@ import {
   REMOVE_CHANNEL,
   REMOVE_CHANNEL_EFFECT,
   REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING,
-} from '../actions'
-import {reduceIndexed} from '../tools/indexedIterators'
+} from '../../actions'
+import {reduceIndexed} from '../../tools/indexedIterators'
 import {initialState as channelsInitialState} from './channels'
-import {computeId} from './_tools'
+import {getNewestId} from '../_tools'
 
 const computeKey = curry((type, channelId, id) => `channel:${channelId}-type:${type}-id:${id}`)
 const computeEffectKey = computeKey('effect')
@@ -41,7 +41,7 @@ export const computeInitialState = reduceIndexed((acc, {effects}, channelId) => 
        {})
 export const initialState = computeInitialState(channelsInitialState)
 
-export default (state = initialState, {type, payload}) => {
+export default (state = initialState, {type, payload}, channels) => {
   switch (type) {
     case ADD_AUDIO_GRAPH_SOURCE: {
       const {channelIds, id, instrument, params} = payload
@@ -122,8 +122,8 @@ export default (state = initialState, {type, payload}) => {
       const keysToKeep = filter(key => key.indexOf(payload) === -1, keys(state))
       return zipObj(keysToKeep, map(key => state[key], keysToKeep))
     case ADD_CHANNEL_EFFECT: {
-      const {channelId, effect, effects} = payload
-      const effectId = computeId(effects)
+      const {channelId, effect} = payload
+      const effectId = getNewestId(channels[channelId].effects)
       const channelKey = computeEffectKey(channelId, effectId)
       if (effectId === 0) {
         return {...state, [channelKey]: [effect, 'output']}

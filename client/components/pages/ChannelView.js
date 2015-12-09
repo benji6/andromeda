@@ -24,7 +24,7 @@ import {addChannelEffect,
         updateSelectedAddSource} from '../../actions';
 import {eventValuePath} from '../../tools/paths'
 
-export default connect(identity)(({channels,
+export default connect(identity)(({audioGraphAndChannels: {channels},
                                    dispatch,
                                    instruments,
                                    params,

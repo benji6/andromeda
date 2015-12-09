@@ -12,3 +12,4 @@ export const computeId = ifElse(isEmpty,
                                 compose(add(1),
                                         xs => Math.max(...xs),
                                         pluck('id')))
+export const getNewestId = compose(xs => Math.max(...xs), pluck('id'))

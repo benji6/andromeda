@@ -15,10 +15,10 @@ import {
   REMOVE_CHANNEL,
   UPDATE_SELECTED_ADD_EFFECT,
   UPDATE_SELECTED_ADD_SOURCE,
-} from '../actions'
-import {computeId} from './_tools'
-import channelReducer from './helperReducers/channel'
-import {mapIndexed} from '../tools/indexedIterators'
+} from '../../actions'
+import {computeId} from '../_tools'
+import channelReducer from './channel'
+import {mapIndexed} from '../../tools/indexedIterators'
 
 export const defaultChannel = {effects: [{id: computeId([]), name: 'pingPongDelay'}],
                                selectedAddEffect: 'pingPongDelay',

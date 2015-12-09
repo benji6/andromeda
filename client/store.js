@@ -1,9 +1,8 @@
 import {combineReducers, createStore} from 'redux';
 import activePatternIndex from './reducers/activePatternIndex';
 import arpeggiator from './reducers/arpeggiator';
-import audioGraph from './reducers/audioGraph';
+import audioGraphAndChannels from './reducers/audioGraphAndChannels';
 import bpm from './reducers/bpm';
-import channels from './reducers/channels';
 import controlPad from './reducers/controlPad';
 import effects from './reducers/effects';
 import instruments from './reducers/instruments';
@@ -18,9 +17,8 @@ import song from './reducers/song';
 export default createStore(combineReducers({
   activePatternIndex,
   arpeggiator,
-  audioGraph,
+  audioGraphAndChannels,
   bpm,
-  channels,
   controlPad,
   effects,
   instruments,

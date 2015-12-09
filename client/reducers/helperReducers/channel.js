@@ -20,9 +20,10 @@ export const initialState = {
   sources: [],
 }
 
-export default (state = initialState, {type, payload} = {}, i) => {
+export default (state = initialState, action = {}, i) => {
+  const {payload} = action
   if (i === (payload && payload.channelId)) {
-    switch (type) {
+    switch (action.type) {
       case ADD_CHANNEL_EFFECT:
         return {
           ...state,
