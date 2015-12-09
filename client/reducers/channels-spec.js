@@ -1,5 +1,6 @@
 import test from 'tape'
-import reducer, {emptyChannel, initialState} from './channels'
+import reducer, {initialState} from './channels'
+import {initialState as emptyChannel} from './helperReducers/channel'
 import {
   addChannel,
   addChannelEffect,
