@@ -107,7 +107,8 @@ export default (state = initialState, {type, payload}) => {
     case REMOVE_CHANNEL:
       return reduce((acc, val) => ({...acc, [val]: state[val]}),
                     {},
-                    filter(x => x.indexOf(`channel:${payload}-`) === -1, keys(state)))
+                    filter(x => x.indexOf(`channel:${payload}-`) === -1,
+                           keys(state)))
     case REMOVE_CHANNEL_EFFECT: {
       const {channelId, effectId} = payload
       const targetKey = computeEffectKey(channelId, effectId)
@@ -141,7 +142,6 @@ export default (state = initialState, {type, payload}) => {
                         keypayloadsConnectedToPreviousTail),
               [channelKey]: [effect, output]}
     }
-    default:
-      return state
+    default: return state
   }
 }
