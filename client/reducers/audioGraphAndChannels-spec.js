@@ -12,24 +12,13 @@ import reducer from './audioGraphAndChannels'
 const reducerName = 'audioGraphAndChannels'
 
 const initialState = {
-  audioGraph: {
-    'channel:0-type:effect-id:0': ['pingPongDelay', 'output'],
-    'channel:1-type:effect-id:0': ['pingPongDelay', 'output'],
-  },
-  channels: [
-    {
-      effects: [{id: 0, name: 'pingPongDelay'}],
-      selectedAddEffect: 'pingPongDelay',
-      selectedAddSource: 'fm',
-      sources: ['detuned'],
-    },
-    {
-      effects: [{id: 0, name: 'pingPongDelay'}],
-      selectedAddEffect: 'pingPongDelay',
-      selectedAddSource: 'fm',
-      sources: ['sine'],
-    },
-  ],
+  audioGraph: {'channel:0-type:effect-id:0': ['pingPongDelay', 'output']},
+  channels: [{
+    effects: [{id: 0, name: 'pingPongDelay'}],
+    selectedAddEffect: 'pingPongDelay',
+    selectedAddSource: 'fm',
+    sources: ['sine'],
+  }],
 }
 
 const testState0 = {
@@ -109,6 +98,27 @@ const testState1 = {
   ],
 }
 
+const testState2 = {
+  audioGraph: {
+    'channel:0-type:effect-id:0': ['pingPongDelay', 'output'],
+    'channel:1-type:effect-id:0': ['pingPongDelay', 'output'],
+  },
+  channels: [
+    {
+      effects: [{id: 0, name: 'pingPongDelay'}],
+      selectedAddEffect: 'pingPongDelay',
+      selectedAddSource: 'fm',
+      sources: ['detuned'],
+    },
+    {
+      effects: [{id: 0, name: 'pingPongDelay'}],
+      selectedAddEffect: 'pingPongDelay',
+      selectedAddSource: 'fm',
+      sources: ['sine'],
+    },
+  ],
+}
+
 test(`${reducerName} reducer returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState)
   t.deepEqual(reducer(undefined, {}), initialState)
@@ -116,7 +126,7 @@ test(`${reducerName} reducer returns initial state`, t => {
 })
 
 test(`${reducerName} reducer addChannel`, t => {
-  t.deepEqual(reducer(initialState, addChannel()), {
+  t.deepEqual(reducer(testState2, addChannel()), {
     audioGraph: {
       'channel:0-type:effect-id:0': ['pingPongDelay', 'output'],
       'channel:1-type:effect-id:0': ['pingPongDelay', 'output'],
@@ -146,7 +156,7 @@ test(`${reducerName} reducer addChannel`, t => {
 })
 
 test(`${reducerName} reducer addChannelEffect`, t => {
-  t.deepEqual(reducer(initialState, addChannelEffect({
+  t.deepEqual(reducer(testState2, addChannelEffect({
     channelId: 1,
     effect: 'test effect',
   })), {
@@ -472,7 +482,7 @@ test(`${reducerName} reducer removeChannel`, t => {
 })
 
 test(`${reducerName} reducer removeChannelEffect`, t => {
-  t.deepEqual(reducer(initialState, removeChannelEffect({
+  t.deepEqual(reducer(testState2, removeChannelEffect({
     channelId: 0,
     effectId: 0,
   })), {
