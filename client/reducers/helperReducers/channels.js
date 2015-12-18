@@ -20,13 +20,12 @@ import {computeId} from '../_tools'
 import channelReducer from './channel'
 import {mapIndexed} from '../../tools/indexedIterators'
 
-export const defaultChannel = {effects: [{id: computeId([]), name: 'pingPongDelay'}],
-                               selectedAddEffect: 'pingPongDelay',
-                               selectedAddSource: 'fm',
-                               sources: ['sine']}
-
-export const initialState = [{...defaultChannel, sources: ['detuned']},
-                             defaultChannel]
+export const initialState = [{
+  effects: [{id: computeId([]), name: 'pingPongDelay'}],
+  selectedAddEffect: 'pingPongDelay',
+  selectedAddSource: 'fm',
+  sources: ['sine'],
+}]
 
 export default (state = initialState, action) => {
   switch (action.type) {
