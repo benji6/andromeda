@@ -1,9 +1,9 @@
-import capitalize from 'capitalize';
-import React from 'react';
-import {map} from 'ramda';
-import InputLabel from '../atoms/InputLabel';
-import Checkbox from '../atoms/Checkbox';
-import FullSelect from '../atoms/FullSelect';
+import capitalize from 'capitalize'
+import React from 'react'
+import {map} from 'ramda'
+import InputLabel from '../atoms/InputLabel'
+import Checkbox from '../atoms/Checkbox'
+import FullSelect from '../atoms/FullSelect'
 
 export default ({arpeggiatorIsOn,
                  handleArpeggiatorIsOnChange,
@@ -24,4 +24,4 @@ export default ({arpeggiatorIsOn,
                   options={map(value => ({text: capitalize.words(value),
                                           value}), patterns)} />
     </label>
-  </div>;
+  </div>

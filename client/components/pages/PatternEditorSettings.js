@@ -1,24 +1,24 @@
 import capitalize from 'capitalize'
-import {compose, identity, map} from 'ramda';
-import React from 'react';
-import {connect} from 'react-redux';
+import {compose, identity, map} from 'ramda'
+import React from 'react'
+import {connect} from 'react-redux'
 import {
   updateActivePatternInstrument,
   updateActivePatternOctave,
   updateActivePatternVolume,
   updateActivePatternXLength,
-} from '../../actions';
-import Selector from '../molecules/Selector';
-import RangeSelector from '../molecules/RangeSelector';
-import FullButton from '../atoms/FullButton';
+} from '../../actions'
+import Selector from '../molecules/Selector'
+import RangeSelector from '../molecules/RangeSelector'
+import FullButton from '../atoms/FullButton'
 import {eventValuePath} from '../../tools/paths'
 
 export default connect(identity)(({activePatternIndex,
                                    instruments,
                                    dispatch,
                                    patterns}) => {
-  const activePattern = patterns[activePatternIndex];
-  const {instrument, octave, xLength, volume} = activePattern;
+  const activePattern = patterns[activePatternIndex]
+  const {instrument, octave, xLength, volume} = activePattern
   return <div className="flex-column text-center">
     <h2 className="text-center">Pattern Editor Settings</h2>
     <Selector defaultValue={instrument}
@@ -78,5 +78,5 @@ export default connect(identity)(({activePatternIndex,
       <span className="inline-label-text"></span>
       <FullButton text="OK" to="/pattern-editor" />
     </div>
-  </div>;
-});
+  </div>
+})

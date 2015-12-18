@@ -35,4 +35,4 @@ export default ({gain, frequency, detune = 12, startTime, stopTime}) => ({
                         startTime,
                         stopTime,
                         type: 'sawtooth'}],
-});
+})

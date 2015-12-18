@@ -16,4 +16,4 @@ export default ({gain, frequency, startTime, stopTime}) => ({
                         startTime,
                         stopTime,
                         type: 'square'}],
-});
+})

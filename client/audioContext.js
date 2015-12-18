@@ -1,1 +1,1 @@
-export default new AudioContext();
+export default new AudioContext()

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react'
 
 export default ({output, ...props}) =>
   <div className="slider">
@@ -7,4 +7,4 @@ export default ({output, ...props}) =>
     </div>
     <input type="range"
            {...props} />
-  </div>;
+  </div>

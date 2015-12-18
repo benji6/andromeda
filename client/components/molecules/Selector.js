@@ -1,7 +1,7 @@
-import capitalize from 'capitalize';
-import React from 'react';
-import InputLabel from '../atoms/InputLabel';
-import FullSelect from '../atoms/FullSelect';
+import capitalize from 'capitalize'
+import React from 'react'
+import InputLabel from '../atoms/InputLabel'
+import FullSelect from '../atoms/FullSelect'
 
 export default ({defaultValue,
                  handleChange,
@@ -12,4 +12,4 @@ export default ({defaultValue,
     <FullSelect defaultValue={defaultValue}
                 onChange={handleChange}
                 options={options} />
-  </label>;
+  </label>

@@ -1,8 +1,8 @@
-import {range} from 'ramda';
-import {mapIndexed} from '../../tools/indexedIterators';
-import React from 'react';
-import XLabels from '../molecules/XLabels';
-import PatternRow from '../molecules/PatternRow';
+import {range} from 'ramda'
+import {mapIndexed} from '../../tools/indexedIterators'
+import React from 'react'
+import XLabels from '../molecules/XLabels'
+import PatternRow from '../molecules/PatternRow'
 
 export default ({onClick, yLabel, patternData}) =>
   <div className="pattern">
@@ -13,4 +13,4 @@ export default ({onClick, yLabel, patternData}) =>
                                           rowIndex={i}
                                           yLabel={yLabel(i)} />,
                 patternData)}
-  </div>;
+  </div>

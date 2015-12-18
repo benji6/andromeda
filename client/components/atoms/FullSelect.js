@@ -1,5 +1,5 @@
-import {mapIndexed} from '../../tools/indexedIterators';
-import React from 'react';
+import {mapIndexed} from '../../tools/indexedIterators'
+import React from 'react'
 
 export default ({options, ...props}) =>
   <select className="full-button full-select"
@@ -8,4 +8,4 @@ export default ({options, ...props}) =>
       <option value={value} key={i}>
         {text}
       </option>, options)}
-  </select>;
+  </select>

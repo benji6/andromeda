@@ -4,11 +4,11 @@ export const initialState = [
   'sine',
   'supersaw',
   'triangles',
-];
+]
 
 export default (state = initialState, {type}) => {
   switch (type) {
     default:
-      return state;
+      return state
   }
-};
+}

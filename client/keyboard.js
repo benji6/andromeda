@@ -64,7 +64,7 @@ const computeNoteParams = pitch => {
       frequency: pitchToFrequency(pitch + 12 * keyboard.octave),
     },
   }
-};
+}
 
 fromEvent(document.body, 'keydown')
   .transduce(compose(

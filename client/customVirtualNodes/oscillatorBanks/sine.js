@@ -4,4 +4,4 @@ export default ({gain, frequency, startTime, stopTime}) => ({
                         type: 'sine',
                         startTime,
                         stopTime}],
-});
+})

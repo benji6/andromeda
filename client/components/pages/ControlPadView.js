@@ -1,9 +1,9 @@
-import {identity} from 'ramda';
-import React from 'react';
-import {connect} from 'react-redux';
-import ControlPad from '../organisms/ControlPad';
-import PerformanceMenu from '../organisms/PerformanceMenu';
-import Navigation from '../organisms/Navigation';
+import {identity} from 'ramda'
+import React from 'react'
+import {connect} from 'react-redux'
+import ControlPad from '../organisms/ControlPad'
+import PerformanceMenu from '../organisms/PerformanceMenu'
+import Navigation from '../organisms/Navigation'
 
 export default connect(identity)(({controlPad}) =>
   <div>
@@ -12,4 +12,4 @@ export default connect(identity)(({controlPad}) =>
       <ControlPad {...controlPad}/>
     </div>
     <PerformanceMenu />
-  </div>);
+  </div>)

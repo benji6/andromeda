@@ -1,4 +1,4 @@
-import capitalize from 'capitalize';
+import capitalize from 'capitalize'
 import {
   always,
   compose,
@@ -7,13 +7,13 @@ import {
   map,
   difference,
   reject,
-} from 'ramda';
-import React from 'react';
-import {connect} from 'react-redux';
-import {mapIndexed} from '../../tools/indexedIterators';
-import Navigation from '../organisms/Navigation';
-import FullSelect from '../atoms/FullSelect';
-import {Cross, Down, Plus, Up} from '../atoms/IconButtons';
+} from 'ramda'
+import React from 'react'
+import {connect} from 'react-redux'
+import {mapIndexed} from '../../tools/indexedIterators'
+import Navigation from '../organisms/Navigation'
+import FullSelect from '../atoms/FullSelect'
+import {Cross, Down, Plus, Up} from '../atoms/IconButtons'
 import {addChannelEffect,
         addChannelSource,
         moveChannelEffectDown,
@@ -21,7 +21,7 @@ import {addChannelEffect,
         removeChannelSource,
         removeChannelEffect,
         updateSelectedAddEffect,
-        updateSelectedAddSource} from '../../actions';
+        updateSelectedAddSource} from '../../actions'
 import {eventValuePath} from '../../tools/paths'
 
 export default connect(identity)(({audioGraphAndChannels: {channels},
@@ -30,12 +30,12 @@ export default connect(identity)(({audioGraphAndChannels: {channels},
                                    params,
                                    ...props}) => {
   const channelId = Number(params.channelId)
-  const appEffects = props.effects;
+  const appEffects = props.effects
   const {effects,
          selectedAddEffect,
          selectedAddSource,
-         sources} = channels[channelId];
-  const availableSources = difference(instruments, sources);
+         sources} = channels[channelId]
+  const availableSources = difference(instruments, sources)
   return <div>
     <Navigation />
     <div className="flex-column text-center justify-center">
@@ -65,12 +65,12 @@ export default connect(identity)(({audioGraphAndChannels: {channels},
               compose(dispatch,
                       addChannelSource,
                       always({channelId,
-                              source: selectedAddSource}))();
+                              source: selectedAddSource}))()
               compose(dispatch,
                       updateSelectedAddSource,
                       always({channelId,
                               selectedAddSource: reject(equals(selectedAddSource),
-                                                        availableSources)[0]}))();
+                                                        availableSources)[0]}))()
             }} /></td>
           </tr> :
           null}
@@ -109,5 +109,5 @@ export default connect(identity)(({audioGraphAndChannels: {channels},
         </tbody>
       </table>
     </div>
-  </div>;
-});
+  </div>
+})

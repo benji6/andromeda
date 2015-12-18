@@ -10,4 +10,4 @@ export default ({decay = 1 / 3,
   5: ['gain', 4, {gain: decay}],
   6: ['gain', 'output', {gain: 1 - mix}],
   7: ['gain', [5, 6], {gain: 1}, 'input'],
-});
+})

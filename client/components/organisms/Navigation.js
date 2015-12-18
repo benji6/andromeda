@@ -1,7 +1,7 @@
-import React from 'react';
-// import SongEditor from '../pages/SongEditor';
-import HollowButton from '../atoms/HollowButton';
-import Menu from './Menu';
+import React from 'react'
+// import SongEditor from '../pages/SongEditor'
+import HollowButton from '../atoms/HollowButton'
+import Menu from './Menu'
 
 // <HollowButton onClick={() => render(<Provider store={store}>
 //                                       <SongEditor />
@@ -22,4 +22,4 @@ export default () =>
       <HollowButton key="4"
                     text="Settings"
                     to="/settings" />,
-  ]} />;
+  ]} />
