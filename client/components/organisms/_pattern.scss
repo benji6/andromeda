@@ -1,28 +1,8 @@
 .pattern {
-  $total-width: 100vw / 12 * 11;
-  $side-length: $total-width / 9;
   align-content: center;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin: auto;
-  width: $total-width;
-  .step {
-    $color: #15a;
-    background-color: $color;
-    border: $side-length / 48 solid #eee;
-    box-sizing: border-box;
-    cursor: pointer;
-    height: 100%;
-    width: 100%;;
-    &.active {
-      background: lighten($color, 20%);
-    }
-    &.selected {
-      background: darken($color, 25%);
-    }
-    &.active.selected {
-      background: darken($color, 15%);
-    }
-  }
+  width: $pattern-total-width;
 }
