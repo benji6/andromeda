@@ -566,5 +566,30 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
       },
     ],
   })
+  t.deepEqual(reducer({
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['pingPongDelay', 'output'],
+      'channel:0-type:source-id:something': ['sine', 'channel:0-type:effect-id:0'],
+    },
+    channels: [{
+      effects: [{id: 0, name: 'pingPongDelay'}],
+      selectedAddEffect: 'pingPongDelay',
+      selectedAddSource: 'fm',
+      sources: ['sine'],
+    }],
+  }, removeChannelEffect({
+    channelId: 0,
+    effectId: 0,
+  })), {
+    audioGraph: {
+      'channel:0-type:source-id:something': ['sine', 'output'],
+    },
+    channels: [{
+      effects: [],
+      selectedAddEffect: 'pingPongDelay',
+      selectedAddSource: 'fm',
+      sources: ['sine'],
+    }],
+  })
   t.end()
 })
