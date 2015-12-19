@@ -75,6 +75,13 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
       params,
     ],
   })
+  t.deepEqual(reducer({}, addAudioGraphSource(payload1)), {
+    'channel:[0 1]-type:source-id:some id': [
+      'instrument',
+      ['output', 'output'],
+      params,
+    ],
+  })
   t.end()
 })
 
