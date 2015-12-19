@@ -12,6 +12,7 @@
     background-color: $color;
     border: $side-length / 48 solid #eee;
     box-sizing: border-box;
+    cursor: pointer;
     height: 100%;
     width: 100%;;
     &.active {
