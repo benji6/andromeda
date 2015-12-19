@@ -10,14 +10,14 @@ export default ({arpeggiatorIsOn,
                  handlePatternSelect,
                  patterns,
                  selectedPattern}) =>
-  <div className="flex-column">
+  <div className='flex-column'>
     <label>
-      <InputLabel text="Arpeggiator" />
+      <InputLabel text='Arpeggiator' />
       <Checkbox checked={arpeggiatorIsOn}
                 onChange={handleArpeggiatorIsOnChange} />
     </label>
     <label>
-      <InputLabel text="Pattern" />
+      <InputLabel text='Pattern' />
       <FullSelect defaultValue={selectedPattern}
                   disabled={!arpeggiatorIsOn}
                   onChange={handlePatternSelect}

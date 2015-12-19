@@ -3,7 +3,7 @@ import {
   UPDATE_CONTROL_PAD_NO_SCALE,
   UPDATE_CONTROL_PAD_OCTAVE,
   UPDATE_CONTROL_PAD_PORTAMENTO,
-  UPDATE_CONTROL_PAD_RANGE,
+  UPDATE_CONTROL_PAD_RANGE
 } from '../actions'
 import {initialState as instrumentInitialState} from './instruments'
 
@@ -12,7 +12,7 @@ export const initialState = {
   noScale: false,
   octave: 0,
   portamento: false,
-  range: 1,
+  range: 1
 }
 
 export default (state = initialState, {type, payload}) => {

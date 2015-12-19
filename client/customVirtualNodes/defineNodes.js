@@ -12,7 +12,7 @@ import triangles from './oscillatorBanks/triangles'
 import virtualAudioGraph from '../virtualAudioGraph'
 
 virtualAudioGraph.defineNodes({
-  adsr, detuned, fm, none, pingPongDelay, sine, supersaw, triangles,
+  adsr, detuned, fm, none, pingPongDelay, sine, supersaw, triangles
 })
 
 const loadReverb = (uri, name) => reverbAsync(uri)

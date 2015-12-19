@@ -1,3 +1,4 @@
+/* global Rx THREE */
 import {
   assoc,
   compose,
@@ -5,13 +6,13 @@ import {
   isNil,
   map,
   reject,
-  tap,
+  tap
 } from 'ramda'
 import {
   addAudioGraphSource,
-  removeKeysFromAudioGraphContaining,
+  removeKeysFromAudioGraphContaining
 } from '../../actions'
-import React from 'react'
+import React, {PropTypes} from 'react'
 import store, {dispatch} from '../../store'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 
@@ -27,11 +28,11 @@ const minZ = -128
 const sideLength = 1
 const maxDepth = 3 * sideLength
 
-const validRatio = x => x < 0 ?
-  0 :
-  x >= 1 ?
-    1 - EPSILON :
-    x
+const validRatio = x => x < 0
+  ? 0
+  : x >= 1
+    ? 1 - EPSILON
+    : x
 
 const calculateXAndYRatio = e => {
   const {top, right, bottom, left} = e.target.getBoundingClientRect()
@@ -52,13 +53,13 @@ let camera = null
 let scene = null
 
 const setRendererSize = () => {
-  const rendererSize = innerWidth < innerHeight ? innerWidth : innerHeight * 0.8
+  const rendererSize = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight * 0.8
   renderer.setSize(rendererSize, rendererSize)
 }
 
 const renderLoop = _ => {
   if (!renderLoopActive) return
-  requestAnimationFrame(() => renderLoop())
+  window.requestAnimationFrame(() => renderLoop())
   const controlPadHasNotBeenUsed = isNil(currentXYRatios)
   const {z} = cube.position
   if (controlPadHasNotBeenUsed) return
@@ -68,12 +69,12 @@ const renderLoop = _ => {
     return
   }
   const {xRatio, yRatio} = currentXYRatios
-  const xMod = xRatio < 0.5 ?
-   -(xRatio - 0.5) ** 2 :
-   (xRatio - 0.5) ** 2
-  const yMod = yRatio < 0.5 ?
-   -(yRatio - 0.5) ** 2 :
-   (yRatio - 0.5) ** 2
+  const xMod = xRatio < 0.5
+    ? -(xRatio - 0.5) ** 2
+    : (xRatio - 0.5) ** 2
+  const yMod = yRatio < 0.5
+    ? -(yRatio - 0.5) ** 2
+    : (yRatio - 0.5) ** 2
   const rotationBaseAmount = 0.01
   const rotationVelocityComponent = 0.8
   cube.rotation.x += rotationBaseAmount + rotationVelocityComponent * xMod
@@ -97,20 +98,27 @@ const calculatePitch = ratio => {
 
 const xYRatiosToNote = ({range, xRatio, yRatio}) => ({
   pitch: calculatePitch(range * xRatio),
-  modulation: yRatio,
+  modulation: yRatio
 })
 const xYRatiosToNoScaleNote = ({range, xRatio, yRatio}) => ({
   pitch: 12 * range * xRatio,
-  modulation: yRatio,
+  modulation: yRatio
 })
 export default class extends React.Component {
+  static propTypes = {
+    instrument: PropTypes.string,
+    noScale: PropTypes.bool,
+    octave: PropTypes.number,
+    portamento: PropTypes.bool,
+    range: PropTypes.number
+  }
   componentDidMount () {
     const {
       instrument,
       noScale,
       octave,
       portamento,
-      range,
+      range
     } = this.props
     controlPadElement = document.querySelector('.control-pad')
 
@@ -123,7 +131,7 @@ export default class extends React.Component {
 
     const inputTransducer = compose(
       map(tap(e => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
-      reject(e => e instanceof MouseEvent && !mouseInputEnabled),
+      reject(e => e instanceof window.MouseEvent && !mouseInputEnabled),
       map(e => currentXYRatios = calculateXAndYRatio(e)),
       map(assoc('range', range)),
       map(ifElse(_ => noScale, xYRatiosToNoScaleNote, xYRatiosToNote)),
@@ -140,8 +148,8 @@ export default class extends React.Component {
         instrument,
         params: {
           frequency: pitchToFrequency(pitch + 12 * octave),
-          gain: (1 - modulation) / 2,
-        },
+          gain: (1 - modulation) / 2
+        }
       })),
       map(compose(dispatch, addAudioGraphSource))
     )
@@ -178,7 +186,7 @@ export default class extends React.Component {
     camera.position.z = cameraZ
 
     setRendererSize()
-    onresize = setRendererSize
+    window.onresize = setRendererSize
 
     controlPadElement.oncontextmenu = e => e.preventDefault()
 
@@ -187,10 +195,10 @@ export default class extends React.Component {
 
   componentWillUnmount () {
     renderLoopActive = false
-    onresize = null
+    window.onresize = null
   }
 
   render () {
-    return <canvas width="768" height="768" className="control-pad"></canvas>
+    return <canvas width='768' height='768' className='control-pad'></canvas>
   }
 }

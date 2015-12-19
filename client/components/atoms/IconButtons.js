@@ -1,6 +1,6 @@
 import React from 'react'
 
-const createButton = text => ({...props}) => <button className="icon-button"
+const createButton = text => ({...props}) => <button className='icon-button'
                                                     {...props}>{text}</button>
 
 export const Cross = createButton('x')

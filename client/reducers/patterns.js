@@ -5,7 +5,7 @@ import {
   UPDATE_ACTIVE_PATTERN_INSTRUMENT,
   UPDATE_ACTIVE_PATTERN_OCTAVE,
   UPDATE_ACTIVE_PATTERN_X_LENGTH,
-  UPDATE_ACTIVE_PATTERN_VOLUME,
+  UPDATE_ACTIVE_PATTERN_VOLUME
 } from '../actions'
 import store from '../store'
 
@@ -16,7 +16,7 @@ export const initialState = [{
   octave: 0,
   xLength: 8,
   yLength: 8,
-  volume: 1 / 3,
+  volume: 1 / 3
 }]
 
 export const noteExists = (notes, x, y) => Boolean(find(both(propEq('x', x), propEq('y', y)), notes))
@@ -28,11 +28,11 @@ export default (state = initialState, {type, payload}) => {
       const {activePatternIndex} = store.getState()
       const activePattern = state[activePatternIndex]
       const {notes} = activePattern
-      return noteExists(notes, x, y) ?
-        [...state.slice(0, activePatternIndex),
+      return noteExists(notes, x, y)
+        ? [...state.slice(0, activePatternIndex),
          {...activePattern, notes: reject(equals(payload), notes)},
-         ...state.slice(activePatternIndex + 1)] :
-        [...state.slice(0, activePatternIndex),
+         ...state.slice(activePatternIndex + 1)]
+        : [...state.slice(0, activePatternIndex),
          {...activePattern, notes: [...notes, payload]},
          ...state.slice(activePatternIndex + 1)]
     }

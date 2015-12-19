@@ -1,7 +1,7 @@
 import {
   append,
   reject,
-  remove,
+  remove
 } from 'ramda'
 import {
   ADD_CHANNEL_EFFECT,
@@ -9,7 +9,7 @@ import {
   REMOVE_CHANNEL_EFFECT,
   REMOVE_CHANNEL_SOURCE,
   UPDATE_SELECTED_ADD_EFFECT,
-  UPDATE_SELECTED_ADD_SOURCE,
+  UPDATE_SELECTED_ADD_SOURCE
 } from '../../actions'
 import {computeId} from '../_tools'
 
@@ -17,7 +17,7 @@ export const initialState = {
   effects: [],
   selectedAddEffect: 'pingPongDelay',
   selectedAddSource: 'detuned',
-  sources: [],
+  sources: []
 }
 
 export default (state = initialState, action = {}, i) => {
@@ -29,8 +29,8 @@ export default (state = initialState, action = {}, i) => {
           ...state,
           effects: append({
             id: computeId(state.effects),
-            name: payload.effect,
-          }, state.effects),
+            name: payload.effect
+          }, state.effects)
         }
       case ADD_CHANNEL_SOURCE:
         return {...state, sources: [...state.sources, payload.source]}
@@ -39,23 +39,23 @@ export default (state = initialState, action = {}, i) => {
           ...state,
           sources: remove(payload.sourceId, 1, state.sources),
           selectedAddSource: state.selectedAddSource ||
-            state.sources[payload.sourceId],
+            state.sources[payload.sourceId]
         }
       case REMOVE_CHANNEL_EFFECT:
         return {
           ...state,
           effects: reject(effect => effect.id === payload.effectId,
-                          state.effects),
+                          state.effects)
         }
       case UPDATE_SELECTED_ADD_SOURCE:
         return {
           ...state,
-          selectedAddSource: payload.selectedAddSource,
+          selectedAddSource: payload.selectedAddSource
         }
       case UPDATE_SELECTED_ADD_EFFECT:
         return {
           ...state,
-          selectedAddEffect: payload.selectedAddEffect,
+          selectedAddEffect: payload.selectedAddEffect
         }
       default: return state
     }

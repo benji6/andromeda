@@ -10,5 +10,5 @@ export default ({a, d, s}) => ({
   0: ['gain', 'output', {gain: [['setValueAtTime', 0, currentTime],
                                 ['linearRampToValueAtTime', 1, currentTime + a],
                                 ['linearRampToValueAtTime', s, currentTime + a + d]]}],
-  1: ['bufferSource', 0, {buffer, loop: true}],
+  1: ['bufferSource', 0, {buffer, loop: true}]
 })

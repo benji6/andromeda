@@ -1,9 +1,10 @@
+/* global Rx */
 import {compose, flip, isNil, map, prop, reject, tap} from 'ramda'
 import {dispatch, getState} from './store'
 import pitchToFrequency from './audioHelpers/pitchToFrequency'
 import {
   addAudioGraphSource,
-  removeKeysFromAudioGraphContaining,
+  removeKeysFromAudioGraphContaining
 } from './actions'
 const {fromEvent} = Rx.Observable
 const keyCodesToPitches = {
@@ -46,7 +47,7 @@ const keyCodesToPitches = {
   80: 17,
   189: 18,
   219: 19,
-  221: 20,
+  221: 20
 }
 
 const pressedKeys = new Set()
@@ -61,8 +62,8 @@ const computeNoteParams = pitch => {
     instrument: keyboard.instrument,
     params: {
       gain: keyboard.volume,
-      frequency: pitchToFrequency(pitch + 12 * keyboard.octave),
-    },
+      frequency: pitchToFrequency(pitch + 12 * keyboard.octave)
+    }
   }
 }
 

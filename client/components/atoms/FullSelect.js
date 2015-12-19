@@ -2,7 +2,7 @@ import {mapIndexed} from '../../tools/indexedIterators'
 import React from 'react'
 
 export default ({options, ...props}) =>
-  <select className="full-button full-select"
+  <select className='full-button full-select'
           {...props}>
     {mapIndexed(({text, value}, i) =>
       <option value={value} key={i}>

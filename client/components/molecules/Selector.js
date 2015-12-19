@@ -7,7 +7,7 @@ export default ({defaultValue,
                  handleChange,
                  label,
                  options}) =>
-  <label className="selector">
+  <label className='selector'>
     <InputLabel text={capitalize(label)} />
     <FullSelect defaultValue={defaultValue}
                 onChange={handleChange}

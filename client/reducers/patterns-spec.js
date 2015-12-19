@@ -6,7 +6,7 @@ import {
   updateActivePatternInstrument,
   updateActivePatternOctave,
   updateActivePatternXLength,
-  updateActivePatternVolume,
+  updateActivePatternVolume
 } from '../actions'
 
 const reducerName = 'patterns'

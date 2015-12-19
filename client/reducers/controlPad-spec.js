@@ -5,7 +5,7 @@ import {
   updateControlPadNoScale,
   updateControlPadOctave,
   updateControlPadPortamento,
-  updateControlPadRange,
+  updateControlPadRange
 } from '../actions'
 
 const reducerName = 'controlPad'

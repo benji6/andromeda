@@ -4,7 +4,7 @@ export const initialState = {
   activePosition: null,
   xLength: 8,
   yLength: 3,
-  steps: [],
+  steps: []
 }
 
 export default (state = initialState, {type, payload}) => {

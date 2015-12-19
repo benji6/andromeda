@@ -2,7 +2,7 @@ import {
   append,
   findIndex,
   remove,
-  update,
+  update
 } from 'ramda'
 import {
   ADD_CHANNEL,
@@ -14,7 +14,7 @@ import {
   REMOVE_CHANNEL_SOURCE,
   REMOVE_CHANNEL,
   UPDATE_SELECTED_ADD_EFFECT,
-  UPDATE_SELECTED_ADD_SOURCE,
+  UPDATE_SELECTED_ADD_SOURCE
 } from '../../actions'
 import {computeId} from '../_tools'
 import channelReducer from './channel'
@@ -24,7 +24,7 @@ export const initialState = [{
   effects: [{id: computeId([]), name: 'pingPongDelay'}],
   selectedAddEffect: 'pingPongDelay',
   selectedAddSource: 'fm',
-  sources: ['sine'],
+  sources: ['sine']
 }]
 
 export default (state = initialState, action) => {

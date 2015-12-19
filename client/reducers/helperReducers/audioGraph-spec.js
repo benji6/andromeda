@@ -2,7 +2,7 @@ import test from 'tape'
 import reducer, {computeInitialState, initialState} from './audioGraph'
 import {
   addAudioGraphSource,
-  removeKeysFromAudioGraphContaining,
+  removeKeysFromAudioGraphContaining
 } from '../../actions'
 
 const reducerName = 'audioGraph'
@@ -19,7 +19,7 @@ test(`${reducerName} computeInitialState`, t => {
     'channel:0-type:effect-id:0': ['none', 'output'],
     'channel:0-type:effect-id:1': ['pingPongDelay', 'channel:0-type:effect-id:0'],
     'channel:1-type:effect-id:0': ['none', 'output'],
-    'channel:1-type:effect-id:1': ['pingPongDelay', 'channel:1-type:effect-id:0'],
+    'channel:1-type:effect-id:1': ['pingPongDelay', 'channel:1-type:effect-id:0']
   })
   t.end()
 })
@@ -38,7 +38,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
     channelIds: [0],
     id,
     instrument,
-    params,
+    params
   }
   t.deepEqual(reducer({'channel:0-type:effect-id:0': ['effect0', 'output'],
                        'channel:0-type:effect-id:1': ['effect1', 'channel:0-type:effect-id:0'],
@@ -56,14 +56,15 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
     channelIds: [0, 1],
     id,
     instrument,
-    params,
+    params
   }
-  t.deepEqual(reducer({'channel:0-type:effect-id:0': ['effect0', 'output'],
-                       'channel:0-type:effect-id:1': ['effect1', 'channel:0-type:effect-id:0'],
-                       'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],
-                       'channel:1-type:effect-id:10': ['effect0', 'output'],
-                       'channel:[0]-type:source-id:some id': ['source0', 'channel:0-type:effect-id:2', {a: 5}]},
-                      addAudioGraphSource(payload1)), {
+  t.deepEqual(reducer({
+    'channel:0-type:effect-id:0': ['effect0', 'output'],
+    'channel:0-type:effect-id:1': ['effect1', 'channel:0-type:effect-id:0'],
+    'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],
+    'channel:1-type:effect-id:10': ['effect0', 'output'],
+    'channel:[0]-type:source-id:some id': ['source0', 'channel:0-type:effect-id:2', {a: 5}]
+  }, addAudioGraphSource(payload1)), {
     'channel:0-type:effect-id:0': ['effect0', 'output'],
     'channel:0-type:effect-id:1': ['effect1', 'channel:0-type:effect-id:0'],
     'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],
@@ -72,15 +73,15 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
     'channel:[0 1]-type:source-id:some id': [
       instrument,
       ['channel:0-type:effect-id:2', 'channel:1-type:effect-id:10'],
-      params,
-    ],
+      params
+    ]
   })
   t.deepEqual(reducer({}, addAudioGraphSource(payload1)), {
     'channel:[0 1]-type:source-id:some id': [
       'instrument',
       ['output', 'output'],
-      params,
-    ],
+      params
+    ]
   })
   t.end()
 })

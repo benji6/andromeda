@@ -6,7 +6,7 @@ import {
   identity,
   map,
   difference,
-  reject,
+  reject
 } from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
@@ -38,10 +38,10 @@ export default connect(identity)(({audioGraphAndChannels: {channels},
   const availableSources = difference(instruments, sources)
   return <div>
     <Navigation />
-    <div className="flex-column text-center justify-center">
+    <div className='flex-column text-center justify-center'>
       <h1>{`Channel ${channelId}`}</h1>
       <h2>Sources</h2>
-      <table className="table-center">
+      <table className='table-center'>
         <tbody>
           {mapIndexed((source, sourceId) =>
             <tr key={sourceId}>
@@ -50,8 +50,8 @@ export default connect(identity)(({audioGraphAndChannels: {channels},
                                           removeChannelSource,
                                           always({channelId, sourceId}))} /></td>
             </tr>, sources)}
-            {availableSources.length ?
-            <tr key={sources.length}>
+            {availableSources.length
+            ? <tr key={sources.length}>
               <td>
               <FullSelect defaultValue={selectedAddSource}
                           onChange={compose(dispatch,
@@ -72,12 +72,12 @@ export default connect(identity)(({audioGraphAndChannels: {channels},
                               selectedAddSource: reject(equals(selectedAddSource),
                                                         availableSources)[0]}))()
             }} /></td>
-          </tr> :
-          null}
+          </tr>
+          : null}
         </tbody>
       </table>
       <h2>Effects</h2>
-      <table className="table-center">
+      <table className='table-center'>
         <tbody>
           {mapIndexed(({name, id}, i) =>
             <tr key={id}>

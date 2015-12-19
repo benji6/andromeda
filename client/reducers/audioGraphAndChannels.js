@@ -6,6 +6,6 @@ export default (state = {}, action) => {
   const audioGraph = audioGraphReducer(state.audioGraph, action, channels)
   return {
     audioGraph,
-    channels,
+    channels
   }
 }

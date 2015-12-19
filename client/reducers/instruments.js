@@ -3,7 +3,7 @@ export const initialState = [
   'fm',
   'sine',
   'supersaw',
-  'triangles',
+  'triangles'
 ]
 
 export default (state = initialState, {type}) => {

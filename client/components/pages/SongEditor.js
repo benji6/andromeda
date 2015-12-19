@@ -1,3 +1,4 @@
+/* global Rx */
 import {compose, curry, filter, map,
   range, repeat, transduce} from 'ramda'
 import React from 'react'
@@ -71,7 +72,7 @@ export default connect(x => x)(({dispatch, rootNote, scale, song}) => {
              onClick={onClick}
              rootNote={rootNote}
              scale={scale}
-             yLabel={yLabel(scale, length, rootNote)} />
+             yLabel={yLabel(scale, 'length', rootNote)} />
     <PlayButton onPlay={() => onPlay(dispatch)}
                 onStop={() => onStop(dispatch)} />
   </div>

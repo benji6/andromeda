@@ -1,6 +1,6 @@
 import test from 'tape'
 import pitchFromScaleIndex from './pitchFromScaleIndex'
-import {initialState} from '../reducers/scale'
+import { initialState } from '../reducers/scale'
 
 const majorScale = initialState.scales.major
 

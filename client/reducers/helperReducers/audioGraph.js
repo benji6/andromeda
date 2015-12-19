@@ -14,7 +14,7 @@ import {
   reduce,
   toPairs,
   update,
-  zipObj,
+  zipObj
 } from 'ramda'
 import {
   ADD_AUDIO_GRAPH_SOURCE,
@@ -23,7 +23,7 @@ import {
   MOVE_CHANNEL_EFFECT_UP,
   REMOVE_CHANNEL,
   REMOVE_CHANNEL_EFFECT,
-  REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING,
+  REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING
 } from '../../actions'
 import {reduceIndexed} from '../../tools/indexedIterators'
 import {initialState as channelsInitialState} from './channels'
@@ -62,8 +62,8 @@ export default (state = initialState, {type, payload}, channels) => {
         [computeSourceKey(`[${channelIds.sort().join(' ')}]`, id)]: [
           instrument,
           channelEffectTails,
-          params,
-        ],
+          params
+        ]
       }
     }
     case MOVE_CHANNEL_EFFECT_DOWN: {

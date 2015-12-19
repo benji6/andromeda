@@ -2,7 +2,7 @@ import {ADD_EFFECT} from '../actions'
 
 export const initialState = [
   'pingPongDelay',
-  'none',
+  'none'
 ]
 
 const actions = {[ADD_EFFECT]: (state, payload) => ([...state, payload])}

@@ -7,9 +7,9 @@ export const initialState = {
     'random',
     'up',
     'down',
-    'up and down',
+    'up and down'
   ],
-  selectedPattern: 'up and down',
+  selectedPattern: 'up and down'
 }
 
 export default (state = initialState, {type, payload}) => {

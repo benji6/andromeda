@@ -4,7 +4,7 @@ import {
   addChannelSource,
   removeChannelSource,
   updateSelectedAddEffect,
-  updateSelectedAddSource,
+  updateSelectedAddSource
 } from '../../actions'
 
 const reducerName = 'channels'

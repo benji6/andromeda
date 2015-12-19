@@ -3,7 +3,7 @@ import reducer, {initialState} from './keyboard'
 import {
   updateKeyboardInstrument,
   updateKeyboardOctave,
-  updateKeyboardVolume,
+  updateKeyboardVolume
 } from '../actions'
 
 const reducerName = 'keyboard'

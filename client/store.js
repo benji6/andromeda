@@ -28,5 +28,5 @@ export default createStore(combineReducers({
   playing,
   rootNote,
   scale,
-  song,
+  song
 }))

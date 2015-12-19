@@ -4,7 +4,7 @@ import {
   compose,
   ifElse,
   isEmpty,
-  pluck,
+  pluck
 } from 'ramda'
 
 export const computeId = ifElse(isEmpty,
