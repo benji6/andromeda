@@ -1,11 +1,13 @@
 import {
+  always,
   compose,
   curry,
   dissoc,
   equals,
-  head,
   filter,
   find,
+  identity,
+  ifElse,
   isEmpty,
   isNil,
   keys,
@@ -28,6 +30,7 @@ import {
 import {reduceIndexed} from '../../tools/indexedIterators'
 import {initialState as channelsInitialState} from './channels'
 import {getNewestId} from '../_tools'
+import {safeHead} from '../../tools/_helpers'
 
 const computeKey = curry((type, channelId, id) => `channel:${channelId}-type:${type}-id:${id}`)
 const computeEffectKey = computeKey('effect')
@@ -54,7 +57,13 @@ export default (state = initialState, {type, payload}, channels) => {
         filter(([key]) => isNil(findParentPairs(key, channelEffectPairs)),
                channelEffectPairs)
       const channelEffectTails = map(
-        compose(head, head, computeChannelEffectTails, computeChannelEffectPairs),
+        compose(
+          ifElse(isEmpty, always('output'), identity),
+          safeHead,
+          safeHead,
+          computeChannelEffectTails,
+          computeChannelEffectPairs
+        ),
         channelIds
       )
       return {
