@@ -4,7 +4,6 @@ const browserify = require('browserify')
 const buffer = require('vinyl-buffer')
 const cdnizer = require('gulp-cdnizer')
 const connect = require('gulp-connect')
-const del = require('del')
 const gulp = require('gulp')
 const gutil = require('gulp-util')
 const minifyCSS = require('gulp-minify-css')
@@ -25,8 +24,6 @@ gulp.task('connect', () => connect.server({
   livereload: true,
   root: publicPath
 }))
-
-gulp.task('clean', () => del('public/scripts/index*'))
 
 gulp.task('styles', () => gulp.src('client/index.scss')
     .pipe(plumber())
@@ -107,11 +104,12 @@ gulp.task('watch', () => {
   gulp.watch('client/**/*.js', () => runSequence(['scriptsDev']))
 })
 
-gulp.task('build',
-  () => runSequence('clean',
-      ['styles', 'htmlProd', 'scriptsProd']))
+gulp.task(
+  'build',
+  _ => runSequence(['styles', 'htmlProd', 'scriptsProd'])
+)
 
-gulp.task('default',
-  () => runSequence('clean',
-      ['styles', 'htmlDev', 'scriptsDev', 'watch'],
-      'connect'))
+gulp.task(
+  'default',
+  _ => runSequence(['styles', 'htmlDev', 'scriptsDev', 'watch'], 'connect')
+)

@@ -3,8 +3,9 @@
   "version": "0.4.0",
   "description": "Make music in your browser!",
   "scripts": {
-    "build": "gulp build",
-    "dev": "gulp",
+    "build": "npm run clean && gulp build",
+    "clean": "rm -f public/scripts/index*",
+    "dev": "npm run clean && gulp",
     "test": "standard && babel-node node_modules/.bin/tape 'client/**/*-spec.js' | faucet",
     "watch-test": "nodemon --exec npm test"
   },
@@ -32,7 +33,6 @@
     "babel-runtime": "^5.8.29",
     "babelify": "^6.4.0",
     "browserify": "^12.0.0",
-    "del": "^2.0.2",
     "faucet": "0.0.1",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
