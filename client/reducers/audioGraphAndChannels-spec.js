@@ -1,5 +1,12 @@
 import test from 'tape'
-import { addChannel, addChannelEffect, moveChannelEffectDown, moveChannelEffectUp, removeChannel, removeChannelEffect } from '../actions'
+import {
+  addChannel,
+  addChannelEffect,
+  moveChannelEffectDown,
+  moveChannelEffectUp,
+  removeChannel,
+  removeChannelEffect
+} from '../actions'
 import reducer from './audioGraphAndChannels'
 
 const reducerName = 'audioGraphAndChannels'
