@@ -1,5 +1,6 @@
 import {
   always,
+  append,
   compose,
   curry,
   dissoc,
@@ -37,7 +38,7 @@ const computeEffectKey = computeKey('effect')
 const computeSourceKey = computeKey('source')
 const second = nth(1)
 const findParentPairs = curry((targetKey, statePairs) => find(compose(equals(targetKey), second, second), statePairs))
-
+const emptyToOutput = ifElse(isEmpty, always('output'), identity)
 export const computeInitialState = reduceIndexed((acc, {effects}, channelId) => ({...acc, ...reduceIndexed((acc1, effect, i) => ({...acc1, [computeEffectKey(channelId, i)]: [effect.name, i === 0 ? 'output' : computeEffectKey(channelId, i - 1)]}),
                                                                                                            {},
                                                                                                            effects)}),
@@ -47,7 +48,14 @@ export const initialState = computeInitialState(channelsInitialState)
 export default (state = initialState, {type, payload}, channels) => {
   switch (type) {
     case ADD_AUDIO_GRAPH_SOURCE: {
-      const {channelIds, id, instrument, params} = payload
+      const {id, instrument, params} = payload
+      const channelIds = reduceIndexed(
+        (ids, {sources}, i) => sources.indexOf(instrument) !== -1
+          ? append(i, ids)
+          : ids,
+        [],
+        channels
+      )
       const statePairs = toPairs(state)
       const computeChannelEffectPairs = channelId =>
         filter(([x]) => x.indexOf(`channel:${channelId}-`) !== -1 &&
@@ -56,9 +64,9 @@ export default (state = initialState, {type, payload}, channels) => {
       const computeChannelEffectTails = channelEffectPairs =>
         filter(([key]) => isNil(findParentPairs(key, channelEffectPairs)),
                channelEffectPairs)
-      const channelEffectTails = map(
+      const outputs = map(
         compose(
-          ifElse(isEmpty, always('output'), identity),
+          emptyToOutput,
           safeHead,
           safeHead,
           computeChannelEffectTails,
@@ -70,7 +78,7 @@ export default (state = initialState, {type, payload}, channels) => {
         ...state,
         [computeSourceKey(`[${channelIds.sort().join(' ')}]`, id)]: [
           instrument,
-          channelEffectTails,
+          emptyToOutput(outputs),
           params
         ]
       }

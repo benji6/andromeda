@@ -52,7 +52,6 @@ const onPlay = dispatch => Rx.Observable
           map(({x, y}) => {
             const {instrument, volume} = store.getState().patterns[store.getState().activePatternIndex]
             return {
-              channelIds: [0],
               id: `pattern-editor-${y}-${x}`,
               instrument,
               params: {

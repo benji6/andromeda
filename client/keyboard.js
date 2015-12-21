@@ -57,7 +57,6 @@ const computeId = pitch => `keyboard: ${pitch}`
 const computeNoteParams = pitch => {
   const {keyboard} = getState()
   return {
-    channelIds: [0],
     id: computeId(pitch),
     instrument: keyboard.instrument,
     params: {

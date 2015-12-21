@@ -143,7 +143,6 @@ export default class extends React.Component {
       ) && dispatch(removeKeysFromAudioGraphContaining(controlPadId)))),
       map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
       map(({id, pitch, modulation}) => ({
-        channelIds: [0],
         id,
         instrument,
         params: {

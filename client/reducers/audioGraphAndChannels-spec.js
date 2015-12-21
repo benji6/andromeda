@@ -1,5 +1,6 @@
 import test from 'tape'
 import {
+  addAudioGraphSource,
   addChannel,
   addChannelEffect,
   moveChannelEffectDown,
@@ -591,5 +592,203 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
       sources: ['sine']
     }]
   })
+  t.end()
+})
+
+test(`${reducerName} reducer addAudioGraphSource`, t => {
+  const instrument = 'some instrument'
+  const params = {someParams: true}
+  const id = 'some id'
+  t.deepEqual(reducer({
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['pingPongDelay', 'output']
+    },
+    channels: [{
+      effects: [{id: 0, name: 'pingPongDelay'}],
+      selectedAddEffect: 'pingPongDelay',
+      selectedAddSource: 'fm',
+      sources: ['sine']
+    }]
+  }, addAudioGraphSource({
+    id,
+    instrument: 'sine',
+    params
+  })), {
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['pingPongDelay', 'output'],
+      'channel:[0]-type:source-id:some id': [
+        'sine',
+        ['channel:0-type:effect-id:0'],
+        {someParams: true}
+      ]
+    },
+    channels: [{
+      effects: [{id: 0, name: 'pingPongDelay'}],
+      selectedAddEffect: 'pingPongDelay',
+      selectedAddSource: 'fm',
+      sources: ['sine']
+    }]
+  })
+  t.deepEqual(reducer({
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['pingPongDelay', 'output']
+    },
+    channels: [{
+      effects: [{id: 0, name: 'pingPongDelay'}],
+      selectedAddEffect: 'pingPongDelay',
+      selectedAddSource: 'fm',
+      sources: ['sine']
+    }]
+  }, addAudioGraphSource({
+    id,
+    instrument,
+    params
+  })), {
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['pingPongDelay', 'output'],
+      'channel:[]-type:source-id:some id': [
+        'some instrument',
+        'output',
+        {someParams: true}
+      ]
+    },
+    channels: [{
+      effects: [{id: 0, name: 'pingPongDelay'}],
+      selectedAddEffect: 'pingPongDelay',
+      selectedAddSource: 'fm',
+      sources: ['sine']
+    }]
+  })
+
+  t.deepEqual(reducer({
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['effect0', 'output'],
+      'channel:0-type:effect-id:1': ['effect1', 'channel:0-type:effect-id:0'],
+      'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],
+      'channel:1-type:effect-id:10': ['effect0', 'output'],
+      'channel:[0]-type:source-id:0': ['source0', 'channel:0-type:effect-id:2', {a: 5}]
+    },
+    channels: [
+      {
+        effects: [
+          {id: 0, name: 'effect0'},
+          {id: 1, name: 'effect1'},
+          {id: 2, name: 'effect2'}
+        ],
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: [instrument]
+      },
+      {
+        effects: [
+          {id: 10, name: 'effect0'}
+        ],
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['sine']
+      }
+    ]
+  }, addAudioGraphSource({
+    id,
+    instrument,
+    params
+  })), {
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['effect0', 'output'],
+      'channel:0-type:effect-id:1': ['effect1', 'channel:0-type:effect-id:0'],
+      'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],
+      'channel:1-type:effect-id:10': ['effect0', 'output'],
+      'channel:[0]-type:source-id:0': ['source0', 'channel:0-type:effect-id:2', {a: 5}],
+      'channel:[0]-type:source-id:some id': [instrument, ['channel:0-type:effect-id:2'], params]
+    },
+    channels: [
+      {
+        effects: [
+          {id: 0, name: 'effect0'},
+          {id: 1, name: 'effect1'},
+          {id: 2, name: 'effect2'}
+        ],
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: [instrument]
+      },
+      {
+        effects: [
+          {id: 10, name: 'effect0'}
+        ],
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['sine']
+      }
+    ]
+  })
+
+  t.deepEqual(reducer({
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['effect0', 'output'],
+      'channel:0-type:effect-id:1': ['effect1', 'channel:0-type:effect-id:0'],
+      'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],
+      'channel:1-type:effect-id:10': ['effect0', 'output'],
+      'channel:[0]-type:source-id:0': ['source0', 'channel:0-type:effect-id:2', {a: 5}]
+    },
+    channels: [
+      {
+        effects: [
+          {id: 0, name: 'effect0'},
+          {id: 1, name: 'effect1'},
+          {id: 2, name: 'effect2'}
+        ],
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: [instrument]
+      },
+      {
+        effects: [
+          {id: 10, name: 'effect0'}
+        ],
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: [instrument]
+      }
+    ]
+  }, addAudioGraphSource({
+    id,
+    instrument,
+    params
+  })), {
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['effect0', 'output'],
+      'channel:0-type:effect-id:1': ['effect1', 'channel:0-type:effect-id:0'],
+      'channel:0-type:effect-id:2': ['effect2', 'channel:0-type:effect-id:1'],
+      'channel:1-type:effect-id:10': ['effect0', 'output'],
+      'channel:[0]-type:source-id:0': ['source0', 'channel:0-type:effect-id:2', {a: 5}],
+      'channel:[0 1]-type:source-id:some id': [
+        instrument,
+        ['channel:0-type:effect-id:2', 'channel:1-type:effect-id:10'],
+        params
+      ]
+    },
+    channels: [
+      {
+        effects: [
+          {id: 0, name: 'effect0'},
+          {id: 1, name: 'effect1'},
+          {id: 2, name: 'effect2'}
+        ],
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: [instrument]
+      },
+      {
+        effects: [
+          {id: 10, name: 'effect0'}
+        ],
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: [instrument]
+      }
+    ]
+  })
+
   t.end()
 })
