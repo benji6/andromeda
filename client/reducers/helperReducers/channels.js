@@ -1,7 +1,8 @@
 import {
   append,
   findIndex,
-  remove,
+  propEq,
+  reject,
   update
 } from 'ramda'
 import {
@@ -22,6 +23,7 @@ import {mapIndexed} from '../../tools/indexedIterators'
 
 export const initialState = [{
   effects: [{id: computeId([]), name: 'pingPongDelay'}],
+  id: 0,
   selectedAddEffect: 'pingPongDelay',
   selectedAddSource: 'fm',
   sources: ['sine']
@@ -37,8 +39,9 @@ export default (state = initialState, action) => {
     case UPDATE_SELECTED_ADD_EFFECT:
       return mapIndexed((channel, i) => channelReducer(channel, action, i),
                         state)
-    case ADD_CHANNEL: return append(channelReducer(), state)
-    case REMOVE_CHANNEL: return remove(action.payload, 1, state)
+    case ADD_CHANNEL:
+      return append({...channelReducer(), id: computeId(state)}, state)
+    case REMOVE_CHANNEL: return reject(propEq('id', action.payload), state)
     case MOVE_CHANNEL_EFFECT_DOWN: {
       const {channelId, effectId} = action.payload
       const channel = state[channelId]

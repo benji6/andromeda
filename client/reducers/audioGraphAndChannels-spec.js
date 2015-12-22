@@ -16,6 +16,7 @@ const initialState = {
   audioGraph: {'channel:0-type:effect-id:0': ['pingPongDelay', 'output']},
   channels: [{
     effects: [{id: 0, name: 'pingPongDelay'}],
+    id: 0,
     selectedAddEffect: 'pingPongDelay',
     selectedAddSource: 'fm',
     sources: ['sine']
@@ -36,6 +37,7 @@ const testState0 = {
         {id: 1, name: 'effect1'},
         {id: 90, name: 'effect90'}
       ],
+      id: 0,
       selectedAddEffect: 'pingPongDelay',
       selectedAddSource: 'fm',
       sources: ['sine']
@@ -46,52 +48,7 @@ const testState0 = {
         {id: 42, name: 'effect42'},
         {id: 99, name: 'effect99'}
       ],
-      selectedAddEffect: 'pingPongDelay',
-      selectedAddSource: 'fm',
-      sources: ['sine']
-    }
-  ]
-}
-
-const testState1 = {
-  audioGraph: {
-    'channel:0-type:effect-id:0': ['effect1', 'output'],
-    'channel:0-type:effect-id:90': ['effect90', 'channel:0-type:effect-id:0'],
-    'channel:1-type:effect-id:100': ['effect100', 'output'],
-    'channel:1-type:effect-id:42': ['effect42', 'channel:1-type:effect-id:100'],
-    'channel:1-type:effect-id:99': ['effect99', 'channel:1-type:effect-id:42'],
-    'channel:1-type:source-id:testSource': ['testSource', 'channel:1-type:effect-id:99'],
-    'channel:2-type:effect-id:0': ['pingPongDelay', 'output'],
-    'channel:3-type:effect-id:0': ['pingPongDelay', 'output']
-  },
-  channels: [
-    {
-      effects: [
-        {id: 1, name: 'effect1'},
-        {id: 90, name: 'effect90'}
-      ],
-      selectedAddEffect: 'pingPongDelay',
-      selectedAddSource: 'fm',
-      sources: ['sine']
-    },
-    {
-      effects: [
-        {id: 100, name: 'effect100'},
-        {id: 42, name: 'effect42'},
-        {id: 99, name: 'effect99'}
-      ],
-      selectedAddEffect: 'pingPongDelay',
-      selectedAddSource: 'fm',
-      sources: ['sine']
-    },
-    {
-      effects: [{id: 0, name: 'pingPongDelay'}],
-      selectedAddEffect: 'pingPongDelay',
-      selectedAddSource: 'fm',
-      sources: ['sine']
-    },
-    {
-      effects: [{id: 0, name: 'pingPongDelay'}],
+      id: 1,
       selectedAddEffect: 'pingPongDelay',
       selectedAddSource: 'fm',
       sources: ['sine']
@@ -107,12 +64,14 @@ const testState2 = {
   channels: [
     {
       effects: [{id: 0, name: 'pingPongDelay'}],
+      id: 0,
       selectedAddEffect: 'pingPongDelay',
       selectedAddSource: 'fm',
       sources: ['detuned']
     },
     {
       effects: [{id: 0, name: 'pingPongDelay'}],
+      id: 1,
       selectedAddEffect: 'pingPongDelay',
       selectedAddSource: 'fm',
       sources: ['sine']
@@ -135,18 +94,21 @@ test(`${reducerName} reducer addChannel`, t => {
     channels: [
       {
         effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['detuned']
       },
       {
         effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
       },
       {
         effects: [],
+        id: 2,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'detuned',
         sources: []
@@ -169,12 +131,14 @@ test(`${reducerName} reducer addChannelEffect`, t => {
     channels: [
       {
         effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['detuned']
       },
       {
         effects: [{id: 0, name: 'pingPongDelay'}, {id: 1, name: 'test effect'}],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -195,6 +159,7 @@ test(`${reducerName} reducer addChannelEffect`, t => {
           {id: 1, name: 'effect1'},
           {id: 90, name: 'effect90'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -205,12 +170,14 @@ test(`${reducerName} reducer addChannelEffect`, t => {
           {id: 42, name: 'effect42'},
           {id: 99, name: 'effect99'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
       },
       {
         effects: [],
+        id: 2,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -234,6 +201,7 @@ test(`${reducerName} reducer addChannelEffect`, t => {
           {id: 1, name: 'effect1'},
           {id: 90, name: 'effect90'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -244,12 +212,14 @@ test(`${reducerName} reducer addChannelEffect`, t => {
           {id: 42, name: 'effect42'},
           {id: 99, name: 'effect99'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
       },
       {
         effects: [{id: 0, name: 'test effect'}],
+        id: 2,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -265,12 +235,14 @@ test(`${reducerName} reducer addChannelEffect`, t => {
     channels: [
       {
         effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['detuned']
       },
       {
         effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'test source',
         sources: ['test source']
@@ -289,12 +261,14 @@ test(`${reducerName} reducer addChannelEffect`, t => {
     channels: [
       {
         effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['detuned']
       },
       {
         effects: [{id: 0, name: 'pingPongDelay'}, {id: 1, name: 'test effect'}],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'test source',
         sources: ['test source']
@@ -322,6 +296,7 @@ test(`${reducerName} reducer moveChannelEffectDown`, t => {
           {id: 1, name: 'effect1'},
           {id: 90, name: 'effect90'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -332,6 +307,7 @@ test(`${reducerName} reducer moveChannelEffectDown`, t => {
           {id: 100, name: 'effect100'},
           {id: 99, name: 'effect99'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -356,6 +332,7 @@ test(`${reducerName} reducer moveChannelEffectDown`, t => {
           {id: 1, name: 'effect1'},
           {id: 90, name: 'effect90'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -366,6 +343,7 @@ test(`${reducerName} reducer moveChannelEffectDown`, t => {
           {id: 99, name: 'effect99'},
           {id: 42, name: 'effect42'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -393,6 +371,7 @@ test(`${reducerName} reducer moveChannelEffectUp`, t => {
           {id: 1, name: 'effect1'},
           {id: 90, name: 'effect90'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -403,6 +382,7 @@ test(`${reducerName} reducer moveChannelEffectUp`, t => {
           {id: 99, name: 'effect99'},
           {id: 42, name: 'effect42'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -427,6 +407,7 @@ test(`${reducerName} reducer moveChannelEffectUp`, t => {
           {id: 1, name: 'effect1'},
           {id: 90, name: 'effect90'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -437,6 +418,7 @@ test(`${reducerName} reducer moveChannelEffectUp`, t => {
           {id: 100, name: 'effect100'},
           {id: 99, name: 'effect99'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -446,9 +428,56 @@ test(`${reducerName} reducer moveChannelEffectUp`, t => {
   t.end()
 })
 
-// this is all wrong!!!!!!!!!!!!!! channels need ids or upgrade id in audiograph (undesirable!!)
 test(`${reducerName} reducer removeChannel`, t => {
-  t.deepEqual(reducer(testState1, removeChannel(1)), {
+  t.deepEqual(reducer({
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['effect1', 'output'],
+      'channel:0-type:effect-id:90': ['effect90', 'channel:0-type:effect-id:0'],
+      'channel:1-type:effect-id:100': ['effect100', 'output'],
+      'channel:1-type:effect-id:42': ['effect42', 'channel:1-type:effect-id:100'],
+      'channel:1-type:effect-id:99': ['effect99', 'channel:1-type:effect-id:42'],
+      'channel:1-type:source-id:testSource': ['testSource', 'channel:1-type:effect-id:99'],
+      'channel:2-type:effect-id:0': ['pingPongDelay', 'output'],
+      'channel:3-type:effect-id:0': ['pingPongDelay', 'output']
+    },
+    channels: [
+      {
+        effects: [
+          {id: 1, name: 'effect1'},
+          {id: 90, name: 'effect90'}
+        ],
+        id: 0,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['sine']
+      },
+      {
+        effects: [
+          {id: 100, name: 'effect100'},
+          {id: 42, name: 'effect42'},
+          {id: 99, name: 'effect99'}
+        ],
+        id: 1,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['sine']
+      },
+      {
+        effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 2,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['sine']
+      },
+      {
+        effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 3,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['sine']
+      }
+    ]
+  }, removeChannel(1)), {
     audioGraph: {
       'channel:0-type:effect-id:0': ['effect1', 'output'],
       'channel:0-type:effect-id:90': ['effect90', 'channel:0-type:effect-id:0'],
@@ -461,21 +490,75 @@ test(`${reducerName} reducer removeChannel`, t => {
           {id: 1, name: 'effect1'},
           {id: 90, name: 'effect90'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
       },
       {
         effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 2,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
       },
       {
         effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 3,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
+      }
+    ]
+  })
+  t.deepEqual(reducer({
+    audioGraph: {
+      'channel:2-type:effect-id:0': ['effect1', 'output'],
+      'channel:4-type:source-id:testSource': ['testSource', 'output'],
+      'channel:6-type:effect-id:0': ['pingPongDelay', 'output']
+    },
+    channels: [
+      {
+        effects: [{id: 1, name: 'effect1'}],
+        id: 2,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: []
+      },
+      {
+        effects: [],
+        id: 4,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['testSource']
+      },
+      {
+        effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 6,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: []
+      }
+    ]
+  }, removeChannel(4)), {
+    audioGraph: {
+      'channel:2-type:effect-id:0': ['effect1', 'output'],
+      'channel:6-type:effect-id:0': ['pingPongDelay', 'output']
+    },
+    channels: [
+      {
+        effects: [{id: 1, name: 'effect1'}],
+        id: 2,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: []
+      },
+      {
+        effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 6,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: []
       }
     ]
   })
@@ -493,12 +576,14 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
     channels: [
       {
         effects: [],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['detuned']
       },
       {
         effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -521,6 +606,7 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
           {id: 1, name: 'effect1'},
           {id: 90, name: 'effect90'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -530,6 +616,7 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
           {id: 100, name: 'effect100'},
           {id: 99, name: 'effect99'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -552,6 +639,7 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
           {id: 1, name: 'effect1'},
           {id: 90, name: 'effect90'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -561,6 +649,7 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
           {id: 100, name: 'effect100'},
           {id: 42, name: 'effect42'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -572,12 +661,15 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
       'channel:0-type:effect-id:0': ['pingPongDelay', 'output'],
       'channel:0-type:source-id:something': ['sine', 'channel:0-type:effect-id:0']
     },
-    channels: [{
-      effects: [{id: 0, name: 'pingPongDelay'}],
-      selectedAddEffect: 'pingPongDelay',
-      selectedAddSource: 'fm',
-      sources: ['sine']
-    }]
+    channels: [
+      {
+        effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 0,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['sine']
+      }
+    ]
   }, removeChannelEffect({
     channelId: 0,
     effectId: 0
@@ -585,12 +677,15 @@ test(`${reducerName} reducer removeChannelEffect`, t => {
     audioGraph: {
       'channel:0-type:source-id:something': ['sine', 'output']
     },
-    channels: [{
-      effects: [],
-      selectedAddEffect: 'pingPongDelay',
-      selectedAddSource: 'fm',
-      sources: ['sine']
-    }]
+    channels: [
+      {
+        effects: [],
+        id: 0,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['sine']
+      }
+    ]
   })
   t.end()
 })
@@ -605,6 +700,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
     },
     channels: [{
       effects: [{id: 0, name: 'pingPongDelay'}],
+      id: 0,
       selectedAddEffect: 'pingPongDelay',
       selectedAddSource: 'fm',
       sources: ['sine']
@@ -624,6 +720,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
     },
     channels: [{
       effects: [{id: 0, name: 'pingPongDelay'}],
+      id: 0,
       selectedAddEffect: 'pingPongDelay',
       selectedAddSource: 'fm',
       sources: ['sine']
@@ -635,6 +732,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
     },
     channels: [{
       effects: [{id: 0, name: 'pingPongDelay'}],
+      id: 0,
       selectedAddEffect: 'pingPongDelay',
       selectedAddSource: 'fm',
       sources: ['sine']
@@ -654,6 +752,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
     },
     channels: [{
       effects: [{id: 0, name: 'pingPongDelay'}],
+      id: 0,
       selectedAddEffect: 'pingPongDelay',
       selectedAddSource: 'fm',
       sources: ['sine']
@@ -675,6 +774,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
           {id: 1, name: 'effect1'},
           {id: 2, name: 'effect2'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: [instrument]
@@ -683,6 +783,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
         effects: [
           {id: 10, name: 'effect0'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -708,6 +809,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
           {id: 1, name: 'effect1'},
           {id: 2, name: 'effect2'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: [instrument]
@@ -716,6 +818,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
         effects: [
           {id: 10, name: 'effect0'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
@@ -738,6 +841,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
           {id: 1, name: 'effect1'},
           {id: 2, name: 'effect2'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: [instrument]
@@ -746,6 +850,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
         effects: [
           {id: 10, name: 'effect0'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: [instrument]
@@ -775,6 +880,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
           {id: 1, name: 'effect1'},
           {id: 2, name: 'effect2'}
         ],
+        id: 0,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: [instrument]
@@ -783,6 +889,7 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
         effects: [
           {id: 10, name: 'effect0'}
         ],
+        id: 1,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: [instrument]
