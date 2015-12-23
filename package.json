@@ -5,7 +5,7 @@
   "scripts": {
     "build": "npm run clean && gulp build",
     "clean": "rm -f public/scripts/index*",
-    "dev": "npm run clean && gulp",
+    "start": "npm run clean && gulp",
     "test": "standard && babel-node node_modules/.bin/tape 'client/**/*-spec.js' | faucet",
     "watch-test": "nodemon --exec npm test"
   },
