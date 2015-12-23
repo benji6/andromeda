@@ -8,8 +8,8 @@ import { mapIndexed } from '../../tools/indexedIterators'
 import Pattern from '../organisms/Pattern'
 import PlayButton from '../atoms/PlayButton'
 import Navigation from '../organisms/Navigation'
+import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
-import scaleIndexToFrequency from '../../audioHelpers/scaleIndexToFrequency'
 import PatternMenu from '../organisms/PatternMenu'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import { noteExists } from '../../reducers/patterns'
@@ -25,14 +25,15 @@ const onPlay = dispatch => Rx.Observable
       () => 60000 / store.getState().bpm)
     .takeUntil(playStopSubject)
     .map(count => {
-      const {activePatternIndex, patterns, scale} = store.getState()
+      const {activePatternIndex, patterns, rootNote, scale} = store.getState()
       const {notes, octave, xLength, yLength} = patterns[activePatternIndex]
       return {
         notes,
         octave,
-        yLength,
         position: count % xLength,
-        scale
+        rootNote,
+        scale,
+        yLength
       }
     })
     .do(compose(
@@ -44,9 +45,16 @@ const onPlay = dispatch => Rx.Observable
       dispatch,
       removeKeysFromAudioGraphContaining,
       _ => `pattern-editor-${lastPosition}`)
-  )
+    )
     .do(({position}) => lastPosition = position)
-    .subscribe(({notes, octave, yLength, position, scale}) => transduce(
+    .subscribe(({
+      notes,
+      octave,
+      position,
+      rootNote,
+      scale,
+      yLength
+    }) => transduce(
         compose(
           filter(({y}) => y === position),
           map(({x, y}) => {
@@ -56,10 +64,10 @@ const onPlay = dispatch => Rx.Observable
               instrument,
               params: {
                 gain: volume,
-                frequency: scaleIndexToFrequency(
+                frequency: pitchToFrequency(pitchFromScaleIndex(
                   scale.scales[scale.scaleName],
                   yLength - 1 - x + scale.scales[scale.scaleName].length * octave
-                )
+                ) + rootNote)
               }
             }
           }),

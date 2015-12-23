@@ -17,7 +17,6 @@ import store, {dispatch} from '../../store'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 
 const {fromEvent, merge} = Rx.Observable
-const {EPSILON} = Number
 
 const controlPadId = 'controlPad'
 let currentlyPlayingPitch = null
@@ -31,7 +30,7 @@ const maxDepth = 3 * sideLength
 const validRatio = x => x < 0
   ? 0
   : x >= 1
-    ? 1 - EPSILON
+    ? 1 - Number.EPSILON
     : x
 
 const calculateXAndYRatio = e => {
@@ -110,7 +109,8 @@ export default class extends React.Component {
     noScale: PropTypes.bool,
     octave: PropTypes.number,
     portamento: PropTypes.bool,
-    range: PropTypes.number
+    range: PropTypes.number,
+    rootNote: PropTypes.number
   }
   componentDidMount () {
     const {
@@ -118,10 +118,10 @@ export default class extends React.Component {
       noScale,
       octave,
       portamento,
-      range
+      range,
+      rootNote
     } = this.props
     controlPadElement = document.querySelector('.control-pad')
-
     const input$ = merge(fromEvent(controlPadElement, 'touchstart'),
                          fromEvent(controlPadElement, 'touchmove'),
                          fromEvent(controlPadElement, 'mousedown'),
@@ -146,7 +146,7 @@ export default class extends React.Component {
         id,
         instrument,
         params: {
-          frequency: pitchToFrequency(pitch + 12 * octave),
+          frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
           gain: (1 - modulation) / 2
         }
       })),
