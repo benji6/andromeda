@@ -1,5 +1,5 @@
 /* global Rx */
-import {compose, flip, isNil, map, prop, reject, tap} from 'ramda'
+import {compose, flip, identity, isNil, map, prop, reject, tap} from 'ramda'
 import {dispatch, getState} from './store'
 import pitchToFrequency from './audioHelpers/pitchToFrequency'
 import {
@@ -78,7 +78,7 @@ fromEvent(document.body, 'keydown')
     map(addAudioGraphSource),
     map(dispatch)
   ))
-  .subscribe()
+  .subscribe(identity, ::console.error)
 
 fromEvent(document.body, 'keyup')
   .transduce(compose(
@@ -90,4 +90,4 @@ fromEvent(document.body, 'keyup')
     map(removeKeysFromAudioGraphContaining),
     map(dispatch)
   ))
-  .subscribe()
+  .subscribe(identity, ::console.error)

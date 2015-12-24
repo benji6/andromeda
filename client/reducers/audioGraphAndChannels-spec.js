@@ -86,10 +86,10 @@ test(`${reducerName} reducer returns initial state`, t => {
 })
 
 test(`${reducerName} reducer addChannel`, t => {
-  t.deepEqual(reducer(testState2, addChannel()), {
+  t.deepEqual(reducer({
     audioGraph: {
       'channel:0-type:effect-id:0': ['pingPongDelay', 'output'],
-      'channel:1-type:effect-id:0': ['pingPongDelay', 'output']
+      'channel:2-type:effect-id:0': ['pingPongDelay', 'output']
     },
     channels: [
       {
@@ -101,14 +101,35 @@ test(`${reducerName} reducer addChannel`, t => {
       },
       {
         effects: [{id: 0, name: 'pingPongDelay'}],
-        id: 1,
+        id: 2,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['sine']
+      }
+    ]
+  }, addChannel()), {
+    audioGraph: {
+      'channel:0-type:effect-id:0': ['pingPongDelay', 'output'],
+      'channel:2-type:effect-id:0': ['pingPongDelay', 'output']
+    },
+    channels: [
+      {
+        effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 0,
+        selectedAddEffect: 'pingPongDelay',
+        selectedAddSource: 'fm',
+        sources: ['detuned']
+      },
+      {
+        effects: [{id: 0, name: 'pingPongDelay'}],
+        id: 2,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'fm',
         sources: ['sine']
       },
       {
         effects: [],
-        id: 2,
+        id: 3,
         selectedAddEffect: 'pingPongDelay',
         selectedAddSource: 'detuned',
         sources: []
@@ -747,11 +768,11 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
   const id = 'some id'
   t.deepEqual(reducer({
     audioGraph: {
-      'channel:0-type:effect-id:0': ['pingPongDelay', 'output']
+      'channel:3-type:effect-id:0': ['pingPongDelay', 'output']
     },
     channels: [{
       effects: [{id: 0, name: 'pingPongDelay'}],
-      id: 0,
+      id: 3,
       selectedAddEffect: 'pingPongDelay',
       selectedAddSource: 'fm',
       sources: ['sine']
@@ -762,16 +783,16 @@ test(`${reducerName} reducer addAudioGraphSource`, t => {
     params
   })), {
     audioGraph: {
-      'channel:0-type:effect-id:0': ['pingPongDelay', 'output'],
-      'channel:[0]-type:source-id:some id': [
+      'channel:3-type:effect-id:0': ['pingPongDelay', 'output'],
+      'channel:[3]-type:source-id:some id': [
         'sine',
-        ['channel:0-type:effect-id:0'],
+        ['channel:3-type:effect-id:0'],
         {someParams: true}
       ]
     },
     channels: [{
       effects: [{id: 0, name: 'pingPongDelay'}],
-      id: 0,
+      id: 3,
       selectedAddEffect: 'pingPongDelay',
       selectedAddSource: 'fm',
       sources: ['sine']

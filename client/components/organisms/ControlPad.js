@@ -2,6 +2,7 @@
 import {
   assoc,
   compose,
+  identity,
   ifElse,
   isNil,
   map,
@@ -160,8 +161,8 @@ export default class extends React.Component {
       map(_ => dispatch(removeKeysFromAudioGraphContaining(controlPadId)))
     )
 
-    input$.transduce(inputTransducer).subscribe()
-    endInput$.transduce(endInputTransducer).subscribe()
+    input$.transduce(inputTransducer).subscribe(identity, ::console.error)
+    endInput$.transduce(endInputTransducer).subscribe(identity, ::console.error)
 
     renderLoopActive = true
     scene = new THREE.Scene()

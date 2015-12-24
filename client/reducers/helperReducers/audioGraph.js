@@ -14,6 +14,7 @@ import {
   keys,
   map,
   nth,
+  propEq,
   reduce,
   toPairs,
   update,
@@ -49,9 +50,9 @@ export default (state = initialState, {type, payload}, channels) => {
   switch (type) {
     case ADD_AUDIO_GRAPH_SOURCE: {
       const {id, instrument, params} = payload
-      const channelIds = reduceIndexed(
-        (ids, {sources}, i) => sources.indexOf(instrument) !== -1
-          ? append(i, ids)
+      const channelIds = reduce(
+        (ids, {id, sources}) => sources.indexOf(instrument) !== -1
+          ? append(id, ids)
           : ids,
         [],
         channels
@@ -140,7 +141,7 @@ export default (state = initialState, {type, payload}, channels) => {
       return zipObj(keysToKeep, map(key => state[key], keysToKeep))
     case ADD_CHANNEL_EFFECT: {
       const {channelId, effect} = payload
-      const effectId = getNewestId(channels[channelId].effects)
+      const effectId = getNewestId(find(propEq('id', channelId), channels).effects)
       const channelKey = computeEffectKey(channelId, effectId)
       if (effectId === 0) {
         return {...state, [channelKey]: [effect, 'output']}

@@ -13,16 +13,26 @@ import {
 } from '../../actions'
 import {computeId} from '../_tools'
 
-export const initialState = {
+export const createChannel = id => ({
   effects: [],
+  id,
   selectedAddEffect: 'pingPongDelay',
   selectedAddSource: 'detuned',
   sources: []
+})
+
+export const initialState = {
+  effects: [{id: 0, name: 'pingPongDelay'}],
+  id: 0,
+  selectedAddEffect: 'pingPongDelay',
+  selectedAddSource: 'fm',
+  sources: ['sine']
 }
 
-export default (state = initialState, action = {}, i) => {
-  const {payload} = action
-  if (i === (payload && payload.channelId)) {
+export default (state = initialState, action) => {
+  const {payload} = action || {}
+  const channelId = payload && payload.channelId
+  if (state.id === channelId) {
     switch (action.type) {
       case ADD_CHANNEL_EFFECT:
         return {

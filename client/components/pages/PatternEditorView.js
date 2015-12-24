@@ -77,7 +77,7 @@ const onPlay = dispatch => Rx.Observable
         },
         null,
         notes
-    ))
+    ), ::console.error)
 
 const onStop = dispatch => {
   playStopSubject.onNext()

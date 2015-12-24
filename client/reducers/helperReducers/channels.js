@@ -1,6 +1,8 @@
 import {
   append,
+  find,
   findIndex,
+  map,
   propEq,
   reject,
   update
@@ -18,16 +20,9 @@ import {
   UPDATE_SELECTED_ADD_SOURCE
 } from '../../actions'
 import {computeId} from '../_tools'
-import channelReducer from './channel'
-import {mapIndexed} from '../../tools/indexedIterators'
+import channelReducer, {createChannel, initialState as channelInitialState} from './channel'
 
-export const initialState = [{
-  effects: [{id: computeId([]), name: 'pingPongDelay'}],
-  id: 0,
-  selectedAddEffect: 'pingPongDelay',
-  selectedAddSource: 'fm',
-  sources: ['sine']
-}]
+export const initialState = [channelInitialState]
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -37,14 +32,16 @@ export default (state = initialState, action) => {
     case REMOVE_CHANNEL_SOURCE:
     case UPDATE_SELECTED_ADD_SOURCE:
     case UPDATE_SELECTED_ADD_EFFECT:
-      return mapIndexed((channel, i) => channelReducer(channel, action, i),
-                        state)
+      return map(channel => channelReducer(channel, action), state)
     case ADD_CHANNEL:
-      return append({...channelReducer(), id: computeId(state)}, state)
+      return append(
+        {...createChannel(computeId(state)), id: computeId(state)},
+        state
+      )
     case REMOVE_CHANNEL: return reject(propEq('id', action.payload), state)
     case MOVE_CHANNEL_EFFECT_DOWN: {
       const {channelId, effectId} = action.payload
-      const channel = state[channelId]
+      const channel = find(propEq('id', channelId), state)
       const {effects} = channel
       const effectsIndex = findIndex(({id}) => id === effectId, effects)
       return update(channelId,
@@ -57,7 +54,7 @@ export default (state = initialState, action) => {
     }
     case MOVE_CHANNEL_EFFECT_UP: {
       const {channelId, effectId} = action.payload
-      const channel = state[channelId]
+      const channel = find(propEq('id', channelId), state)
       const {effects} = channel
       const effectsIndex = findIndex(({id}) => id === effectId, effects)
 

@@ -3,9 +3,11 @@ import {
   always,
   compose,
   equals,
+  find,
   identity,
   map,
   difference,
+  propEq,
   reject
 } from 'ramda'
 import React from 'react'
@@ -14,14 +16,16 @@ import {mapIndexed} from '../../tools/indexedIterators'
 import Navigation from '../organisms/Navigation'
 import FullSelect from '../atoms/FullSelect'
 import {Cross, Down, Plus, Up} from '../atoms/IconButtons'
-import {addChannelEffect,
-        addChannelSource,
-        moveChannelEffectDown,
-        moveChannelEffectUp,
-        removeChannelSource,
-        removeChannelEffect,
-        updateSelectedAddEffect,
-        updateSelectedAddSource} from '../../actions'
+import {
+  addChannelEffect,
+  addChannelSource,
+  moveChannelEffectDown,
+  moveChannelEffectUp,
+  removeChannelSource,
+  removeChannelEffect,
+  updateSelectedAddEffect,
+  updateSelectedAddSource
+} from '../../actions'
 import {eventValuePath} from '../../tools/paths'
 
 export default connect(identity)(({audioGraphAndChannels: {channels},
@@ -31,10 +35,12 @@ export default connect(identity)(({audioGraphAndChannels: {channels},
                                    ...props}) => {
   const channelId = Number(params.channelId)
   const appEffects = props.effects
-  const {effects,
-         selectedAddEffect,
-         selectedAddSource,
-         sources} = channels[channelId]
+  const {
+    effects,
+    selectedAddEffect,
+    selectedAddSource,
+    sources
+  } = find(propEq('id', channelId), channels)
   const availableSources = difference(instruments, sources)
   return <div>
     <Navigation />
