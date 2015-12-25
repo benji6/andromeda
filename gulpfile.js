@@ -3,7 +3,6 @@ const babelify = require('babelify')
 const browserify = require('browserify')
 const buffer = require('vinyl-buffer')
 const cdnizer = require('gulp-cdnizer')
-const connect = require('gulp-connect')
 const gulp = require('gulp')
 const gutil = require('gulp-util')
 const minifyCSS = require('gulp-minify-css')
@@ -20,11 +19,6 @@ const watchify = require('watchify')
 const browserifyEntryPath = 'client/index.js'
 const publicPath = 'public'
 
-gulp.task('connect', () => connect.server({
-  livereload: true,
-  root: publicPath
-}))
-
 gulp.task('styles', () => gulp.src('client/index.scss')
     .pipe(plumber())
     .pipe(sass())
@@ -33,15 +27,13 @@ gulp.task('styles', () => gulp.src('client/index.scss')
       cascade: false
     }))
     .pipe(minifyCSS())
-    .pipe(gulp.dest(`${publicPath}/styles`))
-    .pipe(connect.reload()))
+    .pipe(gulp.dest(`${publicPath}/styles`)))
 
 gulp.task('htmlDev', () => gulp.src('client/index.html')
     .pipe(plumber())
     .pipe(minifyInline())
     .pipe(minifyHTML())
-    .pipe(gulp.dest(publicPath))
-    .pipe(connect.reload()))
+    .pipe(gulp.dest(publicPath)))
 
 gulp.task('htmlProd', () => gulp.src('client/index.html')
     .pipe(cdnizer({
@@ -60,8 +52,7 @@ gulp.task('htmlProd', () => gulp.src('client/index.html')
     }))
     .pipe(minifyInline())
     .pipe(minifyHTML())
-    .pipe(gulp.dest(publicPath))
-    .pipe(connect.reload()))
+    .pipe(gulp.dest(publicPath)))
 
 gulp.task('scriptsDev',
   () => watchify(browserify(browserifyEntryPath, Object.assign({}, watchify.args, {debug: true})))
@@ -86,8 +77,7 @@ gulp.task('scriptsDev',
       .pipe(buffer())
       .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest(`${publicPath}/scripts`))
-      .pipe(connect.reload()))
+      .pipe(gulp.dest(`${publicPath}/scripts`)))
 
 gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
     .transform(babelify, {optional: ['runtime'], stage: 0})
@@ -111,5 +101,5 @@ gulp.task(
 
 gulp.task(
   'default',
-  _ => runSequence(['styles', 'htmlDev', 'scriptsDev', 'watch'], 'connect')
+  _ => runSequence(['styles', 'htmlDev', 'scriptsDev', 'watch'])
 )
