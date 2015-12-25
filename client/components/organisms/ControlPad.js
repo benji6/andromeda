@@ -53,13 +53,15 @@ let camera = null
 let scene = null
 
 const setRendererSize = () => {
-  const rendererSize = window.innerWidth < window.innerHeight ? window.innerWidth : window.innerHeight * 0.8
+  const rendererSize = window.innerWidth < window.innerHeight
+    ? window.innerWidth
+    : window.innerHeight * 0.8
   renderer.setSize(rendererSize, rendererSize)
 }
 
 const renderLoop = _ => {
   if (!renderLoopActive) return
-  window.requestAnimationFrame(() => renderLoop())
+  window.requestAnimationFrame(renderLoop)
   const controlPadHasNotBeenUsed = isNil(currentXYRatios)
   const {z} = cube.position
   if (controlPadHasNotBeenUsed) return
@@ -131,7 +133,9 @@ export default class extends React.Component {
                             fromEvent(controlPadElement, 'mouseup'))
 
     const inputTransducer = compose(
-      map(tap(e => mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled)),
+      map(tap(e => mouseInputEnabled = e.type === 'mousedown'
+        ? true
+        : mouseInputEnabled)),
       reject(e => e instanceof window.MouseEvent && !mouseInputEnabled),
       map(e => currentXYRatios = calculateXAndYRatio(e)),
       map(assoc('range', range)),
@@ -181,8 +185,8 @@ export default class extends React.Component {
 
     directionalLight.position.set(16, 16, 24).normalize()
     scene.add(new THREE.AmbientLight(0x333333))
-         .add(directionalLight)
-         .add(cube)
+      .add(directionalLight)
+      .add(cube)
     camera.position.z = cameraZ
 
     setRendererSize()
