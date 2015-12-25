@@ -9,7 +9,6 @@ const minifyCSS = require('gulp-minify-css')
 const minifyHTML = require('gulp-minify-html')
 const minifyInline = require('gulp-minify-inline')
 const plumber = require('gulp-plumber')
-const runSequence = require('run-sequence')
 const sass = require('gulp-sass')
 const source = require('vinyl-source-stream')
 const sourcemaps = require('gulp-sourcemaps')
@@ -89,17 +88,10 @@ gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
     .pipe(gulp.dest(`${publicPath}/scripts`)))
 
 gulp.task('watch', () => {
-  gulp.watch('client/index.html', () => runSequence('htmlDev'))
-  gulp.watch('client/**/*.scss', () => runSequence('styles'))
-  gulp.watch('client/**/*.js', () => runSequence(['scriptsDev']))
+  gulp.watch('client/index.html', ['htmlDev'])
+  gulp.watch('client/**/*.scss', ['styles'])
+  gulp.watch('client/**/*.js', ['scriptsDev'])
 })
 
-gulp.task(
-  'build',
-  _ => runSequence(['styles', 'htmlProd', 'scriptsProd'])
-)
-
-gulp.task(
-  'default',
-  _ => runSequence(['styles', 'htmlDev', 'scriptsDev', 'watch'])
-)
+gulp.task('build', ['styles', 'htmlProd', 'scriptsProd'])
+gulp.task('default', ['styles', 'htmlDev', 'scriptsDev', 'watch'])
