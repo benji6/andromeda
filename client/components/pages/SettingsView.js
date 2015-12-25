@@ -1,17 +1,16 @@
 import capitalize from 'capitalize'
-import { compose, identity, keys, map, tap } from 'ramda'
+import {compose, identity, keys, map, tap} from 'ramda'
 import React from 'react'
-import { connect } from 'react-redux'
-import { updateArpeggiatorIsOn, updateBpm, updateMicrophoneIsOn, updateSelectedPattern, updateSelectedRootNote, updateSelectedScale } from '../../actions'
+import {connect} from 'react-redux'
+import {updateBpm, updateMicrophoneIsOn, updateSelectedRootNote, updateSelectedScale} from '../../actions'
 import Navigation from '../organisms/Navigation'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
 import FullButton from '../atoms/FullButton'
-import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector'
 import switchMicrophone from '../../switchMicrophone'
-import { eventValuePath, eventCheckedPath } from '../../tools/paths'
+import {eventValuePath, eventCheckedPath} from '../../tools/paths'
 
 const minBpm = 32
 
@@ -63,22 +62,6 @@ export default connect(identity)(({arpeggiator: {arpeggiatorIsOn, patterns, sele
     eventCheckedPath
   )}
   text='Microphone'
-  />
-      <ArpeggiatorSelector
-  arpeggiatorIsOn={arpeggiatorIsOn}
-  dispatch={dispatch}
-  patterns={patterns}
-  selectedPattern={selectedPattern}
-  handleArpeggiatorIsOnChange={compose(
-    dispatch,
-    updateArpeggiatorIsOn,
-    eventCheckedPath
-  )}
-  handlePatternSelect={compose(
-    dispatch,
-    updateSelectedPattern,
-    eventValuePath
-  )}
   />
     </div>
     <div className='text-center'>
