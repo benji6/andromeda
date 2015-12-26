@@ -2,7 +2,6 @@ const autoprefixer = require('gulp-autoprefixer')
 const babelify = require('babelify')
 const browserify = require('browserify')
 const buffer = require('vinyl-buffer')
-const cdnizer = require('gulp-cdnizer')
 const gulp = require('gulp')
 const gutil = require('gulp-util')
 const minifyCSS = require('gulp-minify-css')
@@ -35,16 +34,6 @@ gulp.task('htmlDev', () => gulp.src('client/index.html')
     .pipe(gulp.dest(publicPath)))
 
 gulp.task('htmlProd', () => gulp.src('client/index.html')
-    .pipe(cdnizer({
-      allowRev: false,
-      allowMin: true,
-      files: [
-        {
-          file: 'scripts/lib/three.min.js',
-          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js'
-        }
-      ]
-    }))
     .pipe(minifyInline())
     .pipe(minifyHTML())
     .pipe(gulp.dest(publicPath)))

@@ -1,4 +1,3 @@
-/* global THREE */
 import {take} from 'imlazy'
 import {
   always,
@@ -13,12 +12,13 @@ import {
   reject,
   tap
 } from 'ramda'
-import {Observable} from 'rx'
 import {
   addAudioGraphSource,
   removeKeysFromAudioGraphContaining
 } from '../../actions'
 import React, {PropTypes} from 'react'
+import {Observable} from 'rx'
+import THREE from 'three'
 import store, {dispatch} from '../../store'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import loop from '../../audioHelpers/loop'

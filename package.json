@@ -37,7 +37,6 @@
     "faucet": "0.0.1",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.1.0",
-    "gulp-cdnizer": "^1.1.6",
     "gulp-minify-css": "^1.2.1",
     "gulp-minify-html": "^1.0.4",
     "gulp-minify-inline": "^0.1.1",
@@ -68,6 +67,7 @@
     "react-router": "^1.0.0-rc3",
     "redux": "^3.0.4",
     "rx": "^4.0.7",
+    "three": "^0.73.0",
     "virtual-audio-graph": "^0.16.4"
   },
   "standard": {
