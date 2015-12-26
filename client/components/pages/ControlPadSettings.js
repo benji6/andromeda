@@ -19,7 +19,7 @@ import {eventValuePath, eventCheckedPath} from '../../tools/paths'
 import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector'
 
 export default connect(identity)(({
-  arpeggiator,
+  arpeggiatorPatterns,
   controlPad,
   dispatch,
   instruments
@@ -54,7 +54,7 @@ export default connect(identity)(({
     <ArpeggiatorSelector
       arpeggiatorIsOn={controlPad.arpeggiatorIsOn}
       dispatch={dispatch}
-      patterns={arpeggiator.patterns}
+      patterns={Object.keys(arpeggiatorPatterns)}
       selectedPattern={controlPad.selectedArpeggiatorPattern}
       handleArpeggiatorIsOnChange={compose(
         dispatch,

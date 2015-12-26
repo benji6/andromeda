@@ -1,7 +1,11 @@
 /* global Rx THREE */
+import {take} from 'imlazy'
 import {
+  always,
   assoc,
   compose,
+  concat,
+  curry,
   identity,
   ifElse,
   isNil,
@@ -16,6 +20,9 @@ import {
 import React, {PropTypes} from 'react'
 import store, {dispatch} from '../../store'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
+import loop from '../../audioHelpers/loop'
+import audioContext from '../../audioContext'
+import {mapIndexed} from '../../tools/indexedIterators'
 
 const {fromEvent, merge} = Rx.Observable
 
@@ -106,17 +113,68 @@ const xYRatiosToNoScaleNote = ({range, xRatio, yRatio}) => ({
   pitch: 12 * range * xRatio,
   modulation: yRatio
 })
+
+const createLoopAudioGraphFragment = curry((
+  {instrument, octave, rootNote},
+  {id, pitch, modulation}
+) => {
+  const {
+    arpeggiatorPatterns,
+    bpm,
+    scale: {scales, scaleName},
+    controlPad: {selectedArpeggiatorPattern}
+  } = store.getState()
+  const scale = scales[scaleName]
+  const arpeggiatedScale = map(a => scale[a], [0, 2, 4])
+  const twoOctaveArpeggiatedScale = concat(
+    arpeggiatedScale,
+    map(x => x + 12, arpeggiatedScale)
+  )
+  const a = take(
+    twoOctaveArpeggiatedScale.length * 2,
+    (arpeggiatorPatterns[selectedArpeggiatorPattern](twoOctaveArpeggiatedScale))
+  )
+  const noteDuration = 60 / bpm / 4
+  const {currentTime} = audioContext
+  return mapIndexed((x, i) => ({
+    id: `${id}-${i}`,
+    instrument,
+    params: {
+      gain: (1 - modulation) / 2,
+      frequency: pitchToFrequency(pitch + x + 12 * octave + rootNote),
+      startTime: currentTime + i * noteDuration,
+      stopTime: currentTime + (i + 1) * noteDuration
+    }
+  }),
+  [...a])
+})
+
+const createSource = curry((
+  {instrument, octave, rootNote},
+  {id, pitch, modulation}
+) => ({
+  id,
+  instrument,
+  params: {
+    frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
+    gain: (1 - modulation) / 2
+  }
+}))
+
 export default class extends React.Component {
   static propTypes = {
+    arpeggiatorIsOn: PropTypes.bool,
     instrument: PropTypes.string,
     noScale: PropTypes.bool,
     octave: PropTypes.number,
     portamento: PropTypes.bool,
     range: PropTypes.number,
-    rootNote: PropTypes.number
+    rootNote: PropTypes.number,
+    selectedArpeggiatorPattern: PropTypes.string
   }
   componentDidMount () {
     const {
+      arpeggiatorIsOn,
       instrument,
       noScale,
       octave,
@@ -125,12 +183,16 @@ export default class extends React.Component {
       rootNote
     } = this.props
     controlPadElement = document.querySelector('.control-pad')
-    const input$ = merge(fromEvent(controlPadElement, 'touchstart'),
-                         fromEvent(controlPadElement, 'touchmove'),
-                         fromEvent(controlPadElement, 'mousedown'),
-                         fromEvent(controlPadElement, 'mousemove'))
-    const endInput$ = merge(fromEvent(controlPadElement, 'touchend'),
-                            fromEvent(controlPadElement, 'mouseup'))
+    const input$ = merge(
+      fromEvent(controlPadElement, 'touchstart'),
+      fromEvent(controlPadElement, 'touchmove'),
+      fromEvent(controlPadElement, 'mousedown'),
+      fromEvent(controlPadElement, 'mousemove')
+    )
+    const endInput$ = merge(
+      fromEvent(controlPadElement, 'touchend'),
+      fromEvent(controlPadElement, 'mouseup')
+    )
 
     const inputTransducer = compose(
       map(tap(e => mouseInputEnabled = e.type === 'mousedown'
@@ -147,15 +209,19 @@ export default class extends React.Component {
         stopLastNoteOnNoteChange
       ) && dispatch(removeKeysFromAudioGraphContaining(controlPadId)))),
       map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
-      map(({id, pitch, modulation}) => ({
-        id,
-        instrument,
-        params: {
-          frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
-          gain: (1 - modulation) / 2
-        }
-      })),
-      map(compose(dispatch, addAudioGraphSource))
+      map(ifElse(
+        always(arpeggiatorIsOn),
+        compose(loop, createLoopAudioGraphFragment({
+          instrument,
+          octave,
+          rootNote
+        })),
+        compose(dispatch, addAudioGraphSource, createSource({
+          instrument,
+          octave,
+          rootNote
+        }))
+      ))
     )
 
     const endInputTransducer = compose(

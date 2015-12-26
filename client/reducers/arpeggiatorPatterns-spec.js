@@ -1,7 +1,7 @@
 import test from 'tape'
-import reducer, {initialState} from './arpeggiator'
+import reducer, {initialState} from './arpeggiatorPatterns'
 
-const reducerName = 'arpeggiator'
+const reducerName = 'arpeggiatorPatterns'
 
 test(`${reducerName} reducer returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState)
