@@ -42,10 +42,6 @@ gulp.task('htmlProd', () => gulp.src('client/index.html')
         {
           file: 'scripts/lib/three.min.js',
           cdn: 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r71/three.min.js'
-        },
-        {
-          file: 'scripts/lib/rx.all.min.js',
-          cdn: 'https://cdnjs.cloudflare.com/ajax/libs/rxjs/3.1.2/rx.all.min.js'
         }
       ]
     }))

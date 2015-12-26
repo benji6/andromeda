@@ -1,13 +1,13 @@
-/* global Rx */
+import {Subject} from 'rx'
 import {compose, forEach} from 'ramda'
 import store from '../store'
 import {addAudioGraphSource} from '../actions'
 
-const arpStop$ = new Rx.Subject()
+const arpStop$ = new Subject()
 arpStop$.subscribe()
 
 module.exports = (audioGraphFragments) => {
-  // Rx.Observable.interval(noteDuration())
+  // Observable.interval(noteDuration())
   //   .transduce(compose(map(() => console.log('something', virtualAudioGraph.currentTime))))
   //   .takeUntil(arpStop$)
   //   .subscribe()

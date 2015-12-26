@@ -67,6 +67,7 @@
     "react-redux": "^4.0.0",
     "react-router": "^1.0.0-rc3",
     "redux": "^3.0.4",
+    "rx": "^4.0.7",
     "virtual-audio-graph": "^0.16.4"
   },
   "standard": {

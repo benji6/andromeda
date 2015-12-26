@@ -1,7 +1,7 @@
-/* global Rx */
 import { compose, curry, filter, identity, map, partial, prop, range, repeat, transduce } from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
+import {Subject, Observable} from 'rx'
 import store from '../../store'
 import { activePatternCellClick, addAudioGraphSource, removeKeysFromAudioGraphContaining, updateActivePatternActivePosition } from '../../actions'
 import { mapIndexed } from '../../tools/indexedIterators'
@@ -13,11 +13,10 @@ import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
 import PatternMenu from '../organisms/PatternMenu'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import { noteExists } from '../../reducers/patterns'
-
 let lastPosition
-const playStopSubject = new Rx.Subject()
+const playStopSubject = new Subject()
 
-const onPlay = dispatch => Rx.Observable
+const onPlay = dispatch => Observable
     .generateWithRelativeTime(0,
       () => true,
       x => x + 1,

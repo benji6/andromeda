@@ -1,4 +1,4 @@
-/* global Rx THREE */
+/* global THREE */
 import {take} from 'imlazy'
 import {
   always,
@@ -13,6 +13,7 @@ import {
   reject,
   tap
 } from 'ramda'
+import {Observable} from 'rx'
 import {
   addAudioGraphSource,
   removeKeysFromAudioGraphContaining
@@ -23,9 +24,7 @@ import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import loop from '../../audioHelpers/loop'
 import audioContext from '../../audioContext'
 import {mapIndexed} from '../../tools/indexedIterators'
-
-const {fromEvent, merge} = Rx.Observable
-
+const {fromEvent, merge} = Observable
 const controlPadId = 'controlPad'
 let currentlyPlayingPitch = null
 let stopLastNoteOnNoteChange = true

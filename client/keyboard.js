@@ -1,12 +1,12 @@
-/* global Rx */
 import {compose, flip, identity, isNil, map, prop, reject, tap} from 'ramda'
+import {Observable} from 'rx'
 import {dispatch, getState} from './store'
 import pitchToFrequency from './audioHelpers/pitchToFrequency'
 import {
   addAudioGraphSource,
   removeKeysFromAudioGraphContaining
 } from './actions'
-const {fromEvent} = Rx.Observable
+const {fromEvent} = Observable
 const keyCodesToPitches = {
   220: -10,
   90: -9,

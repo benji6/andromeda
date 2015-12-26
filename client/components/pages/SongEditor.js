@@ -1,8 +1,8 @@
-/* global Rx */
 import {compose, curry, filter, map,
   range, repeat, transduce} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
+import {Observable, Subject} from 'rx'
 import store from '../../store'
 import {activePatternCellClick,
         updateActivePatternActivePosition} from '../../actions'
@@ -14,12 +14,12 @@ import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import {noteExists} from '../../reducers/patterns'
 
-const playStopSubject = new Rx.Subject()
+const playStopSubject = new Subject()
 
 // const stopAllNotes = forEach(({x, y}) => stopNote({id: `pattern-editor-${x}-${y}`}))
 
 const onPlay = dispatch =>
-  Rx.Observable
+  Observable
     .generateWithRelativeTime(0,
                               () => true,
                               x => x + 1,
