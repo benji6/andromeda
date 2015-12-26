@@ -41,9 +41,6 @@ gulp.task('htmlProd', () => gulp.src('client/index.html')
 gulp.task('scriptsDev',
   () => watchify(browserify(browserifyEntryPath, Object.assign({}, watchify.args, {debug: true})))
       .transform(babelify, {
-        optional: [
-          'runtime'
-        ],
         stage: 0,
         blacklist: [
           'es6.arrowFunctions',
@@ -64,7 +61,7 @@ gulp.task('scriptsDev',
       .pipe(gulp.dest(`${publicPath}/scripts`)))
 
 gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
-    .transform(babelify, {optional: ['runtime'], stage: 0})
+    .transform(babelify, {stage: 0})
     .bundle()
     .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(source('index.js'))
