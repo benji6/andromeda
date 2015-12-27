@@ -1,4 +1,3 @@
-import {take} from 'imlazy'
 import {
   always,
   assoc,
@@ -23,7 +22,7 @@ import store, {dispatch} from '../../store'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import loop from '../../audioHelpers/loop'
 import audioContext from '../../audioContext'
-import {mapIndexed} from '../../helpers'
+import {lazyMapIndexed} from '../../helpers'
 const {fromEvent, merge} = Observable
 const controlPadId = 'controlPad'
 let currentlyPlayingPitch = null
@@ -129,13 +128,9 @@ const createLoopAudioGraphFragment = curry((
     arpeggiatedScale,
     map(x => x + 12, arpeggiatedScale)
   )
-  const a = take(
-    twoOctaveArpeggiatedScale.length * 2,
-    (arpeggiatorPatterns[selectedArpeggiatorPattern](twoOctaveArpeggiatedScale))
-  )
   const noteDuration = 60 / bpm / 4
   const {currentTime} = audioContext
-  return mapIndexed((x, i) => ({
+  return lazyMapIndexed((x, i) => ({
     id: `${id}-${i}`,
     instrument,
     params: {
@@ -145,7 +140,7 @@ const createLoopAudioGraphFragment = curry((
       stopTime: currentTime + (i + 1) * noteDuration
     }
   }),
-  [...a])
+  (arpeggiatorPatterns[selectedArpeggiatorPattern](twoOctaveArpeggiatedScale)))
 })
 
 const createSource = curry((

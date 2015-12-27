@@ -10,7 +10,7 @@ import {
 import {initialState as instrumentInitialState} from './instruments'
 
 export const initialState = {
-  arpeggiatorIsOn: false,
+  arpeggiatorIsOn: true,
   instrument: instrumentInitialState[2],
   noScale: false,
   octave: 0,

@@ -1,5 +1,6 @@
+import {map, take} from 'imlazy'
 import {Subject} from 'rx'
-import {compose, forEach} from 'ramda'
+import {compose} from 'ramda'
 import store from '../store'
 import {addAudioGraphSource} from '../actions'
 
@@ -11,5 +12,5 @@ module.exports = (audioGraphFragments) => {
   //   .transduce(compose(map(() => console.log('something', virtualAudioGraph.currentTime))))
   //   .takeUntil(arpStop$)
   //   .subscribe()
-  forEach(compose(store.dispatch, addAudioGraphSource), audioGraphFragments)
+  [...take(16, map(compose(store.dispatch, addAudioGraphSource), audioGraphFragments))]
 }
