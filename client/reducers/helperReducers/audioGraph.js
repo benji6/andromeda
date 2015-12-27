@@ -29,10 +29,9 @@ import {
   REMOVE_CHANNEL_EFFECT,
   REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING
 } from '../../actions'
-import {reduceIndexed} from '../../tools/indexedIterators'
+import {reduceIndexed, safeHead} from '../../helpers'
 import {initialState as channelsInitialState} from './channels'
 import {getNewestId} from '../_tools'
-import {safeHead} from '../../tools/_helpers'
 
 const computeKey = curry((type, channelId, id) => `channel:${channelId}-type:${type}-id:${id}`)
 const computeEffectKey = computeKey('effect')

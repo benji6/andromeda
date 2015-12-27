@@ -6,7 +6,7 @@ import Selector from '../molecules/Selector'
 import { updateKeyboardInstrument, updateKeyboardOctave, updateKeyboardVolume } from '../../actions'
 import FullButton from '../atoms/FullButton'
 import RangeSelector from '../molecules/RangeSelector'
-import { eventValuePath } from '../../tools/paths'
+import { eventValuePath } from '../../helpers'
 
 export default connect(identity)(({keyboard, dispatch, instruments}) => <div className='flex-column text-center'>
     <h2 className='text-center'>Keyboard Settings</h2>

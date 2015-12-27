@@ -6,7 +6,7 @@ import {Observable, Subject} from 'rx'
 import store from '../../store'
 import {activePatternCellClick,
         updateActivePatternActivePosition} from '../../actions'
-import {mapIndexed} from '../../tools/indexedIterators'
+import {mapIndexed} from '../../helpers'
 import Pattern from '../organisms/Pattern'
 import PlayButton from '../atoms/PlayButton'
 import Navigation from '../organisms/Navigation'

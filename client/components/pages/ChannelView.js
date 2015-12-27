@@ -12,7 +12,7 @@ import {
 } from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
-import {mapIndexed} from '../../tools/indexedIterators'
+import {mapIndexed} from '../../helpers'
 import Navigation from '../organisms/Navigation'
 import FullSelect from '../atoms/FullSelect'
 import {Cross, Down, Plus, Up} from '../atoms/IconButtons'
@@ -26,7 +26,7 @@ import {
   updateSelectedAddEffect,
   updateSelectedAddSource
 } from '../../actions'
-import {eventValuePath} from '../../tools/paths'
+import {eventValuePath} from '../../helpers'
 
 export default connect(identity)(({audioGraphAndChannels: {channels},
                                    dispatch,

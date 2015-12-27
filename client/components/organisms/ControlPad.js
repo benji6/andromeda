@@ -23,7 +23,7 @@ import store, {dispatch} from '../../store'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import loop from '../../audioHelpers/loop'
 import audioContext from '../../audioContext'
-import {mapIndexed} from '../../tools/indexedIterators'
+import {mapIndexed} from '../../helpers'
 const {fromEvent, merge} = Observable
 const controlPadId = 'controlPad'
 let currentlyPlayingPitch = null

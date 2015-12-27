@@ -1,4 +1,4 @@
-import {mapIndexed} from '../../tools/indexedIterators'
+import {mapIndexed} from '../../helpers'
 import React from 'react'
 
 export default ({options, ...props}) =>

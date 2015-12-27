@@ -6,7 +6,7 @@ import { updateActivePatternInstrument, updateActivePatternOctave, updateActiveP
 import Selector from '../molecules/Selector'
 import RangeSelector from '../molecules/RangeSelector'
 import FullButton from '../atoms/FullButton'
-import { eventValuePath } from '../../tools/paths'
+import { eventValuePath } from '../../helpers'
 
 export default connect(identity)(({activePatternIndex, instruments, dispatch, patterns}) => {
   const activePattern = patterns[activePatternIndex]

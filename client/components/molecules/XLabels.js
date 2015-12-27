@@ -1,5 +1,5 @@
 import React from 'react'
-import {mapIndexed} from '../../tools/indexedIterators'
+import {mapIndexed} from '../../helpers'
 
 export default ({labels}) => <div className='x-labels flex-row'>
   {mapIndexed((label, i) => <div className='x-label'
