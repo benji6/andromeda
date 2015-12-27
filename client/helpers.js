@@ -13,6 +13,8 @@ import {
 
 export const eventCheckedPath = path(['currentTarget', 'checked'])
 export const eventValuePath = path(['currentTarget', 'value'])
+export const paramsStartTimePath = path(['params', 'startTime'])
+export const paramsStopTimePath = path(['params', 'stopTime'])
 export const forEachIndexed = addIndex(forEach)
 export const lazyMapIndexed = addIndex(lazyMap)
 export const mapIndexed = addIndex(map)

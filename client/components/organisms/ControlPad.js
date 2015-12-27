@@ -111,6 +111,7 @@ const xYRatiosToNoScaleNote = ({range, xRatio, yRatio}) => ({
   pitch: 12 * range * xRatio,
   modulation: yRatio
 })
+const decimalPart = a => a - Math.floor(a)
 
 const createLoopAudioGraphFragment = curry((
   {instrument, octave, rootNote},
@@ -130,16 +131,22 @@ const createLoopAudioGraphFragment = curry((
   )
   const noteDuration = 60 / bpm / 4
   const {currentTime} = audioContext
-  return lazyMapIndexed((x, i) => ({
-    id: `${id}-${i}`,
-    instrument,
-    params: {
-      gain: (1 - modulation) / 2,
-      frequency: pitchToFrequency(pitch + x + 12 * octave + rootNote),
-      startTime: currentTime + i * noteDuration,
-      stopTime: currentTime + (i + 1) * noteDuration
+  return lazyMapIndexed((x, i) => {
+    const notesSinceBeginning = currentTime / noteDuration
+    const startTime = currentTime +
+      (1 - decimalPart(notesSinceBeginning)) * noteDuration +
+      i * noteDuration
+    return {
+      id: `${id}-${i}`,
+      instrument,
+      params: {
+        gain: (1 - modulation) / 2,
+        frequency: pitchToFrequency(pitch + x + 12 * octave + rootNote),
+        startTime,
+        stopTime: startTime + noteDuration
+      }
     }
-  }),
+  },
   (arpeggiatorPatterns[selectedArpeggiatorPattern](twoOctaveArpeggiatedScale)))
 })
 

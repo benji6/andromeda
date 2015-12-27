@@ -1,10 +1,19 @@
-import {append, compose, forEach, partition} from 'ramda'
+import {
+  append,
+  compose,
+  equals,
+  forEach,
+  none,
+  partition,
+  reject
+} from 'ramda'
 import {dispatch} from '../store'
 import audioContext from '../audioContext'
 import {
   addAudioGraphSource,
   removeKeysFromAudioGraphContaining
 } from '../actions'
+import {paramsStartTimePath, paramsStopTimePath} from '../helpers'
 
 const dispatchAddAudioGraphSource = compose(dispatch, addAudioGraphSource)
 
@@ -12,26 +21,27 @@ const timeoutPeriod = (source, currentTime) =>
   (source.params.startTime - audioContext.currentTime) * 1000 - 50
 
 let activeNotes = []
-let loopActive = false
+let timeoutId = null
 
-export const startLoop = (audioGraphFragments) => {
-  loopActive = true
+export const startLoop = audioGraphFragments => {
+  if (timeoutId !== null) clearTimeout(timeoutId)
   const generator = audioGraphFragments[Symbol.iterator]()
   const firstSource = generator.next().value
   const secondSource = generator.next().value
-  activeNotes = [firstSource, secondSource]
-  dispatchAddAudioGraphSource(firstSource)
+  activeNotes = reject(
+    x => paramsStopTimePath(x) < audioContext.currentTime,
+    activeNotes
+  )
+  if (none(
+    compose(equals(paramsStartTimePath(firstSource)), paramsStartTimePath),
+    activeNotes
+  )) {
+    dispatchAddAudioGraphSource({...firstSource, id: firstSource.id + Math.random()})
+    activeNotes = append(firstSource, activeNotes)
+  }
   const recur = (currentSource, nextSource) => _ => {
-    if (!loopActive) {
-      forEach(
-        ({id}) => dispatch(removeKeysFromAudioGraphContaining(id)),
-        activeNotes
-      )
-      activeNotes = []
-      return
-    }
     const partitioned = partition(
-      x => x.params.stopTime < audioContext.currentTime,
+      x => paramsStopTimePath(x) < audioContext.currentTime,
       activeNotes
     )
     activeNotes = partitioned[1]
@@ -41,15 +51,23 @@ export const startLoop = (audioGraphFragments) => {
     )
     activeNotes = append(nextSource, activeNotes)
     dispatchAddAudioGraphSource(currentSource)
-    setTimeout(
+    timeoutId = setTimeout(
       recur(nextSource, generator.next().value),
       timeoutPeriod(nextSource, audioContext.currentTime)
     )
   }
-  setTimeout(
+  timeoutId = setTimeout(
     recur(secondSource, generator.next().value),
     timeoutPeriod(secondSource, audioContext.currentTime)
   )
 }
 
-export const stopLoop = _ => loopActive = false
+export const stopLoop = _ => {
+  clearTimeout(timeoutId)
+  timeoutId = null
+  forEach(
+    ({id}) => dispatch(removeKeysFromAudioGraphContaining(id)),
+    activeNotes
+  )
+  activeNotes = []
+}
