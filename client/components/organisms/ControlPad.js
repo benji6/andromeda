@@ -20,7 +20,7 @@ import {Observable} from 'rx'
 import THREE from 'three'
 import store, {dispatch} from '../../store'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
-import loop from '../../audioHelpers/loop'
+import {startLoop, stopLoop} from '../../audioHelpers/loop'
 import audioContext from '../../audioContext'
 import {lazyMapIndexed} from '../../helpers'
 const {fromEvent, merge} = Observable
@@ -205,7 +205,7 @@ export default class extends React.Component {
       map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
       map(ifElse(
         always(arpeggiatorIsOn),
-        compose(loop, createLoopAudioGraphFragment({
+        compose(startLoop, createLoopAudioGraphFragment({
           instrument,
           octave,
           rootNote
@@ -222,7 +222,8 @@ export default class extends React.Component {
       map(tap(() => mouseInputEnabled = false)),
       map(tap(() => currentlyPlayingPitch = null)),
       map(e => currentXYRatios = calculateXAndYRatio(e)),
-      map(_ => dispatch(removeKeysFromAudioGraphContaining(controlPadId)))
+      map(_ => dispatch(removeKeysFromAudioGraphContaining(controlPadId))),
+      map(stopLoop),
     )
 
     input$.transduce(inputTransducer).subscribe(identity, ::console.error)
