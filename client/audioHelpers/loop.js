@@ -24,7 +24,7 @@ let activeNotes = []
 let timeoutId = null
 
 export const startLoop = audioGraphFragments => {
-  if (timeoutId !== null) clearTimeout(timeoutId)
+  clearTimeout(timeoutId)
   const generator = audioGraphFragments[Symbol.iterator]()
   const firstSource = generator.next().value
   const secondSource = generator.next().value
@@ -36,7 +36,7 @@ export const startLoop = audioGraphFragments => {
     compose(equals(paramsStartTimePath(firstSource)), paramsStartTimePath),
     activeNotes
   )) {
-    dispatchAddAudioGraphSource({...firstSource, id: firstSource.id + Math.random()})
+    dispatchAddAudioGraphSource(firstSource)
     activeNotes = append(firstSource, activeNotes)
   }
   const recur = (currentSource, nextSource) => _ => {
@@ -64,7 +64,6 @@ export const startLoop = audioGraphFragments => {
 
 export const stopLoop = _ => {
   clearTimeout(timeoutId)
-  timeoutId = null
   forEach(
     ({id}) => dispatch(removeKeysFromAudioGraphContaining(id)),
     activeNotes

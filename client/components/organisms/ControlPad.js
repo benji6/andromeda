@@ -136,12 +136,14 @@ const createLoopAudioGraphFragment = curry((
     const startTime = currentTime +
       (1 - decimalPart(notesSinceBeginning)) * noteDuration +
       i * noteDuration
+    const frequency = pitchToFrequency(pitch + x + 12 * octave + rootNote)
+    const gain = (1 - modulation) / 2
     return {
-      id: `${id}-${i}`,
+      id: `${id}-${i}-${frequency}-${gain}`,
       instrument,
       params: {
-        gain: (1 - modulation) / 2,
-        frequency: pitchToFrequency(pitch + x + 12 * octave + rootNote),
+        gain,
+        frequency,
         startTime,
         stopTime: startTime + noteDuration
       }
