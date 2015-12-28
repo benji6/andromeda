@@ -1,7 +1,7 @@
 import {
   append,
   compose,
-  equals,
+  curry,
   forEach,
   none,
   partition,
@@ -16,7 +16,7 @@ import {
 import {paramsStartTimePath, paramsStopTimePath} from '../helpers'
 
 const dispatchAddAudioGraphSource = compose(dispatch, addAudioGraphSource)
-
+const veryClose = curry((a, b) => a > b - 0.000000001 && a < b + 0.000000001)
 const timeoutPeriod = (source, currentTime) =>
   (source.params.startTime - audioContext.currentTime) * 1000 - 50
 
@@ -33,7 +33,7 @@ export const startLoop = audioGraphFragments => {
     activeNotes
   )
   if (none(
-    compose(equals(paramsStartTimePath(firstSource)), paramsStartTimePath),
+    compose(veryClose(paramsStartTimePath(firstSource)), paramsStartTimePath),
     activeNotes
   )) {
     dispatchAddAudioGraphSource(firstSource)
