@@ -2,6 +2,7 @@ import test from 'tape'
 import reducer, {initialState} from './controlPad'
 import {
   updateControlPadArpeggiatorIsOn,
+  updateControlPadArpeggiatorOctaves,
   updateControlPadInstrument,
   updateControlPadNoScale,
   updateControlPadOctave,
@@ -68,5 +69,13 @@ test(`${reducerName} reducer updateControlPadRange`, t => {
 test(`${reducerName} reducer updateControlPadSelectedArpeggiatorPattern`, t => {
   t.deepEqual(reducer(undefined, updateControlPadSelectedArpeggiatorPattern('test pattern')),
               {...initialState, selectedArpeggiatorPattern: 'test pattern'})
+  t.end()
+})
+
+test(`${reducerName} reducer updateControlPadArpeggiatorOctaves`, t => {
+  t.deepEqual(reducer(undefined, updateControlPadArpeggiatorOctaves(1)),
+              {...initialState, arpeggiatorOctaves: 1})
+  t.deepEqual(reducer(undefined, updateControlPadArpeggiatorOctaves(2)),
+              {...initialState, arpeggiatorOctaves: 2})
   t.end()
 })

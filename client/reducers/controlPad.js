@@ -1,5 +1,6 @@
 import {
   UPDATE_CONTROL_PAD_ARPEGGIATOR_IS_ON,
+  UPDATE_CONTROL_PAD_ARPEGGIATOR_OCTAVES,
   UPDATE_CONTROL_PAD_INSTRUMENT,
   UPDATE_CONTROL_PAD_NO_SCALE,
   UPDATE_CONTROL_PAD_OCTAVE,
@@ -11,6 +12,7 @@ import {initialState as instrumentInitialState} from './instruments'
 
 export const initialState = {
   arpeggiatorIsOn: true,
+  arpeggiatorOctaves: 2,
   instrument: instrumentInitialState[2],
   noScale: false,
   octave: 0,
@@ -23,6 +25,8 @@ export default (state = initialState, {type, payload}) => {
   switch (type) {
     case UPDATE_CONTROL_PAD_ARPEGGIATOR_IS_ON:
       return {...state, arpeggiatorIsOn: payload}
+    case UPDATE_CONTROL_PAD_ARPEGGIATOR_OCTAVES:
+      return {...state, arpeggiatorOctaves: payload}
     case UPDATE_CONTROL_PAD_INSTRUMENT: return {...state, instrument: payload}
     case UPDATE_CONTROL_PAD_NO_SCALE: return {...state, noScale: payload}
     case UPDATE_CONTROL_PAD_OCTAVE: return {...state, octave: payload}

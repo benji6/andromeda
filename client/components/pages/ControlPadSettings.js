@@ -5,6 +5,7 @@ import {connect} from 'react-redux'
 import Selector from '../molecules/Selector'
 import {
   updateControlPadArpeggiatorIsOn,
+  updateControlPadArpeggiatorOctaves,
   updateControlPadInstrument,
   updateControlPadNoScale,
   updateControlPadOctave,
@@ -53,6 +54,7 @@ export default connect(identity)(({
     />
     <ArpeggiatorSelector
       arpeggiatorIsOn={controlPad.arpeggiatorIsOn}
+      arpeggiatorOctaves={controlPad.arpeggiatorOctaves}
       dispatch={dispatch}
       patterns={Object.keys(arpeggiatorPatterns)}
       selectedPattern={controlPad.selectedArpeggiatorPattern}
@@ -60,6 +62,12 @@ export default connect(identity)(({
         dispatch,
         updateControlPadArpeggiatorIsOn,
         eventCheckedPath
+      )}
+      handleArpeggiatorOctavesChange={compose(
+        dispatch,
+        updateControlPadArpeggiatorOctaves,
+        Number,
+        eventValuePath
       )}
       handlePatternSelect={compose(
         dispatch,

@@ -4,12 +4,17 @@ import {map} from 'ramda'
 import InputLabel from '../atoms/InputLabel'
 import Checkbox from '../atoms/Checkbox'
 import FullSelect from '../atoms/FullSelect'
+import RangeSelector from './RangeSelector'
 
-export default ({arpeggiatorIsOn,
-                 handleArpeggiatorIsOnChange,
-                 handlePatternSelect,
-                 patterns,
-                 selectedPattern}) =>
+export default ({
+  arpeggiatorIsOn,
+  arpeggiatorOctaves,
+  handleArpeggiatorIsOnChange,
+  handleArpeggiatorOctavesChange,
+  handlePatternSelect,
+  patterns,
+  selectedPattern
+}) =>
   <div className='flex-column'>
     <label>
       <InputLabel text='Arpeggiator' />
@@ -24,4 +29,12 @@ export default ({arpeggiatorIsOn,
                   options={map(value => ({text: capitalize.words(value),
                                           value}), patterns)} />
     </label>
+    <RangeSelector
+      max='4'
+      min='1'
+      onChange={handleArpeggiatorOctavesChange}
+      output={arpeggiatorOctaves}
+      text='Octaves'
+      value={arpeggiatorOctaves}
+    />
   </div>

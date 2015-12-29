@@ -1,13 +1,18 @@
 import {
+  add,
   always,
   assoc,
   compose,
-  concat,
   curry,
+  flatten,
+  flip,
   identity,
   ifElse,
   isNil,
   map,
+  multiply,
+  nth,
+  range,
   reject,
   tap
 } from 'ramda'
@@ -121,14 +126,13 @@ const createLoopAudioGraphFragment = curry((
     arpeggiatorPatterns,
     bpm,
     scale: {scales, scaleName},
-    controlPad: {selectedArpeggiatorPattern}
+    controlPad: {arpeggiatorOctaves, selectedArpeggiatorPattern}
   } = store.getState()
   const scale = scales[scaleName]
-  const arpeggiatedScale = map(a => scale[a], [0, 2, 4])
-  const twoOctaveArpeggiatedScale = concat(
-    arpeggiatedScale,
-    map(x => x + 12, arpeggiatedScale)
-  )
+  const arpeggiatedScale = flatten(map(
+    x => map(compose(add(x), flip(nth)(scale)), [0, 2, 4]),
+    map(multiply(12), range(0, arpeggiatorOctaves))
+  ))
   const noteDuration = 60 / bpm / 4
   const {currentTime} = audioContext
   return lazyMapIndexed((x, i) => {
@@ -147,7 +151,7 @@ const createLoopAudioGraphFragment = curry((
       }
     }
   },
-  (arpeggiatorPatterns[selectedArpeggiatorPattern](twoOctaveArpeggiatedScale)))
+  (arpeggiatorPatterns[selectedArpeggiatorPattern](arpeggiatedScale)))
 })
 
 const createSource = curry((
