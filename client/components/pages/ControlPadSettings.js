@@ -17,7 +17,6 @@ import FullButton from '../atoms/FullButton'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import {eventValuePath, eventCheckedPath} from '../../helpers'
-import ArpeggiatorSelector from '../molecules/ArpeggiatorSelector'
 
 export default connect(identity)(({
   arpeggiatorPatterns,
@@ -29,7 +28,11 @@ export default connect(identity)(({
     <h2 className='text-center'>Control Pad Settings</h2>
     <Selector
       defaultValue={controlPad.instrument}
-      handleChange={(compose(dispatch, updateControlPadInstrument, eventValuePath))}
+      handleChange={compose(
+        dispatch,
+        updateControlPadInstrument,
+        eventValuePath
+      )}
       label='Instrument'
       options={map(instrument => ({
         text: capitalize.words(instrument),
@@ -39,7 +42,12 @@ export default connect(identity)(({
     <RangeSelector
       max='2'
       min='-3'
-      onChange={compose(dispatch, updateControlPadOctave, Number, eventValuePath)}
+      onChange={compose(
+        dispatch,
+        updateControlPadOctave,
+        Number,
+        eventValuePath
+      )}
       output={controlPad.octave}
       text='Octave'
       value={controlPad.octave}
@@ -47,33 +55,52 @@ export default connect(identity)(({
     <RangeSelector
       max='3'
       min='1'
-      onChange={compose(dispatch, updateControlPadRange, Number, eventValuePath)}
+      onChange={compose(
+        dispatch,
+        updateControlPadRange,
+        Number,
+        eventValuePath
+      )}
       output={controlPad.range}
       text='Range'
       value={controlPad.range}
     />
-    <ArpeggiatorSelector
-      arpeggiatorIsOn={controlPad.arpeggiatorIsOn}
-      arpeggiatorOctaves={controlPad.arpeggiatorOctaves}
-      dispatch={dispatch}
-      patterns={Object.keys(arpeggiatorPatterns)}
-      selectedPattern={controlPad.selectedArpeggiatorPattern}
-      handleArpeggiatorIsOnChange={compose(
+    <CheckboxSelector
+      checked={controlPad.arpeggiatorIsOn}
+      onChange={compose(
         dispatch,
         updateControlPadArpeggiatorIsOn,
         eventCheckedPath
       )}
-      handleArpeggiatorOctavesChange={compose(
+      text='Arpeggiator'
+    />
+    <Selector
+      defaultValue={controlPad.selectedArpeggiatorPattern}
+      disabled={!controlPad.arpeggiatorIsOn}
+      handleChange={compose(
+        dispatch,
+        updateControlPadSelectedArpeggiatorPattern,
+        eventValuePath
+      )}
+      label='Arpeggiator Pattern'
+      options={map(value => ({
+        text: capitalize.words(value),
+        value
+      }), Object.keys(arpeggiatorPatterns))}
+    />
+    <RangeSelector
+      disabled={!controlPad.arpeggiatorIsOn}
+      max='4'
+      min='1'
+      onChange={compose(
         dispatch,
         updateControlPadArpeggiatorOctaves,
         Number,
         eventValuePath
       )}
-      handlePatternSelect={compose(
-        dispatch,
-        updateControlPadSelectedArpeggiatorPattern,
-        eventValuePath
-      )}
+      output={controlPad.arpeggiatorOctaves}
+      text='Arpeggiator Octaves'
+      value={controlPad.arpeggiatorOctaves}
     />
     <CheckboxSelector
       checked={controlPad.portamento}
@@ -86,6 +113,7 @@ export default connect(identity)(({
       text='No Scale'
     />
     <div>
-      <span className='inline-label-text'></span><FullButton text='OK' to='/control-pad' />
+      <span className='inline-label-text'></span>
+      <FullButton text='OK' to='/control-pad' />
     </div>
   </div>)
