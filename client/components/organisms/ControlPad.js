@@ -22,7 +22,7 @@ import store, {dispatch} from '../../store'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import {startLoop, stopLoop} from '../../audioHelpers/loop'
 import audioContext from '../../audioContext'
-import {lazyMapIndexed} from '../../helpers'
+import {decimalPart, lazyMapIndexed} from '../../helpers'
 const {fromEvent, merge} = Observable
 const controlPadId = 'controlPad'
 let currentlyPlayingPitch = null
@@ -111,7 +111,6 @@ const xYRatiosToNoScaleNote = ({range, xRatio, yRatio}) => ({
   pitch: 12 * range * xRatio,
   modulation: yRatio
 })
-const decimalPart = a => a - Math.floor(a)
 
 const createLoopAudioGraphFragment = curry((
   {instrument, octave, rootNote},
