@@ -21,8 +21,9 @@ import THREE from 'three'
 import store, {dispatch} from '../../store'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import {startLoop, stopLoop} from '../../audioHelpers/loop'
+import nextNoteStartTime from '../../audioHelpers/nextNoteStartTime'
 import audioContext from '../../audioContext'
-import {decimalPart, lazyMapIndexed} from '../../helpers'
+import {lazyMapIndexed} from '../../helpers'
 const {fromEvent, merge} = Observable
 const controlPadId = 'controlPad'
 let currentlyPlayingPitch = null
@@ -131,9 +132,7 @@ const createLoopAudioGraphFragment = curry((
   const noteDuration = 60 / bpm / 4
   const {currentTime} = audioContext
   return lazyMapIndexed((x, i) => {
-    const notesSinceBeginning = currentTime / noteDuration
-    const startTime = currentTime +
-      (1 - decimalPart(notesSinceBeginning)) * noteDuration +
+    const startTime = nextNoteStartTime(noteDuration, currentTime) +
       i * noteDuration
     const frequency = pitchToFrequency(pitch + x + 12 * octave + rootNote)
     const gain = (1 - modulation) / 2
