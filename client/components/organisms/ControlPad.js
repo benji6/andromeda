@@ -29,6 +29,7 @@ import {startLoop, stopLoop} from '../../audioHelpers/loop'
 import nextNoteStartTime from '../../audioHelpers/nextNoteStartTime'
 import audioContext from '../../audioContext'
 import {lazyMapIndexed} from '../../helpers'
+import {currentScale} from '../../derivedData'
 const {fromEvent, merge} = Observable
 const controlPadId = 'controlPad'
 let currentlyPlayingPitch = null
@@ -101,8 +102,7 @@ const renderLoop = _ => {
 }
 
 const calculatePitch = ratio => {
-  const {scaleName, scales} = store.getState().scale
-  const scale = scales[scaleName]
+  const scale = currentScale(store.getState().scale)
   const {length} = scale
   stopLastNoteOnNoteChange = true
   const i = Math.floor((length + 1) * ratio)
@@ -125,12 +125,11 @@ const createLoopAudioGraphFragment = curry((
   const {
     arpeggiatorPatterns,
     bpm,
-    scale: {scales, scaleName},
+    scale,
     controlPad: {arpeggiatorOctaves, selectedArpeggiatorPattern}
   } = store.getState()
-  const scale = scales[scaleName]
   const arpeggiatedScale = flatten(map(
-    x => map(compose(add(x), flip(nth)(scale)), [0, 2, 4]),
+    x => map(compose(add(x), flip(nth)(currentScale(scale))), [0, 2, 4]),
     map(multiply(12), range(0, arpeggiatorOctaves))
   ))
   const noteDuration = 60 / bpm / 4
