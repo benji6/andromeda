@@ -1,18 +1,12 @@
 import {
-  add,
   always,
   assoc,
   compose,
   curry,
-  flatten,
-  flip,
   identity,
   ifElse,
   isNil,
   map,
-  multiply,
-  nth,
-  range,
   reject,
   tap
 } from 'ramda'
@@ -26,10 +20,8 @@ import THREE from 'three'
 import store, {dispatch} from '../../store'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import {startLoop, stopLoop} from '../../audioHelpers/loop'
-import nextNoteStartTime from '../../audioHelpers/nextNoteStartTime'
-import audioContext from '../../audioContext'
-import {lazyMapIndexed} from '../../helpers'
 import {currentScale} from '../../derivedData'
+import {createLoopAudioGraphFragment} from './_helpers'
 const {fromEvent, merge} = Observable
 const controlPadId = 'controlPad'
 let currentlyPlayingPitch = null
@@ -116,41 +108,6 @@ const xYRatiosToNote = ({range, xRatio, yRatio}) => ({
 const xYRatiosToNoScaleNote = ({range, xRatio, yRatio}) => ({
   pitch: 12 * range * xRatio,
   modulation: yRatio
-})
-
-const createLoopAudioGraphFragment = curry((
-  {instrument, octave, rootNote},
-  {id, pitch, modulation}
-) => {
-  const {
-    arpeggiatorPatterns,
-    bpm,
-    scale,
-    controlPad: {arpeggiatorOctaves, selectedArpeggiatorPattern}
-  } = store.getState()
-  const arpeggiatedScale = flatten(map(
-    x => map(compose(add(x), flip(nth)(currentScale(scale))), [0, 2, 4]),
-    map(multiply(12), range(0, arpeggiatorOctaves))
-  ))
-  const noteDuration = 60 / bpm / 4
-  const {currentTime} = audioContext
-  return lazyMapIndexed((x, i) => {
-    const startTime = nextNoteStartTime(noteDuration, currentTime) +
-      i * noteDuration
-    const frequency = pitchToFrequency(pitch + x + 12 * octave + rootNote)
-    const gain = (1 - modulation) / 2
-    return {
-      id: `${id}-${i}-${frequency}-${gain}`,
-      instrument,
-      params: {
-        gain,
-        frequency,
-        startTime,
-        stopTime: startTime + noteDuration
-      }
-    }
-  },
-  (arpeggiatorPatterns[selectedArpeggiatorPattern](arpeggiatedScale)))
 })
 
 const createSource = curry((
