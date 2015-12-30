@@ -18,6 +18,7 @@ import React, {PropTypes} from 'react'
 import {Observable} from 'rx'
 import THREE from 'three'
 import store, {dispatch} from '../../store'
+import {clamp} from '../../helpers'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import {startLoop, stopLoop} from '../../audioHelpers/loop'
 import {currentScale} from '../../derivedData'
@@ -31,12 +32,7 @@ const cameraZ = 16
 const minZ = -128
 const sideLength = 1
 const maxDepth = 3 * sideLength
-
-const validRatio = x => x < 0
-  ? 0
-  : x >= 1
-    ? 1 - Number.EPSILON
-    : x
+const validRatio = clamp(0, 1 - Number.EPSILON)
 
 const calculateXAndYRatio = e => {
   const {top, right, bottom, left} = e.target.getBoundingClientRect()
