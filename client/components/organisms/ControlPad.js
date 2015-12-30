@@ -21,6 +21,7 @@ import store, {dispatch} from '../../store'
 import {clamp} from '../../helpers'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import {startLoop, stopLoop} from '../../audioHelpers/loop'
+import {randomMesh} from '../../webGLHelpers'
 import {currentScale} from '../../derivedData'
 import {createLoopAudioGraphFragment} from './_helpers'
 const {fromEvent, merge} = Observable
@@ -47,12 +48,12 @@ let mouseInputEnabled = false
 let currentXYRatios = null
 let controlPadElement = null
 let renderLoopActive = null
-let cube = null
+let token = null
 let renderer = null
 let camera = null
 let scene = null
 
-const setRendererSize = () => {
+const setRendererSize = _ => {
   const rendererSize = window.innerWidth < window.innerHeight
     ? window.innerWidth
     : window.innerHeight * 0.8
@@ -63,10 +64,10 @@ const renderLoop = _ => {
   if (!renderLoopActive) return
   window.requestAnimationFrame(renderLoop)
   const controlPadHasNotBeenUsed = isNil(currentXYRatios)
-  const {z} = cube.position
+  const {z} = token.position
   if (controlPadHasNotBeenUsed) return
   if (currentlyPlayingPitch === null) {
-    if (z > minZ - maxDepth) cube.position.z -= 1
+    if (z > minZ - maxDepth) token.position.z -= 1
     renderer.render(scene, camera)
     return
   }
@@ -79,13 +80,13 @@ const renderLoop = _ => {
     : (yRatio - 0.5) ** 2
   const rotationBaseAmount = 0.01
   const rotationVelocityComponent = 0.8
-  cube.rotation.x += rotationBaseAmount + rotationVelocityComponent * xMod
-  cube.rotation.y += rotationBaseAmount + rotationVelocityComponent * yMod
-  cube.rotation.z += rotationBaseAmount + rotationVelocityComponent * xMod * yMod
-  cube.position.x = (xRatio - 0.5) * cameraZ
-  cube.position.y = (0.5 - yRatio) * cameraZ
+  token.rotation.x += rotationBaseAmount + rotationVelocityComponent * xMod
+  token.rotation.y += rotationBaseAmount + rotationVelocityComponent * yMod
+  token.rotation.z += rotationBaseAmount + rotationVelocityComponent * xMod * yMod
+  token.position.x = (xRatio - 0.5) * cameraZ
+  token.position.y = (0.5 - yRatio) * cameraZ
   const returnVelocity = 8
-  if (z < 0) cube.position.z += z > -returnVelocity ? -z : returnVelocity
+  if (z < 0) token.position.z += z > -returnVelocity ? -z : returnVelocity
   renderer.render(scene, camera)
 }
 
@@ -201,16 +202,14 @@ export default class extends React.Component {
       cameraZ - minZ
     )
     renderer = new THREE.WebGLRenderer({canvas: controlPadElement})
-    const geometry = new THREE.BoxGeometry(sideLength, sideLength, sideLength)
-    const material = new THREE.MeshLambertMaterial({color: 'rgb(20, 200, 255)'})
     const directionalLight = new THREE.DirectionalLight(0xffffff)
-    cube = new THREE.Mesh(geometry, material)
-    cube.position.z = minZ - maxDepth
+    token = randomMesh()
+    token.position.z = minZ - maxDepth
 
     directionalLight.position.set(16, 16, 24).normalize()
     scene.add(new THREE.AmbientLight(0x333333))
       .add(directionalLight)
-      .add(cube)
+      .add(token)
     camera.position.z = cameraZ
 
     setRendererSize()
