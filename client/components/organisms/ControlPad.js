@@ -23,7 +23,7 @@ import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import {startLoop, stopLoop} from '../../audioHelpers/loop'
 import {randomMesh} from '../../webGLHelpers'
 import {currentScale} from '../../derivedData'
-import {createLoopAudioGraphFragment} from './_helpers'
+import createLoopAudioGraphFragment from '../../audioHelpers/createLoopAudioGraphFragment'
 const {fromEvent, merge} = Observable
 const controlPadId = 'controlPad'
 let currentlyPlayingPitch = null

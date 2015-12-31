@@ -9,14 +9,14 @@ import {
   nth,
   range
 } from 'ramda'
-import store from '../../store'
-import {lazyMapIndexed} from '../../helpers'
-import audioContext from '../../audioContext'
-import nextNoteStartTime from '../../audioHelpers/nextNoteStartTime'
-import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
-import {currentScale} from '../../derivedData'
+import store from '../store'
+import {lazyMapIndexed} from '../helpers'
+import audioContext from '../audioContext'
+import nextNoteStartTime from './nextNoteStartTime'
+import pitchToFrequency from './pitchToFrequency'
+import {currentScale} from '../derivedData'
 
-export const createLoopAudioGraphFragment = curry((
+export default curry((
   {instrument, octave, rootNote},
   {id, pitch, modulation}
 ) => {
