@@ -23,6 +23,11 @@ const timeoutPeriod = (source, currentTime) =>
 let activeNotes = []
 let timeoutId = null
 
+const dispatchAddAndUpdateActiveNotes = src => {
+  dispatchAddAudioGraphSource(src)
+  activeNotes = append(src, activeNotes)
+}
+
 export const startLoop = audioGraphFragments => {
   clearTimeout(timeoutId)
   const generator = audioGraphFragments[Symbol.iterator]()
@@ -35,10 +40,7 @@ export const startLoop = audioGraphFragments => {
   if (none(
     compose(veryClose(paramsStartTimePath(firstSource)), paramsStartTimePath),
     activeNotes
-  )) {
-    dispatchAddAudioGraphSource(firstSource)
-    activeNotes = append(firstSource, activeNotes)
-  }
+  )) dispatchAddAndUpdateActiveNotes(firstSource)
   const recur = (currentSource, nextSource) => _ => {
     const partitioned = partition(
       x => paramsStopTimePath(x) < audioContext.currentTime,
@@ -49,8 +51,7 @@ export const startLoop = audioGraphFragments => {
       ({id}) => dispatch(removeKeysFromAudioGraphContaining(id)),
       partitioned[0]
     )
-    activeNotes = append(nextSource, activeNotes)
-    dispatchAddAudioGraphSource(currentSource)
+    dispatchAddAndUpdateActiveNotes(currentSource)
     timeoutId = setTimeout(
       recur(nextSource, generator.next().value),
       timeoutPeriod(nextSource, audioContext.currentTime)
