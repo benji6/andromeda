@@ -20,10 +20,10 @@ import THREE from 'three'
 import store, {dispatch} from '../../store'
 import {clamp} from '../../helpers'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
-import {startLoop, stopLoop} from '../../audioHelpers/loop'
 import {randomMesh} from '../../webGLHelpers'
 import {currentScale} from '../../derivedData'
-import createLoopAudioGraphFragment from '../../audioHelpers/createLoopAudioGraphFragment'
+import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
+
 const {fromEvent, merge} = Observable
 const controlPadId = 'controlPad'
 let currentlyPlayingPitch = null
@@ -40,8 +40,7 @@ const calculateXAndYRatio = e => {
   const [width, height] = [right - left, bottom - top]
   const {clientX, clientY} = e.changedTouches && e.changedTouches[0] || e
   const [x, y] = [clientX - left, clientY - top]
-  return {xRatio: validRatio(x / width),
-          yRatio: validRatio(y / height)}
+  return {xRatio: validRatio(x / width), yRatio: validRatio(y / height)}
 }
 
 let mouseInputEnabled = false
@@ -169,11 +168,7 @@ export default class extends React.Component {
       map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
       map(ifElse(
         always(arpeggiatorIsOn),
-        compose(startLoop, createLoopAudioGraphFragment({
-          instrument,
-          octave,
-          rootNote
-        })),
+        startArpeggiator,
         compose(dispatch, addAudioGraphSource, createSource({
           instrument,
           octave,
@@ -187,7 +182,7 @@ export default class extends React.Component {
       map(tap(() => currentlyPlayingPitch = null)),
       map(e => currentXYRatios = calculateXAndYRatio(e)),
       map(_ => dispatch(removeKeysFromAudioGraphContaining(controlPadId))),
-      map(stopLoop),
+      map(stopArpeggiator),
     )
 
     input$.transduce(inputTransducer).subscribe(identity, ::console.error)
