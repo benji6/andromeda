@@ -1,6 +1,6 @@
 import test from 'tape'
 import {arpeggiatedScale, currentScale} from './derivedData'
-import {makeCircular, take} from 'imlazy'
+import {cycle, take} from 'imlazy'
 
 test('derivedData - currentScale', t => {
   t.deepEqual(currentScale({
@@ -14,7 +14,7 @@ test('derivedData - arpeggiatedScale', t => {
   t.deepEqual(
     [...take(16, arpeggiatedScale({
       arpeggiatorPatterns: {
-        'up': makeCircular
+        'up': cycle
       },
       scale: {
         scaleName: 'major',
@@ -32,7 +32,7 @@ test('derivedData - arpeggiatedScale', t => {
   t.deepEqual(
     [...take(16, arpeggiatedScale({
       arpeggiatorPatterns: {
-        'up': makeCircular
+        'up': cycle
       },
       scale: {
         scaleName: 'major',
