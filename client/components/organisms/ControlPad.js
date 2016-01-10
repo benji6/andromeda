@@ -1,49 +1,17 @@
-import {
-  always,
-  assoc,
-  compose,
-  curry,
-  identity,
-  ifElse,
-  isNil,
-  map,
-  reject,
-  tap
-} from 'ramda'
-import {
-  addAudioGraphSource,
-  removeKeysFromAudioGraphContaining
-} from '../../actions'
-import React, {PropTypes} from 'react'
+import {compose, identity, isNil, map, reject, tap} from 'ramda'
 import {Observable} from 'rx'
+import React, {PropTypes} from 'react'
 import THREE from 'three'
-import store, {dispatch} from '../../store'
-import {clamp} from '../../helpers'
-import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import {randomMesh} from '../../webGLHelpers'
-import {currentScale} from '../../derivedData'
-import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
+import {clamp} from '../../helpers'
 
 const {fromEvent, merge} = Observable
-const controlPadId = 'controlPad'
-let currentlyPlayingPitch = null
-let stopLastNoteOnNoteChange = true
 
 const cameraZ = 16
 const minZ = -128
 const sideLength = 1
 const maxDepth = 3 * sideLength
-const validRatio = clamp(0, 1 - Number.EPSILON)
 
-const calculateXAndYRatio = e => {
-  const {top, right, bottom, left} = e.target.getBoundingClientRect()
-  const [width, height] = [right - left, bottom - top]
-  const {clientX, clientY} = e.changedTouches && e.changedTouches[0] || e
-  const [x, y] = [clientX - left, clientY - top]
-  return {xRatio: validRatio(x / width), yRatio: validRatio(y / height)}
-}
-
-let mouseInputEnabled = false
 let currentXYRatios = null
 let controlPadElement = null
 let renderLoopActive = null
@@ -51,6 +19,8 @@ let token = null
 let renderer = null
 let camera = null
 let scene = null
+let mouseInputEnabled = false
+let controlPadActive = false
 
 const setRendererSize = _ => {
   const rendererSize = window.innerWidth < window.innerHeight
@@ -65,7 +35,7 @@ const renderLoop = _ => {
   const controlPadHasNotBeenUsed = isNil(currentXYRatios)
   const {z} = token.position
   if (controlPadHasNotBeenUsed) return
-  if (currentlyPlayingPitch === null) {
+  if (!controlPadActive) {
     if (z > minZ - maxDepth) token.position.z -= 1
     renderer.render(scene, camera)
     return
@@ -89,56 +59,23 @@ const renderLoop = _ => {
   renderer.render(scene, camera)
 }
 
-const calculatePitch = ratio => {
-  const scale = currentScale(store.getState().scale)
-  const {length} = scale
-  stopLastNoteOnNoteChange = true
-  const i = Math.floor((length + 1) * ratio)
-  return scale[(i % length + length) % length] + 12 * Math.floor(i / length)
+const validRatio = clamp(0, 1 - Number.EPSILON)
+
+const calculateXAndYRatio = e => {
+  const {top, right, bottom, left} = e.target.getBoundingClientRect()
+  const [width, height] = [right - left, bottom - top]
+  const {clientX, clientY} = e.changedTouches && e.changedTouches[0] || e
+  const [x, y] = [clientX - left, clientY - top]
+  return {xRatio: validRatio(x / width), yRatio: validRatio(y / height)}
 }
-
-const xYRatiosToNote = ({range, xRatio, yRatio}) => ({
-  pitch: calculatePitch(range * xRatio),
-  modulation: yRatio
-})
-const xYRatiosToNoScaleNote = ({range, xRatio, yRatio}) => ({
-  pitch: 12 * range * xRatio,
-  modulation: yRatio
-})
-
-const createSource = curry((
-  {instrument, octave, rootNote},
-  {id, pitch, modulation}
-) => ({
-  id,
-  instrument,
-  params: {
-    frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
-    gain: (1 - modulation) / 2
-  }
-}))
 
 export default class extends React.Component {
   static propTypes = {
-    arpeggiatorIsOn: PropTypes.bool,
-    instrument: PropTypes.string,
-    noScale: PropTypes.bool,
-    octave: PropTypes.number,
-    portamento: PropTypes.bool,
-    range: PropTypes.number,
-    rootNote: PropTypes.number,
-    selectedArpeggiatorPattern: PropTypes.string
+    inputEndTransducer: PropTypes.func,
+    inputTransducer: PropTypes.func
   }
   componentDidMount () {
-    const {
-      arpeggiatorIsOn,
-      instrument,
-      noScale,
-      octave,
-      portamento,
-      range,
-      rootNote
-    } = this.props
+    const {inputEndTransducer, inputTransducer} = this.props
     controlPadElement = document.querySelector('.control-pad')
     const input$ = merge(
       fromEvent(controlPadElement, 'touchstart'),
@@ -151,42 +88,26 @@ export default class extends React.Component {
       fromEvent(controlPadElement, 'mouseup')
     )
 
-    const inputTransducer = compose(
-      map(tap(e => mouseInputEnabled = e.type === 'mousedown'
-        ? true
-        : mouseInputEnabled)),
-      reject(e => e instanceof window.MouseEvent && !mouseInputEnabled),
-      map(e => currentXYRatios = calculateXAndYRatio(e)),
-      map(assoc('range', range)),
-      map(ifElse(_ => noScale, xYRatiosToNoScaleNote, xYRatiosToNote)),
-      map(assoc('id', controlPadId)),
-      map(tap(({pitch}) => !noScale && !portamento && (
-        currentlyPlayingPitch !== pitch &&
-        currentlyPlayingPitch !== null &&
-        stopLastNoteOnNoteChange
-      ) && dispatch(removeKeysFromAudioGraphContaining(controlPadId)))),
-      map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
-      map(ifElse(
-        always(arpeggiatorIsOn),
-        startArpeggiator,
-        compose(dispatch, addAudioGraphSource, createSource({
-          instrument,
-          octave,
-          rootNote
-        }))
+    input$
+      .transduce(compose(
+        map(tap(e => mouseInputEnabled = e.type === 'mousedown'
+          ? true
+          : mouseInputEnabled)),
+        reject(e => e instanceof window.MouseEvent && !mouseInputEnabled),
+        map(tap(_ => controlPadActive = true)),
+        map(e => currentXYRatios = calculateXAndYRatio(e))
       ))
-    )
+      .transduce(inputTransducer)
+      .subscribe(identity, ::console.error)
 
-    const endInputTransducer = compose(
-      map(tap(() => mouseInputEnabled = false)),
-      map(tap(() => currentlyPlayingPitch = null)),
-      map(e => currentXYRatios = calculateXAndYRatio(e)),
-      map(_ => dispatch(removeKeysFromAudioGraphContaining(controlPadId))),
-      map(stopArpeggiator),
-    )
-
-    input$.transduce(inputTransducer).subscribe(identity, ::console.error)
-    endInput$.transduce(endInputTransducer).subscribe(identity, ::console.error)
+    endInput$
+      .transduce(compose(
+        map(tap(_ => controlPadActive = false)),
+        map(tap(_ => mouseInputEnabled = false)),
+        map(e => currentXYRatios = calculateXAndYRatio(e))
+      ))
+      .transduce(inputEndTransducer)
+      .subscribe(identity, ::console.error)
 
     renderLoopActive = true
     scene = new THREE.Scene()
