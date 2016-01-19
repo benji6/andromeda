@@ -1,4 +1,4 @@
-import {map, range, zipWith} from 'imlazy'
+import {cycle, map, range, zipWith} from 'imlazy'
 import {compose, prop} from 'ramda'
 import Looper from './Looper'
 import store, {dispatch} from '../store'
@@ -11,7 +11,12 @@ import {arpeggiatedScale} from '../derivedData'
 import nextNoteStartTime from './nextNoteStartTime'
 import pitchToFrequency from './pitchToFrequency'
 
-const onStop = compose(dispatch, removeKeysFromAudioGraphContaining, prop('id'))
+const dispatchRemoveKeysFromAGContaining = compose(
+  dispatch,
+  removeKeysFromAudioGraphContaining
+)
+const onStop = x => compose(dispatchRemoveKeysFromAGContaining, prop('id'))(x)
+
 let looper = null
 
 export const startArpeggiator = ({id, pitch, modulation}) => {
@@ -38,19 +43,20 @@ export const startArpeggiator = ({id, pitch, modulation}) => {
     currentArpeggiatedScale
   )
   const gain = (1 - modulation) / 2
-  const iterable = map(
-    x => {
+  const iterable = zipWith(
+    (x, i) => {
       const frequency = pitchToFrequency(pitch + x.pitch + 12 * octave +
         rootNote)
       return {
         ...x,
-        id: `${id}-${frequency}`,
+        id: `${id}-${frequency}-${i}`,
         instrument,
         params: {frequency, gain},
         pitch: x.pitch
       }
     },
-    pitchStartStops
+    pitchStartStops,
+    cycle(range(0, 8))
   )
   const onStart = compose(
     dispatch,
