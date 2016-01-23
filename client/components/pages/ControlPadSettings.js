@@ -16,7 +16,7 @@ import {
 import FullButton from '../atoms/FullButton'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
-import {eventValuePath, eventCheckedPath} from '../../helpers'
+import {eventValuePath, eventCheckedPath} from '../../utils/helpers'
 
 export default connect(identity)(({
   arpeggiatorPatterns,

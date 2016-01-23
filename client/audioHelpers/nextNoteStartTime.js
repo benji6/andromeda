@@ -1,4 +1,4 @@
-import {decimalPart} from '../helpers'
+import {decimalPart} from '../utils/helpers'
 
 module.exports = (noteDuration, currentTime) => {
   const notesSinceBeginning = currentTime / noteDuration

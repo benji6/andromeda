@@ -9,8 +9,8 @@ import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
 import FullButton from '../atoms/FullButton'
-import switchMicrophone from '../../switchMicrophone'
-import {eventValuePath, eventCheckedPath} from '../../helpers'
+import switchMicrophone from '../../utils/switchMicrophone'
+import {eventValuePath, eventCheckedPath} from '../../utils/helpers'
 
 const minBpm = 32
 

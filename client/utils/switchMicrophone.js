@@ -1,5 +1,5 @@
-import audioContext from './audioContext'
-import {updateMicrophoneIsAvailable} from './actions'
+import audioContext from '../audioContext'
+import {updateMicrophoneIsAvailable} from '../actions'
 
 navigator.getUserMedia = navigator.getUserMedia ||
                          navigator.webkitGetUserMedia ||

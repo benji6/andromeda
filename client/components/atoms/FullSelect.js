@@ -1,4 +1,4 @@
-import {mapIndexed} from '../../helpers'
+import {mapIndexed} from '../../utils/helpers'
 import React from 'react'
 
 export default ({options, ...props}) =>

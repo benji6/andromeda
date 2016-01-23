@@ -7,7 +7,7 @@ import {
   addAudioGraphSource,
   removeKeysFromAudioGraphContaining
 } from '../actions'
-import {arpeggiatedScale} from '../derivedData'
+import {arpeggiatedScale} from '../utils/derivedData'
 import nextNoteStartTime from './nextNoteStartTime'
 import pitchToFrequency from './pitchToFrequency'
 

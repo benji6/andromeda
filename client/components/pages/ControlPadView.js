@@ -18,7 +18,7 @@ import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
 import ControlPad from '../organisms/ControlPad'
 import Navigation from '../organisms/Navigation'
 import PerformanceMenu from '../organisms/PerformanceMenu'
-import {currentScale} from '../../derivedData'
+import {currentScale} from '../../utils/derivedData'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import store, {dispatch} from '../../store'
 

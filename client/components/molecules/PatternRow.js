@@ -1,5 +1,5 @@
 import React from 'react'
-import {mapIndexed} from '../../helpers'
+import {mapIndexed} from '../../utils/helpers'
 import Step from '../atoms/Step'
 
 const selectedClass = ({selected}) => selected === true ? 'selected' : ''

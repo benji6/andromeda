@@ -1,5 +1,5 @@
 import {range} from 'ramda'
-import {mapIndexed} from '../../helpers'
+import {mapIndexed} from '../../utils/helpers'
 import React from 'react'
 import XLabels from '../molecules/XLabels'
 import PatternRow from '../molecules/PatternRow'
