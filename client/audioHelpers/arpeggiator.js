@@ -16,13 +16,27 @@ const dispatchRemoveKeysFromAGContaining = compose(
   removeKeysFromAudioGraphContaining
 )
 const onStop = x => compose(dispatchRemoveKeysFromAGContaining, prop('id'))(x)
+const gain = modulation => (1 - modulation) / 2
 
 let looper = null
 
 export const startArpeggiator = ({id, pitch, modulation}) => {
-  if (looper) return
-  const currentArpeggiatedScale = arpeggiatedScale(store.getState())
   const {bpm, controlPad: {instrument, octave}, rootNote} = store.getState()
+  if (looper) {
+    looper.onStart = compose(
+      dispatch,
+      addAudioGraphSource,
+      x => ({
+        ...x,
+        params: {
+          frequency: pitchToFrequency(pitch + x.pitch + 12 * octave + rootNote),
+          gain: gain(modulation)
+        }
+      })
+    )
+    return
+  }
+  const currentArpeggiatedScale = arpeggiatedScale(store.getState())
   const {currentTime} = audioContext
   const noteDuration = 60 / bpm / 4
   const startAndStopTimes = map(
@@ -42,30 +56,32 @@ export const startArpeggiator = ({id, pitch, modulation}) => {
     startAndStopTimes,
     currentArpeggiatedScale
   )
-  const gain = (1 - modulation) / 2
+
   const iterable = zipWith(
-    (x, i) => {
-      const frequency = pitchToFrequency(pitch + x.pitch + 12 * octave +
-        rootNote)
-      return {
-        ...x,
-        id: `${id}-${frequency}-${i}`,
-        instrument,
-        params: {frequency, gain},
-        pitch: x.pitch
-      }
-    },
+    (x, i) => ({
+      ...x,
+      id: `${id}-${pitch}-${i}`,
+      instrument,
+      pitch: x.pitch
+    }),
     pitchStartStops,
     cycle(range(0, 8))
   )
   const onStart = compose(
     dispatch,
     addAudioGraphSource,
-    x => ({...x, params: {...x.params, gain}})
+    x => ({
+      ...x,
+      params: {
+        frequency: pitchToFrequency(pitch + x.pitch + 12 * octave + rootNote),
+        gain: gain(modulation)
+      }
+    })
   )
   looper = new Looper({iterable, onStart, onStop})
   looper.start()
 }
+
 export const stopArpeggiator = _ => {
   looper && looper.stop()
   looper = null
