@@ -15,7 +15,7 @@ const uglify = require('gulp-uglify')
 const watchify = require('watchify')
 
 const browserifyEntryPath = 'src/index.js'
-const publicPath = 'public'
+const distPath = 'dist'
 
 gulp.task('styles', () => gulp.src('src/index.scss')
     .pipe(plumber())
@@ -25,18 +25,18 @@ gulp.task('styles', () => gulp.src('src/index.scss')
       cascade: false
     }))
     .pipe(minifyCSS())
-    .pipe(gulp.dest(publicPath)))
+    .pipe(gulp.dest(distPath)))
 
 gulp.task('htmlDev', () => gulp.src('src/index.html')
     .pipe(plumber())
     .pipe(minifyInline())
     .pipe(minifyHTML())
-    .pipe(gulp.dest(publicPath)))
+    .pipe(gulp.dest(distPath)))
 
 gulp.task('htmlProd', () => gulp.src('src/index.html')
     .pipe(minifyInline())
     .pipe(minifyHTML())
-    .pipe(gulp.dest(publicPath)))
+    .pipe(gulp.dest(distPath)))
 
 gulp.task('scriptsDev',
   () => watchify(browserify(browserifyEntryPath, Object.assign({}, watchify.args, {debug: true})))
@@ -58,7 +58,7 @@ gulp.task('scriptsDev',
       .pipe(buffer())
       .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest(publicPath)))
+      .pipe(gulp.dest(distPath)))
 
 gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
     .transform(babelify, {stage: 0})
@@ -67,7 +67,7 @@ gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
     .pipe(source('index.js'))
     .pipe(buffer())
     .pipe(uglify())
-    .pipe(gulp.dest(publicPath)))
+    .pipe(gulp.dest(distPath)))
 
 gulp.task('watch', () => {
   gulp.watch('src/index.html', ['htmlDev'])

@@ -3,11 +3,12 @@
   "version": "0.4.0",
   "description": "Make music in your browser!",
   "scripts": {
-    "build": "npm run clean && gulp build",
-    "clean": "rm -f public/index*",
-    "serve": "live-server public",
-    "start": "npm run clean && concurrent 'gulp' 'npm run serve'",
+    "assets": "cp -r src/assets dist",
+    "build": "rm -rf dist && mkdir dist && concurrent 'npm run assets' 'gulp build'",
+    "serve": "live-server dist",
+    "start": "concurrent 'npm run watch-assets' 'gulp' 'npm run serve'",
     "test": "concurrent 'standard' 'babel-node --stage 0 node_modules/.bin/tape 'src/**/*-spec.js' | faucet'",
+    "watch-assets": "nodemon --watch src/assets -e ico,jpg,png,svg,wav --exec npm run assets",
     "watch-test": "nodemon --exec npm test"
   },
   "repository": {
