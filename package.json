@@ -4,7 +4,7 @@
   "description": "Make music in your browser!",
   "scripts": {
     "assets": "cp -r src/assets dist",
-    "build": "rm -rf dist && mkdir dist && concurrent 'npm run assets' 'gulp build'",
+    "build": "rm -rf dist && mkdir dist && concurrent 'npm run assets' 'gulp build' && find dist -type f -exec gzip -9 {} \\; -exec mv {}.gz {} \\;",
     "serve": "live-server dist",
     "start": "concurrent 'npm run watch-assets' 'gulp' 'npm run serve'",
     "test": "concurrent 'standard' 'babel-node --stage 0 node_modules/.bin/tape 'src/**/*-spec.js' | faucet'",
