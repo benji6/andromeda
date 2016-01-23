@@ -14,10 +14,10 @@ const sourcemaps = require('gulp-sourcemaps')
 const uglify = require('gulp-uglify')
 const watchify = require('watchify')
 
-const browserifyEntryPath = 'client/index.js'
+const browserifyEntryPath = 'src/index.js'
 const publicPath = 'public'
 
-gulp.task('styles', () => gulp.src('client/index.scss')
+gulp.task('styles', () => gulp.src('src/index.scss')
     .pipe(plumber())
     .pipe(sass())
     .pipe(autoprefixer({
@@ -27,13 +27,13 @@ gulp.task('styles', () => gulp.src('client/index.scss')
     .pipe(minifyCSS())
     .pipe(gulp.dest(`${publicPath}/styles`)))
 
-gulp.task('htmlDev', () => gulp.src('client/index.html')
+gulp.task('htmlDev', () => gulp.src('src/index.html')
     .pipe(plumber())
     .pipe(minifyInline())
     .pipe(minifyHTML())
     .pipe(gulp.dest(publicPath)))
 
-gulp.task('htmlProd', () => gulp.src('client/index.html')
+gulp.task('htmlProd', () => gulp.src('src/index.html')
     .pipe(minifyInline())
     .pipe(minifyHTML())
     .pipe(gulp.dest(publicPath)))
@@ -70,9 +70,9 @@ gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
     .pipe(gulp.dest(`${publicPath}/scripts`)))
 
 gulp.task('watch', () => {
-  gulp.watch('client/index.html', ['htmlDev'])
-  gulp.watch('client/**/*.scss', ['styles'])
-  gulp.watch('client/**/*.js', ['scriptsDev'])
+  gulp.watch('src/index.html', ['htmlDev'])
+  gulp.watch('src/**/*.scss', ['styles'])
+  gulp.watch('src/**/*.js', ['scriptsDev'])
 })
 
 gulp.task('build', ['styles', 'htmlProd', 'scriptsProd'])

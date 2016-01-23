@@ -7,7 +7,7 @@
     "clean": "rm -f public/scripts/index*",
     "serve": "live-server public",
     "start": "npm run clean && concurrent 'gulp' 'npm run serve'",
-    "test": "concurrent 'standard' 'babel-node --stage 0 node_modules/.bin/tape 'client/**/*-spec.js' | faucet'",
+    "test": "concurrent 'standard' 'babel-node --stage 0 node_modules/.bin/tape 'src/**/*-spec.js' | faucet'",
     "watch-test": "nodemon --exec npm test"
   },
   "repository": {
