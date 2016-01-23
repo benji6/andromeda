@@ -14,3 +14,6 @@ $small-font: 0.9rem;
 $normal-font: 1rem;
 
 $fast-transition: 0.2s;
+
+$pattern-total-width: 100vw / 12 * 11;
+$pattern-side-length: $pattern-total-width / 9;

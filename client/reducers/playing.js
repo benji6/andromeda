@@ -1,12 +1,12 @@
-import {UPDATE_PLAYING} from '../actions';
+import {UPDATE_PLAYING} from '../actions'
 
-export const initialState = false;
+export const initialState = false
 
-export default (state = initialState, {type, value}) => {
+export default (state = initialState, {type, payload}) => {
   switch (type) {
     case UPDATE_PLAYING:
-      return value;
+      return payload
     default:
-      return state;
+      return state
   }
-};
+}

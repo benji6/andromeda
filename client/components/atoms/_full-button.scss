@@ -5,7 +5,6 @@
   box-shadow: $squirtle-dusk 0 0 0.5rem 0.1rem;
   box-sizing: border-box;
   color: $black;
-  cursor: pointer;
   display: inline-block;
   font-size: $normal-font;
   padding: 0.67rem;
@@ -20,13 +19,5 @@
   }
   &:active {
     background: linear-gradient($squirtle-dusk, $squirtle-dawn);
-  }
-}
-
-select.full-button {
-  appearance: none;
-  text-indent: 1rem;
-  &[disabled] {
-    visibility: hidden;
   }
 }

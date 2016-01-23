@@ -1,13 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-export default ({max, min, onChange, value, output}) =>
-  <div className="slider">
+/* eslint-disable */
+export default ({output, ...props}) =>
+  <div className='slider'>
     <div>
-      <output>{output}</output>
+      <output>{props.disabled ? <span>&nbsp;</span> : output}</output>
     </div>
-    <input max={max}
-           min={min}
-           onChange={onChange}
-           type="range"
-           value={value} />
-  </div>;
+    <input type='range' {...props} />
+  </div>
+/* eslint-enable */

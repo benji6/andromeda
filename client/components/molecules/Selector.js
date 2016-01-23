@@ -1,19 +1,21 @@
-import capitalize from 'capitalize';
-import React from 'react';
-import {map} from 'ramda';
-import InputLabel from '../atoms/InputLabel';
+import capitalize from 'capitalize'
+import React from 'react'
+import InputLabel from '../atoms/InputLabel'
+import FullSelect from '../atoms/FullSelect'
 
-export default ({defaultValue,
-                 handleChange,
-                 label,
-                 options}) =>
-  <label className="selector">
+export default ({
+  defaultValue,
+  disabled,
+  handleChange,
+  label,
+  options
+}) =>
+  <label className='selector'>
     <InputLabel text={capitalize(label)} />
-    <select className="full-button" onChange={handleChange}
-            defaultValue={defaultValue}>
-      {map(item =>
-        <option value={item} key={item}>
-          {capitalize.words(item)}
-        </option>, options)}
-    </select>
-  </label>;
+    <FullSelect
+      defaultValue={defaultValue}
+      disabled={disabled}
+      onChange={handleChange}
+      options={options}
+    />
+  </label>

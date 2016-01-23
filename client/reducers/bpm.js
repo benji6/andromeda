@@ -1,7 +1,7 @@
-import {UPDATE_BPM} from '../actions';
+import {UPDATE_BPM} from '../actions'
 
-export const initialState = 140;
+export const initialState = 140
 
-export default (state = initialState, {type, value}) => type === UPDATE_BPM ?
-  value :
-  state;
+export default (state = initialState, {type, payload}) => type === UPDATE_BPM
+  ? payload
+  : state

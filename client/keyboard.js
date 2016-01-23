@@ -1,6 +1,12 @@
-import {playNote, stopNote} from './noteController';
-import {compose, flip, isNil, map, prop, reject, tap} from 'ramda';
-const {fromEvent} = Rx.Observable;
+import {compose, flip, identity, isNil, map, prop, reject, tap} from 'ramda'
+import {Observable} from 'rx'
+import {dispatch, getState} from './store'
+import pitchToFrequency from './audioHelpers/pitchToFrequency'
+import {
+  addAudioGraphSource,
+  removeKeysFromAudioGraphContaining
+} from './actions'
+const {fromEvent} = Observable
 const keyCodesToPitches = {
   220: -10,
   90: -9,
@@ -41,28 +47,47 @@ const keyCodesToPitches = {
   80: 17,
   189: 18,
   219: 19,
-  221: 20,
-};
+  221: 20
+}
 
-const pressedKeys = new Set();
+const pressedKeys = new Set()
 
-const computeNoteParams = pitch => ({id: `keyboard: ${pitch}`,
-                                       pitch});
+const computeId = pitch => `keyboard: ${pitch}`
 
-const computeNoteParamsFromKeyCode = compose(map(flip(prop)(keyCodesToPitches)),
-                                             reject(isNil),
-                                             map(computeNoteParams));
+const computeNoteParams = pitch => {
+  const {keyboard} = getState()
+  return {
+    id: computeId(pitch),
+    instrument: keyboard.instrument,
+    params: {
+      gain: keyboard.volume,
+      frequency: pitchToFrequency(pitch + 12 * keyboard.octave)
+    }
+  }
+}
 
 fromEvent(document.body, 'keydown')
-  .transduce(compose(map(tap(e => e.keyCode === 191 && e.preventDefault())),
-                     map(prop('keyCode')),
-                     reject(::pressedKeys.has),
-                     map(tap(::pressedKeys.add)),
-                     computeNoteParamsFromKeyCode,
-                     map(playNote))).subscribe();
+  .transduce(compose(
+    map(tap(e => e.keyCode === 191 && e.preventDefault())),
+    map(prop('keyCode')),
+    reject(::pressedKeys.has),
+    map(tap(::pressedKeys.add)),
+    map(flip(prop)(keyCodesToPitches)),
+    reject(isNil),
+    map(computeNoteParams),
+    map(addAudioGraphSource),
+    map(dispatch)
+  ))
+  .subscribe(identity, ::console.error)
 
 fromEvent(document.body, 'keyup')
-  .transduce(compose(map(prop('keyCode')),
-                     map(tap(::pressedKeys.delete)),
-                     computeNoteParamsFromKeyCode,
-                     map(stopNote))).subscribe();
+  .transduce(compose(
+    map(prop('keyCode')),
+    map(tap(::pressedKeys.delete)),
+    map(flip(prop)(keyCodesToPitches)),
+    reject(isNil),
+    map(computeId),
+    map(removeKeysFromAudioGraphContaining),
+    map(dispatch)
+  ))
+  .subscribe(identity, ::console.error)
