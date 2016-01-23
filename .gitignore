@@ -1,5 +1,3 @@
 node_modules
-public/styles
-public/scripts/index*
-public/index.html
+public/index*
 *.log

@@ -25,7 +25,7 @@ gulp.task('styles', () => gulp.src('src/index.scss')
       cascade: false
     }))
     .pipe(minifyCSS())
-    .pipe(gulp.dest(`${publicPath}/styles`)))
+    .pipe(gulp.dest(publicPath)))
 
 gulp.task('htmlDev', () => gulp.src('src/index.html')
     .pipe(plumber())
@@ -58,7 +58,7 @@ gulp.task('scriptsDev',
       .pipe(buffer())
       .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(sourcemaps.write('./'))
-      .pipe(gulp.dest(`${publicPath}/scripts`)))
+      .pipe(gulp.dest(publicPath)))
 
 gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
     .transform(babelify, {stage: 0})
@@ -67,7 +67,7 @@ gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
     .pipe(source('index.js'))
     .pipe(buffer())
     .pipe(uglify())
-    .pipe(gulp.dest(`${publicPath}/scripts`)))
+    .pipe(gulp.dest(publicPath)))
 
 gulp.task('watch', () => {
   gulp.watch('src/index.html', ['htmlDev'])
