@@ -24,8 +24,5 @@
     &::-webkit-slider-thumb {
       @include slider-thumb();
     }
-    &::-moz-range-thumb {
-      @include slider-thumb();
-    }
   }
 }

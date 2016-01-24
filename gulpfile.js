@@ -21,7 +21,7 @@ gulp.task('styles', () => gulp.src('src/index.scss')
     .pipe(plumber())
     .pipe(sass())
     .pipe(autoprefixer({
-      browsers: ['last 2 Firefox versions', 'last 2 Chrome versions'],
+      browsers: ['last 2 Chrome versions'],
       cascade: false
     }))
     .pipe(minifyCSS())
