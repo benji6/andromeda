@@ -48,7 +48,6 @@ gulp.task('scriptsDev',
           'es6.templateLiterals',
           'regenerator',
           'es6.forOf',
-          'es6.blockScoping',
           'es6.constants'
         ]
       })
