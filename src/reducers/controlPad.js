@@ -8,12 +8,11 @@ import {
   UPDATE_CONTROL_PAD_RANGE,
   UPDATE_CONTROL_PAD_SELECTED_ARPEGGIATOR_PATTERN
 } from '../actions'
-import {initialState as instrumentInitialState} from './instruments'
 
 export const initialState = {
   arpeggiatorIsOn: false,
   arpeggiatorOctaves: 2,
-  instrument: instrumentInitialState[2],
+  instrument: 'sine',
   noScale: false,
   octave: 0,
   portamento: false,
