@@ -10,10 +10,6 @@ import {
 } from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
-import {
-  addAudioGraphSource,
-  removeKeysFromAudioGraphContaining
-} from '../../actions'
 import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
 import ControlPad from '../organisms/ControlPad'
 import Navigation from '../organisms/Navigation'
@@ -46,15 +42,12 @@ const xYRatiosToNoScaleNote = ({range, xRatio, yRatio}) => ({
 })
 
 const createSource = curry((
-  {instrument, octave, rootNote},
+  {octave, rootNote},
   {id, pitch, modulation}
 ) => ({
-  id,
-  instrument,
-  params: {
-    frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
-    gain: (1 - modulation) / 2
-  }
+  frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
+  gain: (1 - modulation) / 2,
+  id
 }))
 
 export default connect(identity)(({
@@ -66,6 +59,7 @@ export default connect(identity)(({
     portamento,
     range
   },
+  instruments,
   rootNote
 }) => <div>
     <Navigation />
@@ -73,7 +67,7 @@ export default connect(identity)(({
       <ControlPad
         inputEndTransducer={compose(
           map(tap(_ => currentlyPlayingPitch = null)),
-          map(_ => store.dispatch(removeKeysFromAudioGraphContaining(controlPadId))),
+          map(_ => instruments[instrument].stopNotes(controlPadId)),
           map(stopArpeggiator)
         )}
         inputTransducer={compose(
@@ -84,16 +78,15 @@ export default connect(identity)(({
             currentlyPlayingPitch !== pitch &&
             currentlyPlayingPitch !== null &&
             stopLastNoteOnNoteChange
-          ) && store.dispatch(removeKeysFromAudioGraphContaining(controlPadId)))),
+          ) && instruments[instrument].stopNotes(controlPadId))),
           map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
           map(ifElse(
             always(arpeggiatorIsOn),
             startArpeggiator,
-            compose(store.dispatch, addAudioGraphSource, createSource({
-              instrument,
-              octave,
-              rootNote
-            }))
+            compose(
+              x => instruments[instrument].startNote(x),
+              createSource({octave, rootNote})
+            )
           ))
         )}
       />

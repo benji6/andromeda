@@ -10,7 +10,7 @@ export default class {
     virtualAudioGraph.set(this, createVirtualAudioGraph({audioContext}))
   }
   startNote ({frequency, gain, id, startTime, stopTime}) {
-    nodes.set(this, {
+    const newNodes = {
       ...nodes.get(this),
       0: ['gain', 'output', {gain}],
       [id]: ['oscillator', 0, {
@@ -19,11 +19,13 @@ export default class {
         startTime,
         stopTime
       }]
-    })
-    virtualAudioGraph.get(this).update(nodes.get(this))
+    }
+    nodes.set(this, newNodes)
+    virtualAudioGraph.get(this).update(newNodes)
   }
   stopNotes (id) {
-    nodes.set(this, dissoc(id, nodes.get(this)))
-    virtualAudioGraph.get(this).update(nodes.get(this))
+    const newNodes = dissoc(id, nodes.get(this))
+    nodes.set(this, newNodes)
+    virtualAudioGraph.get(this).update(newNodes)
   }
 }
