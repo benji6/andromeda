@@ -1,12 +1,16 @@
 import capitalize from 'capitalize'
-import { compose, identity, map } from 'ramda'
+import {compose, identity, keys, map} from 'ramda'
 import React from 'react'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import Selector from '../molecules/Selector'
-import { updateKeyboardInstrument, updateKeyboardOctave, updateKeyboardVolume } from '../../actions'
+import {
+  updateKeyboardInstrument,
+  updateKeyboardOctave,
+  updateKeyboardVolume
+} from '../../actions'
 import FullButton from '../atoms/FullButton'
 import RangeSelector from '../molecules/RangeSelector'
-import { eventValuePath } from '../../utils/helpers'
+import {eventValuePath} from '../../utils/helpers'
 
 export default connect(identity)(({keyboard, dispatch, instruments}) => <div className='flex-column text-center'>
     <h2 className='text-center'>Keyboard Settings</h2>
@@ -14,9 +18,10 @@ export default connect(identity)(({keyboard, dispatch, instruments}) => <div cla
   defaultValue={keyboard.instrument}
   handleChange={(compose(dispatch, updateKeyboardInstrument, eventValuePath))}
   label='Instrument'
-  options={map(instrument => ({text: capitalize.words(instrument),
-    value: instrument}),
-    instruments)}
+  options={map(
+    instrument => ({text: capitalize.words(instrument), value: instrument}),
+    keys(instruments)
+  )}
   />
     <RangeSelector
   max='1'

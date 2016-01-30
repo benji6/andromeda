@@ -1,5 +1,5 @@
 import capitalize from 'capitalize'
-import {compose, identity, map} from 'ramda'
+import {compose, identity, keys, map} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import Selector from '../molecules/Selector'
@@ -37,7 +37,7 @@ export default connect(identity)(({
       options={map(instrument => ({
         text: capitalize.words(instrument),
         value: instrument
-      }), instruments)}
+      }), keys(instruments))}
     />
     <RangeSelector
       max='2'

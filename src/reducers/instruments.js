@@ -1,14 +1,9 @@
-export const initialState = [
-  'detuned',
-  'fm',
-  'sine',
-  'supersaw',
-  'triangles'
-]
+import {assoc} from 'ramda'
+import {ADD_INSTRUMENT} from '../actions'
 
-export default (state = initialState, {type}) => {
+export default (state = {}, {meta, payload, type}) => {
   switch (type) {
-    default:
-      return state
+    case ADD_INSTRUMENT: return assoc(meta, payload, state)
+    default: return state
   }
 }
