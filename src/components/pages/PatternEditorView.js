@@ -18,8 +18,6 @@ import {Subject, Observable} from 'rx'
 import store from '../../store'
 import {
   activePatternCellClick,
-  addAudioGraphSource,
-  removeKeysFromAudioGraphContaining,
   updateActivePatternActivePosition
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
@@ -33,7 +31,7 @@ import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import {noteExists} from '../../reducers/patterns'
 
 const playStopSubject = new Subject()
-let lastPosition
+const activeNotes = new Set()
 
 const onPlay = dispatch => map(
   count => {
@@ -61,12 +59,10 @@ const onPlay = dispatch => map(
     updateActivePatternActivePosition,
     prop('position')
   ))
-  .do(compose(
-    dispatch,
-    removeKeysFromAudioGraphContaining,
-    _ => `pattern-editor-${lastPosition}`)
-  )
-  .do(({position}) => lastPosition = position)
+  .do(_ => {
+    activeNotes.forEach(({id, instrument}) => instrument.stopNotes(id))
+    activeNotes.clear()
+  })
   .subscribe(({
     notes,
     octave,
@@ -75,47 +71,54 @@ const onPlay = dispatch => map(
     scale,
     yLength
   }) => transduce(
-      compose(
-        filter(({y}) => y === position),
-        map(({x, y}) => {
-          const {instrument, volume} = store.getState().patterns[store.getState().activePatternIndex]
-          return {
-            id: `pattern-editor-${y}-${x}`,
-            instrument,
-            params: {
-              gain: volume,
-              frequency: pitchToFrequency(pitchFromScaleIndex(
-                scale.scales[scale.scaleName],
-                yLength - 1 - x + scale.scales[scale.scaleName].length * octave
-              ) + rootNote)
-            }
-          }
-        }),
-        map(compose(dispatch, addAudioGraphSource))
-      ),
-      () => {
-      },
-      null,
-      notes
+    compose(
+      filter(({y}) => y === position),
+      map(({x, y}) => {
+        const {activePatternIndex, instruments, patterns} = store.getState()
+        const {instrument, volume} = patterns[activePatternIndex]
+        const id = `pattern-editor-${y}-${x}`
+        const instumentObj = instruments[instrument]
+        activeNotes.add({instrument: instumentObj, id})
+        instumentObj.startNote({
+          frequency: pitchToFrequency(pitchFromScaleIndex(
+            scale.scales[scale.scaleName],
+            yLength - 1 - x + scale.scales[scale.scaleName].length * octave
+          ) + rootNote),
+          gain: volume,
+          id
+        })
+      })
+    ),
+    _ => null,
+    null,
+    notes
   ), ::console.error)
 
 const onStop = dispatch => {
   playStopSubject.onNext()
-  dispatch(removeKeysFromAudioGraphContaining('pattern-editor'))
+  activeNotes.forEach(({id, instrument}) => instrument.stopNotes(id))
+  activeNotes.clear()
   dispatch(updateActivePatternActivePosition(null))
 }
 
-const yLabel = curry((scale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(scale.scales[scale.scaleName],
-      yLength - i - 1) + rootNote))
+const yLabel = curry(
+  (scale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
+    scale.scales[scale.scaleName],
+    yLength - i - 1
+  ) + rootNote)
+)
 
 export default connect(identity)(({activePatternIndex, dispatch, instrument, patterns, rootNote, scale}) => {
   const activePattern = patterns[activePatternIndex]
   const {activePosition, notes, xLength, yLength} = activePattern
   const emptyPatternData = map(range(0), repeat(xLength, yLength))
-  const patternData = mapIndexed((x, i) => map(j => ({active: j === activePosition,
-      selected: noteExists(notes, i, j)}),
-      x),
-    emptyPatternData)
+  const patternData = mapIndexed(
+    (x, i) => map(
+      j => ({active: j === activePosition, selected: noteExists(notes, i, j)}),
+      x
+    ),
+    emptyPatternData
+  )
   const onClick = x => y => _ => dispatch(activePatternCellClick({x, y}))
 
   return <div>
