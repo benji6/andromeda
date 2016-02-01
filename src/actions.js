@@ -7,7 +7,6 @@ const createActionWithMeta = curry((type, payload, meta) => ({
 }))
 
 export const ACTIVE_PATTERN_CELL_CLICK = 'PATTERN_CELL_CLICK'
-export const ADD_AUDIO_GRAPH_SOURCE = 'ADD_AUDIO_GRAPH_SOURCE'
 export const ADD_CHANNEL = 'ADD_CHANNEL'
 export const ADD_CHANNEL_EFFECT = 'ADD_CHANNEL_EFFECT'
 export const ADD_CHANNEL_SOURCE = 'ADD_CHANNEL_SOURCE'
@@ -18,7 +17,6 @@ export const MOVE_CHANNEL_EFFECT_UP = 'MOVE_CHANNEL_EFFECT_UP'
 export const REMOVE_CHANNEL = 'REMOVE_CHANNEL'
 export const REMOVE_CHANNEL_EFFECT = 'REMOVE_CHANNEL_EFFECT'
 export const REMOVE_CHANNEL_SOURCE = 'REMOVE_CHANNEL_SOURCE'
-export const REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING = 'REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING'
 export const UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION = 'UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION'
 export const UPDATE_ACTIVE_PATTERN_INDEX = 'UPDATE_ACTIVE_PATTERN_INDEX'
 export const UPDATE_ACTIVE_PATTERN_INSTRUMENT = 'UPDATE_ACTIVE_PATTERN_INSTRUMENT'
@@ -47,7 +45,6 @@ export const UPDATE_SELECTED_SCALE = 'UPDATE_SELECTED_SCALE'
 export const UPDATE_SONG_NOTES = 'UPDATE_SONG_NOTES'
 
 export const activePatternCellClick = createAction(ACTIVE_PATTERN_CELL_CLICK)
-export const addAudioGraphSource = createAction(ADD_AUDIO_GRAPH_SOURCE)
 export const addChannel = createAction(ADD_CHANNEL)
 export const addChannelEffect = createAction(ADD_CHANNEL_EFFECT)
 export const addChannelSource = createAction(ADD_CHANNEL_SOURCE)
@@ -57,7 +54,6 @@ export const moveChannelEffectUp = createAction(MOVE_CHANNEL_EFFECT_UP)
 export const removeChannel = createAction(REMOVE_CHANNEL)
 export const removeChannelEffect = createAction(REMOVE_CHANNEL_EFFECT)
 export const removeChannelSource = createAction(REMOVE_CHANNEL_SOURCE)
-export const removeKeysFromAudioGraphContaining = createAction(REMOVE_KEYS_FROM_AUDIO_GRAPH_CONTAINING)
 export const updateActivePatternActivePosition = createAction(UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION)
 export const updateActivePatternIndex = createAction(UPDATE_ACTIVE_PATTERN_INDEX)
 export const updateActivePatternInstrument = createAction(UPDATE_ACTIVE_PATTERN_INSTRUMENT)

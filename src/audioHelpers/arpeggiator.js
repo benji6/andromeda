@@ -1,39 +1,38 @@
-import {compose, prop} from 'ramda'
 import {cycle, map, range, zipWith} from '../utils/lazyIterables'
 import Looper from './Looper'
 import store from '../store'
 import audioContext from '../audioContext'
-import {
-  addAudioGraphSource,
-  removeKeysFromAudioGraphContaining
-} from '../actions'
 import {arpeggiatedScale} from '../utils/derivedData'
 import nextNoteStartTime from './nextNoteStartTime'
 import pitchToFrequency from './pitchToFrequency'
 
-const dispatchRemoveKeysFromAGContaining = compose(
-  x => store.dispatch(x),
-  removeKeysFromAudioGraphContaining
-)
-const onStop = x => compose(dispatchRemoveKeysFromAGContaining, prop('id'))(x)
+const onStop = x => {
+  const {controlPad: {instrument}, instruments} = store.getState()
+  instruments[instrument].stopNote(x)
+}
+
 const gain = modulation => (1 - modulation) / 2
 
 let looper = null
 
 export const startArpeggiator = ({id, pitch, modulation}) => {
-  const {bpm, controlPad: {instrument, octave}, rootNote} = store.getState()
+  const {
+    bpm,
+    controlPad: {instrument, octave},
+    instruments,
+    rootNote
+  } = store.getState()
+
+  const onStart = x => {
+    instruments[instrument].startNote({
+      ...x,
+      frequency: pitchToFrequency(pitch + x.pitch + 12 * octave + rootNote),
+      gain: gain(modulation)
+    })
+  }
+
   if (looper) {
-    looper.onStart = compose(
-      store.dispatch,
-      addAudioGraphSource,
-      x => ({
-        ...x,
-        params: {
-          frequency: pitchToFrequency(pitch + x.pitch + 12 * octave + rootNote),
-          gain: gain(modulation)
-        }
-      })
-    )
+    looper.onStart = onStart
     return
   }
   const currentArpeggiatedScale = arpeggiatedScale(store.getState())
@@ -66,17 +65,6 @@ export const startArpeggiator = ({id, pitch, modulation}) => {
     }),
     pitchStartStops,
     cycle(range(0, 8))
-  )
-  const onStart = compose(
-    store.dispatch,
-    addAudioGraphSource,
-    x => ({
-      ...x,
-      params: {
-        frequency: pitchToFrequency(pitch + x.pitch + 12 * octave + rootNote),
-        gain: gain(modulation)
-      }
-    })
   )
   looper = new Looper({iterable, onStart, onStop})
   looper.start()

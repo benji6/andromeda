@@ -1,6 +1,5 @@
 import test from 'tape'
 import reducer, {computeInitialState, initialState} from './audioGraph'
-import {removeKeysFromAudioGraphContaining} from '../../actions'
 
 const reducerName = 'audioGraph'
 
@@ -24,14 +23,5 @@ test(`${reducerName} computeInitialState`, t => {
 test(`${reducerName} reducer returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState)
   t.deepEqual(reducer(undefined, {}), initialState)
-  t.end()
-})
-
-test(`${reducerName} reducer stopNotesWithId`, t => {
-  t.deepEqual(reducer({aaa: 'someNote',
-                       'someKey-sdfuisofhshfdushu': 'someNote',
-                       'someKey-sdfuisofhshfdu': 'someNote'},
-                      removeKeysFromAudioGraphContaining('someKey')),
-              {aaa: 'someNote'})
   t.end()
 })
