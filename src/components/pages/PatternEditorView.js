@@ -13,11 +13,16 @@ import {
   transduce
 } from 'ramda'
 import React from 'react'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import {Subject, Observable} from 'rx'
 import store from '../../store'
-import { activePatternCellClick, addAudioGraphSource, removeKeysFromAudioGraphContaining, updateActivePatternActivePosition } from '../../actions'
-import { mapIndexed } from '../../utils/helpers'
+import {
+  activePatternCellClick,
+  addAudioGraphSource,
+  removeKeysFromAudioGraphContaining,
+  updateActivePatternActivePosition
+} from '../../actions'
+import {mapIndexed} from '../../utils/helpers'
 import Pattern from '../organisms/Pattern'
 import PlayButton from '../atoms/PlayButton'
 import Navigation from '../organisms/Navigation'
@@ -25,9 +30,10 @@ import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
 import PatternMenu from '../organisms/PatternMenu'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
-import { noteExists } from '../../reducers/patterns'
-let lastPosition
+import {noteExists} from '../../reducers/patterns'
+
 const playStopSubject = new Subject()
+let lastPosition
 
 const onPlay = dispatch => map(
   count => {
@@ -115,20 +121,20 @@ export default connect(identity)(({activePatternIndex, dispatch, instrument, pat
   return <div>
     <Navigation />
     <Pattern
-  onClick={onClick}
-  patternData={patternData}
-  rootNote={rootNote}
-  scale={scale}
-  yLabel={yLabel(scale, yLength, rootNote)}
-  />
+      onClick={onClick}
+      patternData={patternData}
+      rootNote={rootNote}
+      scale={scale}
+      yLabel={yLabel(scale, yLength, rootNote)}
+    />
     <PlayButton
-  onPlay={partial(onPlay, [dispatch])}
-  onStop={partial(onStop, [dispatch])}
-  />
+      onPlay={partial(onPlay, [dispatch])}
+      onStop={partial(onStop, [dispatch])}
+    />
     <PatternMenu
-  dispatch={dispatch}
-  instrument={instrument}
-  pattern={activePattern}
-  />
+      dispatch={dispatch}
+      instrument={instrument}
+      pattern={activePattern}
+    />
   </div>
 })
