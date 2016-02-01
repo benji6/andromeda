@@ -85,6 +85,6 @@ fromEvent(document.body, 'keyup')
     map(computeNoteParams),
     map(noteParams => store.getState()
       .instruments[noteParams.instrument]
-      .stopNotes(noteParams.id))
+      .stopNote(noteParams.id))
   ))
   .subscribe(identity, ::console.error)

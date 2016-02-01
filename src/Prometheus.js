@@ -23,7 +23,7 @@ export default class {
     nodes.set(this, newNodes)
     virtualAudioGraph.get(this).update(newNodes)
   }
-  stopNotes (id) {
+  stopNote (id) {
     const newNodes = dissoc(id, nodes.get(this))
     nodes.set(this, newNodes)
     virtualAudioGraph.get(this).update(newNodes)

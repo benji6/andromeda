@@ -60,7 +60,7 @@ const onPlay = dispatch => map(
     prop('position')
   ))
   .do(_ => {
-    activeNotes.forEach(({id, instrument}) => instrument.stopNotes(id))
+    activeNotes.forEach(({id, instrument}) => instrument.stopNote(id))
     activeNotes.clear()
   })
   .subscribe(({
@@ -96,7 +96,7 @@ const onPlay = dispatch => map(
 
 const onStop = dispatch => {
   playStopSubject.onNext()
-  activeNotes.forEach(({id, instrument}) => instrument.stopNotes(id))
+  activeNotes.forEach(({id, instrument}) => instrument.stopNote(id))
   activeNotes.clear()
   dispatch(updateActivePatternActivePosition(null))
 }
