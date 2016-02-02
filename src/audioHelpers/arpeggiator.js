@@ -8,7 +8,7 @@ import pitchToFrequency from './pitchToFrequency'
 
 const onStop = x => {
   const {controlPad: {instrument}, instruments} = store.getState()
-  instruments[instrument].stopNote(x)
+  instruments[instrument].inputNoteStop(x)
 }
 
 const gain = modulation => (1 - modulation) / 2
@@ -24,7 +24,7 @@ export const startArpeggiator = ({id, pitch, modulation}) => {
   } = store.getState()
 
   const onStart = x => {
-    instruments[instrument].startNote({
+    instruments[instrument].inputNoteStart({
       ...x,
       frequency: pitchToFrequency(pitch + x.pitch + 12 * octave + rootNote),
       gain: gain(modulation)

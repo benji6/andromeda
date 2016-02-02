@@ -67,7 +67,7 @@ export default connect(identity)(({
       <ControlPad
         inputEndTransducer={compose(
           map(tap(_ => currentlyPlayingPitch = null)),
-          map(_ => instruments[instrument].stopNote(controlPadId)),
+          map(_ => instruments[instrument].inputNoteStop(controlPadId)),
           map(stopArpeggiator)
         )}
         inputTransducer={compose(
@@ -78,13 +78,13 @@ export default connect(identity)(({
             currentlyPlayingPitch !== pitch &&
             currentlyPlayingPitch !== null &&
             stopLastNoteOnNoteChange
-          ) && instruments[instrument].stopNote(controlPadId))),
+          ) && instruments[instrument].inputNoteStop(controlPadId))),
           map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
           map(ifElse(
             always(arpeggiatorIsOn),
             startArpeggiator,
             compose(
-              x => instruments[instrument].startNote(x),
+              x => instruments[instrument].inputNoteStart(x),
               createSource({octave, rootNote})
             )
           ))

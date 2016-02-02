@@ -60,7 +60,7 @@ const onPlay = dispatch => map(
     prop('position')
   ))
   .do(_ => {
-    activeNotes.forEach(({id, instrument}) => instrument.stopNote(id))
+    activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
     activeNotes.clear()
   })
   .subscribe(({
@@ -79,7 +79,7 @@ const onPlay = dispatch => map(
         const id = `pattern-editor-${y}-${x}`
         const instumentObj = instruments[instrument]
         activeNotes.add({instrument: instumentObj, id})
-        instumentObj.startNote({
+        instumentObj.inputNoteStart({
           frequency: pitchToFrequency(pitchFromScaleIndex(
             scale.scales[scale.scaleName],
             yLength - 1 - x + scale.scales[scale.scaleName].length * octave
@@ -96,7 +96,7 @@ const onPlay = dispatch => map(
 
 const onStop = dispatch => {
   playStopSubject.onNext()
-  activeNotes.forEach(({id, instrument}) => instrument.stopNote(id))
+  activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
   activeNotes.clear()
   dispatch(updateActivePatternActivePosition(null))
 }
