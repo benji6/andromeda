@@ -5,8 +5,6 @@ const buffer = require('vinyl-buffer')
 const gulp = require('gulp')
 const gutil = require('gulp-util')
 const minifyCSS = require('gulp-minify-css')
-const minifyHTML = require('gulp-minify-html')
-const minifyInline = require('gulp-minify-inline')
 const plumber = require('gulp-plumber')
 const sass = require('gulp-sass')
 const source = require('vinyl-source-stream')
@@ -24,17 +22,6 @@ gulp.task('styles', () => gulp.src('src/index.scss')
       cascade: false
     }))
     .pipe(minifyCSS())
-    .pipe(gulp.dest(distPath)))
-
-gulp.task('htmlDev', () => gulp.src('src/index.html')
-    .pipe(plumber())
-    .pipe(minifyInline())
-    .pipe(minifyHTML())
-    .pipe(gulp.dest(distPath)))
-
-gulp.task('htmlProd', () => gulp.src('src/index.html')
-    .pipe(minifyInline())
-    .pipe(minifyHTML())
     .pipe(gulp.dest(distPath)))
 
 gulp.task('scriptsDev',
@@ -59,10 +46,9 @@ gulp.task('scriptsDev',
       .pipe(gulp.dest(distPath)))
 
 gulp.task('watch', () => {
-  gulp.watch('src/index.html', ['htmlDev'])
   gulp.watch('src/**/*.scss', ['styles'])
   gulp.watch('src/**/*.js', ['scriptsDev'])
 })
 
-gulp.task('build', ['styles', 'htmlProd'])
-gulp.task('default', ['styles', 'htmlDev', 'scriptsDev', 'watch'])
+gulp.task('build', ['styles'])
+gulp.task('default', ['styles', 'scriptsDev', 'watch'])
