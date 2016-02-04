@@ -1,4 +1,4 @@
-import Prometheus from './Prometheus'
+import Prometheus from './plugins/Prometheus'
 import audioContext from './audioContext'
 import {dispatch} from './store'
 import {addInstrument} from './actions'
