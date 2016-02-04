@@ -73,7 +73,7 @@ export default class extends React.Component {
   static propTypes = {
     inputEndTransducer: PropTypes.func,
     inputTransducer: PropTypes.func
-  }
+  };
   componentDidMount () {
     const {inputEndTransducer, inputTransducer} = this.props
     controlPadElement = document.querySelector('.control-pad')
