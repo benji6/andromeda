@@ -11,7 +11,6 @@ const plumber = require('gulp-plumber')
 const sass = require('gulp-sass')
 const source = require('vinyl-source-stream')
 const sourcemaps = require('gulp-sourcemaps')
-const uglify = require('gulp-uglify')
 const watchify = require('watchify')
 
 const browserifyEntryPath = 'src/index.js'
@@ -59,20 +58,11 @@ gulp.task('scriptsDev',
       .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest(distPath)))
 
-gulp.task('scriptsProd', () => browserify(browserifyEntryPath)
-    .transform(babelify, {stage: 0})
-    .bundle()
-    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-    .pipe(source('index.js'))
-    .pipe(buffer())
-    .pipe(uglify())
-    .pipe(gulp.dest(distPath)))
-
 gulp.task('watch', () => {
   gulp.watch('src/index.html', ['htmlDev'])
   gulp.watch('src/**/*.scss', ['styles'])
   gulp.watch('src/**/*.js', ['scriptsDev'])
 })
 
-gulp.task('build', ['styles', 'htmlProd', 'scriptsProd'])
+gulp.task('build', ['styles', 'htmlProd'])
 gulp.task('default', ['styles', 'htmlDev', 'scriptsDev', 'watch'])
