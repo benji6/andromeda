@@ -1,5 +1,5 @@
 import {addEffect} from '../actions'
-import {dispatch} from '../store'
+import store from '../store'
 import adsr from './tools/adsr'
 import detuned from './oscillatorBanks/detuned'
 import fm from './oscillatorBanks/fm'
@@ -17,7 +17,7 @@ virtualAudioGraph.defineNodes({
 
 const loadReverb = (uri, name) => reverbAsync(uri)
   .then(reverb => virtualAudioGraph.defineNodes({[name]: reverb}))
-  .then(() => dispatch(addEffect(name)))
+  .then(_ => store.dispatch(addEffect(name)))
 
 loadReverb('assets/sb.wav', 'reverb chapel')
 loadReverb('assets/h.wav', 'reverb mausoleum')

@@ -1,6 +1,6 @@
 import test from 'tape'
 import {arpeggiatedScale, currentScale} from './derivedData'
-import {cycle, take} from 'imlazy'
+import {cycle, take} from './lazyIterables'
 
 test('derivedData - currentScale', t => {
   t.deepEqual(currentScale({

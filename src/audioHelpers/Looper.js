@@ -1,3 +1,4 @@
+import {compose, gte, prop} from 'ramda'
 import {
   map,
   concat,
@@ -7,8 +8,7 @@ import {
   isEmpty,
   reject,
   takeWhile
-} from 'imlazy'
-import {compose, gte, prop} from 'ramda'
+} from '../utils/lazyIterables'
 import audioContext from '../audioContext'
 
 const lookAhead = 0.05
