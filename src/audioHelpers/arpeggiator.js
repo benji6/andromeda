@@ -1,5 +1,5 @@
-import {cycle, map, range, zipWith} from 'imlazy'
 import {compose, prop} from 'ramda'
+import {cycle, map, range, zipWith} from '../utils/lazyIterables'
 import Looper from './Looper'
 import store from '../store'
 import audioContext from '../audioContext'

@@ -1,5 +1,5 @@
-import {cycle} from 'imlazy'
 import {compose, concat, nth, reverse} from 'ramda'
+import {cycle} from '../utils/lazyIterables'
 
 export const initialState = {
   random: xs => ({[Symbol.iterator]: function * () {
