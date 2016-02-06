@@ -20,7 +20,7 @@ import Navigation from '../organisms/Navigation'
 import PerformanceMenu from '../organisms/PerformanceMenu'
 import {currentScale} from '../../utils/derivedData'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
-import store, {dispatch} from '../../store'
+import store from '../../store'
 
 const controlPadId = 'controlPad'
 
@@ -73,7 +73,7 @@ export default connect(identity)(({
       <ControlPad
         inputEndTransducer={compose(
           map(tap(_ => currentlyPlayingPitch = null)),
-          map(_ => dispatch(removeKeysFromAudioGraphContaining(controlPadId))),
+          map(_ => store.dispatch(removeKeysFromAudioGraphContaining(controlPadId))),
           map(stopArpeggiator)
         )}
         inputTransducer={compose(
@@ -84,12 +84,12 @@ export default connect(identity)(({
             currentlyPlayingPitch !== pitch &&
             currentlyPlayingPitch !== null &&
             stopLastNoteOnNoteChange
-          ) && dispatch(removeKeysFromAudioGraphContaining(controlPadId)))),
+          ) && store.dispatch(removeKeysFromAudioGraphContaining(controlPadId)))),
           map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
           map(ifElse(
             always(arpeggiatorIsOn),
             startArpeggiator,
-            compose(dispatch, addAudioGraphSource, createSource({
+            compose(store.dispatch, addAudioGraphSource, createSource({
               instrument,
               octave,
               rootNote

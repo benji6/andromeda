@@ -1,7 +1,7 @@
 import {cycle, map, range, zipWith} from 'imlazy'
 import {compose, prop} from 'ramda'
 import Looper from './Looper'
-import store, {dispatch} from '../store'
+import store from '../store'
 import audioContext from '../audioContext'
 import {
   addAudioGraphSource,
@@ -12,7 +12,7 @@ import nextNoteStartTime from './nextNoteStartTime'
 import pitchToFrequency from './pitchToFrequency'
 
 const dispatchRemoveKeysFromAGContaining = compose(
-  dispatch,
+  x => store.dispatch(x),
   removeKeysFromAudioGraphContaining
 )
 const onStop = x => compose(dispatchRemoveKeysFromAGContaining, prop('id'))(x)
@@ -24,7 +24,7 @@ export const startArpeggiator = ({id, pitch, modulation}) => {
   const {bpm, controlPad: {instrument, octave}, rootNote} = store.getState()
   if (looper) {
     looper.onStart = compose(
-      dispatch,
+      store.dispatch,
       addAudioGraphSource,
       x => ({
         ...x,
@@ -68,7 +68,7 @@ export const startArpeggiator = ({id, pitch, modulation}) => {
     cycle(range(0, 8))
   )
   const onStart = compose(
-    dispatch,
+    store.dispatch,
     addAudioGraphSource,
     x => ({
       ...x,
