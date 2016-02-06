@@ -54,8 +54,7 @@
     "uglify-js": "^2.6.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.5.0",
-    "web-audio-test-api": "^0.3.6"
+    "watchify": "^3.5.0"
   },
   "dependencies": {
     "capitalize": "^1.0.0",
