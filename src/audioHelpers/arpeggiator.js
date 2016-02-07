@@ -5,10 +5,11 @@ import audioContext from '../audioContext'
 import {arpeggiatedScale} from '../utils/derivedData'
 import nextNoteStartTime from './nextNoteStartTime'
 import pitchToFrequency from './pitchToFrequency'
+import {instrumentInstance} from '../utils/derivedData'
 
 const onStop = x => {
-  const {controlPad: {instrument}, instruments} = store.getState()
-  instruments[instrument].inputNoteStop(x)
+  const {controlPad: {instrument}, plugins} = store.getState()
+  instrumentInstance(instrument, plugins).inputNoteStop(x)
 }
 
 const gain = modulation => (1 - modulation) / 2
@@ -19,12 +20,12 @@ export const startArpeggiator = ({id, pitch, modulation}) => {
   const {
     bpm,
     controlPad: {instrument, octave},
-    instruments,
+    plugins,
     rootNote
   } = store.getState()
 
   const onStart = x => {
-    instruments[instrument].inputNoteStart({
+    instrumentInstance(instrument, plugins).inputNoteStart({
       ...x,
       frequency: pitchToFrequency(pitch + x.pitch + 12 * octave + rootNote),
       gain: gain(modulation)

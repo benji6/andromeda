@@ -2,6 +2,7 @@ import {compose, flip, identity, isNil, map, prop, reject, tap} from 'ramda'
 import {Observable} from 'rx'
 import store from './store'
 import pitchToFrequency from './audioHelpers/pitchToFrequency'
+import {instrumentInstance} from './utils/derivedData'
 
 const {fromEvent} = Observable
 const keyCodesToPitches = {
@@ -70,9 +71,10 @@ fromEvent(document.body, 'keydown')
     map(flip(prop)(keyCodesToPitches)),
     reject(isNil),
     map(computeNoteParams),
-    map(noteParams => store.getState()
-      .instruments[noteParams.instrument]
-      .inputNoteStart(noteParams)),
+    map(noteParams => instrumentInstance(
+      noteParams.instrument,
+      store.getState().plugins
+    ).inputNoteStart(noteParams)),
   ))
   .subscribe(identity, ::console.error)
 
@@ -83,8 +85,9 @@ fromEvent(document.body, 'keyup')
     map(flip(prop)(keyCodesToPitches)),
     reject(isNil),
     map(computeNoteParams),
-    map(noteParams => store.getState()
-      .instruments[noteParams.instrument]
-      .inputNoteStop(noteParams.id))
+    map(noteParams => instrumentInstance(
+      noteParams.instrument,
+      store.getState().plugins
+    ).inputNoteStop(noteParams.id))
   ))
   .subscribe(identity, ::console.error)

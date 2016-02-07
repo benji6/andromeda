@@ -1,5 +1,9 @@
 import test from 'tape'
-import {arpeggiatedScale, currentScale} from './derivedData'
+import {
+  arpeggiatedScale,
+  currentScale,
+  instrumentInstance
+} from './derivedData'
 import {cycle, take} from './lazyIterables'
 
 test('derivedData - currentScale', t => {
@@ -47,5 +51,13 @@ test('derivedData - arpeggiatedScale', t => {
     }))],
     [0, 4, 7, 0, 4, 7, 0, 4, 7, 0, 4, 7, 0, 4, 7, 0]
   )
+  t.end()
+})
+
+test('derivedData - instrumentInstance', t => {
+  const instance = {}
+  t.deepEqual(instrumentInstance('test instrument instance name', {
+    instrumentInstances: [{name: 'test instrument instance name', instance}]
+  }), instance)
   t.end()
 })

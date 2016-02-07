@@ -14,7 +14,7 @@ import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
 import ControlPad from '../organisms/ControlPad'
 import Navigation from '../organisms/Navigation'
 import PerformanceMenu from '../organisms/PerformanceMenu'
-import {currentScale} from '../../utils/derivedData'
+import {currentScale, instrumentInstance} from '../../utils/derivedData'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import store from '../../store'
 
@@ -59,7 +59,7 @@ export default connect(identity)(({
     portamento,
     range
   },
-  instruments,
+  plugins,
   rootNote
 }) => <div>
     <Navigation />
@@ -67,7 +67,7 @@ export default connect(identity)(({
       <ControlPad
         inputEndTransducer={compose(
           map(tap(_ => currentlyPlayingPitch = null)),
-          map(_ => instruments[instrument].inputNoteStop(controlPadId)),
+          map(_ => instrumentInstance(instrument, plugins).inputNoteStop(controlPadId)),
           map(stopArpeggiator)
         )}
         inputTransducer={compose(
@@ -78,13 +78,13 @@ export default connect(identity)(({
             currentlyPlayingPitch !== pitch &&
             currentlyPlayingPitch !== null &&
             stopLastNoteOnNoteChange
-          ) && instruments[instrument].inputNoteStop(controlPadId))),
+          ) && instrumentInstance(instrument, plugins).inputNoteStop(controlPadId))),
           map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
           map(ifElse(
             always(arpeggiatorIsOn),
             startArpeggiator,
             compose(
-              x => instruments[instrument].inputNoteStart(x),
+              x => instrumentInstance(instrument, plugins).inputNoteStart(x),
               createSource({octave, rootNote})
             )
           ))

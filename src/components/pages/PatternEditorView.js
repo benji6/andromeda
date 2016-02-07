@@ -29,6 +29,7 @@ import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
 import PatternMenu from '../organisms/PatternMenu'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import {noteExists} from '../../reducers/patterns'
+import {instrumentInstance} from '../../utils/derivedData'
 
 const playStopSubject = new Subject()
 const activeNotes = new Set()
@@ -74,10 +75,10 @@ const onPlay = dispatch => map(
     compose(
       filter(({y}) => y === position),
       map(({x, y}) => {
-        const {activePatternIndex, instruments, patterns} = store.getState()
+        const {activePatternIndex, patterns, plugins} = store.getState()
         const {instrument, volume} = patterns[activePatternIndex]
         const id = `pattern-editor-${y}-${x}`
-        const instumentObj = instruments[instrument]
+        const instumentObj = instrumentInstance(instrument, plugins)
         activeNotes.add({instrument: instumentObj, id})
         instumentObj.inputNoteStart({
           frequency: pitchToFrequency(pitchFromScaleIndex(

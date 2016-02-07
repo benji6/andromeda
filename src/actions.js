@@ -1,17 +1,13 @@
-import {curry} from 'ramda'
 const createAction = type => payload => ({type, payload})
-const createActionWithMeta = curry((type, payload, meta) => ({
-  type,
-  meta,
-  payload
-}))
 
 export const ACTIVE_PATTERN_CELL_CLICK = 'PATTERN_CELL_CLICK'
 export const ADD_CHANNEL = 'ADD_CHANNEL'
 export const ADD_CHANNEL_EFFECT = 'ADD_CHANNEL_EFFECT'
 export const ADD_CHANNEL_SOURCE = 'ADD_CHANNEL_SOURCE'
 export const ADD_EFFECT = 'ADD_EFFECT'
-export const ADD_INSTRUMENT = 'ADD_INSTRUMENT'
+export const INSTANTIATE_INSTRUMENT = 'INSTANTIATE_INSTRUMENT'
+export const LOAD_PLUGIN_INSTRUMENT = 'LOAD_PLUGIN_INSTRUMENT'
+export const LOAD_PLUGIN_EFFECT = 'LOAD_PLUGIN_EFFECT'
 export const MOVE_CHANNEL_EFFECT_DOWN = 'MOVE_CHANNEL_EFFECT_DOWN'
 export const MOVE_CHANNEL_EFFECT_UP = 'MOVE_CHANNEL_EFFECT_UP'
 export const REMOVE_CHANNEL = 'REMOVE_CHANNEL'
@@ -49,6 +45,9 @@ export const addChannel = createAction(ADD_CHANNEL)
 export const addChannelEffect = createAction(ADD_CHANNEL_EFFECT)
 export const addChannelSource = createAction(ADD_CHANNEL_SOURCE)
 export const addEffect = createAction(ADD_EFFECT)
+export const instantiateInstrument = createAction(INSTANTIATE_INSTRUMENT)
+export const loadPluginEffect = createAction(LOAD_PLUGIN_EFFECT)
+export const loadPluginInstrument = createAction(LOAD_PLUGIN_INSTRUMENT)
 export const moveChannelEffectDown = createAction(MOVE_CHANNEL_EFFECT_DOWN)
 export const moveChannelEffectUp = createAction(MOVE_CHANNEL_EFFECT_UP)
 export const removeChannel = createAction(REMOVE_CHANNEL)
@@ -81,5 +80,3 @@ export const updateSelectedAddSource = createAction(UPDATE_SELECTED_ADD_SOURCE)
 export const updateSelectedRootNote = createAction(UPDATE_ROOT_NOTE)
 export const updateSelectedScale = createAction(UPDATE_SELECTED_SCALE)
 export const updateSongNotes = createAction(UPDATE_SONG_NOTES)
-
-export const addInstrument = createActionWithMeta(ADD_INSTRUMENT)
