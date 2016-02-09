@@ -1,5 +1,6 @@
 .full-select {
   appearance: none;
+  -webkit-appearance: none;
   text-indent: 1rem;
   &[disabled] {
     visibility: hidden;

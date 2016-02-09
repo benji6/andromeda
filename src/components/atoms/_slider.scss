@@ -1,6 +1,7 @@
 .slider {
   @mixin slider-thumb () {
     appearance: none;
+    -webkit-appearance: none;
     background: linear-gradient(to bottom, $white 0%, $off-white 55%, $squirtle-midday 80%);
     border-radius: 0.3rem;
     box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.5);
@@ -18,6 +19,7 @@
       visibility: hidden;
     }
     appearance: none;
+    -webkit-appearance: none;
     background-color: $white;
     height: 0.1rem;
     width: 10rem;

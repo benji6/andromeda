@@ -1,15 +1,14 @@
 .play-button {
-  $color: #15a;
   border-bottom: 2rem solid transparent;
-  border-left: 3rem solid $color;
+  border-left: 3rem solid #15a;
   border-top: 2rem solid transparent;
   height: 0;
   margin: 1rem auto;
   width: 0;
-  &.selected {
-    background: 3rem solid $color;
-    border: 0;
-    height: 4rem;
-    width: 4rem;
-  }
+}
+.play-button--playing {
+  background: #15a;
+  border: 0;
+  height: 4rem;
+  width: 4rem;
 }
