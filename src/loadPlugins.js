@@ -4,6 +4,7 @@ import Osc from './plugins/instruments/Osc'
 import Delay from './plugins/effects/Delay'
 import Gain from './plugins/effects/Gain'
 import {
+  addInstrumentToChannel,
   instantiateEffect,
   instantiateInstrument,
   loadPluginEffect,
@@ -16,7 +17,6 @@ store.dispatch(loadPluginEffect({constructor: Delay, name: 'delay'}))
 store.dispatch(loadPluginEffect({constructor: Gain, name: 'gain'}))
 store.dispatch(instantiateInstrument({name: 'prometheus', plugin: 'prometheus'}))
 
-store.dispatch(instantiateEffect({channel: 0, name: 'delay-x', plugin: 'delay'}))
+store.dispatch(instantiateEffect({channel: 0, name: 'delay', plugin: 'delay'}))
 
-// if connected to destination it disconnects and adds to first effect in channel
-// dispatch(addInstrumentToChannel({channel: 0, instrument: 'prometheus-x'}))
+store.dispatch(addInstrumentToChannel({channel: 0, name: 'prometheus'}))

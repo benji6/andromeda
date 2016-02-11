@@ -1,6 +1,7 @@
 import test from 'tape'
 import reducer from './plugins'
 import {
+  addInstrumentToChannel,
   instantiateEffect,
   instantiateInstrument,
   loadPluginEffect,
@@ -16,6 +17,26 @@ test(`${reducerName} reducer returns initial state`, t => {
     instrumentInstances: [],
     instrumentPlugins: []
   })
+  t.end()
+})
+
+test(`${reducerName} reducer - addInstrumentToChannel`, t => {
+  const constructor = class {connect () {} disconnect () {}}
+  const instance = new constructor()
+  t.deepEqual(
+    reducer({
+      effectInstances: [{channel: 0, instance, name: 'test effect plugin'}],
+      effectPlugins: [],
+      instrumentInstances: [{name: 'fake instance name', instance}],
+      instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
+    }, addInstrumentToChannel({channel: 0, name: 'fake instance name'})),
+    {
+      effectInstances: [{channel: 0, instance, name: 'test effect plugin'}],
+      effectPlugins: [],
+      instrumentInstances: [{channel: 0, name: 'fake instance name', instance}],
+      instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
+    }
+  )
   t.end()
 })
 
