@@ -5,7 +5,7 @@ import {
 } from '../actions'
 
 export const initialState = {
-  instrument: 'prometheus',
+  instrument: 'Prometheus',
   octave: 0,
   volume: 1 / 3
 }

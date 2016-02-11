@@ -15,8 +15,8 @@ store.dispatch(loadPluginInstrument({constructor: Prometheus, name: 'prometheus'
 store.dispatch(loadPluginInstrument({constructor: Osc, name: 'osc'}))
 store.dispatch(loadPluginEffect({constructor: Delay, name: 'delay'}))
 store.dispatch(loadPluginEffect({constructor: Gain, name: 'gain'}))
-store.dispatch(instantiateInstrument({name: 'prometheus', plugin: 'prometheus'}))
+store.dispatch(instantiateInstrument({name: 'Prometheus', plugin: 'prometheus'}))
 
 store.dispatch(instantiateEffect({channel: 0, name: 'delay', plugin: 'delay'}))
 
-store.dispatch(addInstrumentToChannel({channel: 0, name: 'prometheus'}))
+store.dispatch(addInstrumentToChannel({channel: 0, name: 'Prometheus'}))

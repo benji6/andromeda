@@ -11,7 +11,7 @@ import store from '../store'
 
 export const initialState = [{
   activePosition: null,
-  instrument: 'prometheus',
+  instrument: 'Prometheus',
   notes: [],
   octave: 0,
   xLength: 8,
