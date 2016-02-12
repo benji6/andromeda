@@ -6,12 +6,14 @@ import createVirtualAudioGraph from 'virtual-audio-graph'
 const graphs = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
+const types = new WeakMap()
 
 export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
     outputs.set(this, output)
     graphs.set(this, {})
+    types.set(this, 'sine')
     virtualAudioGraphs.set(this, createVirtualAudioGraph({
       audioContext,
       output
@@ -29,7 +31,7 @@ export default class {
       0: ['gain', 'output', {gain}],
       [id]: ['oscillator', 0, {
         frequency,
-        type: 'sawtooth',
+        type: types.get(this),
         startTime,
         stopTime
       }]
@@ -44,9 +46,20 @@ export default class {
   }
   render (containerEl) {
     ReactDOM.render(
-      <div>
-        <h2>This is Osc</h2>
-        <p>Tremble ye mighty and despair</p>
+      <div style={{textAlign: 'center'}}>
+        <h2>Osc</h2>
+        <label>
+          Type&nbsp;
+          <select
+            defaultValue={types.get(this)}
+            onChange={e => types.set(this, e.target.value)}
+          >
+            <option value='sawtooth'>Sawtooth</option>
+            <option value='sine'>Sine</option>
+            <option value='square'>Square</option>
+            <option value='triangle'>Triangle</option>
+          </select>
+        </label>
       </div>,
       containerEl
     )
