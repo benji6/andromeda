@@ -1,6 +1,6 @@
 import {compose, flip, identity, isNil, map, prop, reject, tap} from 'ramda'
 import {Observable} from 'rx'
-import {dispatch, getState} from './store'
+import store from './store'
 import pitchToFrequency from './audioHelpers/pitchToFrequency'
 import {
   addAudioGraphSource,
@@ -55,7 +55,7 @@ const pressedKeys = new Set()
 const computeId = pitch => `keyboard: ${pitch}`
 
 const computeNoteParams = pitch => {
-  const {keyboard} = getState()
+  const {keyboard} = store.getState()
   return {
     id: computeId(pitch),
     instrument: keyboard.instrument,
@@ -76,7 +76,7 @@ fromEvent(document.body, 'keydown')
     reject(isNil),
     map(computeNoteParams),
     map(addAudioGraphSource),
-    map(dispatch)
+    map(store.dispatch)
   ))
   .subscribe(identity, ::console.error)
 
@@ -88,6 +88,6 @@ fromEvent(document.body, 'keyup')
     reject(isNil),
     map(computeId),
     map(removeKeysFromAudioGraphContaining),
-    map(dispatch)
+    map(store.dispatch)
   ))
   .subscribe(identity, ::console.error)
