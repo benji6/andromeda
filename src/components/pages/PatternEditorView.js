@@ -1,4 +1,17 @@
-import { compose, curry, filter, identity, map, partial, prop, range, repeat, transduce } from 'ramda'
+import {
+  compose,
+  curry,
+  filter,
+  identity,
+  inc,
+  map,
+  partial,
+  prop,
+  range,
+  repeat,
+  T,
+  transduce
+} from 'ramda'
 import React from 'react'
 import { connect } from 'react-redux'
 import {Subject, Observable} from 'rx'
@@ -16,67 +29,69 @@ import { noteExists } from '../../reducers/patterns'
 let lastPosition
 const playStopSubject = new Subject()
 
-const onPlay = dispatch => Observable
-    .generateWithRelativeTime(0,
-      () => true,
-      x => x + 1,
-      x => x,
-      () => 60000 / store.getState().bpm)
-    .takeUntil(playStopSubject)
-    .map(count => {
-      const {activePatternIndex, patterns, rootNote, scale} = store.getState()
-      const {notes, octave, xLength, yLength} = patterns[activePatternIndex]
-      return {
-        notes,
-        octave,
-        position: count % xLength,
-        rootNote,
-        scale,
-        yLength
-      }
-    })
-    .do(compose(
-      dispatch,
-      updateActivePatternActivePosition,
-      prop('position')
-    ))
-    .do(compose(
-      dispatch,
-      removeKeysFromAudioGraphContaining,
-      _ => `pattern-editor-${lastPosition}`)
-    )
-    .do(({position}) => lastPosition = position)
-    .subscribe(({
+const onPlay = dispatch => map(
+  count => {
+    const {activePatternIndex, patterns, rootNote, scale} = store.getState()
+    const {notes, octave, xLength, yLength} = patterns[activePatternIndex]
+    return {
       notes,
       octave,
-      position,
+      position: count % xLength,
       rootNote,
       scale,
       yLength
-    }) => transduce(
-        compose(
-          filter(({y}) => y === position),
-          map(({x, y}) => {
-            const {instrument, volume} = store.getState().patterns[store.getState().activePatternIndex]
-            return {
-              id: `pattern-editor-${y}-${x}`,
-              instrument,
-              params: {
-                gain: volume,
-                frequency: pitchToFrequency(pitchFromScaleIndex(
-                  scale.scales[scale.scaleName],
-                  yLength - 1 - x + scale.scales[scale.scaleName].length * octave
-                ) + rootNote)
-              }
+    }
+  },
+  Observable.generateWithRelativeTime(
+    0,
+    T,
+    inc,
+    identity,
+    () => 60000 / store.getState().bpm)
+  .takeUntil(playStopSubject)
+)
+  .do(compose(
+    dispatch,
+    updateActivePatternActivePosition,
+    prop('position')
+  ))
+  .do(compose(
+    dispatch,
+    removeKeysFromAudioGraphContaining,
+    _ => `pattern-editor-${lastPosition}`)
+  )
+  .do(({position}) => lastPosition = position)
+  .subscribe(({
+    notes,
+    octave,
+    position,
+    rootNote,
+    scale,
+    yLength
+  }) => transduce(
+      compose(
+        filter(({y}) => y === position),
+        map(({x, y}) => {
+          const {instrument, volume} = store.getState().patterns[store.getState().activePatternIndex]
+          return {
+            id: `pattern-editor-${y}-${x}`,
+            instrument,
+            params: {
+              gain: volume,
+              frequency: pitchToFrequency(pitchFromScaleIndex(
+                scale.scales[scale.scaleName],
+                yLength - 1 - x + scale.scales[scale.scaleName].length * octave
+              ) + rootNote)
             }
-          }),
-          map(compose(dispatch, addAudioGraphSource))
-        ),
-        () => {
-        },
-        null,
-        notes
-    ), ::console.error)
+          }
+        }),
+        map(compose(dispatch, addAudioGraphSource))
+      ),
+      () => {
+      },
+      null,
+      notes
+  ), ::console.error)
 
 const onStop = dispatch => {
   playStopSubject.onNext()
