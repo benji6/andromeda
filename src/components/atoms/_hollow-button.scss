@@ -9,11 +9,11 @@
   padding: 0.25rem 1rem;
   text-decoration: none;
   transition-duration: $fast-transition;
-  &:hover {
-    box-shadow: $squirtle-dusk 0 0 1rem 0.1rem;
-    transition-duration: $fast-transition;
-  }
-  &:active {
-    background: linear-gradient($black, $black, $squirtle-night);
-  }
+}
+.hollow-button:hover {
+  box-shadow: $squirtle-dusk 0 0 1rem 0.1rem;
+  transition-duration: $fast-transition;
+}
+.hollow-button:active {
+  background: linear-gradient($black, $black, $squirtle-night);
 }
