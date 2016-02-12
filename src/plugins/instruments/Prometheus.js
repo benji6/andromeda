@@ -40,4 +40,7 @@ export default class {
     graphs.set(this, newGraph)
     virtualAudioGraphs.get(this).update(newGraph)
   }
+  render (x) {
+    console.log(x)
+  }
 }

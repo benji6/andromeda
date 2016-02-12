@@ -1,4 +1,6 @@
 import {dissoc} from 'ramda'
+import React from 'react'
+import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 
 const graphs = new WeakMap()
@@ -39,5 +41,14 @@ export default class {
     const newGraph = dissoc(id, graphs.get(this))
     graphs.set(this, newGraph)
     virtualAudioGraphs.get(this).update(newGraph)
+  }
+  render (containerEl) {
+    ReactDOM.render(
+      <div>
+        <h2>This is Osc</h2>
+        <p>Tremble ye mighty and despair</p>
+      </div>,
+      containerEl
+    )
   }
 }

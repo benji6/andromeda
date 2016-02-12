@@ -2,6 +2,8 @@ import {identity} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import Navigation from '../organisms/Navigation'
+import PluginMount from '../atoms/PluginMount'
+import {instrumentInstance} from '../../utils/derivedData'
 
 export default connect(identity)(({
   plugins,
@@ -9,7 +11,7 @@ export default connect(identity)(({
 }) =>
   <div>
     <Navigation />
-    <div className='flex-column text-center justify-center'>
-      <h1>{params.name}</h1>
-    </div>
+    <PluginMount
+      instance={instrumentInstance(params.name, plugins)}
+    />
   </div>)
