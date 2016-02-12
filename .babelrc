@@ -1,5 +1,8 @@
 {
-  "plugins": ["transform-runtime"],
+  "plugins": [
+    "ramda",
+    "transform-runtime"
+  ],
   "presets": [
     "es2015",
     "react",
