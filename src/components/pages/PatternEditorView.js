@@ -52,14 +52,15 @@ const onPlay = dispatch => map(
     T,
     inc,
     identity,
-    () => 60000 / store.getState().bpm)
-  .takeUntil(playStopSubject)
-)
+    _ => 60000 / store.getState().bpm
+  )
+  .takeUntil(playStopSubject))
   .do(compose(
     dispatch,
     updateActivePatternActivePosition,
     prop('position')
-  ))
+  )
+)
   .do(_ => {
     activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
     activeNotes.clear()
