@@ -4,6 +4,7 @@ import ChannelsView from './components/pages/ChannelsView'
 import ChannelView from './components/pages/ChannelView'
 import ControlPadSettings from './components/pages/ControlPadSettings'
 import ControlPadView from './components/pages/ControlPadView'
+import Effect from './components/pages/Effect'
 import Effects from './components/pages/Effects'
 import Instrument from './components/pages/Instrument'
 import Instruments from './components/pages/Instruments'
@@ -18,6 +19,7 @@ export default <Router>
   <Route path='/control-pad' component={ControlPadView} />
   <Route path='/control-pad/settings' component={ControlPadSettings} />
   <Route path='/effects' component={Effects} />
+  <Route path='/effects/:name' component={Effect} />
   <Route path='/instruments' component={Instruments} />
   <Route path='/instruments/:name' component={Instrument} />
   <Route path='/keyboard/settings' component={KeyboardSettings} />

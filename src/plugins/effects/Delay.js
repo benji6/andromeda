@@ -1,3 +1,5 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 
 const graphConstructors = new WeakMap()
@@ -35,5 +37,14 @@ export default class {
   }
   disconnect (destination) {
     outputs.get(this).disconnect()
+  }
+  render (containerEl) {
+    ReactDOM.render(
+      <div style={{textAlign: 'center'}}>
+        <h2>Delay</h2>
+        <p>Customization coming soon!</p>
+      </div>,
+      containerEl
+    )
   }
 }

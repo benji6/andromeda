@@ -16,13 +16,13 @@ store.dispatch(loadPluginInstrument({constructor: Ariadne, name: 'Ariadne'}))
 store.dispatch(loadPluginInstrument({constructor: Fate, name: 'Fate'}))
 store.dispatch(loadPluginInstrument({constructor: Prometheus, name: 'Prometheus'}))
 
-store.dispatch(loadPluginEffect({constructor: Delay, name: 'delay'}))
+store.dispatch(loadPluginEffect({constructor: Delay, name: 'Delay'}))
 store.dispatch(loadPluginEffect({constructor: Gain, name: 'gain'}))
 
 store.dispatch(instantiateInstrument({name: 'Ariadne', plugin: 'Ariadne'}))
 store.dispatch(instantiateInstrument({name: 'Fate', plugin: 'Fate'}))
 store.dispatch(instantiateInstrument({name: 'Prometheus', plugin: 'Prometheus'}))
 
-store.dispatch(instantiateEffect({channel: 0, name: 'delay', plugin: 'delay'}))
+store.dispatch(instantiateEffect({channel: 0, name: 'Delay', plugin: 'Delay'}))
 
 store.dispatch(addInstrumentToChannel({channel: 0, name: 'Prometheus'}))
