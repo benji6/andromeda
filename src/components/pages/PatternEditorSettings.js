@@ -1,7 +1,8 @@
 import capitalize from 'capitalize'
-import {compose, identity, keys, map} from 'ramda'
+import {compose, identity, map} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
+import {instrumentInstanceNames} from '../../utils/derivedData'
 import {
   updateActivePatternInstrument,
   updateActivePatternOctave,
@@ -15,9 +16,9 @@ import {eventValuePath} from '../../utils/helpers'
 
 export default connect(identity)(({
   activePatternIndex,
-  instruments,
   dispatch,
-  patterns
+  patterns,
+  plugins
 }) => {
   const activePattern = patterns[activePatternIndex]
   const {instrument, octave, xLength, volume} = activePattern
@@ -32,7 +33,7 @@ export default connect(identity)(({
       label='Instrument'
       options={map(
         instr => ({text: capitalize.words(instr), value: instr}),
-        keys(instruments)
+        instrumentInstanceNames(plugins)
       )}
     />
     <RangeSelector

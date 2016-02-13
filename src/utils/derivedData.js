@@ -9,6 +9,7 @@ import {
   map,
   multiply,
   nth,
+  pluck,
   prop,
   range
 } from 'ramda'
@@ -26,3 +27,7 @@ export const instrumentInstance = curry((name, plugins) => compose(
   prop('instance'),
   find(compose(equals(name), prop('name'))), prop('instrumentInstances')
 )(plugins))
+export const instrumentInstanceNames = compose(
+  pluck('name'),
+  prop('instrumentInstances')
+)
