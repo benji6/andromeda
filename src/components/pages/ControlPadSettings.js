@@ -1,8 +1,7 @@
 import capitalize from 'capitalize'
-import {compose, identity, map} from 'ramda'
+import {compose, map} from 'ramda'
 import React from 'react'
-import {connect} from 'react-redux'
-import {eventValuePath, eventCheckedPath} from '../../utils/helpers'
+import {eventValuePath, eventCheckedPath, rawConnect} from '../../utils/helpers'
 import {instrumentInstanceNames} from '../../utils/derivedData'
 import {
   updateControlPadArpeggiatorIsOn,
@@ -19,7 +18,7 @@ import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import Selector from '../molecules/Selector'
 
-export default connect(identity)(({
+export default rawConnect(({
   arpeggiatorPatterns,
   controlPad,
   dispatch,

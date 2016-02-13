@@ -13,14 +13,13 @@ import {
   transduce
 } from 'ramda'
 import React from 'react'
-import {connect} from 'react-redux'
 import {Subject, Observable} from 'rx'
 import store from '../../store'
 import {
   activePatternCellClick,
   updateActivePatternActivePosition
 } from '../../actions'
-import {mapIndexed} from '../../utils/helpers'
+import {mapIndexed, rawConnect} from '../../utils/helpers'
 import Pattern from '../organisms/Pattern'
 import PlayButton from '../atoms/PlayButton'
 import Navigation from '../organisms/Navigation'
@@ -110,7 +109,14 @@ const yLabel = curry(
   ) + rootNote)
 )
 
-export default connect(identity)(({activePatternIndex, dispatch, instrument, patterns, rootNote, scale}) => {
+export default rawConnect(({
+  activePatternIndex,
+  dispatch,
+  instrument,
+  patterns,
+  rootNote,
+  scale
+}) => {
   const activePattern = patterns[activePatternIndex]
   const {activePosition, notes, xLength, yLength} = activePattern
   const emptyPatternData = map(range(0), repeat(xLength, yLength))

@@ -1,11 +1,9 @@
-import {identity} from 'ramda'
-import {connect} from 'react-redux'
 import React from 'react'
-import {mapIndexed} from '../../utils/helpers'
+import {mapIndexed, rawConnect} from '../../utils/helpers'
 import Navigation from '../organisms/Navigation'
 import FullButton from '../atoms/FullButton'
 
-export default connect(identity)(({plugins: {instrumentInstances}}) =>
+export default rawConnect(({plugins: {instrumentInstances}}) =>
   <div>
     <Navigation />
     <div className='flex-column text-center'>

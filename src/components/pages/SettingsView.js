@@ -1,7 +1,6 @@
 import capitalize from 'capitalize'
-import {compose, identity, keys, map, tap} from 'ramda'
+import {compose, keys, map, tap} from 'ramda'
 import React from 'react'
-import {connect} from 'react-redux'
 import {updateBpm, updateMicrophoneIsOn, updateSelectedRootNote, updateSelectedScale} from '../../actions'
 import Navigation from '../organisms/Navigation'
 import CheckboxSelector from '../molecules/CheckboxSelector'
@@ -10,11 +9,11 @@ import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
 import FullButton from '../atoms/FullButton'
 import switchMicrophone from '../../utils/switchMicrophone'
-import {eventValuePath, eventCheckedPath} from '../../utils/helpers'
+import {eventValuePath, eventCheckedPath, rawConnect} from '../../utils/helpers'
 
 const minBpm = 32
 
-export default connect(identity)(({
+export default rawConnect(({
   bpm,
   dispatch,
   microphone,

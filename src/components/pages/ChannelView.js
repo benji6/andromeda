@@ -4,15 +4,13 @@ import {
   compose,
   equals,
   find,
-  identity,
   map,
   difference,
   propEq,
   reject
 } from 'ramda'
 import React from 'react'
-import {connect} from 'react-redux'
-import {mapIndexed} from '../../utils/helpers'
+import {mapIndexed, rawConnect} from '../../utils/helpers'
 import Navigation from '../organisms/Navigation'
 import FullSelect from '../atoms/FullSelect'
 import {Cross, Down, Plus, Up} from '../atoms/IconButtons'
@@ -28,7 +26,7 @@ import {
 } from '../../actions'
 import {eventValuePath} from '../../utils/helpers'
 
-export default connect(identity)(({
+export default rawConnect(({
   audioGraphAndChannels: {channels},
   dispatch,
   params,

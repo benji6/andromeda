@@ -1,8 +1,8 @@
 import capitalize from 'capitalize'
-import {compose, identity, map} from 'ramda'
+import {compose, map} from 'ramda'
 import React from 'react'
-import {connect} from 'react-redux'
 import {instrumentInstanceNames} from '../../utils/derivedData'
+import {eventValuePath, rawConnect} from '../../utils/helpers'
 import {
   updateActivePatternInstrument,
   updateActivePatternOctave,
@@ -12,9 +12,8 @@ import {
 import Selector from '../molecules/Selector'
 import RangeSelector from '../molecules/RangeSelector'
 import FullButton from '../atoms/FullButton'
-import {eventValuePath} from '../../utils/helpers'
 
-export default connect(identity)(({
+export default rawConnect(({
   activePatternIndex,
   dispatch,
   patterns,

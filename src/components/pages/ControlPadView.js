@@ -3,13 +3,12 @@ import {
   assoc,
   compose,
   curry,
-  identity,
   ifElse,
   map,
   tap
 } from 'ramda'
 import React from 'react'
-import {connect} from 'react-redux'
+import {rawConnect} from '../../utils/helpers'
 import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
 import ControlPad from '../organisms/ControlPad'
 import Navigation from '../organisms/Navigation'
@@ -50,7 +49,7 @@ const createSource = curry((
   id
 }))
 
-export default connect(identity)(({
+export default rawConnect(({
   controlPad: {
     arpeggiatorIsOn,
     instrument,
