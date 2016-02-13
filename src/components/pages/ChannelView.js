@@ -28,11 +28,12 @@ import {
 } from '../../actions'
 import {eventValuePath} from '../../utils/helpers'
 
-export default connect(identity)(({audioGraphAndChannels: {channels},
-                                   dispatch,
-                                   instruments,
-                                   params,
-                                   ...props}) => {
+export default connect(identity)(({
+  audioGraphAndChannels: {channels},
+  dispatch,
+  params,
+  ...props
+}) => {
   const channelId = Number(params.channelId)
   const appEffects = props.effects
   const {
@@ -41,7 +42,7 @@ export default connect(identity)(({audioGraphAndChannels: {channels},
     selectedAddSource,
     sources
   } = find(propEq('id', channelId), channels)
-  const availableSources = difference(instruments, sources)
+  const availableSources = difference(sources)
   return <div>
     <Navigation />
     <div className='flex-column text-center justify-center'>
