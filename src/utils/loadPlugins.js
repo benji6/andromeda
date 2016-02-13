@@ -1,16 +1,16 @@
-import store from './store'
-import Ariadne from './plugins/instruments/Ariadne'
-import Fate from './plugins/instruments/Fate'
-import Prometheus from './plugins/instruments/Prometheus'
-import Delay from './plugins/effects/Delay'
-import Gain from './plugins/effects/Gain'
+import store from '../store'
+import Ariadne from '../plugins/instruments/Ariadne'
+import Fate from '../plugins/instruments/Fate'
+import Prometheus from '../plugins/instruments/Prometheus'
+import Delay from '../plugins/effects/Delay'
+import Gain from '../plugins/effects/Gain'
 import {
   addInstrumentToChannel,
   instantiateEffect,
   instantiateInstrument,
   loadPluginEffect,
   loadPluginInstrument
-} from './actions'
+} from '../actions'
 
 store.dispatch(loadPluginInstrument({constructor: Ariadne, name: 'Ariadne'}))
 store.dispatch(loadPluginInstrument({constructor: Fate, name: 'Fate'}))

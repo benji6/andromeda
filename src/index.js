@@ -7,7 +7,7 @@ import UpgradeBrowserView from './components/pages/UpgradeBrowserView'
 import store from './store'
 import routes from './routes'
 import './updateAudioGraph'
-import './loadPlugins'
+import './utils/loadPlugins'
 
 if (navigator.serviceWorker) {
   render(
