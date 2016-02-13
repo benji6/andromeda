@@ -12,7 +12,7 @@ import {
 export const initialState = {
   arpeggiatorIsOn: false,
   arpeggiatorOctaves: 2,
-  instrument: 'Osc',
+  instrument: 'Prometheus',
   noScale: false,
   octave: 0,
   portamento: false,
