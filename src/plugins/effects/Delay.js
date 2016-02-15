@@ -8,7 +8,6 @@ const virtualAudioGraphs = new WeakMap()
 
 export default class {
   constructor ({audioContext}) {
-    this.destination = audioContext.createGain()
     const output = audioContext.createGain()
     outputs.set(this, output)
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
