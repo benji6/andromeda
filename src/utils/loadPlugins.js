@@ -4,6 +4,7 @@ import Fate from '../plugins/instruments/Fate'
 import Prometheus from '../plugins/instruments/Prometheus'
 import Delay from '../plugins/effects/Delay'
 import Gain from '../plugins/effects/Gain'
+import Reverb from '../plugins/effects/Reverb'
 import {
   addInstrumentToChannel,
   instantiateEffect,
@@ -18,6 +19,7 @@ store.dispatch(loadPluginInstrument({constructor: Prometheus, name: 'Prometheus'
 
 store.dispatch(loadPluginEffect({constructor: Delay, name: 'Delay'}))
 store.dispatch(loadPluginEffect({constructor: Gain, name: 'Gain'}))
+store.dispatch(loadPluginEffect({constructor: Reverb, name: 'Reverb'}))
 
 store.dispatch(instantiateInstrument({name: 'Ariadne', plugin: 'Ariadne'}))
 store.dispatch(instantiateInstrument({name: 'Fate', plugin: 'Fate'}))
@@ -25,5 +27,6 @@ store.dispatch(instantiateInstrument({name: 'Prometheus', plugin: 'Prometheus'})
 
 store.dispatch(instantiateEffect({channel: 0, name: 'Delay', plugin: 'Delay'}))
 store.dispatch(instantiateEffect({channel: 1, name: 'Gain', plugin: 'Gain'}))
+store.dispatch(instantiateEffect({channel: 2, name: 'Reverb', plugin: 'Reverb'}))
 
 store.dispatch(addInstrumentToChannel({channel: 0, name: 'Prometheus'}))
