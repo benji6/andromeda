@@ -71,7 +71,7 @@
     "redux": "^3.0.4",
     "rx": "^4.0.7",
     "three": "^0.73.0",
-    "virtual-audio-graph": "^0.16.4"
+    "virtual-audio-graph": "^0.16.6"
   },
   "standard": {
     "parser": "babel-eslint"
