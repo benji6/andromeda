@@ -12,21 +12,23 @@ import Instruments from './components/pages/Instruments'
 import KeyboardSettings from './components/pages/KeyboardSettings'
 import PatternEditorSettings from './components/pages/PatternEditorSettings'
 import PatternEditorView from './components/pages/PatternEditorView'
+import Plugins from './components/pages/Plugins'
 import SettingsView from './components/pages/SettingsView'
 
 export default <Router>
   <Route path='/channel/:channelId' component={ChannelView} />
   <Route path='/channels' component={ChannelsView} />
+  <Route path='/control-pad/settings' component={ControlPadSettings} />
   <Route path='/controllers' component={Controllers} />
   <Route path='/controllers/control-pad' component={ControlPadView} />
   <Route path='/controllers/keyboard/settings' component={KeyboardSettings} />
   <Route path='/controllers/pattern-editor' component={PatternEditorView} />
-  <Route path='/control-pad/settings' component={ControlPadSettings} />
-  <Route path='/effects' component={Effects} />
-  <Route path='/effects/:name' component={Effect} />
-  <Route path='/instruments' component={Instruments} />
-  <Route path='/instruments/:name' component={Instrument} />
   <Route path='/pattern-editor/settings' component={PatternEditorSettings} />
+  <Route path='/plugins' component={Plugins} />
+  <Route path='/plugins/effects' component={Effects} />
+  <Route path='/plugins/effects/:name' component={Effect} />
+  <Route path='/plugins/instruments' component={Instruments} />
+  <Route path='/plugins/instruments/:name' component={Instrument} />
   <Route path='/settings' component={SettingsView} />
   <Route path='/*' component={ControlPadView} />
 </Router>
