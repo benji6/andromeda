@@ -6,7 +6,7 @@ import Navigation from '../organisms/Navigation'
 import FullButton from '../atoms/FullButton'
 import {Cross, Plus} from '../atoms/IconButtons'
 
-export default rawConnect(({audioGraphAndChannels: {channels}, dispatch}) => <div>
+export default rawConnect(({dispatch}) => <div>
     <Navigation />
     <div className='flex-column text-center'>
       <h1>Channels</h1>
@@ -15,7 +15,7 @@ export default rawConnect(({audioGraphAndChannels: {channels}, dispatch}) => <di
           <FullButton text={`Channel ${id}`} to={`/channel/${id}`} />
           <Cross onClick={compose(dispatch, removeChannel, always(id))}/>
         </div>,
-        channels
+        []
       )}
         <div>
           Add New Channel

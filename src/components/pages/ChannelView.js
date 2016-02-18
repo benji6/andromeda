@@ -27,7 +27,6 @@ import {
 import {eventValuePath} from '../../utils/helpers'
 
 export default rawConnect(({
-  audioGraphAndChannels: {channels},
   dispatch,
   params,
   ...props
@@ -39,7 +38,7 @@ export default rawConnect(({
     selectedAddEffect,
     selectedAddSource,
     sources
-  } = find(propEq('id', channelId), channels)
+  } = find(propEq('id', channelId), [])
   const availableSources = difference(sources)
   return <div>
     <Navigation />
