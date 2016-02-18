@@ -7,7 +7,6 @@ import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
-import FullButton from '../atoms/FullButton'
 import switchMicrophone from '../../utils/switchMicrophone'
 import {eventValuePath, eventCheckedPath, rawConnect} from '../../utils/helpers'
 
@@ -68,12 +67,6 @@ export default rawConnect(({
           eventCheckedPath
         )}
         text='Microphone'
-      />
-    </div>
-    <div className='text-center'>
-      <FullButton
-        text='Keyboard Settings'
-        to='/keyboard/settings'
       />
     </div>
   </div>)
