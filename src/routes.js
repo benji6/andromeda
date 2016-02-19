@@ -1,6 +1,6 @@
 import React from 'react'
 import {Router, Route} from 'react-router'
-import ChannelsView from './components/pages/ChannelsView'
+import Channels from './components/pages/Channels'
 import ChannelView from './components/pages/ChannelView'
 import Controllers from './components/pages/Controllers'
 import ControlPadSettings from './components/pages/ControlPadSettings'
@@ -17,7 +17,7 @@ import SettingsView from './components/pages/SettingsView'
 
 export default <Router>
   <Route path='/channel/:channelId' component={ChannelView} />
-  <Route path='/channels' component={ChannelsView} />
+  <Route path='/channels' component={Channels} />
   <Route path='/control-pad/settings' component={ControlPadSettings} />
   <Route path='/controllers' component={Controllers} />
   <Route path='/controllers/control-pad' component={ControlPadView} />
