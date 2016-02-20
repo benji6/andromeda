@@ -68,10 +68,10 @@
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
-    "react-router": "^1.0.0-rc3",
+    "react-router": "^2.0.0",
     "redux": "^3.0.4",
     "rx": "^4.0.7",
-    "three": "^0.73.0",
+    "three": "^0.74.0",
     "virtual-audio-graph": "^0.16.6"
   },
   "standard": {

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Router, Route} from 'react-router'
+import {hashHistory, Router, Route} from 'react-router'
 import Channel from './components/pages/Channel'
 import Channels from './components/pages/Channels'
 import Controllers from './components/pages/Controllers'
@@ -15,7 +15,7 @@ import PatternEditorView from './components/pages/PatternEditorView'
 import Plugins from './components/pages/Plugins'
 import SettingsView from './components/pages/SettingsView'
 
-export default <Router>
+export default <Router history={hashHistory}>
   <Route path='/channel/:channelId' component={Channel} />
   <Route path='/channels' component={Channels} />
   <Route path='/control-pad/settings' component={ControlPadSettings} />
