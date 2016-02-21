@@ -2,15 +2,14 @@ import audioContext from '../audioContext'
 import {
   adjust,
   append,
-  assoc,
   compose,
+  curry,
   equals,
-  filter,
   find,
   findIndex,
+  isEmpty,
   last,
   lensProp,
-  prop,
   propEq,
   over,
   view
@@ -23,27 +22,42 @@ import {
   LOAD_PLUGIN_INSTRUMENT
 } from '../actions'
 
-const instrumentInstancesLens = lensProp('instrumentInstances')
+const channelsLens = lensProp('channels')
+const effectsLens = lensProp('effects')
 const effectInstancesLens = lensProp('effectInstances')
-const instrumentInstances = view(instrumentInstancesLens)
-const instance = view(lensProp('instance'))
+const instrumentInstancesLens = lensProp('instrumentInstances')
+
+const channels = view(channelsLens)
+const constructor = view(lensProp('constructor'))
 const destination = view(lensProp('destination'))
-const overInstrumentPlugins = over(lensProp('instrumentPlugins'))
-const overEffectPlugins = over(lensProp('effectPlugins'))
-const overEffectInstances = over(effectInstancesLens)
+const effects = view(effectsLens)
 const effectInstances = view(effectInstancesLens)
+const instance = view(lensProp('instance'))
+const instrumentInstances = view(instrumentInstancesLens)
+const name = view(lensProp('name'))
+
+const overChannels = over(channelsLens)
+const overEffectInstances = over(effectInstancesLens)
+const overEffectPlugins = over(lensProp('effectPlugins'))
+const overEffects = over(effectsLens)
 const overInstrumentInstances = over(instrumentInstancesLens)
-const effectContstructor = (name, state) => find(
-  compose(equals(name), prop('name')),
-  state
-).constructor
-const instrumentContstructor = (name, state) => find(
-  compose(equals(name), prop('name')),
-  state
-).constructor
-const filterChannel = (channel, xs) => filter(propEq('channel', channel), xs)
+const overInstrumentPlugins = over(lensProp('instrumentPlugins'))
+const overInstruments = over(lensProp('instruments'))
+
+const instanceDestination = compose(destination, instance)
+const nameEquals = x => compose(equals(x), name)
+const findNameEquals = curry((x, y) => compose(find, nameEquals)(x)(y))
+const findConstructor = compose(constructor, findNameEquals)
+
+const findChannelByName = curry((a, b) => findNameEquals(a, channels(b)))
+const findEffectInstanceByName = curry((a, b) => findNameEquals(a, effectInstances(b)))
 
 const initialState = {
+  channels: [
+    {name: 0, effects: [], instruments: []},
+    {name: 1, effects: [], instruments: []},
+    {name: 2, effects: [], instruments: []}
+  ],
   effectInstances: [],
   effectPlugins: [],
   instrumentInstances: [],
@@ -58,36 +72,55 @@ export default (state = initialState, {type, payload}) => {
         instrumentInstances(state)
       ))
       instrument.disconnect()
-      instrument.connect(destination(instance(last(filterChannel(
+      const lastEffect = last(effects(findChannelByName(
         payload.channel,
-        effectInstances(state)
-      )))))
-      return overInstrumentInstances(
+        state
+      )))
+      if (!lastEffect) {
+        instrument.connect(destination(audioContext))
+      } else {
+        instrument.connect(instanceDestination(findEffectInstanceByName(
+          lastEffect,
+          state
+        )))
+      }
+      return overChannels(
         adjust(
-          assoc('channel', payload.channel),
-          findIndex(propEq('name', payload.name), instrumentInstances(state))
+          overInstruments(append(payload.name)),
+          findIndex(nameEquals(payload.channel), channels(state))
         ),
         state
       )
     }
     case INSTANTIATE_EFFECT: {
-      const instance = new (effectContstructor(
+      const instance = new (findConstructor(
         payload.plugin,
         state.effectPlugins
       ))({audioContext})
-
-      const channelFx = filterChannel(payload.channel, state.effectInstances)
-      if (!channelFx.length) instance.connect(destination(audioContext))
-      else instance.connect(destination(last(channelFx)))
-
-      return overEffectInstances(append({
-        channel: payload.channel,
-        instance,
-        name: payload.name
-      }), state)
+      const thisChannel = findChannelByName(payload.channel, state)
+      if (!thisChannel) instance.connect(destination(audioContext))
+      const thisChannelEffects = effects(thisChannel)
+      if (isEmpty(thisChannelEffects)) {
+        instance.connect(destination(audioContext))
+      } else {
+        instance.connect(instanceDestination(findEffectInstanceByName(
+          last(thisChannelEffects),
+          state
+        )))
+      }
+      return overChannels(
+        adjust(
+          overEffects(append(payload.name)),
+          findIndex(nameEquals(payload.channel), channels(state))
+        ),
+        overEffectInstances(append({
+          instance,
+          name: payload.name
+        }), state)
+      )
     }
     case INSTANTIATE_INSTRUMENT: {
-      const instance = new (instrumentContstructor(
+      const instance = new (findConstructor(
         payload.plugin,
         state.instrumentPlugins
       ))({audioContext})
