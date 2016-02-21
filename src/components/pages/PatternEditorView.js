@@ -22,7 +22,6 @@ import {
 import {mapIndexed, rawConnect} from '../../utils/helpers'
 import Pattern from '../organisms/Pattern'
 import PlayButton from '../atoms/PlayButton'
-import Navigation from '../organisms/Navigation'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
 import PatternMenu from '../organisms/PatternMenu'
@@ -130,7 +129,6 @@ export default rawConnect(({
   const onClick = x => y => _ => dispatch(activePatternCellClick({x, y}))
 
   return <div>
-    <Navigation />
     <Pattern
       onClick={onClick}
       patternData={patternData}

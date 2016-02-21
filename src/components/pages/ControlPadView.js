@@ -11,7 +11,6 @@ import React from 'react'
 import {rawConnect} from '../../utils/helpers'
 import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
 import ControlPad from '../organisms/ControlPad'
-import Navigation from '../organisms/Navigation'
 import PerformanceMenu from '../organisms/PerformanceMenu'
 import {currentScale, instrumentInstance} from '../../utils/derivedData'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
@@ -61,7 +60,6 @@ export default rawConnect(({
   plugins,
   rootNote
 }) => <div>
-    <Navigation />
     <div className='text-center'>
       <ControlPad
         inputEndTransducer={compose(

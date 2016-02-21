@@ -2,7 +2,6 @@ import capitalize from 'capitalize'
 import {compose, keys, map, tap} from 'ramda'
 import React from 'react'
 import {updateBpm, updateMicrophoneIsOn, updateSelectedRootNote, updateSelectedScale} from '../../actions'
-import Navigation from '../organisms/Navigation'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
@@ -18,8 +17,8 @@ export default rawConnect(({
   microphone,
   rootNote,
   scale: {scaleName, scales}
-}) => <div className='settings-view'>
-    <Navigation />
+}) =>
+  <div className='settings-view'>
     <h1 className='text-center'>Settings</h1>
     <div className='flex-column text-center'>
       <RangeSelector
