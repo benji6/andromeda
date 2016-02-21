@@ -12,6 +12,6 @@ export default rawConnect(({plugins: {instrumentInstances}}) =>
       <FullButton text='Pattern' to={'/controllers/pattern-editor'}/>
     </div>
     <div>
-      <FullButton text='Keyboard Settings' to={'/controllers/keyboard/settings'}/>
+      <FullButton text='Keyboard' to={'/controllers/keyboard/settings'}/>
     </div>
   </div>)
