@@ -47,6 +47,6 @@ export default rawConnect(({keyboard, dispatch, plugins}) =>
     />
     <div>
       <span className='inline-label-text'></span>
-      <FullButton text='OK' to='/controllers' />
+      <FullButton to='/controllers'>OK</FullButton>
     </div>
   </div>)

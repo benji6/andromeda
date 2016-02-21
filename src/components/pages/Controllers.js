@@ -6,12 +6,12 @@ export default rawConnect(({plugins: {instrumentInstances}}) =>
   <div className='flex-column text-center'>
     <h1>Controllers</h1>
     <div>
-      <FullButton text='Pad' to={'/controllers/control-pad'}/>
+      <FullButton to={'/controllers/control-pad'}>Pad</FullButton>
     </div>
     <div>
-      <FullButton text='Pattern' to={'/controllers/pattern-editor'}/>
+      <FullButton to={'/controllers/pattern-editor'}>Pattern</FullButton>
     </div>
     <div>
-      <FullButton text='Keyboard' to={'/controllers/keyboard/settings'}/>
+      <FullButton to={'/controllers/keyboard/settings'}>Keyboard</FullButton>
     </div>
   </div>)

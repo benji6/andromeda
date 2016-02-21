@@ -6,9 +6,9 @@ export default rawConnect(({plugins: {instrumentInstances}}) =>
   <div className='flex-column text-center'>
     <h1>Plugins</h1>
     <div>
-      <FullButton text='Instruments' to={'/plugins/instruments'}/>
+      <FullButton to={'/plugins/instruments'}>Instruments</FullButton>
     </div>
     <div>
-      <FullButton text='Effects' to={'/plugins/effects'}/>
+      <FullButton to={'/plugins/effects'}>Effects</FullButton>
     </div>
   </div>)

@@ -8,7 +8,9 @@ export default rawConnect(({plugins: {effectInstances}}) =>
     {mapIndexed(
       ({name}, key) =>
         <div {...{key}} >
-          <FullButton {...{key}} text={name} to={`/plugins/effects/${name}`}/>
+          <FullButton {...{key}} to={`/plugins/effects/${name}`}>
+            {name}
+          </FullButton>
         </div>,
       effectInstances
     )}

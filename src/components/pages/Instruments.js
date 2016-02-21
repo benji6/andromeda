@@ -8,7 +8,9 @@ export default rawConnect(({plugins: {instrumentInstances}}) =>
     {mapIndexed(
       ({name}, key) =>
         <div {...{key}} >
-          <FullButton {...{key}} text={name} to={`/plugins/instruments/${name}`}/>
+          <FullButton {...{key}} to={`/plugins/instruments/${name}`}>
+            {name}
+          </FullButton>
         </div>,
       instrumentInstances
     )}

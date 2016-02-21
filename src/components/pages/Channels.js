@@ -9,7 +9,9 @@ export default rawConnect(({plugins: {channels}}) =>
     <h1>Channels</h1>
     {map(
       channel => <div key={channel}>
-        <FullButton text={`Channel ${channel}`} to={`/channel/${channel}`} />
+        <FullButton to={`/channel/${channel}`}>
+          {`Channel ${channel}`}
+        </FullButton>
         <Cross />
       </div>,
       pluck('name', channels)
