@@ -1,6 +1,7 @@
 const createAction = type => payload => ({type, payload})
 
 export const ACTIVE_PATTERN_CELL_CLICK = 'PATTERN_CELL_CLICK'
+export const ADD_CHANNEL = 'ADD_CHANNEL'
 export const ADD_EFFECT = 'ADD_EFFECT'
 export const ADD_INSTRUMENT_TO_CHANNEL = 'ADD_INSTRUMENT_TO_CHANNEL'
 export const INSTANTIATE_EFFECT = 'INSTANTIATE_EFFECT'
@@ -33,6 +34,7 @@ export const UPDATE_SELECTED_SCALE = 'UPDATE_SELECTED_SCALE'
 export const UPDATE_SONG_NOTES = 'UPDATE_SONG_NOTES'
 
 export const activePatternCellClick = createAction(ACTIVE_PATTERN_CELL_CLICK)
+export const addChannel = createAction(ADD_CHANNEL)
 export const addEffect = createAction(ADD_EFFECT)
 export const addInstrumentToChannel = createAction(ADD_INSTRUMENT_TO_CHANNEL)
 export const instantiateEffect = createAction(INSTANTIATE_EFFECT)

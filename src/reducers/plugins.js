@@ -9,12 +9,14 @@ import {
   findIndex,
   isEmpty,
   last,
+  length,
   lensProp,
   propEq,
   over,
   view
 } from 'ramda'
 import {
+  ADD_CHANNEL,
   ADD_INSTRUMENT_TO_CHANNEL,
   INSTANTIATE_EFFECT,
   INSTANTIATE_INSTRUMENT,
@@ -52,6 +54,8 @@ const findConstructor = compose(constructor, findNameEquals)
 const findChannelByName = curry((a, b) => findNameEquals(a, channels(b)))
 const findEffectInstanceByName = curry((a, b) => findNameEquals(a, effectInstances(b)))
 
+const createChannel = name => ({name, effects: [], instruments: []})
+
 const initialState = {
   channels: [
     {name: 0, effects: [], instruments: []},
@@ -66,6 +70,10 @@ const initialState = {
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
+    case ADD_CHANNEL: return overChannels(
+      append(createChannel(length(channels(state)))),
+      state
+    )
     case ADD_INSTRUMENT_TO_CHANNEL: {
       const instrument = instance(find(
         propEq('name', payload.name),

@@ -1,6 +1,7 @@
 import test from 'tape'
 import reducer from './plugins'
 import {
+  addChannel,
   addInstrumentToChannel,
   instantiateEffect,
   instantiateInstrument,
@@ -22,6 +23,29 @@ test(`${reducerName} reducer returns initial state`, t => {
     instrumentInstances: [],
     instrumentPlugins: []
   })
+  t.end()
+})
+
+test(`${reducerName} reducer - addChanel`, t => {
+  t.deepEqual(
+    reducer({
+      channels: [{name: 0, effects: [], instruments: []}],
+      effectInstances: [],
+      effectPlugins: [],
+      instrumentInstances: [],
+      instrumentPlugins: []
+    }, addChannel()),
+    {
+      channels: [
+        {name: 0, effects: [], instruments: []},
+        {name: 1, effects: [], instruments: []}
+      ],
+      effectInstances: [],
+      effectPlugins: [],
+      instrumentInstances: [],
+      instrumentPlugins: []
+    }
+  )
   t.end()
 })
 

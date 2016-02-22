@@ -1,10 +1,11 @@
-import {map, pluck} from 'ramda'
+import {compose, map, pluck} from 'ramda'
 import React from 'react'
 import {rawConnect} from '../../utils/helpers'
 import FullButton from '../atoms/FullButton'
 import {Cross, Plus} from '../atoms/IconButtons'
+import {addChannel} from '../../actions'
 
-export default rawConnect(({plugins: {channels}}) =>
+export default rawConnect(({dispatch, plugins: {channels}}) =>
   <div className='flex-column text-center'>
     <h1>Channels</h1>
     {map(
@@ -18,6 +19,6 @@ export default rawConnect(({plugins: {channels}}) =>
     )}
     <div>
       Add New Channel
-      <Plus />
+      <Plus onClick={compose(dispatch, addChannel)}/>
     </div>
   </div>)
