@@ -9,7 +9,6 @@ test('playing reducer returns initial state', t => {
 })
 
 test('playing reducer updates state', t => {
-  t.deepEqual(reducer(undefined, updatePlaying(false)),
-              false)
+  t.false(reducer(undefined, updatePlaying(false)))
   t.end()
 })
