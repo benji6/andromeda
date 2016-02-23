@@ -1,9 +1,9 @@
-import {compose, map, pluck} from 'ramda'
+import {always, compose, map, pluck} from 'ramda'
 import React from 'react'
 import {rawConnect} from '../../utils/helpers'
 import FullButton from '../atoms/FullButton'
 import {Cross, Plus} from '../atoms/IconButtons'
-import {addChannel} from '../../actions'
+import {addChannel, removeChannel} from '../../actions'
 
 export default rawConnect(({dispatch, plugins: {channels}}) =>
   <div className='flex-column text-center'>
@@ -13,7 +13,7 @@ export default rawConnect(({dispatch, plugins: {channels}}) =>
         <FullButton to={`/channel/${channel}`}>
           {`Channel ${channel}`}
         </FullButton>
-        <Cross />
+        <Cross onClick={compose(dispatch, removeChannel, always(channel))}/>
       </div>,
       pluck('name', channels)
     )}
