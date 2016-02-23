@@ -5,7 +5,7 @@ import Channel from './components/pages/Channel'
 import Channels from './components/pages/Channels'
 import Controllers from './components/pages/Controllers'
 import ControlPadSettings from './components/pages/ControlPadSettings'
-import ControlPadView from './components/pages/ControlPadView'
+import ControlPad from './components/pages/ControlPad'
 import Effect from './components/pages/Effect'
 import Effects from './components/pages/Effects'
 import Instrument from './components/pages/Instrument'
@@ -18,12 +18,12 @@ import SettingsView from './components/pages/SettingsView'
 
 export default <Router history={hashHistory}>
   <Route path='/' component={App}>
-    <IndexRoute component={ControlPadView} />
+    <IndexRoute component={ControlPad} />
     <Route path='/channel/:channelId' component={Channel} />
     <Route path='/channels' component={Channels} />
     <Route path='/control-pad/settings' component={ControlPadSettings} />
     <Route path='/controllers' component={Controllers} />
-    <Route path='/controllers/control-pad' component={ControlPadView} />
+    <Route path='/controllers/control-pad' component={ControlPad} />
     <Route path='/controllers/keyboard/settings' component={KeyboardSettings} />
     <Route path='/controllers/pattern-editor' component={PatternEditorView} />
     <Route path='/pattern-editor/settings' component={PatternEditorSettings} />
@@ -33,6 +33,6 @@ export default <Router history={hashHistory}>
     <Route path='/plugins/instruments' component={Instruments} />
     <Route path='/plugins/instruments/:name' component={Instrument} />
     <Route path='/settings' component={SettingsView} />
-    <Route path='/*' component={ControlPadView} />
+    <Route path='/*' component={ControlPad} />
   </Route>
 </Router>
