@@ -1,5 +1,5 @@
 import React from 'react'
-import {hashHistory, Router, Route} from 'react-router'
+import {hashHistory, IndexRoute, Router, Route} from 'react-router'
 import App from './components/templates/App'
 import Channel from './components/pages/Channel'
 import Channels from './components/pages/Channels'
@@ -18,6 +18,7 @@ import SettingsView from './components/pages/SettingsView'
 
 export default <Router history={hashHistory}>
   <Route path='/' component={App}>
+    <IndexRoute component={ControlPadView} />
     <Route path='/channel/:channelId' component={Channel} />
     <Route path='/channels' component={Channels} />
     <Route path='/control-pad/settings' component={ControlPadSettings} />
