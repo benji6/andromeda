@@ -1,9 +1,12 @@
 import {difference, head, isEmpty, map, nth, pluck, prop, tail} from 'ramda'
 import React from 'react'
-import {addInstrumentToChannel} from '../../actions'
+import {
+  addInstrumentToChannel,
+  removeInstrumentFromChannel
+} from '../../actions'
 import {rawConnect} from '../../utils/helpers'
 import FullButton from '../atoms/FullButton'
-import {Plus} from '../atoms/IconButtons'
+import {Cross, Plus} from '../atoms/IconButtons'
 import FullSelect from '../atoms/FullSelect'
 
 let selectedAddSource = null
@@ -21,10 +24,14 @@ export default rawConnect(({
     <h1>{`Channel ${channelId}`}</h1>
     <h2>Sources</h2>
         {map(
-          x => <div className='text-center' key={x}>
-            <FullButton to={`/plugins/instruments/${x}`}>
-              {x}
+          name => <div className='text-center' key={name}>
+            <FullButton to={`/plugins/instruments/${name}`}>
+              {name}
             </FullButton>
+            <Cross onClick={_ => dispatch(removeInstrumentFromChannel({
+              channel: channelId,
+              name
+            }))}/>
           </div>,
         sources
       )}

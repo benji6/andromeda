@@ -27,7 +27,8 @@ import {
   INSTANTIATE_INSTRUMENT,
   LOAD_PLUGIN_EFFECT,
   LOAD_PLUGIN_INSTRUMENT,
-  REMOVE_CHANNEL
+  REMOVE_CHANNEL,
+  REMOVE_INSTRUMENT_FROM_CHANNEL
 } from '../actions'
 
 const channelsLens = lensProp('channels')
@@ -177,6 +178,20 @@ export default (state = initialState, {type, payload}) => {
         flip(findInstrumentInstanceByName)(state)
       ), instruments(channel))
       return overChannels(reject(equals(channel)), state)
+    }
+    case REMOVE_INSTRUMENT_FROM_CHANNEL: {
+      const instrument = instance(find(
+        propEq('name', payload.name),
+        instrumentInstances(state)
+      ))
+      connectToAudioCtx(disconnect(instrument))
+      return overChannels(
+        adjust(
+          overInstruments(reject(equals(payload.name))),
+          findIndex(nameEquals(payload.channel), channels(state))
+        ),
+        state
+      )
     }
     default: return state
   }

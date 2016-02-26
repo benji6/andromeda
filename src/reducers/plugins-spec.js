@@ -7,7 +7,8 @@ import {
   instantiateInstrument,
   loadPluginEffect,
   loadPluginInstrument,
-  removeChannel
+  removeChannel,
+  removeInstrumentFromChannel
 } from '../actions'
 
 const reducerName = 'plugins'
@@ -180,6 +181,32 @@ test(`${reducerName} reducer - removeChannel`, t => {
       effectPlugins: [],
       instrumentInstances: [],
       instrumentPlugins: []
+    }
+  )
+  t.end()
+})
+
+test(`${reducerName} reducer - removeInstrumentFromChannel`, t => {
+  const constructor = class {connect () {} disconnect () {}}
+  const instance = new constructor()
+  t.deepEqual(
+    reducer({
+      channels: [{
+        name: 0,
+        effects: ['test effect plugin'],
+        instruments: ['fake instance name']
+      }],
+      effectInstances: [{instance, name: 'test effect plugin'}],
+      effectPlugins: [],
+      instrumentInstances: [{name: 'fake instance name', instance}],
+      instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
+    }, removeInstrumentFromChannel({channel: 0, name: 'fake instance name'})),
+    {
+      channels: [{name: 0, effects: ['test effect plugin'], instruments: []}],
+      effectInstances: [{instance, name: 'test effect plugin'}],
+      effectPlugins: [],
+      instrumentInstances: [{name: 'fake instance name', instance}],
+      instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
     }
   )
   t.end()
