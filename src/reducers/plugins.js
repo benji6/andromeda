@@ -216,6 +216,11 @@ export default (state = initialState, {type, payload}) => {
             )),
           channelInstruments
         )
+      } else if (effectIndex === 0) {
+        connectToAudioCtx(disconnect(effectInstance(
+          nth(inc(effectIndex), channelEffects),
+          state
+        )))
       } else {
         disconnect(effectInstance(
           nth(inc(effectIndex), channelEffects),
