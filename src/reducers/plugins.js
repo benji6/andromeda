@@ -5,14 +5,18 @@ import {
   compose,
   contains,
   curry,
+  dec,
   equals,
   find,
   findIndex,
   flip,
   forEach,
+  inc,
   isEmpty,
   last,
+  length,
   lensProp,
+  nth,
   over,
   pluck,
   propEq,
@@ -28,6 +32,7 @@ import {
   LOAD_PLUGIN_EFFECT,
   LOAD_PLUGIN_INSTRUMENT,
   REMOVE_CHANNEL,
+  REMOVE_EFFECT_FROM_CHANNEL,
   REMOVE_INSTRUMENT_FROM_CHANNEL
 } from '../actions'
 
@@ -178,6 +183,45 @@ export default (state = initialState, {type, payload}) => {
         flip(findInstrumentInstanceByName)(state)
       ), instruments(channel))
       return overChannels(reject(equals(channel)), state)
+    }
+    case REMOVE_EFFECT_FROM_CHANNEL: {
+      const effect = find(
+        propEq('name', payload.name),
+        effectInstances(state)
+      )
+      const channel = find(nameEquals(payload.channel), channels(state))
+      const channelEffects = effects(channel)
+      const channelInstruments = instruments(channel)
+
+      disconnect(instance(effect))
+      const effectIndex = findIndex(equals(payload.name), channelEffects)
+
+      if (length(channelEffects) === 1) {
+        forEach(
+          name => connectToAudioCtx(findInstrumentInstanceByName(name, state)),
+          channelInstruments
+        )
+      } else if (effectIndex === dec(length(channelEffects))) {
+        forEach(
+          name => findInstrumentInstanceByName(name, state)
+            .connect(destination(findEffectInstanceByName(
+              nth(dec(effectIndex), channelEffects),
+              state
+            ))),
+          channelInstruments
+        )
+      } else {
+        disconnect(nth(inc(effectIndex), channelEffects))
+          .connect(nth(dec(effectIndex), channelEffects))
+      }
+
+      return overChannels(
+        adjust(
+          overEffects(reject(equals(payload.name))),
+          findIndex(nameEquals(payload.channel), channels(state))
+        ),
+        state
+      )
     }
     case REMOVE_INSTRUMENT_FROM_CHANNEL: {
       const instrument = instance(find(

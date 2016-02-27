@@ -2,6 +2,7 @@ import {difference, head, isEmpty, map, nth, pluck, prop, tail} from 'ramda'
 import React from 'react'
 import {
   addInstrumentToChannel,
+  removeEffectFromChannel,
   removeInstrumentFromChannel
 } from '../../actions'
 import {rawConnect} from '../../utils/helpers'
@@ -51,13 +52,17 @@ export default rawConnect(({
       }}/>
     </div>}
     <h2>Effects</h2>
-        {map(
-          x => <div key={x} className='text-center'>
-            <FullButton to={`/plugins/effects/${x}`}>
-              {x}
-            </FullButton>
-          </div>,
-          prop('effects', nth(params.channelId, channels))
-        )}
+      {map(
+        name => <div key={name} className='text-center'>
+          <FullButton to={`/plugins/effects/${name}`}>
+            {name}
+          </FullButton>
+          <Cross onClick={_ => dispatch(removeEffectFromChannel({
+            channel: channelId,
+            name
+          }))}/>
+        </div>,
+        prop('effects', nth(params.channelId, channels))
+      )}
   </div>
 })
