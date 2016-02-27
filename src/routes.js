@@ -3,7 +3,6 @@ import {hashHistory, IndexRoute, Router, Route} from 'react-router'
 import App from './components/templates/App'
 import Channel from './components/pages/Channel'
 import Channels from './components/pages/Channels'
-import Controllers from './components/pages/Controllers'
 import ControlPadSettings from './components/pages/ControlPadSettings'
 import ControlPad from './components/pages/ControlPad'
 import Effect from './components/pages/Effect'
@@ -22,7 +21,6 @@ export default <Router history={hashHistory}>
     <Route path='/channel/:channelId' component={Channel} />
     <Route path='/channels' component={Channels} />
     <Route path='/control-pad/settings' component={ControlPadSettings} />
-    <Route path='/controllers' component={Controllers} />
     <Route path='/controllers/control-pad' component={ControlPad} />
     <Route path='/controllers/keyboard/settings' component={KeyboardSettings} />
     <Route path='/controllers/pattern-editor' component={PatternEditorView} />

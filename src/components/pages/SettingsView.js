@@ -2,6 +2,7 @@ import capitalize from 'capitalize'
 import {compose, keys, map, tap} from 'ramda'
 import React from 'react'
 import {updateBpm, updateMicrophoneIsOn, updateSelectedRootNote, updateSelectedScale} from '../../actions'
+import FullButton from '../atoms/FullButton'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
@@ -67,5 +68,8 @@ export default rawConnect(({
         )}
         text='Microphone'
       />
+      <div>
+        <FullButton to='/controllers/keyboard/settings'>Keyboard Settings</FullButton>
+      </div>
     </div>
   </div>)
