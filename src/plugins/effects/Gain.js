@@ -11,6 +11,7 @@ export default class {
     gainNode.gain.value = gainValue
     gainValues.set(this, gainValue)
     gainNodes.set(this, gainNode)
+    this.destination = gainNode
   }
   connect (destination) {
     gainNodes.get(this).connect(destination)
