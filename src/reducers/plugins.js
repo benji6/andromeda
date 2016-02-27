@@ -26,6 +26,7 @@ import {
 } from 'ramda'
 import {
   ADD_CHANNEL,
+  ADD_EFFECT_TO_CHANNEL,
   ADD_INSTRUMENT_TO_CHANNEL,
   INSTANTIATE_EFFECT,
   INSTANTIATE_INSTRUMENT,
@@ -65,7 +66,7 @@ const findNameEquals = curry((x, y) => compose(find, nameEquals)(x)(y))
 const findConstructor = compose(constructor, findNameEquals)
 const sortByName = sortBy(name)
 
-const findChannelByName = curry((a, b) => findNameEquals(a, channels(b)))
+const channel = curry((a, b) => findNameEquals(a, channels(b)))
 const findEffectInstanceByName = curry((a, b) => instance(findNameEquals(a, effectInstances(b))))
 const findInstrumentInstanceByName = curry((a, b) => instance(findNameEquals(a, instrumentInstances(b))))
 
@@ -102,16 +103,39 @@ export default (state = initialState, {type, payload}) => {
       ),
       state
     )
+    case ADD_EFFECT_TO_CHANNEL: {
+      const effectInstance = instance(find(
+        propEq('name', payload.name),
+        effectInstances(state)
+      ))
+      const lastEffect = last(effects(channel(payload.channel, state)))
+      if (!lastEffect) connectToAudioCtx(effectInstance)
+      else {
+        effectInstance.connect(destination(findEffectInstanceByName(
+          lastEffect,
+          state
+        )))
+      }
+      forEach(
+        name => disconnect(findInstrumentInstanceByName(name, state))
+          .connect(destination(effectInstance)),
+        instruments(channel(payload.channel, state))
+      )
+      return overChannels(
+        adjust(
+          overEffects(append(payload.name)),
+          findIndex(nameEquals(payload.channel), channels(state))
+        ),
+        state
+      )
+    }
     case ADD_INSTRUMENT_TO_CHANNEL: {
       const instrument = instance(find(
         propEq('name', payload.name),
         instrumentInstances(state)
       ))
       instrument.disconnect()
-      const lastEffect = last(effects(findChannelByName(
-        payload.channel,
-        state
-      )))
+      const lastEffect = last(effects(channel(payload.channel, state)))
       if (!lastEffect) connectToAudioCtx(instrument)
       else {
         instrument.connect(destination(findEffectInstanceByName(
@@ -132,7 +156,7 @@ export default (state = initialState, {type, payload}) => {
         payload.plugin,
         state.effectPlugins
       ))({audioContext})
-      const thisChannel = findChannelByName(payload.channel, state)
+      const thisChannel = channel(payload.channel, state)
       if (!thisChannel) connectToAudioCtx(instance)
       const thisChannelEffects = effects(thisChannel)
       if (isEmpty(thisChannelEffects)) connectToAudioCtx(instance)
@@ -189,9 +213,8 @@ export default (state = initialState, {type, payload}) => {
         propEq('name', payload.name),
         effectInstances(state)
       )
-      const channel = find(nameEquals(payload.channel), channels(state))
-      const channelEffects = effects(channel)
-      const channelInstruments = instruments(channel)
+      const channelEffects = effects(channel(payload.channel, state))
+      const channelInstruments = instruments(channel(payload.channel, state))
 
       disconnect(instance(effect))
       const effectIndex = findIndex(equals(payload.name), channelEffects)
@@ -211,8 +234,13 @@ export default (state = initialState, {type, payload}) => {
           channelInstruments
         )
       } else {
-        disconnect(nth(inc(effectIndex), channelEffects))
-          .connect(nth(dec(effectIndex), channelEffects))
+        disconnect(findEffectInstanceByName(
+          nth(inc(effectIndex), channelEffects),
+          state
+        )).connect(destination(findEffectInstanceByName(
+          nth(dec(effectIndex), channelEffects),
+          state
+        )))
       }
 
       return overChannels(
