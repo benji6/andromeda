@@ -1,8 +1,7 @@
 import React from 'react'
 import FullButton from '../atoms/FullButton'
-import Menu from './Menu'
 
-export default () =>
-  <Menu components={[
-    <FullButton key='1' to='/pattern-editor/settings' text='Options' />
-  ]} />
+export default _ =>
+  <nav>
+    <FullButton to='/pattern-editor/settings'>Options</FullButton>
+  </nav>

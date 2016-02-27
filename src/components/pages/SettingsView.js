@@ -1,27 +1,24 @@
 import capitalize from 'capitalize'
-import {compose, identity, keys, map, tap} from 'ramda'
+import {compose, keys, map, tap} from 'ramda'
 import React from 'react'
-import {connect} from 'react-redux'
 import {updateBpm, updateMicrophoneIsOn, updateSelectedRootNote, updateSelectedScale} from '../../actions'
-import Navigation from '../organisms/Navigation'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
-import FullButton from '../atoms/FullButton'
 import switchMicrophone from '../../utils/switchMicrophone'
-import {eventValuePath, eventCheckedPath} from '../../utils/helpers'
+import {eventValuePath, eventCheckedPath, rawConnect} from '../../utils/helpers'
 
 const minBpm = 32
 
-export default connect(identity)(({
+export default rawConnect(({
   bpm,
   dispatch,
   microphone,
   rootNote,
   scale: {scaleName, scales}
-}) => <div className='settings-view'>
-    <Navigation />
+}) =>
+  <div className='settings-view'>
     <h1 className='text-center'>Settings</h1>
     <div className='flex-column text-center'>
       <RangeSelector
@@ -69,12 +66,6 @@ export default connect(identity)(({
           eventCheckedPath
         )}
         text='Microphone'
-      />
-    </div>
-    <div className='text-center'>
-      <FullButton
-        text='Keyboard Settings'
-        to='/keyboard/settings'
       />
     </div>
   </div>)

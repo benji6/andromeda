@@ -1,1 +1,2 @@
-export default new window.AudioContext()
+/* global AudioContext */
+export default new AudioContext()

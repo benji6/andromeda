@@ -3,10 +3,9 @@ import {
   UPDATE_KEYBOARD_OCTAVE,
   UPDATE_KEYBOARD_VOLUME
 } from '../actions'
-import {initialState as instrumentInitialState} from './instruments'
 
 export const initialState = {
-  instrument: instrumentInitialState[2],
+  instrument: 'Prometheus',
   octave: 0,
   volume: 1 / 3
 }

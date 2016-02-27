@@ -1,8 +1,8 @@
 import capitalize from 'capitalize'
-import {compose, identity, map} from 'ramda'
+import {compose, map} from 'ramda'
 import React from 'react'
-import {connect} from 'react-redux'
-import Selector from '../molecules/Selector'
+import {eventValuePath, eventCheckedPath, rawConnect} from '../../utils/helpers'
+import {instrumentInstanceNames} from '../../utils/derivedData'
 import {
   updateControlPadArpeggiatorIsOn,
   updateControlPadArpeggiatorOctaves,
@@ -16,13 +16,13 @@ import {
 import FullButton from '../atoms/FullButton'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
-import {eventValuePath, eventCheckedPath} from '../../utils/helpers'
+import Selector from '../molecules/Selector'
 
-export default connect(identity)(({
+export default rawConnect(({
   arpeggiatorPatterns,
   controlPad,
   dispatch,
-  instruments
+  plugins
 }) =>
   <div className='flex-column text-center'>
     <h2 className='text-center'>Control Pad Settings</h2>
@@ -37,7 +37,7 @@ export default connect(identity)(({
       options={map(instrument => ({
         text: capitalize.words(instrument),
         value: instrument
-      }), instruments)}
+      }), instrumentInstanceNames(plugins))}
     />
     <RangeSelector
       max='2'
@@ -114,6 +114,6 @@ export default connect(identity)(({
     />
     <div>
       <span className='inline-label-text'></span>
-      <FullButton text='OK' to='/control-pad' />
+      <FullButton to='/control-pad'>OK</FullButton>
     </div>
   </div>)

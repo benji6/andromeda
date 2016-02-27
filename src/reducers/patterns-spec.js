@@ -1,3 +1,4 @@
+import 'web-audio-test-api'
 import test from 'tape'
 import reducer, {initialState} from './patterns'
 import {

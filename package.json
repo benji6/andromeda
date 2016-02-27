@@ -4,14 +4,14 @@
   "description": "Make music in your browser!",
   "scripts": {
     "assets": "cp -r src/assets dist",
-    "build": "rm -rf dist && mkdir dist && concurrent 'npm run assets' 'npm run scripts' 'npm run styles' && find dist -type f -exec gzip -9 {} \\; -exec mv {}.gz {} \\;",
-    "deploy": "concurrent 'npm t' 'npm run build' && aws s3 cp --recursive dist s3://elemental.audio --acl \"public-read\" --content-encoding \"gzip\"",
+    "build": "rm -rf dist && mkdir dist && concurrently 'npm run assets' 'npm run scripts' 'npm run styles' && find dist -type f -exec gzip -9 {} \\; -exec mv {}.gz {} \\;",
+    "deploy": "concurrently 'npm t' 'npm run build' && aws s3 cp --recursive dist s3://elemental.audio --acl \"public-read\" --content-encoding \"gzip\"",
     "html": "html-minifier --collapse-whitespace -o dist/index.html src/index.html",
     "scripts": "browserify -t babelify src/index.js | sed 's/process.env.NODE_ENV/\"production\"/g' | uglifyjs -cm --screw-ie8 > dist/index.js",
     "serve": "live-server dist",
-    "start": "concurrent 'npm run watch-assets' 'npm run watch-html' 'npm run watch-scripts' 'npm run watch-styles' 'npm run serve'",
+    "start": "concurrently 'npm run watch-assets' 'npm run watch-html' 'npm run watch-scripts' 'npm run watch-styles' 'npm run serve'",
     "styles": "node-sass src/index.scss --output-style compressed -x | cleancss -o dist/index.css",
-    "test": "concurrent 'standard' 'babel-node node_modules/.bin/tape 'src/**/*-spec.js' | faucet'",
+    "test": "concurrently 'standard' 'babel-node node_modules/.bin/tape 'src/**/*-spec.js' | faucet'",
     "watch-assets": "nodemon --watch src/assets -e ico,jpg,png,svg,wav --exec npm run assets",
     "watch-html": "nodemon --watch src/index.html --exec npm run html",
     "watch-scripts": "watchify -t babelify src/index.js --o dist/index.js",
@@ -49,7 +49,7 @@
     "babelify": "^7.2.0",
     "browserify": "^13.0.0",
     "clean-css": "^3.4.9",
-    "concurrently": "^1.0.0",
+    "concurrently": "^2.0.0",
     "faucet": "0.0.1",
     "html-minifier": "^1.1.1",
     "node-sass": "^3.4.2",
@@ -57,7 +57,8 @@
     "standard": "^5.4.1",
     "tape": "^4.2.2",
     "uglify-js": "^2.6.1",
-    "watchify": "^3.5.0"
+    "watchify": "^3.5.0",
+    "web-audio-test-api": "^0.5.2"
   },
   "dependencies": {
     "capitalize": "^1.0.0",
@@ -67,10 +68,10 @@
     "react": "^0.14.0",
     "react-dom": "^0.14.0",
     "react-redux": "^4.0.0",
-    "react-router": "^1.0.0-rc3",
+    "react-router": "^2.0.0",
     "redux": "^3.0.4",
     "rx": "^4.0.7",
-    "three": "^0.73.0",
+    "three": "^0.74.0",
     "virtual-audio-graph": "^0.16.6"
   },
   "standard": {

@@ -13,21 +13,24 @@ import {
   transduce
 } from 'ramda'
 import React from 'react'
-import { connect } from 'react-redux'
 import {Subject, Observable} from 'rx'
 import store from '../../store'
-import { activePatternCellClick, addAudioGraphSource, removeKeysFromAudioGraphContaining, updateActivePatternActivePosition } from '../../actions'
-import { mapIndexed } from '../../utils/helpers'
+import {
+  activePatternCellClick,
+  updateActivePatternActivePosition
+} from '../../actions'
+import {mapIndexed, rawConnect} from '../../utils/helpers'
 import Pattern from '../organisms/Pattern'
 import PlayButton from '../atoms/PlayButton'
-import Navigation from '../organisms/Navigation'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
 import PatternMenu from '../organisms/PatternMenu'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
-import { noteExists } from '../../reducers/patterns'
-let lastPosition
+import {noteExists} from '../../reducers/patterns'
+import {instrumentInstance} from '../../utils/derivedData'
+
 const playStopSubject = new Subject()
+const activeNotes = new Set()
 
 const onPlay = dispatch => map(
   count => {
@@ -47,20 +50,19 @@ const onPlay = dispatch => map(
     T,
     inc,
     identity,
-    () => 60000 / store.getState().bpm)
-  .takeUntil(playStopSubject)
-)
+    _ => 60000 / store.getState().bpm
+  )
+  .takeUntil(playStopSubject))
   .do(compose(
     dispatch,
     updateActivePatternActivePosition,
     prop('position')
-  ))
-  .do(compose(
-    dispatch,
-    removeKeysFromAudioGraphContaining,
-    _ => `pattern-editor-${lastPosition}`)
   )
-  .do(({position}) => lastPosition = position)
+)
+  .do(_ => {
+    activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
+    activeNotes.clear()
+  })
   .subscribe(({
     notes,
     octave,
@@ -69,66 +71,79 @@ const onPlay = dispatch => map(
     scale,
     yLength
   }) => transduce(
-      compose(
-        filter(({y}) => y === position),
-        map(({x, y}) => {
-          const {instrument, volume} = store.getState().patterns[store.getState().activePatternIndex]
-          return {
-            id: `pattern-editor-${y}-${x}`,
-            instrument,
-            params: {
-              gain: volume,
-              frequency: pitchToFrequency(pitchFromScaleIndex(
-                scale.scales[scale.scaleName],
-                yLength - 1 - x + scale.scales[scale.scaleName].length * octave
-              ) + rootNote)
-            }
-          }
-        }),
-        map(compose(dispatch, addAudioGraphSource))
-      ),
-      () => {
-      },
-      null,
-      notes
+    compose(
+      filter(({y}) => y === position),
+      map(({x, y}) => {
+        const {activePatternIndex, patterns, plugins} = store.getState()
+        const {instrument, volume} = patterns[activePatternIndex]
+        const id = `pattern-editor-${y}-${x}`
+        const instumentObj = instrumentInstance(instrument, plugins)
+        activeNotes.add({instrument: instumentObj, id})
+        instumentObj.inputNoteStart({
+          frequency: pitchToFrequency(pitchFromScaleIndex(
+            scale.scales[scale.scaleName],
+            yLength - 1 - x + scale.scales[scale.scaleName].length * octave
+          ) + rootNote),
+          gain: volume,
+          id
+        })
+      })
+    ),
+    _ => null,
+    null,
+    notes
   ), ::console.error)
 
 const onStop = dispatch => {
   playStopSubject.onNext()
-  dispatch(removeKeysFromAudioGraphContaining('pattern-editor'))
+  activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
+  activeNotes.clear()
   dispatch(updateActivePatternActivePosition(null))
 }
 
-const yLabel = curry((scale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(scale.scales[scale.scaleName],
-      yLength - i - 1) + rootNote))
+const yLabel = curry(
+  (scale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
+    scale.scales[scale.scaleName],
+    yLength - i - 1
+  ) + rootNote)
+)
 
-export default connect(identity)(({activePatternIndex, dispatch, instrument, patterns, rootNote, scale}) => {
+export default rawConnect(({
+  activePatternIndex,
+  dispatch,
+  instrument,
+  patterns,
+  rootNote,
+  scale
+}) => {
   const activePattern = patterns[activePatternIndex]
   const {activePosition, notes, xLength, yLength} = activePattern
   const emptyPatternData = map(range(0), repeat(xLength, yLength))
-  const patternData = mapIndexed((x, i) => map(j => ({active: j === activePosition,
-      selected: noteExists(notes, i, j)}),
-      x),
-    emptyPatternData)
+  const patternData = mapIndexed(
+    (x, i) => map(
+      j => ({active: j === activePosition, selected: noteExists(notes, i, j)}),
+      x
+    ),
+    emptyPatternData
+  )
   const onClick = x => y => _ => dispatch(activePatternCellClick({x, y}))
 
   return <div>
-    <Navigation />
     <Pattern
-  onClick={onClick}
-  patternData={patternData}
-  rootNote={rootNote}
-  scale={scale}
-  yLabel={yLabel(scale, yLength, rootNote)}
-  />
+      onClick={onClick}
+      patternData={patternData}
+      rootNote={rootNote}
+      scale={scale}
+      yLabel={yLabel(scale, yLength, rootNote)}
+    />
     <PlayButton
-  onPlay={partial(onPlay, [dispatch])}
-  onStop={partial(onStop, [dispatch])}
-  />
+      onPlay={partial(onPlay, [dispatch])}
+      onStop={partial(onStop, [dispatch])}
+    />
     <PatternMenu
-  dispatch={dispatch}
-  instrument={instrument}
-  pattern={activePattern}
-  />
+      dispatch={dispatch}
+      instrument={instrument}
+      pattern={activePattern}
+    />
   </div>
 })

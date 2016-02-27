@@ -2,10 +2,8 @@ import {compose, flip, identity, isNil, map, prop, reject, tap} from 'ramda'
 import {Observable} from 'rx'
 import store from './store'
 import pitchToFrequency from './audioHelpers/pitchToFrequency'
-import {
-  addAudioGraphSource,
-  removeKeysFromAudioGraphContaining
-} from './actions'
+import {instrumentInstance} from './utils/derivedData'
+
 const {fromEvent} = Observable
 const keyCodesToPitches = {
   220: -10,
@@ -57,12 +55,10 @@ const computeId = pitch => `keyboard: ${pitch}`
 const computeNoteParams = pitch => {
   const {keyboard} = store.getState()
   return {
+    frequency: pitchToFrequency(pitch + 12 * keyboard.octave),
     id: computeId(pitch),
     instrument: keyboard.instrument,
-    params: {
-      gain: keyboard.volume,
-      frequency: pitchToFrequency(pitch + 12 * keyboard.octave)
-    }
+    gain: keyboard.volume
   }
 }
 
@@ -75,8 +71,10 @@ fromEvent(document.body, 'keydown')
     map(flip(prop)(keyCodesToPitches)),
     reject(isNil),
     map(computeNoteParams),
-    map(addAudioGraphSource),
-    map(store.dispatch)
+    map(noteParams => instrumentInstance(
+      noteParams.instrument,
+      store.getState().plugins
+    ).inputNoteStart(noteParams)),
   ))
   .subscribe(identity, ::console.error)
 
@@ -86,8 +84,10 @@ fromEvent(document.body, 'keyup')
     map(tap(::pressedKeys.delete)),
     map(flip(prop)(keyCodesToPitches)),
     reject(isNil),
-    map(computeId),
-    map(removeKeysFromAudioGraphContaining),
-    map(store.dispatch)
+    map(computeNoteParams),
+    map(noteParams => instrumentInstance(
+      noteParams.instrument,
+      store.getState().plugins
+    ).inputNoteStop(noteParams.id))
   ))
   .subscribe(identity, ::console.error)

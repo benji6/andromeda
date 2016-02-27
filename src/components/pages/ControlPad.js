@@ -3,22 +3,16 @@ import {
   assoc,
   compose,
   curry,
-  identity,
   ifElse,
   map,
   tap
 } from 'ramda'
 import React from 'react'
-import {connect} from 'react-redux'
-import {
-  addAudioGraphSource,
-  removeKeysFromAudioGraphContaining
-} from '../../actions'
+import {rawConnect} from '../../utils/helpers'
 import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
 import ControlPad from '../organisms/ControlPad'
-import Navigation from '../organisms/Navigation'
 import PerformanceMenu from '../organisms/PerformanceMenu'
-import {currentScale} from '../../utils/derivedData'
+import {currentScale, instrumentInstance} from '../../utils/derivedData'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import store from '../../store'
 
@@ -46,18 +40,15 @@ const xYRatiosToNoScaleNote = ({range, xRatio, yRatio}) => ({
 })
 
 const createSource = curry((
-  {instrument, octave, rootNote},
+  {octave, rootNote},
   {id, pitch, modulation}
 ) => ({
-  id,
-  instrument,
-  params: {
-    frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
-    gain: (1 - modulation) / 2
-  }
+  frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
+  gain: (1 - modulation) / 2,
+  id
 }))
 
-export default connect(identity)(({
+export default rawConnect(({
   controlPad: {
     arpeggiatorIsOn,
     instrument,
@@ -66,14 +57,14 @@ export default connect(identity)(({
     portamento,
     range
   },
+  plugins,
   rootNote
 }) => <div>
-    <Navigation />
     <div className='text-center'>
       <ControlPad
         inputEndTransducer={compose(
           map(tap(_ => currentlyPlayingPitch = null)),
-          map(_ => store.dispatch(removeKeysFromAudioGraphContaining(controlPadId))),
+          map(_ => instrumentInstance(instrument, plugins).inputNoteStop(controlPadId)),
           map(stopArpeggiator)
         )}
         inputTransducer={compose(
@@ -84,16 +75,15 @@ export default connect(identity)(({
             currentlyPlayingPitch !== pitch &&
             currentlyPlayingPitch !== null &&
             stopLastNoteOnNoteChange
-          ) && store.dispatch(removeKeysFromAudioGraphContaining(controlPadId)))),
+          ) && instrumentInstance(instrument, plugins).inputNoteStop(controlPadId))),
           map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
           map(ifElse(
             always(arpeggiatorIsOn),
             startArpeggiator,
-            compose(store.dispatch, addAudioGraphSource, createSource({
-              instrument,
-              octave,
-              rootNote
-            }))
+            compose(
+              x => instrumentInstance(instrument, plugins).inputNoteStart(x),
+              createSource({octave, rootNote})
+            )
           ))
         )}
       />
