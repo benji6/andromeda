@@ -24,9 +24,9 @@ export default rawConnect(({
   const sources = prop('instruments', nth(params.channelId, channels))
   const effects = prop('effects', nth(params.channelId, channels))
   const addSources = difference(pluck('name', instrumentInstances), sources)
-  const addEffects = pluck('name', effectInstances)
-  selectedAddSource = selectedAddSource || head(addSources)
-  selectedAddEffect = selectedAddEffect || head(addEffects)
+  const addEffects = difference(pluck('name', effectInstances), effects)
+  selectedAddSource = head(addSources)
+  selectedAddEffect = head(addEffects)
 
   return <div className='flex-column text-center justify-center'>
     <h1>{`Channel ${channelId}`}</h1>
@@ -78,10 +78,10 @@ export default rawConnect(({
           onChange={e => selectedAddEffect = e.target.value}
           options={map(text => ({text, value: text}), addEffects)}
         />
-        <Plus onClick={e => dispatch(addEffectToChannel({
-          channel: channelId,
-          name: selectedAddEffect
-        }))}/>
+      <Plus onClick={e => dispatch(addEffectToChannel({
+        channel: channelId,
+        name: selectedAddEffect
+      }))}/>
       </div>
   </div>
 })
