@@ -11,7 +11,7 @@ import React from 'react'
 import {rawConnect} from '../../utils/helpers'
 import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
 import ControlPad from '../organisms/ControlPad'
-import PerformanceMenu from '../organisms/PerformanceMenu'
+import FullButton from '../atoms/FullButton'
 import {currentScale, instrumentInstance} from '../../utils/derivedData'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import store from '../../store'
@@ -59,7 +59,8 @@ export default rawConnect(({
   },
   plugins,
   rootNote
-}) => <div>
+}) =>
+  <div>
     <div className='text-center'>
       <ControlPad
         inputEndTransducer={compose(
@@ -88,5 +89,7 @@ export default rawConnect(({
         )}
       />
     </div>
-    <PerformanceMenu />
+    <nav>
+      <FullButton to='/control-pad/settings'>Options</FullButton>
+    </nav>
   </div>)
