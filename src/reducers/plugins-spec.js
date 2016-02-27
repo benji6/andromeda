@@ -17,11 +17,7 @@ const reducerName = 'plugins'
 
 test(`${reducerName} reducer returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), {
-    channels: [
-      {name: 0, effects: [], instruments: []},
-      {name: 1, effects: [], instruments: []},
-      {name: 2, effects: [], instruments: []}
-    ],
+    channels: [{name: 0, effects: [], instruments: []}],
     effectInstances: [],
     effectPlugins: [],
     instrumentInstances: [],
@@ -111,12 +107,11 @@ test(`${reducerName} reducer - instantiateEffect`, t => {
       instrumentInstances: [],
       instrumentPlugins: []
     }, instantiateEffect({
-      channel: 0,
       name: 'fake effect name',
       plugin: 'test effect plugin'
     })),
     {
-      channels: [{name: 0, effects: ['fake effect name'], instruments: []}],
+      channels: [{name: 0, effects: [], instruments: []}],
       effectInstances: [{instance: new constructor(), name: 'fake effect name'}],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
       instrumentInstances: [],

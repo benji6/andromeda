@@ -12,7 +12,6 @@ import {
   flip,
   forEach,
   inc,
-  isEmpty,
   last,
   length,
   lensProp,
@@ -86,11 +85,7 @@ const lowestUniqueNatural = xs => {
   return i
 }
 const initialState = {
-  channels: [
-    {name: 0, effects: [], instruments: []},
-    {name: 1, effects: [], instruments: []},
-    {name: 2, effects: [], instruments: []}
-  ],
+  channels: [{name: 0, effects: [], instruments: []}],
   effectInstances: [],
   effectPlugins: [],
   instrumentInstances: [],
@@ -145,24 +140,10 @@ export default (state = initialState, {type, payload}) => {
         payload.plugin,
         state.effectPlugins
       ))({audioContext})
-      const thisChannel = channel(payload.channel, state)
-      if (!thisChannel) connectToAudioCtx(instance)
-      const thisChannelEffects = effects(thisChannel)
-      if (isEmpty(thisChannelEffects)) connectToAudioCtx(instance)
-      else {
-        instance.connect(effectInstanceDestination(
-          last(thisChannelEffects),
-          state
-        ))
-      }
-      return overChannelEffects(
-        append(payload.name),
-        payload.channel,
-        overEffectInstances(append({
-          instance,
-          name: payload.name
-        }), state)
-      )
+      return overEffectInstances(append({
+        instance,
+        name: payload.name
+      }), state)
     }
     case INSTANTIATE_INSTRUMENT: {
       const instance = new (findConstructor(
