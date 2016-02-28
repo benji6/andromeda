@@ -2,9 +2,9 @@ import React from 'react'
 import Selector from './Selector'
 import ButtonSecondary from '../atoms/ButtonSecondary'
 
-export default ({...props}) =>
-  <Selector {...{...props}}>
-    <ButtonSecondary to={`/plugins/instruments/${props.defaultValue}`}>
+export default ({...x}) =>
+  <Selector {...{...x}}>
+    <ButtonSecondary to={`/plugins/instruments/${x.defaultValue}`}>
       edit
     </ButtonSecondary>
   </Selector>
