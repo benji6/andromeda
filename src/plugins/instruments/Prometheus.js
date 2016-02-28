@@ -14,7 +14,7 @@ export default class {
     const output = audioContext.createGain()
     outputs.set(this, output)
     graphs.set(this, {})
-    osc1Settings.set(this, {type: 'sine'})
+    osc1Settings.set(this, {detune: 0, type: 'sine'})
     osc2Settings.set(this, {detune: 10, type: 'sine'})
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
     virtualAudioGraph.defineNodes({
@@ -66,37 +66,72 @@ export default class {
       <div style={{textAlign: 'center'}}>
         <h2>Prometheus</h2>
         <h3>Osc 1</h3>
-        <label>
-          Type&nbsp;
-          <select
-            defaultValue={osc1Settings.get(this).type}
-            onChange={e => osc1Settings.set(
-              this,
-              {...osc1Settings.get(this), type: e.target.value}
-            )}
-          >
-            <option value='sawtooth'>Sawtooth</option>
-            <option value='sine'>Sine</option>
-            <option value='square'>Square</option>
-            <option value='triangle'>Triangle</option>
-          </select>
-        </label>
+
+        <div>
+          <label>
+            Type&nbsp;
+            <select
+              defaultValue={osc1Settings.get(this).type}
+              onChange={e => osc1Settings.set(
+                this,
+                {...osc1Settings.get(this), type: e.target.value}
+              )}
+            >
+              <option value='sawtooth'>Sawtooth</option>
+              <option value='sine'>Sine</option>
+              <option value='square'>Square</option>
+              <option value='triangle'>Triangle</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label>
+            Detune&nbsp;
+            <input
+              defaultValue={osc1Settings.get(this).detune}
+              max='50'
+              min='-50'
+              onInput={e => osc1Settings.set(
+                this,
+                {...osc1Settings.get(this), detune: Number(e.target.value)}
+              )}
+              type='range'
+            />
+          </label>
+        </div>
         <h3>Osc 2</h3>
-        <label>
-          Type&nbsp;
-          <select
-            defaultValue={osc2Settings.get(this).type}
-            onChange={e => osc2Settings.set(
-              this,
-              {...osc1Settings.get(this), type: e.target.value}
-            )}
-          >
-            <option value='sawtooth'>Sawtooth</option>
-            <option value='sine'>Sine</option>
-            <option value='square'>Square</option>
-            <option value='triangle'>Triangle</option>
-          </select>
-        </label>
+        <div>
+          <label>
+            Type&nbsp;
+            <select
+              defaultValue={osc2Settings.get(this).type}
+              onChange={e => osc2Settings.set(
+                this,
+                {...osc1Settings.get(this), type: e.target.value}
+              )}
+            >
+              <option value='sawtooth'>Sawtooth</option>
+              <option value='sine'>Sine</option>
+              <option value='square'>Square</option>
+              <option value='triangle'>Triangle</option>
+            </select>
+          </label>
+        </div>
+        <div>
+          <label>
+            Detune&nbsp;
+            <input
+              defaultValue={osc2Settings.get(this).detune}
+              max='50'
+              min='-50'
+              onInput={e => osc2Settings.set(
+                this,
+                {...osc2Settings.get(this), detune: Number(e.target.value)}
+              )}
+              type='range'
+            />
+          </label>
+        </div>
       </div>,
       containerEl
     )
