@@ -2,7 +2,7 @@ import React from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
 import './keyboard'
-import UpgradeBrowserView from './components/pages/UpgradeBrowserView'
+import UpgradeBrowser from './components/pages/UpgradeBrowser'
 import store from './store'
 import routes from './routes'
 import './utils/loadPlugins'
@@ -14,7 +14,7 @@ if (navigator.serviceWorker) {
   )
 } else {
   render(
-    <UpgradeBrowserView />,
+    <UpgradeBrowser />,
     document.getElementById('app')
   )
 }

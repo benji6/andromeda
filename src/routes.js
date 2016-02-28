@@ -11,8 +11,8 @@ import Instrument from './components/pages/Instrument'
 import Instruments from './components/pages/Instruments'
 import KeyboardSettings from './components/pages/KeyboardSettings'
 import PatternEditorSettings from './components/pages/PatternEditorSettings'
-import PatternEditorView from './components/pages/PatternEditorView'
-import SettingsView from './components/pages/SettingsView'
+import PatternEditor from './components/pages/PatternEditor'
+import Settings from './components/pages/Settings'
 
 export default <Router history={hashHistory}>
   <Route path='/' component={App}>
@@ -22,13 +22,13 @@ export default <Router history={hashHistory}>
     <Route path='/controllers/control-pad/settings' component={ControlPadSettings} />
     <Route path='/controllers/control-pad' component={ControlPad} />
     <Route path='/controllers/keyboard/settings' component={KeyboardSettings} />
-    <Route path='/controllers/pattern-editor' component={PatternEditorView} />
+    <Route path='/controllers/pattern-editor' component={PatternEditor} />
     <Route path='/pattern-editor/settings' component={PatternEditorSettings} />
     <Route path='/plugins/effects' component={Effects} />
     <Route path='/plugins/effects/:name' component={Effect} />
     <Route path='/plugins/instruments' component={Instruments} />
     <Route path='/plugins/instruments/:name' component={Instrument} />
-    <Route path='/settings' component={SettingsView} />
+    <Route path='/settings' component={Settings} />
     <Route path='/*' component={ControlPad} />
   </Route>
 </Router>
