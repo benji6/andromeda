@@ -18,12 +18,12 @@
   transition-duration: $fast-transition;
 }
 .hollow-button--active {
-  background: linear-gradient($bulbasaur-midnight, $black, $bulbasaur-midnight);
-  border: 1px solid $bulbasaur-evening;
+  background: black;
+  border: 1px solid $squirtle-evening;
   box-shadow: none;
 }
 .hollow-button--active:active {
-  background: linear-gradient($bulbasaur-midnight, $black, $bulbasaur-midnight);
+  background: black;
 }
 .hollow-button--active:hover {
   box-shadow: none;
