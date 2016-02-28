@@ -12,7 +12,6 @@ import Instruments from './components/pages/Instruments'
 import KeyboardSettings from './components/pages/KeyboardSettings'
 import PatternEditorSettings from './components/pages/PatternEditorSettings'
 import PatternEditorView from './components/pages/PatternEditorView'
-import Plugins from './components/pages/Plugins'
 import SettingsView from './components/pages/SettingsView'
 
 export default <Router history={hashHistory}>
@@ -25,7 +24,6 @@ export default <Router history={hashHistory}>
     <Route path='/controllers/keyboard/settings' component={KeyboardSettings} />
     <Route path='/controllers/pattern-editor' component={PatternEditorView} />
     <Route path='/pattern-editor/settings' component={PatternEditorSettings} />
-    <Route path='/plugins' component={Plugins} />
     <Route path='/plugins/effects' component={Effects} />
     <Route path='/plugins/effects/:name' component={Effect} />
     <Route path='/plugins/instruments' component={Instruments} />
