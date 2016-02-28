@@ -90,6 +90,6 @@ export default rawConnect(({
       />
     </div>
     <nav>
-      <FullButton to='/control-pad/settings'>Options</FullButton>
+      <FullButton to='/controllers/control-pad/settings'>Options</FullButton>
     </nav>
   </div>)

@@ -19,7 +19,7 @@ export default <Router history={hashHistory}>
     <IndexRoute component={ControlPad} />
     <Route path='/channel/:channelId' component={Channel} />
     <Route path='/channels' component={Channels} />
-    <Route path='/control-pad/settings' component={ControlPadSettings} />
+    <Route path='/controllers/control-pad/settings' component={ControlPadSettings} />
     <Route path='/controllers/control-pad' component={ControlPad} />
     <Route path='/controllers/keyboard/settings' component={KeyboardSettings} />
     <Route path='/controllers/pattern-editor' component={PatternEditorView} />

@@ -4,7 +4,6 @@ import FullButton from '../atoms/FullButton'
 
 export default rawConnect(({plugins: {effectInstances}}) =>
   <div className='flex-column text-center'>
-    <h1>Effects</h1>
     {mapIndexed(
       ({name}, key) =>
         <div {...{key}} >

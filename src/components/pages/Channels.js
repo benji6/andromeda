@@ -7,7 +7,6 @@ import {addChannel, removeChannel} from '../../actions'
 
 export default rawConnect(({dispatch, plugins: {channels}}) =>
   <div className='flex-column text-center'>
-    <h1>Channels</h1>
     {map(
       channel => <div key={channel}>
         <FullButton to={`/channel/${channel}`}>

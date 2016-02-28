@@ -3,10 +3,10 @@ import HollowButton from '../atoms/HollowButton'
 
 export default _ =>
   <nav className='navigation'>
-    <HollowButton text='Pad' to='/controllers/contol-pad' />
-    <HollowButton text='Pattern' to='/controllers/pattern-editor' />
-    <HollowButton text='Instruments' to='/plugins/instruments' />
-    <HollowButton text='Effects' to='/plugins/effects' />
-    <HollowButton text='Channels' to='/channels' />
-    <HollowButton text='Settings' to='/settings' />
+    <HollowButton to='/controllers/control-pad'>Pad</HollowButton>
+    <HollowButton to='/controllers/pattern-editor'>Pattern</HollowButton>
+    <HollowButton to='/plugins/instruments'>Instruments</HollowButton>
+    <HollowButton to='/plugins/effects'>Effects</HollowButton>
+    <HollowButton to='/channels'>Channels</HollowButton>
+    <HollowButton to='/settings'>Settings</HollowButton>
   </nav>

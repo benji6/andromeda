@@ -114,6 +114,6 @@ export default rawConnect(({
     />
     <div>
       <span className='inline-label-text'></span>
-      <FullButton to='/control-pad'>OK</FullButton>
+      <FullButton to='/controllers/control-pad'>OK</FullButton>
     </div>
   </div>)

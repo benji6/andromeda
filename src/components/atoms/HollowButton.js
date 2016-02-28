@@ -1,5 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router'
 
-export default ({text, ...props}) =>
-  <Link {...{...props, className: 'hollow-button'}}>{text}</Link>
+export default ({children, ...props}) =>
+  <Link {...{
+    ...props,
+    activeClassName: 'hollow-button--active',
+    className: 'hollow-button'
+  }}>{children}</Link>

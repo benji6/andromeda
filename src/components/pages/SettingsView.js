@@ -20,7 +20,6 @@ export default rawConnect(({
   scale: {scaleName, scales}
 }) =>
   <div className='settings-view'>
-    <h1 className='text-center'>Settings</h1>
     <div className='flex-column text-center'>
       <RangeSelector
         max='512'
