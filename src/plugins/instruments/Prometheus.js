@@ -6,18 +6,35 @@ import createVirtualAudioGraph from 'virtual-audio-graph'
 const graphs = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
-const types = new WeakMap()
+const osc1Settings = new WeakMap()
+const osc2Settings = new WeakMap()
 
 export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
     outputs.set(this, output)
     graphs.set(this, {})
-    types.set(this, 'sine')
-    virtualAudioGraphs.set(this, createVirtualAudioGraph({
-      audioContext,
-      output
-    }))
+    osc1Settings.set(this, {type: 'sine'})
+    osc2Settings.set(this, {detune: 10, type: 'sine'})
+    const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
+    virtualAudioGraph.defineNodes({
+      oscBank: ({gain, frequency, startTime, stopTime}) => ({
+        0: ['gain', 'output', {gain}],
+        1: ['oscillator', 0, {
+          ...osc1Settings.get(this),
+          frequency,
+          startTime,
+          stopTime
+        }],
+        2: ['oscillator', 0, {
+          ...osc2Settings.get(this),
+          frequency,
+          startTime,
+          stopTime
+        }]
+      })
+    })
+    virtualAudioGraphs.set(this, virtualAudioGraph)
   }
   connect (destination) {
     outputs.get(this).connect(destination)
@@ -29,9 +46,9 @@ export default class {
     const newNodes = {
       ...graphs.get(this),
       0: ['gain', 'output', {gain}],
-      [id]: ['oscillator', 0, {
+      [id]: ['oscBank', 0, {
+        gain,
         frequency,
-        type: types.get(this),
         startTime,
         stopTime
       }]
@@ -48,11 +65,31 @@ export default class {
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Prometheus</h2>
+        <h3>Osc 1</h3>
         <label>
           Type&nbsp;
           <select
-            defaultValue={types.get(this)}
-            onChange={e => types.set(this, e.target.value)}
+            defaultValue={osc1Settings.get(this).type}
+            onChange={e => osc1Settings.set(
+              this,
+              {...osc1Settings.get(this), type: e.target.value}
+            )}
+          >
+            <option value='sawtooth'>Sawtooth</option>
+            <option value='sine'>Sine</option>
+            <option value='square'>Square</option>
+            <option value='triangle'>Triangle</option>
+          </select>
+        </label>
+        <h3>Osc 2</h3>
+        <label>
+          Type&nbsp;
+          <select
+            defaultValue={osc2Settings.get(this).type}
+            onChange={e => osc2Settings.set(
+              this,
+              {...osc1Settings.get(this), type: e.target.value}
+            )}
           >
             <option value='sawtooth'>Sawtooth</option>
             <option value='sine'>Sine</option>
