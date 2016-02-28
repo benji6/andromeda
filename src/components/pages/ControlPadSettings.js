@@ -16,6 +16,7 @@ import {
 import FullButton from '../atoms/FullButton'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
+import InstrumentSelector from '../molecules/InstrumentSelector'
 import Selector from '../molecules/Selector'
 
 export default rawConnect(({
@@ -26,7 +27,7 @@ export default rawConnect(({
 }) =>
   <div className='flex-column text-center'>
     <h2 className='text-center'>Control Pad Settings</h2>
-    <Selector
+    <InstrumentSelector
       defaultValue={controlPad.instrument}
       handleChange={compose(
         dispatch,

@@ -3,7 +3,7 @@ import {compose, map} from 'ramda'
 import React from 'react'
 import {instrumentInstanceNames} from '../../utils/derivedData'
 import {eventValuePath, rawConnect} from '../../utils/helpers'
-import Selector from '../molecules/Selector'
+import InstrumentSelector from '../molecules/InstrumentSelector'
 import {
   updateKeyboardInstrument,
   updateKeyboardOctave,
@@ -15,7 +15,7 @@ import RangeSelector from '../molecules/RangeSelector'
 export default rawConnect(({keyboard, dispatch, plugins}) =>
   <div className='flex-column text-center'>
     <h2 className='text-center'>Keyboard Settings</h2>
-    <Selector
+    <InstrumentSelector
       defaultValue={keyboard.instrument}
       handleChange={(compose(
         dispatch,

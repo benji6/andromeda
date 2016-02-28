@@ -9,7 +9,7 @@ import {
   updateActivePatternVolume,
   updateActivePatternXLength
 } from '../../actions'
-import Selector from '../molecules/Selector'
+import InstrumentSelector from '../molecules/InstrumentSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import FullButton from '../atoms/FullButton'
 
@@ -23,7 +23,7 @@ export default rawConnect(({
   const {instrument, octave, xLength, volume} = activePattern
   return <div className='flex-column text-center'>
     <h2 className='text-center'>Pattern Editor Settings</h2>
-    <Selector defaultValue={instrument}
+    <InstrumentSelector defaultValue={instrument}
       handleChange={(compose(
         dispatch,
         updateActivePatternInstrument,

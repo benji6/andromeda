@@ -1,7 +1,7 @@
 .hollow-button {
   background: linear-gradient($squirtle-night, $black, $squirtle-night);
   border-radius: 1rem;
-  border: 1px solid #058;
+  border: 1px solid $squirtle-dusk;
   box-shadow: $squirtle-dusk 0 0 0.5rem 0.1rem;
   color: $white;
   font-size: $small-font;
