@@ -45,7 +45,7 @@ export const head = xs => xs[Symbol.iterator]().next().value
 
 export const isEmpty = xs => xs[Symbol.iterator]().next().done
 
-export const map = curry((f, xs) => createIterable(function * () {
+export const lazyMap = curry((f, xs) => createIterable(function * () {
   for (const x of xs) yield f(x)
 }))
 

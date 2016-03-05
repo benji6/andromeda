@@ -1,4 +1,4 @@
-import {cycle, map, range, zipWith} from '../utils/lazyIterables'
+import {cycle, lazyMap, range, zipWith} from '../utils/lazyIterables'
 import Looper from './Looper'
 import store from '../store'
 import audioContext from '../audioContext'
@@ -39,7 +39,7 @@ export const startArpeggiator = ({id, pitch, modulation}) => {
   const currentArpeggiatedScale = arpeggiatedScale(store.getState())
   const {currentTime} = audioContext
   const noteDuration = 60 / bpm / 4
-  const startAndStopTimes = map(
+  const startAndStopTimes = lazyMap(
     i => {
       const startTime = nextNoteStartTime(noteDuration, currentTime) +
         i * noteDuration

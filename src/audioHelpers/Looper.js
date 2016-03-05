@@ -1,6 +1,6 @@
 import {compose, gte, prop} from 'ramda'
 import {
-  map,
+  lazyMap,
   concat,
   dropWhile,
   filter,
@@ -15,7 +15,7 @@ const lookAhead = 0.05
 
 const startTimePath = prop('startTime')
 const stopTimePath = prop('stopTime')
-const mapStopTimePath = map(stopTimePath)
+const mapStopTimePath = lazyMap(stopTimePath)
 const startTimeLTTime = t => compose(gte(t), startTimePath)
 const stopTimeLTTime = t => compose(gte(t), stopTimePath)
 
@@ -55,7 +55,7 @@ export default class {
     const rejectStopTimeLTCurrentTime = reject(stopTimeLTCurrentTime)
 
     ;[...compose(
-      map(::this.onStop),
+      lazyMap(::this.onStop),
       filter(stopTimeLTCurrentTime)
     )(this._startedAndNotStopped)]
 
@@ -64,7 +64,7 @@ export default class {
       takeWhile(startTimeLTNextMoment)
     )(this._notStarted)
 
-    ;[...map(::this.onStart, toStart)]
+    ;[...lazyMap(::this.onStart, toStart)]
 
     this._notStarted = dropWhile(startTimeLTNextMoment, this._notStarted)
     this._startedAndNotStopped = compose(

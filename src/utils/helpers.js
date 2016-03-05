@@ -1,4 +1,4 @@
-import {map as lazyMap} from './lazyIterables'
+import {lazyMap} from './lazyIterables'
 import {
   addIndex,
   curry,
