@@ -1,4 +1,4 @@
-import {both, equals, find, propEq, reject} from 'ramda'
+import {adjust, both, equals, find, propEq, reject} from 'ramda'
 import {
   ACTIVE_PATTERN_CELL_CLICK,
   UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION,
@@ -36,13 +36,12 @@ export default (state = initialState, {type, payload}) => {
          {...activePattern, notes: [...notes, payload]},
          ...state.slice(activePatternIndex + 1)]
     }
-    case UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION: {
-      const {activePatternIndex} = store.getState()
-      const activePattern = state[activePatternIndex]
-      return [...state.slice(0, activePatternIndex),
-              {...activePattern, activePosition: payload},
-              ...state.slice(activePatternIndex + 1)]
-    }
+    case UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION:
+      return adjust(
+        activePattern => ({...activePattern, activePosition: payload}),
+        store.getState().activePatternIndex,
+        state
+      )
     case UPDATE_ACTIVE_PATTERN_INSTRUMENT: {
       const {activePatternIndex} = store.getState()
       const activePattern = state[activePatternIndex]
