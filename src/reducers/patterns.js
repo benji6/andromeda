@@ -1,4 +1,15 @@
-import {adjust, both, equals, find, propEq, reject} from 'ramda'
+import {
+  adjust,
+  any,
+  append,
+  assoc,
+  both,
+  equals,
+  lensProp,
+  over,
+  propEq,
+  reject
+} from 'ramda'
 import {
   ACTIVE_PATTERN_CELL_CLICK,
   UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION,
@@ -8,6 +19,8 @@ import {
   UPDATE_ACTIVE_PATTERN_VOLUME
 } from '../actions'
 import store from '../store'
+
+const overNotes = over(lensProp('notes'))
 
 export const initialState = [{
   activePosition: null,
@@ -19,56 +32,54 @@ export const initialState = [{
   volume: 1 / 3
 }]
 
-export const noteExists = (notes, x, y) => Boolean(find(both(propEq('x', x), propEq('y', y)), notes))
+export const noteExists = (notes, x, y) => any(both(propEq('x', x), propEq('y', y)), notes)
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
     case ACTIVE_PATTERN_CELL_CLICK: {
       const {x, y} = payload
       const {activePatternIndex} = store.getState()
-      const activePattern = state[activePatternIndex]
-      const {notes} = activePattern
-      return noteExists(notes, x, y)
-        ? [...state.slice(0, activePatternIndex),
-         {...activePattern, notes: reject(equals(payload), notes)},
-         ...state.slice(activePatternIndex + 1)]
-        : [...state.slice(0, activePatternIndex),
-         {...activePattern, notes: [...notes, payload]},
-         ...state.slice(activePatternIndex + 1)]
-    }
-    case UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION:
+      const {notes} = state[activePatternIndex]
       return adjust(
-        activePattern => ({...activePattern, activePosition: payload}),
+        overNotes(
+          noteExists(notes, x, y) ? reject(equals(payload)) : append(payload)
+        ),
         store.getState().activePatternIndex,
         state
       )
-    case UPDATE_ACTIVE_PATTERN_INSTRUMENT: {
-      const {activePatternIndex} = store.getState()
-      const activePattern = state[activePatternIndex]
-      return [...state.slice(0, activePatternIndex),
-              {...activePattern, instrument: payload},
-              ...state.slice(activePatternIndex + 1)]
     }
+    case UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION:
+      return adjust(
+        assoc('activePosition', payload),
+        store.getState().activePatternIndex,
+        state
+      )
+    case UPDATE_ACTIVE_PATTERN_INSTRUMENT:
+      return adjust(
+        assoc('instrument', payload),
+        store.getState().activePatternIndex,
+        state
+      )
     case UPDATE_ACTIVE_PATTERN_OCTAVE: {
-      const {activePatternIndex} = store.getState()
-      const activePattern = state[activePatternIndex]
-      return [...state.slice(0, activePatternIndex),
-              {...activePattern, octave: payload},
-              ...state.slice(activePatternIndex + 1)]
+      return adjust(
+        assoc('octave', payload),
+        store.getState().activePatternIndex,
+        state
+      )
     }
     case UPDATE_ACTIVE_PATTERN_X_LENGTH: {
-      const {activePatternIndex} = store.getState()
-      const activePattern = state[activePatternIndex]
-      return [...state.slice(0, activePatternIndex),
-              {...activePattern, xLength: payload},
-              ...state.slice(activePatternIndex + 1)]
+      return adjust(
+        assoc('xLength', payload),
+        store.getState().activePatternIndex,
+        state
+      )
     }
     case UPDATE_ACTIVE_PATTERN_VOLUME: {
-      const {activePatternIndex} = store.getState()
-      const activePattern = state[activePatternIndex]
-      return [...state.slice(0, activePatternIndex),
-              {...activePattern, volume: payload},
-              ...state.slice(activePatternIndex + 1)]
+      return adjust(
+        assoc('volume', payload),
+        store.getState().activePatternIndex,
+        state
+      )
     }
     default:
       return state
