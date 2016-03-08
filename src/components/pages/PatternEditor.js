@@ -1,19 +1,20 @@
 import {
   compose,
   curry,
-  filter,
+  flip,
   identity,
   inc,
   map,
+  modulo,
   partial,
-  prop,
   range,
   repeat,
   T,
+  tap,
   transduce
 } from 'ramda'
 import React from 'react'
-import {Subject, Observable} from 'rx'
+import {Observable, Subject} from 'rx'
 import store from '../../store'
 import {
   activePatternCellClick,
@@ -28,75 +29,68 @@ import PatternMenu from '../organisms/PatternMenu'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import {noteExists} from '../../reducers/patterns'
 import {instrumentInstance} from '../../utils/derivedData'
+import audioContext from '../../audioContext'
 
 const playStopSubject = new Subject()
 const activeNotes = new Set()
 
-const onPlay = dispatch => map(
-  count => {
-    const {activePatternIndex, patterns, rootNote, scale} = store.getState()
-    const {notes, octave, xLength, yLength} = patterns[activePatternIndex]
-    return {
-      notes,
-      octave,
-      position: count % xLength,
-      rootNote,
-      scale,
-      yLength
-    }
-  },
-  Observable.generateWithRelativeTime(
-    0,
-    T,
-    inc,
-    identity,
-    _ => 60000 / store.getState().bpm
-  )
-  .takeUntil(playStopSubject))
-  .do(compose(
-    dispatch,
-    updateActivePatternActivePosition,
-    prop('position')
-  )
-)
-  .do(_ => {
-    activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
-    activeNotes.clear()
-  })
-  .subscribe(({
+const onPlay = dispatch => {
+  const {
+    activePatternIndex,
+    bpm,
+    patterns,
+    plugins,
+    rootNote,
+    scale
+  } = store.getState()
+  const {
+    instrument,
     notes,
     octave,
-    position,
-    rootNote,
-    scale,
+    volume,
+    xLength,
     yLength
-  }) => transduce(
-    compose(
-      filter(({y}) => y === position),
-      map(({x, y}) => {
-        const {activePatternIndex, patterns, plugins} = store.getState()
-        const {instrument, volume} = patterns[activePatternIndex]
-        const id = `pattern-editor-${y}-${x}`
-        const instumentObj = instrumentInstance(instrument, plugins)
-        activeNotes.add({instrument: instumentObj, id})
-        instumentObj.inputNoteStart({
-          frequency: pitchToFrequency(pitchFromScaleIndex(
-            scale.scales[scale.scaleName],
-            yLength - 1 - x + scale.scales[scale.scaleName].length * octave
-          ) + rootNote),
-          gain: volume,
-          id
-        })
-      })
-    ),
-    _ => null,
-    null,
-    notes
-  ), ::console.error)
+  } = patterns[activePatternIndex]
+  const dispatchUpdateActivePatternActivePosition = compose(
+    dispatch,
+    updateActivePatternActivePosition
+  )
+
+  dispatchUpdateActivePatternActivePosition(0)
+
+  map(
+    flip(modulo)(xLength),
+    Observable.generateWithRelativeTime(1, T, inc, identity, _ => 60000 / bpm)
+  )
+    .takeUntil(playStopSubject)
+    .subscribe(dispatchUpdateActivePatternActivePosition)
+  const {currentTime} = audioContext
+  const noteLength = 60 / bpm
+  const note = ({x, y}) => ({
+    frequency: pitchToFrequency(pitchFromScaleIndex(
+      scale.scales[scale.scaleName],
+      yLength - 1 - y + scale.scales[scale.scaleName].length * octave
+    ) + rootNote),
+    gain: volume,
+    id: `pattern-editor-${y}-${x}`,
+    startTime: noteLength * x + currentTime,
+    stopTime: noteLength * (x + 1) + currentTime
+  })
+
+  const instrumentObj = instrumentInstance(instrument, plugins)
+
+  const transducer = compose(
+    map(note),
+    map(tap(({id}) => activeNotes.add({instrumentObj, id}))),
+    map(instrumentObj.inputNoteStart.bind(instrumentObj))
+  )
+
+  transduce(transducer, _ => null, null, notes)
+}
 
 const onStop = dispatch => {
   playStopSubject.onNext()
-  activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
+  activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop(id))
   activeNotes.clear()
   dispatch(updateActivePatternActivePosition(null))
 }
@@ -121,12 +115,12 @@ export default rawConnect(({
   const emptyPatternData = map(range(0), repeat(xLength, yLength))
   const patternData = mapIndexed(
     (x, i) => map(
-      j => ({active: j === activePosition, selected: noteExists(notes, i, j)}),
+      j => ({active: i === activePosition, selected: noteExists(notes, i, j)}),
       x
     ),
     emptyPatternData
   )
-  const onClick = x => y => _ => dispatch(activePatternCellClick({x, y}))
+  const onClick = y => x => _ => dispatch(activePatternCellClick({x, y}))
 
   return <div>
     <Pattern
