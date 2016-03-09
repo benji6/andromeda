@@ -4,8 +4,10 @@ import {
   flip,
   identity,
   inc,
+  lensProp,
   map,
   modulo,
+  over,
   partial,
   range,
   repeat,
@@ -33,6 +35,9 @@ import audioContext from '../../audioContext'
 
 const playStopSubject = new Subject()
 const activeNotes = new Set()
+
+let timeoutId = null
+const overX = over(lensProp('x'))
 
 const onPlay = dispatch => {
   const {
@@ -79,16 +84,26 @@ const onPlay = dispatch => {
 
   const instrumentObj = instrumentInstance(instrument, plugins)
 
-  const transducer = compose(
+  const createTransducer = i => compose(
+    map(overX(a => a + xLength * i)),
     map(note),
     map(tap(({id}) => activeNotes.add({instrumentObj, id}))),
     map(instrumentObj.inputNoteStart.bind(instrumentObj))
   )
 
-  transduce(transducer, _ => null, null, notes)
+  let i = 0
+
+  const schedule = _ => transduce(createTransducer(i++), _ => null, null, notes)
+  const repeatSchedule = _ => {
+    schedule()
+    timeoutId = setTimeout(repeatSchedule, 1000 * xLength * noteLength)
+  }
+  schedule()
+  timeoutId = setTimeout(repeatSchedule, 1000 * (xLength - 0.5) * noteLength)
 }
 
 const onStop = dispatch => {
+  clearTimeout(timeoutId)
   playStopSubject.onNext()
   activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop(id))
   activeNotes.clear()
