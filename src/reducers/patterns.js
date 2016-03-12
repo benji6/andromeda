@@ -12,7 +12,7 @@ import {
 } from 'ramda'
 import {
   ACTIVE_PATTERN_CELL_CLICK,
-  UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION,
+  SET_ACTIVE_PATTERN_ACTIVE_POSITION,
   UPDATE_ACTIVE_PATTERN_INSTRUMENT,
   UPDATE_ACTIVE_PATTERN_OCTAVE,
   UPDATE_ACTIVE_PATTERN_X_LENGTH,
@@ -48,7 +48,7 @@ export default (state = initialState, {type, payload}) => {
         state
       )
     }
-    case UPDATE_ACTIVE_PATTERN_ACTIVE_POSITION:
+    case SET_ACTIVE_PATTERN_ACTIVE_POSITION:
       return adjust(
         assoc('activePosition', payload),
         store.getState().activePatternIndex,

@@ -20,7 +20,7 @@ import {Observable, Subject} from 'rx'
 import store from '../../store'
 import {
   activePatternCellClick,
-  updateActivePatternActivePosition
+  setActivePatternActivePosition
 } from '../../actions'
 import {mapIndexed, rawConnect} from '../../utils/helpers'
 import Pattern from '../organisms/Pattern'
@@ -56,19 +56,20 @@ const onPlay = dispatch => {
     xLength,
     yLength
   } = patterns[activePatternIndex]
-  const dispatchUpdateActivePatternActivePosition = compose(
+  const dispatchSetActivePatternActivePosition = compose(
     dispatch,
-    updateActivePatternActivePosition
+    setActivePatternActivePosition
   )
 
-  dispatchUpdateActivePatternActivePosition(0)
+  dispatchSetActivePatternActivePosition(0)
 
   map(
     flip(modulo)(xLength),
     Observable.generateWithRelativeTime(1, T, inc, identity, _ => 60000 / bpm)
   )
     .takeUntil(playStopSubject)
-    .subscribe(dispatchUpdateActivePatternActivePosition)
+    .subscribe(dispatchSetActivePatternActivePosition)
+
   const {currentTime} = audioContext
   const noteLength = 60 / bpm
   const note = ({x, y}) => ({
@@ -107,7 +108,7 @@ const onStop = dispatch => {
   playStopSubject.onNext()
   activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop(id))
   activeNotes.clear()
-  dispatch(updateActivePatternActivePosition(null))
+  dispatch(setActivePatternActivePosition(null))
 }
 
 const yLabel = curry(
