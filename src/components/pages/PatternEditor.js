@@ -41,21 +41,22 @@ const overX = over(lensProp('x'))
 
 const onPlay = dispatch => {
   const {
-    activePatternIndex,
     bpm,
-    patterns,
     plugins,
     rootNote,
     scale
   } = store.getState()
+  const getActivePattern = _ => {
+    const {activePatternIndex, patterns} = store.getState()
+    return patterns[activePatternIndex]
+  }
   const {
     instrument,
-    notes,
     octave,
     volume,
     xLength,
     yLength
-  } = patterns[activePatternIndex]
+  } = getActivePattern()
   const dispatchSetActivePatternActivePosition = compose(
     dispatch,
     setActivePatternActivePosition
@@ -93,14 +94,20 @@ const onPlay = dispatch => {
   )
 
   let i = 0
+  const loopTime = 1000 * xLength * noteLength
 
-  const schedule = _ => transduce(createTransducer(i++), _ => null, null, notes)
+  const schedule = _ => transduce(
+    createTransducer(i++),
+    _ => null,
+    null,
+    getActivePattern().notes
+  )
   const repeatSchedule = _ => {
     schedule()
-    timeoutId = setTimeout(repeatSchedule, 1000 * xLength * noteLength)
+    timeoutId = setTimeout(repeatSchedule, loopTime)
   }
   schedule()
-  timeoutId = setTimeout(repeatSchedule, 1000 * (xLength - 0.5) * noteLength)
+  timeoutId = setTimeout(repeatSchedule, loopTime - noteLength / 2)
 }
 
 const onStop = dispatch => {
