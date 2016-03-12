@@ -1,6 +1,7 @@
 import {
   compose,
   curry,
+  curryN,
   flip,
   identity,
   inc,
@@ -113,13 +114,18 @@ const onPlay = dispatch => {
   timeoutId = setTimeout(repeatSchedule, loopTime - noteLength / 2)
 }
 
-const onStop = dispatch => {
-  clearTimeout(timeoutId)
+const stopVisuals = dispatch => {
   playStopSubject.onNext()
-  activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop(id))
-  activeNotes.clear()
   dispatch(setActivePatternActivePosition(null))
 }
+
+const stopAudio = _ => {
+  clearTimeout(timeoutId)
+  activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop(id))
+  activeNotes.clear()
+}
+
+const onStop = compose(stopAudio, stopVisuals)
 
 const yLabel = curry(
   (scale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
@@ -127,6 +133,12 @@ const yLabel = curry(
     yLength - i - 1
   ) + rootNote)
 )
+
+const cellClickHandler = curryN(4, (dispatch, y, x) => {
+  // stopAudio()
+  // reschedule
+  dispatch(activePatternCellClick({x, y}))
+})
 
 export default rawConnect(({
   activePatternIndex,
@@ -146,11 +158,10 @@ export default rawConnect(({
     ),
     emptyPatternData
   )
-  const onClick = y => x => _ => dispatch(activePatternCellClick({x, y}))
 
   return <div>
     <Pattern
-      onClick={onClick}
+      onClick={cellClickHandler(dispatch)}
       patternData={patternData}
       rootNote={rootNote}
       scale={scale}
