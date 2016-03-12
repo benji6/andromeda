@@ -39,6 +39,20 @@ const activeNotes = new Set()
 let timeoutId = null
 const overX = over(lensProp('x'))
 
+const startVisuals = (dispatch, bpm, xLength) => {
+  const dispatchSetActivePatternActivePosition = compose(
+    dispatch,
+    setActivePatternActivePosition
+  )
+  dispatchSetActivePatternActivePosition(0)
+  map(
+    flip(modulo)(xLength),
+    Observable.generateWithRelativeTime(1, T, inc, identity, _ => 60000 / bpm)
+  )
+    .takeUntil(playStopSubject)
+    .subscribe(dispatchSetActivePatternActivePosition)
+}
+
 const onPlay = dispatch => {
   const {
     bpm,
@@ -57,19 +71,8 @@ const onPlay = dispatch => {
     xLength,
     yLength
   } = getActivePattern()
-  const dispatchSetActivePatternActivePosition = compose(
-    dispatch,
-    setActivePatternActivePosition
-  )
 
-  dispatchSetActivePatternActivePosition(0)
-
-  map(
-    flip(modulo)(xLength),
-    Observable.generateWithRelativeTime(1, T, inc, identity, _ => 60000 / bpm)
-  )
-    .takeUntil(playStopSubject)
-    .subscribe(dispatchSetActivePatternActivePosition)
+  startVisuals(dispatch, bpm, xLength)
 
   const {currentTime} = audioContext
   const noteLength = 60 / bpm
