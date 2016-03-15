@@ -2,18 +2,14 @@ import {
   compose,
   curry,
   curryN,
-  flip,
+  filter,
   identity,
   inc,
-  lensProp,
   map,
-  modulo,
-  over,
   partial,
   range,
   repeat,
   T,
-  tap,
   transduce
 } from 'ramda'
 import React from 'react'
@@ -32,93 +28,68 @@ import PatternMenu from '../organisms/PatternMenu'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import {noteExists} from '../../reducers/patterns'
 import {instrumentInstance} from '../../utils/derivedData'
-import audioContext from '../../audioContext'
 
 const playStopSubject = new Subject()
 const activeNotes = new Set()
 
 let timeoutId = null
-const overX = over(lensProp('x'))
 
-const startAudio = () => {
-  const {
-    bpm,
-    plugins,
-    rootNote,
-    scale
-  } = store.getState()
-  const getActivePattern = _ => {
-    const {activePatternIndex, patterns} = store.getState()
-    return patterns[activePatternIndex]
-  }
-  const {
-    instrument,
-    octave,
-    volume,
-    xLength,
-    yLength
-  } = getActivePattern()
-
-  const {currentTime} = audioContext
-  const noteLength = 60 / bpm
-  const note = ({x, y}) => ({
-    frequency: pitchToFrequency(pitchFromScaleIndex(
-      scale.scales[scale.scaleName],
-      yLength - 1 - y + scale.scales[scale.scaleName].length * octave
-    ) + rootNote),
-    gain: volume,
-    id: `pattern-editor-${y}-${x}`,
-    startTime: noteLength * x + currentTime,
-    stopTime: noteLength * (x + 1) + currentTime
-  })
-
-  const instrumentObj = instrumentInstance(instrument, plugins)
-
-  const createTransducer = i => compose(
-    map(overX(a => a + xLength * i)),
-    map(note),
-    map(tap(({id}) => activeNotes.add({instrumentObj, id}))),
-    map(instrumentObj.inputNoteStart.bind(instrumentObj))
+const onPlay = dispatch => map(
+  count => {
+    const {activePatternIndex, patterns, rootNote, scale} = store.getState()
+    const {notes, octave, xLength, yLength} = patterns[activePatternIndex]
+    return {
+      notes,
+      octave,
+      position: count % xLength,
+      rootNote,
+      scale,
+      yLength
+    }
+  },
+  Observable.generateWithRelativeTime(
+    0,
+    T,
+    inc,
+    identity,
+    _ => 60000 / store.getState().bpm
   )
-
-  let i = 0
-  const loopTime = 1000 * xLength * noteLength
-
-  const schedule = _ => transduce(
-    createTransducer(i++),
+  .takeUntil(playStopSubject))
+  .do(({position}) => {
+    dispatch(setActivePatternActivePosition(position))
+    activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
+    activeNotes.clear()
+  })
+  .subscribe(({
+    notes,
+    octave,
+    position,
+    rootNote,
+    scale,
+    yLength
+  }) => transduce(
+    compose(
+      filter(({x}) => x === position),
+      map(({x, y}) => {
+        const {activePatternIndex, patterns, plugins} = store.getState()
+        const {instrument, volume} = patterns[activePatternIndex]
+        const id = `pattern-editor-${x}-${y}`
+        const instumentObj = instrumentInstance(instrument, plugins)
+        activeNotes.add({instrument: instumentObj, id})
+        instumentObj.inputNoteStart({
+          frequency: pitchToFrequency(pitchFromScaleIndex(
+            scale.scales[scale.scaleName],
+            yLength - 1 - y + scale.scales[scale.scaleName].length * octave
+          ) + rootNote),
+          gain: volume,
+          id
+        })
+      })
+    ),
     _ => null,
     null,
-    getActivePattern().notes
-  )
-  const repeatSchedule = _ => {
-    schedule()
-    timeoutId = setTimeout(repeatSchedule, loopTime)
-  }
-  schedule()
-  timeoutId = setTimeout(repeatSchedule, loopTime - noteLength / 2)
-}
-
-const startVisuals = (dispatch, bpm, xLength) => {
-  const dispatchSetActivePatternActivePosition = compose(
-    dispatch,
-    setActivePatternActivePosition
-  )
-  dispatchSetActivePatternActivePosition(0)
-  map(
-    flip(modulo)(xLength),
-    Observable.generateWithRelativeTime(1, T, inc, identity, _ => 60000 / bpm)
-  )
-    .takeUntil(playStopSubject)
-    .subscribe(dispatchSetActivePatternActivePosition)
-}
-
-const onPlay = dispatch => {
-  const {activePatternIndex, bpm, patterns} = store.getState()
-  const {xLength} = patterns[activePatternIndex]
-
-  startAudio()
-  startVisuals(dispatch, bpm, xLength)
-}
+    notes
+  ), ::console.error)
 
 const stopVisuals = dispatch => {
   playStopSubject.onNext()
