@@ -32,8 +32,6 @@ import {instrumentInstance} from '../../utils/derivedData'
 const playStopSubject = new Subject()
 const activeNotes = new Set()
 
-let timeoutId = null
-
 const onPlay = dispatch => map(
   count => {
     const {activePatternIndex, patterns, rootNote, scale} = store.getState()
@@ -74,9 +72,9 @@ const onPlay = dispatch => map(
         const {activePatternIndex, patterns, plugins} = store.getState()
         const {instrument, volume} = patterns[activePatternIndex]
         const id = `pattern-editor-${x}-${y}`
-        const instumentObj = instrumentInstance(instrument, plugins)
-        activeNotes.add({instrument: instumentObj, id})
-        instumentObj.inputNoteStart({
+        const instrumentObj = instrumentInstance(instrument, plugins)
+        activeNotes.add({instrumentObj, id})
+        instrumentObj.inputNoteStart({
           frequency: pitchToFrequency(pitchFromScaleIndex(
             scale.scales[scale.scaleName],
             yLength - 1 - y + scale.scales[scale.scaleName].length * octave
@@ -97,7 +95,6 @@ const stopVisuals = dispatch => {
 }
 
 const stopAudio = _ => {
-  clearTimeout(timeoutId)
   activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop(id))
   activeNotes.clear()
 }
