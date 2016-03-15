@@ -55,7 +55,7 @@ const onPlay = dispatch => map(
   .takeUntil(playStopSubject))
   .do(({position}) => {
     dispatch(setActivePatternActivePosition(position))
-    activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
+    activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop(id))
     activeNotes.clear()
   })
   .subscribe(({
