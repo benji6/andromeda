@@ -1,23 +1,23 @@
 import {
   compose,
   curry,
+  curryN,
   filter,
   identity,
   inc,
   map,
   partial,
-  prop,
   range,
   repeat,
   T,
   transduce
 } from 'ramda'
 import React from 'react'
-import {Subject, Observable} from 'rx'
+import {Observable, Subject} from 'rx'
 import store from '../../store'
 import {
   activePatternCellClick,
-  updateActivePatternActivePosition
+  setActivePatternActivePosition
 } from '../../actions'
 import {mapIndexed, rawConnect} from '../../utils/helpers'
 import Pattern from '../organisms/Pattern'
@@ -31,6 +31,8 @@ import {instrumentInstance} from '../../utils/derivedData'
 
 const playStopSubject = new Subject()
 const activeNotes = new Set()
+
+let timeoutId = null
 
 const onPlay = dispatch => map(
   count => {
@@ -53,13 +55,8 @@ const onPlay = dispatch => map(
     _ => 60000 / store.getState().bpm
   )
   .takeUntil(playStopSubject))
-  .do(compose(
-    dispatch,
-    updateActivePatternActivePosition,
-    prop('position')
-  )
-)
-  .do(_ => {
+  .do(({position}) => {
+    dispatch(setActivePatternActivePosition(position))
     activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
     activeNotes.clear()
   })
@@ -72,17 +69,17 @@ const onPlay = dispatch => map(
     yLength
   }) => transduce(
     compose(
-      filter(({y}) => y === position),
+      filter(({x}) => x === position),
       map(({x, y}) => {
         const {activePatternIndex, patterns, plugins} = store.getState()
         const {instrument, volume} = patterns[activePatternIndex]
-        const id = `pattern-editor-${y}-${x}`
+        const id = `pattern-editor-${x}-${y}`
         const instumentObj = instrumentInstance(instrument, plugins)
         activeNotes.add({instrument: instumentObj, id})
         instumentObj.inputNoteStart({
           frequency: pitchToFrequency(pitchFromScaleIndex(
             scale.scales[scale.scaleName],
-            yLength - 1 - x + scale.scales[scale.scaleName].length * octave
+            yLength - 1 - y + scale.scales[scale.scaleName].length * octave
           ) + rootNote),
           gain: volume,
           id
@@ -94,18 +91,29 @@ const onPlay = dispatch => map(
     notes
   ), ::console.error)
 
-const onStop = dispatch => {
+const stopVisuals = dispatch => {
   playStopSubject.onNext()
-  activeNotes.forEach(({id, instrument}) => instrument.inputNoteStop(id))
-  activeNotes.clear()
-  dispatch(updateActivePatternActivePosition(null))
+  dispatch(setActivePatternActivePosition(null))
 }
+
+const stopAudio = _ => {
+  clearTimeout(timeoutId)
+  activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop(id))
+  activeNotes.clear()
+}
+
+const onStop = compose(stopAudio, stopVisuals)
 
 const yLabel = curry(
   (scale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
     scale.scales[scale.scaleName],
     yLength - i - 1
   ) + rootNote)
+)
+
+const cellClickHandler = curryN(
+  4,
+  (dispatch, y, x) => dispatch(activePatternCellClick({x, y}))
 )
 
 export default rawConnect(({
@@ -121,16 +129,15 @@ export default rawConnect(({
   const emptyPatternData = map(range(0), repeat(xLength, yLength))
   const patternData = mapIndexed(
     (x, i) => map(
-      j => ({active: j === activePosition, selected: noteExists(notes, i, j)}),
+      j => ({active: i === activePosition, selected: noteExists(notes, i, j)}),
       x
     ),
     emptyPatternData
   )
-  const onClick = x => y => _ => dispatch(activePatternCellClick({x, y}))
 
   return <div>
     <Pattern
-      onClick={onClick}
+      onClick={cellClickHandler(dispatch)}
       patternData={patternData}
       rootNote={rootNote}
       scale={scale}

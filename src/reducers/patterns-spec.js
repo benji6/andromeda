@@ -3,7 +3,7 @@ import test from 'tape'
 import reducer, {initialState} from './patterns'
 import {
   activePatternCellClick,
-  updateActivePatternActivePosition,
+  setActivePatternActivePosition,
   updateActivePatternInstrument,
   updateActivePatternOctave,
   updateActivePatternXLength,
@@ -39,7 +39,7 @@ test(`${reducerName} reducer updates active pattern active position`, t => {
   const activePattern = initialState[activePatternIndex]
   const payload = 3
 
-  t.deepEqual(reducer(undefined, updateActivePatternActivePosition(payload)),
+  t.deepEqual(reducer(undefined, setActivePatternActivePosition(payload)),
               [...initialState.slice(0, activePatternIndex),
                {...activePattern, activePosition: payload},
                ...initialState.slice(activePatternIndex + 1)])
