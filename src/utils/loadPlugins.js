@@ -30,5 +30,8 @@ store.dispatch(instantiateEffect({name: 'Delay', plugin: 'Delay'}))
 store.dispatch(instantiateEffect({name: 'Gain', plugin: 'Gain'}))
 store.dispatch(instantiateEffect({name: 'Reverb', plugin: 'Reverb'}))
 
+store.dispatch(addInstrumentToChannel({channel: 0, name: 'Ariadne'}))
+store.dispatch(addInstrumentToChannel({channel: 0, name: 'Fate'}))
 store.dispatch(addInstrumentToChannel({channel: 0, name: 'Prometheus'}))
+
 store.dispatch(addEffectToChannel({channel: 0, name: 'Delay'}))
