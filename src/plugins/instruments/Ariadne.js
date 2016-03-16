@@ -7,6 +7,7 @@ const graphs = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 const oscTypes = new WeakMap()
+const modulatorRatios = new WeakMap()
 
 export default class {
   constructor ({audioContext}) {
@@ -15,19 +16,17 @@ export default class {
     outputs.set(this, output)
     graphs.set(this, {})
     oscTypes.set(this, 'sine')
+    modulatorRatios.set(this, 0.5)
 
-    const virtualAudioGraph = createVirtualAudioGraph({
-      audioContext,
-      output
-    })
+    const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
 
     virtualAudioGraph.defineNodes({
       oscBank: ({gain, frequency, oscType, startTime, stopTime}) => ({
-        0: ['gain', ['output'], {gain: 0.2}],
+        0: ['gain', ['output'], {gain}],
         1: ['oscillator', 0, {frequency, startTime, stopTime, type: oscType}],
         2: ['gain', {key: 1, destination: 'frequency'}, {gain: 1024}],
         3: ['oscillator', 2, {
-          frequency: frequency * 2 * (4 - gain) / 4,
+          frequency: frequency * modulatorRatios.get(this),
           startTime,
           stopTime
         }]
@@ -76,6 +75,19 @@ export default class {
             <option value='triangle'>Triangle</option>
           </select>
         </label>
+        <p>
+          <label>
+            totalOscillators&nbsp;
+            <input
+              defaultValue={modulatorRatios.get(this)}
+              max='8'
+              min='0.1'
+              onInput={e => modulatorRatios.set(this, Number(e.target.value))}
+              step='0.1'
+              type='range'
+            />
+          </label>
+        </p>
       </div>,
       containerEl
     )
