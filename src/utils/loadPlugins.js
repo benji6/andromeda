@@ -34,4 +34,5 @@ store.dispatch(addInstrumentToChannel({channel: 0, name: 'Ariadne'}))
 store.dispatch(addInstrumentToChannel({channel: 0, name: 'Fate'}))
 store.dispatch(addInstrumentToChannel({channel: 0, name: 'Prometheus'}))
 
+store.dispatch(addEffectToChannel({channel: 0, name: 'GainPan'}))
 store.dispatch(addEffectToChannel({channel: 0, name: 'Delay'}))
