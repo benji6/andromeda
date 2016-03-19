@@ -11,38 +11,48 @@ It currently only supports Chrome and is aimed at tablet resolutions and up.
 
 ## Plugin API
 
-This is in very early stages of development at the moment
+**NB this API should be considered pre-alpha**
 
-### Instrument Plugin API
+### Effect plugin API
 
-InstrumentPlugin should be a constructor or factory function which is newed up with an object containing a reference to the audioContext instance used by Elemental
-
-```javascript
-new InstrumentPlugin({audioContext})
-```
-
-instrumentPlugin instances should then expose the following API:
-
-- `connnect` - to be implemented in the same manner as `AudioNode#connect`
-- `disconnect` - to be implemented in the same manner as `AudioNode#disconnect`
-- `inputNoteStart` - method which accepts a note object - the specification for which hasn't been finalized yet
-- `inputNoteStop` - method which accepts a note object - the specification for which hasn't been finalized yet
-- `render` - method which is passed a DOM element and is called when user wishes to view and possibly edit the plugin
-
-### Effects Plugins API
-
-EffectPlugin should be a constructor or factory function which is newed up with an object containing a reference to the audioContext instance used by Elemental
+`EffectPlugin` should be a constructor or factory function which is newed up with an object containing a reference to the `audioContext` instance used by Elemental
 
 ```javascript
 new EffectPlugin({audioContext})
 ```
 
-effectPlugin instances should then expose the following API:
+`effectPlugin` instances should then expose the following API:
 
-- `connnect` - to be implemented in the same manner as `AudioNode#connect`
+- `connnect` - to be implemented in the same manner as `AudioNode.connect`
 - `destination` - property which is an unchanging reference to an AudioNode which other AudioNodes can pass to their `connect` methods
-- `disconnect` - to be implemented in the same manner as `AudioNode#disconnect`
+- `disconnect` - to be implemented in the same manner as `AudioNode.disconnect`
 - `render` - method which is passed a DOM element and is called when user wishes to view and possibly edit the plugin
+
+### Instrument plugin API
+
+`InstrumentPlugin` should be a constructor or factory function which is newed up with an object containing a reference to the `audioContext` instance used by Elemental
+
+```javascript
+new InstrumentPlugin({audioContext})
+```
+
+`instrumentPlugin` instances should then expose the following API:
+
+- `connnect` - to be implemented in the same manner as `AudioNode.connect`
+- `disconnect` - to be implemented in the same manner as `AudioNode.disconnect`
+- `inputNoteStart` - method which accepts a note object (see specification below)
+- `inputNoteStop` - method which accepts the id of the note to stop
+- `render` - method which is passed a DOM element and is called when user wishes to view and possibly modify parameters within the plugin
+
+#### Note object specification
+
+Instrument plugins receive note objects which have the following properties:
+
+- `frequency` - frequency in Hz of the note
+- `gain` - gain of the note using the same basis as `GainNode`
+- `id` - unique id for this note, if your instrument is monophonic this may not be so important, otherwise it is essential for keeping track of which notes are playing and which are to be stopped
+- `startTime` - optional property, if specified it is the time at which the note is to be started measured on the same basis as `audioContext.currentTime`, if not specified the note is expected to start immediately
+- `stopTime` - optional property, if specified it is the time at which the note is to be stopped measured on the same basis as `audioContext.currentTime`, if not specified the note is expected to stop immediately
 
 ## More info
 
