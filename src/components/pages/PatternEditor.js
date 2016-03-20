@@ -125,21 +125,21 @@ export default rawConnect(({
   const {activePosition, notes, xLength, yLength} = activePattern
   const emptyPatternData = map(range(0), repeat(xLength, yLength))
   const patternData = mapIndexed(
-    (x, i) => map(
-      j => ({active: i === activePosition, selected: noteExists(notes, i, j)}),
+    (x, rowIndex) => map(
+      colIndex => ({active: colIndex === activePosition, selected: noteExists(notes, colIndex, rowIndex)}),
       x
     ),
     emptyPatternData
   )
 
   return <div>
-    <Pattern
-      onClick={cellClickHandler(dispatch)}
-      patternData={patternData}
-      rootNote={rootNote}
-      scale={scale}
-      yLabel={yLabel(scale, yLength, rootNote)}
-    />
+    <Pattern {...{
+      onClick: cellClickHandler(dispatch),
+      patternData,
+      rootNote,
+      scale,
+      yLabel: yLabel(scale, yLength, rootNote)
+    }} />
     <PlayButton
       onPlay={partial(onPlay, [dispatch])}
       onStop={partial(onStop, [dispatch])}
