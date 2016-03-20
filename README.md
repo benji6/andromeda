@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/benji6/elemental.svg)](https://travis-ci.org/benji6/elemental)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
-Elemental is a digital audio workstation in development built on open web technologies
+Elemental is a pluggable digital audio workstation in development built on open web technologies
 
 It currently only supports Chrome
 
