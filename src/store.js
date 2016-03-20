@@ -5,7 +5,6 @@ import bpm from './reducers/bpm'
 import controlPad from './reducers/controlPad'
 import effects from './reducers/effects'
 import keyboard from './reducers/keyboard'
-import microphone from './reducers/microphone'
 import patterns from './reducers/patterns'
 import playing from './reducers/playing'
 import plugins from './reducers/plugins'
@@ -20,7 +19,6 @@ export default createStore(combineReducers({
   controlPad,
   effects,
   keyboard,
-  microphone,
   patterns,
   playing,
   plugins,

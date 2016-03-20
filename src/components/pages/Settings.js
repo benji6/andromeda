@@ -1,14 +1,12 @@
 import capitalize from 'capitalize'
-import {compose, keys, map, tap} from 'ramda'
+import {compose, keys, map} from 'ramda'
 import React from 'react'
-import {updateBpm, updateMicrophoneIsOn, updateSelectedRootNote, updateSelectedScale} from '../../actions'
+import {updateBpm, updateSelectedRootNote, updateSelectedScale} from '../../actions'
 import FullButton from '../atoms/FullButton'
-import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
-import switchMicrophone from '../../utils/switchMicrophone'
-import {eventValuePath, eventCheckedPath, rawConnect} from '../../utils/helpers'
+import {eventValuePath, rawConnect} from '../../utils/helpers'
 
 const minBpm = 32
 
@@ -55,17 +53,6 @@ export default rawConnect(({
           value => ({text: capitalize.words(value), value}),
           keys(scales)
         )}
-      />
-      <CheckboxSelector
-        checked={microphone.isOn}
-        disabled={!microphone.isAvailable}
-        onChange={compose(
-          dispatch,
-          updateMicrophoneIsOn,
-          tap(switchMicrophone(dispatch)),
-          eventCheckedPath
-        )}
-        text='Microphone'
       />
       <div>
         <FullButton to='/controllers/keyboard/settings'>Keyboard Settings</FullButton>
