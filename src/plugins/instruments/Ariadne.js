@@ -9,6 +9,10 @@ const virtualAudioGraphs = new WeakMap()
 const oscTypes = new WeakMap()
 const modulatorRatios = new WeakMap()
 
+const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
+  {children}
+</div>
+
 export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
@@ -63,19 +67,21 @@ export default class {
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Ariadne</h2>
-        <label>
-          osc type&nbsp;
-          <select
-            defaultValue={oscTypes.get(this)}
-            onChange={e => oscTypes.set(this, e.target.value)}
-          >
-            <option value='sawtooth'>Sawtooth</option>
-            <option value='sine'>Sine</option>
-            <option value='square'>Square</option>
-            <option value='triangle'>Triangle</option>
-          </select>
-        </label>
-        <p>
+        <ControlContainer>
+          <label>
+            osc type&nbsp;
+            <select
+              defaultValue={oscTypes.get(this)}
+              onChange={e => oscTypes.set(this, e.target.value)}
+            >
+              <option value='sawtooth'>Sawtooth</option>
+              <option value='sine'>Sine</option>
+              <option value='square'>Square</option>
+              <option value='triangle'>Triangle</option>
+            </select>
+          </label>
+        </ControlContainer>
+        <ControlContainer>
           <label>
             modulator frequency&nbsp;
             <input
@@ -87,7 +93,7 @@ export default class {
               type='range'
             />
           </label>
-        </p>
+        </ControlContainer>
       </div>,
       containerEl
     )
