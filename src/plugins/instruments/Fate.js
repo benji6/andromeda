@@ -10,6 +10,10 @@ const oscTypes = new WeakMap()
 const oscTotals = new WeakMap()
 const detunes = new WeakMap()
 
+const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
+  {children}
+</div>
+
 export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
@@ -73,7 +77,7 @@ export default class {
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Fate</h2>
-        <p>
+        <ControlContainer>
           <label>
             Osc type&nbsp;
             <select
@@ -86,8 +90,8 @@ export default class {
               <option value='triangle'>Triangle</option>
             </select>
           </label>
-        </p>
-        <p>
+        </ControlContainer>
+        <ControlContainer>
           <label>
             Detune&nbsp;
             <input
@@ -98,8 +102,8 @@ export default class {
               type='range'
             />
           </label>
-        </p>
-        <p>
+        </ControlContainer>
+        <ControlContainer>
           <label>
             totalOscillators&nbsp;
             <input
@@ -110,7 +114,7 @@ export default class {
               type='range'
             />
           </label>
-        </p>
+        </ControlContainer>
       </div>,
       containerEl
     )
