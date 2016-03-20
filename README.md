@@ -5,7 +5,7 @@
 
 Elemental is a digital audio workstation in development built on open web technologies
 
-It currently only supports Chrome and is aimed at tablet resolutions and up.
+It currently only supports Chrome
 
 **[Check it out here](http://elemental.audio/)**
 
