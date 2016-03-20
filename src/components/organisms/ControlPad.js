@@ -117,7 +117,7 @@ export default class extends React.Component {
       cameraZ - maxDepth,
       cameraZ - minZ
     )
-    renderer = new THREE.WebGLRenderer({canvas: controlPadElement})
+    renderer = new THREE.WebGLRenderer({alpha: true, canvas: controlPadElement})
     const directionalLight = new THREE.DirectionalLight(0xffffff)
     token = randomMesh()
     token.position.z = minZ - maxDepth
