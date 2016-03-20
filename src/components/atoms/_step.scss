@@ -1,18 +1,11 @@
 .step {
-  $color: #15a;
-  background-color: $color;
-  border: $pattern-side-length / 48 solid #eee;
+  background: $squirtle-midnight;
+  border: $pattern-side-length / 48 solid $black;
   box-sizing: border-box;
   cursor: pointer;
   height: 100%;
   width: 100%;;
-  &.active {
-    background: lighten($color, 20%);
-  }
-  &.selected {
-    background: darken($color, 25%);
-  }
-  &.active.selected {
-    background: darken($color, 15%);
-  }
+  &.active { background: $squirtle-night; }
+  &.selected { background: $turquoise; }
+  &.active.selected { background: $turquoise-light; }
 }
