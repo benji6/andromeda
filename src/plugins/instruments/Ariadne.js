@@ -64,7 +64,7 @@ export default class {
       <div style={{textAlign: 'center'}}>
         <h2>Ariadne</h2>
         <label>
-          Osc type&nbsp;
+          osc type&nbsp;
           <select
             defaultValue={oscTypes.get(this)}
             onChange={e => oscTypes.set(this, e.target.value)}
@@ -77,7 +77,7 @@ export default class {
         </label>
         <p>
           <label>
-            totalOscillators&nbsp;
+            modulator frequency&nbsp;
             <input
               defaultValue={modulatorRatios.get(this)}
               max='8'
