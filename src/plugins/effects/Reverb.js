@@ -7,6 +7,7 @@ let reverbGraphs = {}
 
 const containerEls = new WeakMap()
 const dryLevels = new WeakMap()
+const lowCuts = new WeakMap()
 const outputs = new WeakMap()
 const reverbTypes = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
@@ -42,10 +43,11 @@ const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
 
 const updateAudioGraph = function () {
   virtualAudioGraphs.get(this).update({
-    0: ['gain', 'output', {gain: wetLevels.get(this)}],
-    1: ['gain', 'output', {gain: dryLevels.get(this)}],
-    2: [reverbTypes.get(this), 0],
-    4: ['gain', [1, 2]]
+    0: ['gain', 'output', {gain: dryLevels.get(this)}],
+    1: ['biquadFilter', 'output', {frequency: lowCuts.get(this), type: 'highpass'}],
+    2: ['gain', 1, {gain: wetLevels.get(this)}],
+    3: [reverbTypes.get(this), 2],
+    input: ['gain', [0, 3]]
   })
 }
 
@@ -55,12 +57,13 @@ export default class {
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
 
     dryLevels.set(this, 0.35)
+    lowCuts.set(this, 50)
     wetLevels.set(this, 1)
     reverbTypes.set(this, 'reverb chapel')
     outputs.set(this, output)
 
     virtualAudioGraph.update({
-      4: ['gain', 'output']
+      input: ['gain', 'output']
     })
     loadAllReverbs
       .then(x => virtualAudioGraph.defineNodes(x))
@@ -70,7 +73,7 @@ export default class {
         if (containerEl) this.render(containerEls.get(this))
       })
     virtualAudioGraphs.set(this, virtualAudioGraph)
-    this.destination = virtualAudioGraph.getAudioNodeById(4)
+    this.destination = virtualAudioGraph.getAudioNodeById('input')
   }
   connect (destination) {
     outputs.get(this).connect(destination)
@@ -117,6 +120,20 @@ export default class {
               updateAudioGraph.call(this)
             }}
             step='0.01'
+            type='range'
+          />
+        </ControlContainer>
+        <ControlContainer>
+          Low cutoff&nbsp;
+          <input
+            defaultValue={Math.log(lowCuts.get(this))}
+            max={Math.log(20000)}
+            min={Math.log(20)}
+            onInput={e => {
+              lowCuts.set(this, Math.exp(Number(e.target.value)))
+              updateAudioGraph.call(this)
+            }}
+            step='0.1'
             type='range'
           />
         </ControlContainer>
