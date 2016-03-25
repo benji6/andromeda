@@ -2,34 +2,41 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 
-const graphConstructors = new WeakMap()
+const feedbacks = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
+
+const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
+  <label>
+    {children}
+  </label>
+</div>
+
+const updateAudioGraph = function () {
+  virtualAudioGraphs.get(this).update({
+    0: ['stereoPanner', 'output', {pan: -1}],
+    1: ['stereoPanner', 'output', {pan: 1}],
+    2: ['delay', [1, 5], {maxDelayTime: 1 / 3, delayTime: 1 / 3}],
+    3: ['gain', 2, {gain: feedbacks.get(this)}],
+    4: ['delay', [0, 3], {maxDelayTime: 1 / 3, delayTime: 1 / 3}],
+    5: ['gain', 4, {gain: feedbacks.get(this)}],
+    6: ['gain', 'output', {gain: 1 - 1 / 3}],
+    input: ['gain', [5, 6], {gain: 1}, 'input']
+  })
+}
 
 export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
     outputs.set(this, output)
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
+
+    feedbacks.set(this, 1 / 3)
     virtualAudioGraphs.set(this, virtualAudioGraph)
-    const graphConstructor = ({
-      decay = 1 / 3,
-      delayTime = 1 / 3,
-      maxDelayTime = 1 / 3,
-      mix = 1 / 3
-    } = {}) => ({
-      0: ['stereoPanner', 'output', {pan: -1}],
-      1: ['stereoPanner', 'output', {pan: 1}],
-      2: ['delay', [1, 5], {maxDelayTime, delayTime}],
-      3: ['gain', 2, {gain: decay}],
-      4: ['delay', [0, 3], {maxDelayTime, delayTime}],
-      5: ['gain', 4, {gain: decay}],
-      6: ['gain', 'output', {gain: 1 - mix}],
-      7: ['gain', [5, 6], {gain: 1}, 'input']
-    })
-    graphConstructors.set(this, graphConstructor)
-    virtualAudioGraph.update(graphConstructor())
-    this.destination = virtualAudioGraph.getAudioNodeById(7)
+
+    updateAudioGraph.call(this)
+
+    this.destination = virtualAudioGraph.getAudioNodeById('input')
   }
   connect (destination) {
     outputs.get(this).connect(destination)
@@ -41,7 +48,20 @@ export default class {
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Delay</h2>
-        <p>Customization coming soon!</p>
+        <ControlContainer>
+          Feedback&nbsp;
+          <input
+            defaultValue={feedbacks.get(this)}
+            max='1.2'
+            min='0'
+            onInput={e => {
+              feedbacks.set(this, Number(e.target.value))
+              updateAudioGraph.call(this)
+            }}
+            step='0.01'
+            type='range'
+          />
+        </ControlContainer>
       </div>,
       containerEl
     )
