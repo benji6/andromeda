@@ -4,7 +4,9 @@ import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 
 let reverbGraphs = {}
+
 const outputs = new WeakMap()
+const containerEls = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 
 import audioContext from '../../audioContext'
@@ -43,6 +45,10 @@ export default class {
         0: ['reverb chapel', 'output'],
         1: ['gain', 0]
       }))
+      .then(_ => {
+        const containerEl = containerEls.get(this)
+        if (containerEl) this.render(containerEls.get(this))
+      })
     virtualAudioGraphs.set(this, virtualAudioGraph)
     this.destination = virtualAudioGraph.getAudioNodeById(1)
   }
@@ -53,6 +59,7 @@ export default class {
     outputs.get(this).disconnect()
   }
   render (containerEl) {
+    containerEls.set(this, containerEl)
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Reverb</h2>
