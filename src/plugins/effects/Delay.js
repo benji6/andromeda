@@ -71,7 +71,7 @@ export default class {
           <input
             defaultValue={delayTimes.get(this)}
             max={maxDelayTime}
-            min='0'
+            min='0.01'
             onInput={e => {
               delayTimes.set(this, Number(e.target.value))
               updateAudioGraph.call(this)
