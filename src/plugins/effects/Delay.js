@@ -5,6 +5,7 @@ import createVirtualAudioGraph from 'virtual-audio-graph'
 const maxDelayTime = 1.2
 
 const delayTimes = new WeakMap()
+const dryLevels = new WeakMap()
 const feedbacks = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
@@ -23,7 +24,7 @@ const updateAudioGraph = function () {
     3: ['gain', 2, {gain: feedbacks.get(this)}],
     4: ['delay', [0, 3], {maxDelayTime, delayTime: delayTimes.get(this)}],
     5: ['gain', 4, {gain: feedbacks.get(this)}],
-    6: ['gain', 'output', {gain: 1 - 1 / 3}],
+    6: ['gain', 'output', {gain: dryLevels.get(this)}],
     input: ['gain', [5, 6], {gain: 1}, 'input']
   })
 }
@@ -34,6 +35,7 @@ export default class {
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
 
     delayTimes.set(this, 1 / 3)
+    dryLevels.set(this, 2 / 3)
     feedbacks.set(this, 1 / 3)
     outputs.set(this, output)
     virtualAudioGraphs.set(this, virtualAudioGraph)
@@ -52,6 +54,20 @@ export default class {
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Delay</h2>
+        <ControlContainer>
+          Dry level&nbsp;
+          <input
+            defaultValue={dryLevels.get(this)}
+            max={maxDelayTime}
+            min='0'
+            onInput={e => {
+              dryLevels.set(this, Number(e.target.value))
+              updateAudioGraph.call(this)
+            }}
+            step='0.01'
+            type='range'
+          />
+        </ControlContainer>
         <ControlContainer>
           Feedback&nbsp;
           <input
