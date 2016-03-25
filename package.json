@@ -4,7 +4,7 @@
   "description": "Make music in your browser!",
   "scripts": {
     "assets": "cp -r src/assets dist",
-    "build": "rm -rf dist && mkdir dist && concurrently 'npm run assets' 'npm run scripts' 'npm run styles' && find dist -type f -exec gzip -9 {} \\; -exec mv {}.gz {} \\;",
+    "build": "rm -rf dist && mkdir dist && concurrently 'npm run assets' 'npm run html' 'npm run scripts' 'npm run styles' && find dist -type f -exec gzip -9 {} \\; -exec mv {}.gz {} \\;",
     "deploy": "concurrently 'npm t' 'npm run build' && aws s3 cp --recursive dist s3://elemental.audio --acl \"public-read\" --content-encoding \"gzip\"",
     "html": "html-minifier --collapse-whitespace -o dist/index.html src/index.html",
     "scripts": "browserify -t babelify src/index.js | sed 's/process.env.NODE_ENV/\"production\"/g' | uglifyjs -cm --screw-ie8 > dist/index.js",
