@@ -2,6 +2,9 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 
+const maxDelayTime = 1.2
+
+const delayTimes = new WeakMap()
 const feedbacks = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
@@ -16,9 +19,9 @@ const updateAudioGraph = function () {
   virtualAudioGraphs.get(this).update({
     0: ['stereoPanner', 'output', {pan: -1}],
     1: ['stereoPanner', 'output', {pan: 1}],
-    2: ['delay', [1, 5], {maxDelayTime: 1 / 3, delayTime: 1 / 3}],
+    2: ['delay', [1, 5], {maxDelayTime, delayTime: delayTimes.get(this)}],
     3: ['gain', 2, {gain: feedbacks.get(this)}],
-    4: ['delay', [0, 3], {maxDelayTime: 1 / 3, delayTime: 1 / 3}],
+    4: ['delay', [0, 3], {maxDelayTime, delayTime: delayTimes.get(this)}],
     5: ['gain', 4, {gain: feedbacks.get(this)}],
     6: ['gain', 'output', {gain: 1 - 1 / 3}],
     input: ['gain', [5, 6], {gain: 1}, 'input']
@@ -28,10 +31,11 @@ const updateAudioGraph = function () {
 export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
-    outputs.set(this, output)
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
 
+    delayTimes.set(this, 1 / 3)
     feedbacks.set(this, 1 / 3)
+    outputs.set(this, output)
     virtualAudioGraphs.set(this, virtualAudioGraph)
 
     updateAudioGraph.call(this)
@@ -56,6 +60,20 @@ export default class {
             min='0'
             onInput={e => {
               feedbacks.set(this, Number(e.target.value))
+              updateAudioGraph.call(this)
+            }}
+            step='0.01'
+            type='range'
+          />
+        </ControlContainer>
+        <ControlContainer>
+          Delay time&nbsp;
+          <input
+            defaultValue={delayTimes.get(this)}
+            max={maxDelayTime}
+            min='0'
+            onInput={e => {
+              delayTimes.set(this, Number(e.target.value))
               updateAudioGraph.call(this)
             }}
             step='0.01'
