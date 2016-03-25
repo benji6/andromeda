@@ -7,6 +7,7 @@ let reverbGraphs = {}
 
 const containerEls = new WeakMap()
 const dryLevels = new WeakMap()
+const highCuts = new WeakMap()
 const lowCuts = new WeakMap()
 const outputs = new WeakMap()
 const reverbTypes = new WeakMap()
@@ -44,10 +45,11 @@ const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
 const updateAudioGraph = function () {
   virtualAudioGraphs.get(this).update({
     0: ['gain', 'output', {gain: dryLevels.get(this)}],
-    1: ['biquadFilter', 'output', {frequency: lowCuts.get(this), type: 'highpass'}],
-    2: ['gain', 1, {gain: wetLevels.get(this)}],
-    3: [reverbTypes.get(this), 2],
-    input: ['gain', [0, 3]]
+    1: ['biquadFilter', 'output', {frequency: highCuts.get(this)}],
+    2: ['biquadFilter', 1, {frequency: lowCuts.get(this), type: 'highpass'}],
+    3: ['gain', 2, {gain: wetLevels.get(this)}],
+    4: [reverbTypes.get(this), 3],
+    input: ['gain', [0, 4]]
   })
 }
 
@@ -57,10 +59,11 @@ export default class {
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
 
     dryLevels.set(this, 0.35)
+    highCuts.set(this, 8000)
     lowCuts.set(this, 50)
-    wetLevels.set(this, 1)
-    reverbTypes.set(this, 'reverb chapel')
     outputs.set(this, output)
+    reverbTypes.set(this, 'reverb chapel')
+    wetLevels.set(this, 0.8)
 
     virtualAudioGraph.update({
       input: ['gain', 'output']
@@ -131,6 +134,20 @@ export default class {
             min={Math.log(20)}
             onInput={e => {
               lowCuts.set(this, Math.exp(Number(e.target.value)))
+              updateAudioGraph.call(this)
+            }}
+            step='0.1'
+            type='range'
+          />
+        </ControlContainer>
+        <ControlContainer>
+          High cutoff&nbsp;
+          <input
+            defaultValue={Math.log(highCuts.get(this))}
+            max={Math.log(20000)}
+            min={Math.log(20)}
+            onInput={e => {
+              highCuts.set(this, Math.exp(Number(e.target.value)))
               updateAudioGraph.call(this)
             }}
             step='0.1'
