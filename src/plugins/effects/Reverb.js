@@ -5,9 +5,12 @@ import createVirtualAudioGraph from 'virtual-audio-graph'
 
 let reverbGraphs = {}
 
-const outputs = new WeakMap()
 const containerEls = new WeakMap()
+const dryLevels = new WeakMap()
+const outputs = new WeakMap()
+const reverbTypes = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
+const wetLevels = new WeakMap()
 
 import audioContext from '../../audioContext'
 
@@ -31,26 +34,43 @@ const loadAllReverbs = Promise.all([
 
 loadAllReverbs.then(x => reverbGraphs = x)
 
+const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
+  <label>
+    {children}
+  </label>
+</div>
+
+const updateAudioGraph = function () {
+  virtualAudioGraphs.get(this).update({
+    0: ['gain', 'output', {gain: wetLevels.get(this)}],
+    1: ['gain', 'output', {gain: dryLevels.get(this)}],
+    2: [reverbTypes.get(this), 0],
+    4: ['gain', [1, 2]]
+  })
+}
+
 export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
-    outputs.set(this, output)
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
+
+    dryLevels.set(this, 0.35)
+    wetLevels.set(this, 1)
+    reverbTypes.set(this, 'reverb chapel')
+    outputs.set(this, output)
+
     virtualAudioGraph.update({
-      1: ['gain', 'output']
+      4: ['gain', 'output']
     })
     loadAllReverbs
       .then(x => virtualAudioGraph.defineNodes(x))
-      .then(x => virtualAudioGraph.update({
-        0: ['reverb chapel', 'output'],
-        1: ['gain', 0]
-      }))
+      .then(x => updateAudioGraph.call(this))
       .then(_ => {
         const containerEl = containerEls.get(this)
         if (containerEl) this.render(containerEls.get(this))
       })
     virtualAudioGraphs.set(this, virtualAudioGraph)
-    this.destination = virtualAudioGraph.getAudioNodeById(1)
+    this.destination = virtualAudioGraph.getAudioNodeById(4)
   }
   connect (destination) {
     outputs.get(this).connect(destination)
@@ -63,19 +83,43 @@ export default class {
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Reverb</h2>
-        <select
-          onChange={e => {
-            virtualAudioGraphs.get(this).update({
-              0: [e.target.value, 'output'],
-              1: ['gain', 0]
-            })
-          }}
-        >
-          {Object.keys(reverbGraphs).map((x, i) =>
-            <option key={i}>
-              {x}
-            </option>)}
-        </select>
+        <ControlContainer>
+          Type&nbsp;
+          <select onChange={e => {
+            reverbTypes.set(this, e.target.value)
+            updateAudioGraph.call(this)
+          }}>
+            {Object.keys(reverbGraphs).map((x, i) => <option key={i}>{x}</option>)}
+          </select>
+        </ControlContainer>
+        <ControlContainer>
+          Dry level&nbsp;
+          <input
+            defaultValue={dryLevels.get(this)}
+            max='1'
+            min='0'
+            onInput={e => {
+              dryLevels.set(this, Number(e.target.value))
+              updateAudioGraph.call(this)
+            }}
+            step='0.01'
+            type='range'
+          />
+        </ControlContainer>
+        <ControlContainer>
+          Wet level&nbsp;
+          <input
+            defaultValue={wetLevels.get(this)}
+            max='1'
+            min='0'
+            onInput={e => {
+              wetLevels.set(this, Number(e.target.value))
+              updateAudioGraph.call(this)
+            }}
+            step='0.01'
+            type='range'
+          />
+        </ControlContainer>
       </div>,
       containerEl
     )
