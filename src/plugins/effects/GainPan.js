@@ -6,6 +6,12 @@ const panNodes = new WeakMap()
 const gainValues = new WeakMap()
 const panValues = new WeakMap()
 
+const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
+  <label>
+    {children}
+  </label>
+</div>
+
 export default class {
   constructor ({audioContext}) {
     const gainNode = audioContext.createGain()
@@ -27,8 +33,7 @@ export default class {
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>GainPan</h2>
-        <div>
-          <label>
+        <ControlContainer>
             Gain&nbsp;
             <input
               defaultValue={gainValues.get(this)}
@@ -42,10 +47,8 @@ export default class {
               step='0.05'
               type='range'
             />
-          </label>
-        </div>
-        <div>
-          <label>
+        </ControlContainer>
+        <ControlContainer>
             Pan&nbsp;
             <input
               defaultValue={panValues.get(this)}
@@ -59,8 +62,7 @@ export default class {
               step='0.05'
               type='range'
             />
-          </label>
-        </div>
+        </ControlContainer>
       </div>,
       containerEl
     )
