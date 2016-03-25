@@ -48,11 +48,11 @@ new InstrumentPlugin({audioContext})
 
 Instrument plugins receive note objects which have the following properties:
 
-- `frequency` - frequency in Hz of the note
-- `gain` - gain of the note using the same basis as `GainNode`
-- `id` - unique id for this note, if your instrument is monophonic this may not be so important, otherwise it is essential for keeping track of which notes are playing and which are to be stopped
-- `startTime` - optional property, if specified it is the time at which the note is to be started measured on the same basis as `audioContext.currentTime`, if not specified the note is expected to start immediately
-- `stopTime` - optional property, if specified it is the time at which the note is to be stopped measured on the same basis as `audioContext.currentTime`, if not specified the note is expected to stop immediately
+- `frequency` - `Number` - frequency in Hz of the note
+- `gain` - `Number` - gain of the note using the same basis as `GainNode`
+- `id` - `String` - unique id for this note, if your instrument is monophonic this may not be so important, otherwise it is essential for keeping track of which notes are playing and which are to be stopped
+- `startTime` - `Number` - optional property, if specified it is the time at which the note is to be started measured on the same basis as `audioContext.currentTime`, if not specified the note is expected to start immediately
+- `stopTime` - `Number` - optional property, if specified it is the time at which the note is to be stopped measured on the same basis as `audioContext.currentTime`, if not specified the note is expected to stop immediately
 
 ## More info
 
