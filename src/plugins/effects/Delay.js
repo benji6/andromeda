@@ -7,6 +7,8 @@ const maxDelayTime = 1.2
 const delayTimes = new WeakMap()
 const dryLevels = new WeakMap()
 const feedbacks = new WeakMap()
+const highCuts = new WeakMap()
+const lowCuts = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 const wetLevels = new WeakMap()
@@ -22,12 +24,14 @@ const updateAudioGraph = function () {
     0: ['gain', 'output', {gain: wetLevels.get(this)}],
     1: ['stereoPanner', 0, {pan: -1}],
     2: ['stereoPanner', 0, {pan: 1}],
-    3: ['delay', [2, 6], {maxDelayTime, delayTime: delayTimes.get(this)}],
+    3: ['delay', [2, 8], {maxDelayTime, delayTime: delayTimes.get(this)}],
     4: ['gain', 3, {gain: feedbacks.get(this)}],
     5: ['delay', [1, 3], {maxDelayTime, delayTime: delayTimes.get(this)}],
-    6: ['gain', 5, {gain: feedbacks.get(this)}],
-    7: ['gain', 'output', {gain: dryLevels.get(this)}],
-    input: ['gain', [6, 7], {gain: 1}, 'input']
+    6: ['biquadFilter', 5, {frequency: highCuts.get(this)}],
+    7: ['biquadFilter', 6, {frequency: lowCuts.get(this), type: 'highpass'}],
+    8: ['gain', 7, {gain: feedbacks.get(this)}],
+    9: ['gain', 'output', {gain: dryLevels.get(this)}],
+    input: ['gain', [8, 9], {gain: 1}, 'input']
   })
 }
 
@@ -39,6 +43,8 @@ export default class {
     delayTimes.set(this, 1 / 3)
     dryLevels.set(this, 2 / 3)
     feedbacks.set(this, 1 / 3)
+    highCuts.set(this, 16000)
+    lowCuts.set(this, 50)
     outputs.set(this, output)
     virtualAudioGraphs.set(this, virtualAudioGraph)
     wetLevels.set(this, 1)
@@ -61,7 +67,7 @@ export default class {
           Dry level&nbsp;
           <input
             defaultValue={dryLevels.get(this)}
-            max={maxDelayTime}
+            max='1.5'
             min='0'
             onInput={e => {
               dryLevels.set(this, Number(e.target.value))
@@ -75,7 +81,7 @@ export default class {
           Wet level&nbsp;
           <input
             defaultValue={wetLevels.get(this)}
-            max={maxDelayTime}
+            max='1.5'
             min='0'
             onInput={e => {
               wetLevels.set(this, Number(e.target.value))
@@ -110,6 +116,34 @@ export default class {
               updateAudioGraph.call(this)
             }}
             step='0.01'
+            type='range'
+          />
+        </ControlContainer>
+        <ControlContainer>
+          Low cutoff&nbsp;
+          <input
+            defaultValue={Math.log(lowCuts.get(this))}
+            max={Math.log(20000)}
+            min={Math.log(20)}
+            onInput={e => {
+              lowCuts.set(this, Math.exp(Number(e.target.value)))
+              updateAudioGraph.call(this)
+            }}
+            step='0.1'
+            type='range'
+          />
+        </ControlContainer>
+        <ControlContainer>
+          High cutoff&nbsp;
+          <input
+            defaultValue={Math.log(highCuts.get(this))}
+            max={Math.log(20000)}
+            min={Math.log(20)}
+            onInput={e => {
+              highCuts.set(this, Math.exp(Number(e.target.value)))
+              updateAudioGraph.call(this)
+            }}
+            step='0.1'
             type='range'
           />
         </ControlContainer>
