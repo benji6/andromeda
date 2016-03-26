@@ -12,10 +12,10 @@
   width: 12rem;
   text-align: center;
   text-decoration: none;
-  transition-duration: $fast-transition;
+  transition-duration: $transition-fast;
   &:hover {
     box-shadow: $squirtle-dusk 0 0 1rem 0.1rem;
-    transition-duration: $fast-transition;
+    transition-duration: $transition-fast;
   }
   &:active {
     background: linear-gradient($squirtle-dusk, $squirtle-dawn);

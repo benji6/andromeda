@@ -8,14 +8,14 @@
   margin: 1rem 0.5rem;
   padding: 0.25rem 1rem;
   text-decoration: none;
-  transition-duration: $fast-transition;
+  transition-duration: $transition-fast;
 }
 .hollow-button:active {
   background: linear-gradient($black, $black, $squirtle-night);
 }
 .hollow-button:hover {
   box-shadow: $squirtle-dusk 0 0 1rem 0.1rem;
-  transition-duration: $fast-transition;
+  transition-duration: $transition-fast;
 }
 .hollow-button--active {
   background: black;

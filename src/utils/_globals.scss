@@ -14,7 +14,10 @@ nav {
   justify-content: center;
 }
 
+.inline-block { display: inline-block; }
+
 .margin-bottom { margin-bottom: 2rem; }
+.margin-horizontal-small { margin-left: 0.5rem; margin-right: 0.5rem; }
 
 .flex-column {
   display: flex;

@@ -6,12 +6,12 @@
   margin: 1rem 0.5rem;
   padding: 0.5rem;
   text-decoration: none;
-  transition-duration: $fast-transition;
+  transition-duration: $transition-fast;
 }
 .button-secondary:active {
   background: $bulbasaur-night;
 }
 .button-secondary:hover {
   background: $bulbasaur-dusk;
-  transition-duration: $fast-transition;
+  transition-duration: $transition-fast;
 }

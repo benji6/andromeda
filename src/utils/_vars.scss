@@ -25,7 +25,8 @@ $tiny-font: 0.7rem;
 $small-font: 0.8rem;
 $normal-font: 1rem;
 
-$fast-transition: 0.2s;
+$transition-fast: 0.2s;
+$transition-instant: 0s;
 
 $pattern-total-width: 100vw / 12 * 11;
 $pattern-side-length: $pattern-total-width / 9;
