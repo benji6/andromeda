@@ -1,0 +1,22 @@
+.button-primary--small {
+  background: linear-gradient($squirtle-dawn, $squirtle-dusk);
+  border-radius: 0.25rem;
+  border: 1px solid;
+  border-color: $squirtle-dusk;
+  color: $black;
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+  text-decoration: none;
+  transition-duration: $transition-fast;
+}
+
+.button-primary--small:active {
+  background: linear-gradient($squirtle-night, $squirtle-dawn);
+  border-color: $squirtle-night;
+  transition-duration: $transition-instant;
+}
+
+.button-primary--small:hover {
+  background: linear-gradient($squirtle-dusk, $squirtle-dawn);
+  transition-duration: $transition-fast;
+}
