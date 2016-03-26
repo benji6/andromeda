@@ -44,8 +44,8 @@ export default rawConnect(({
         </div>,
         effects
       )}
-      <p className='text-center'>Add effect</p>
-      <div className='text-center'>
+      {!isEmpty(addEffects) && <p className='text-center'>Add effect</p>}
+      {!isEmpty(addEffects) && <div className='text-center'>
         <FullSelect
           defaultValue={selectedAddEffect}
           onChange={e => selectedAddEffect = e.target.value}
@@ -55,36 +55,36 @@ export default rawConnect(({
           channel: channelId,
           name: selectedAddEffect
         }))}/>
-    </div>
-    <h2 className='text-center'>Sources</h2>
-    <div className='margin-bottom text-center'>
-      {map(
-        name => <div className='inline-block margin-horizontal-small' key={name}>
-          <ButtonPrimarySmall to={`/plugins/instruments/${name}`}>
-            {name}
-          </ButtonPrimarySmall>
-          <Cross onClick={_ => dispatch(removeInstrumentFromChannel({
+      </div>}
+      <h2 className='text-center'>Sources</h2>
+      <div className='margin-bottom text-center'>
+        {map(
+          name => <div className='inline-block margin-horizontal-small' key={name}>
+            <ButtonPrimarySmall to={`/plugins/instruments/${name}`}>
+              {name}
+            </ButtonPrimarySmall>
+            <Cross onClick={_ => dispatch(removeInstrumentFromChannel({
+              channel: channelId,
+              name
+            }))}/>
+          </div>,
+          sources
+        )}
+      </div>
+      {!isEmpty(addSources) && <p className='text-center'>Add source</p>}
+      {!isEmpty(addSources) && <div className='text-center'>
+        <FullSelect
+          defaultValue={selectedAddSource}
+          onChange={e => selectedAddSource = e.target.value}
+          options={map(text => ({text, value: text}), addSources)}
+        />
+        <Plus onClick={e => {
+          dispatch(addInstrumentToChannel({
             channel: channelId,
-            name
-          }))}/>
-        </div>,
-        sources
-      )}
+            name: selectedAddSource
+          }))
+          selectedAddSource = head(tail(addSources))
+        }}/>
+      </div>}
     </div>
-    {!isEmpty(addSources) && <p className='text-center'>Add source</p>}
-    {!isEmpty(addSources) && <div className='text-center'>
-      <FullSelect
-        defaultValue={selectedAddSource}
-        onChange={e => selectedAddSource = e.target.value}
-        options={map(text => ({text, value: text}), addSources)}
-      />
-      <Plus onClick={e => {
-        dispatch(addInstrumentToChannel({
-          channel: channelId,
-          name: selectedAddSource
-        }))
-        selectedAddSource = head(tail(addSources))
-      }}/>
-    </div>}
-  </div>
 })
