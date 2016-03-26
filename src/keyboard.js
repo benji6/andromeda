@@ -1,10 +1,7 @@
-import {compose, flip, identity, isNil, map, prop, reject, tap} from 'ramda'
-import {Observable} from 'rx'
 import store from './store'
 import pitchToFrequency from './audioHelpers/pitchToFrequency'
 import {instrumentInstance} from './utils/derivedData'
 
-const {fromEvent} = Observable
 const keyCodesToPitches = {
   220: -10,
   90: -9,
@@ -53,41 +50,36 @@ const pressedKeys = new Set()
 const computeId = pitch => `keyboard: ${pitch}`
 
 const computeNoteParams = pitch => {
-  const {keyboard} = store.getState()
+  const {keyboard: {instrument, octave, volume}} = store.getState()
   return {
-    frequency: pitchToFrequency(pitch + 12 * keyboard.octave),
+    frequency: pitchToFrequency(pitch + 12 * octave),
     id: computeId(pitch),
-    instrument: keyboard.instrument,
-    gain: keyboard.volume
+    instrument: instrument,
+    gain: volume
   }
 }
 
-fromEvent(document.body, 'keydown')
-  .transduce(compose(
-    map(tap(e => e.keyCode === 191 && e.preventDefault())),
-    map(prop('keyCode')),
-    reject(::pressedKeys.has),
-    map(tap(::pressedKeys.add)),
-    map(flip(prop)(keyCodesToPitches)),
-    reject(isNil),
-    map(computeNoteParams),
-    map(noteParams => instrumentInstance(
-      noteParams.instrument,
-      store.getState().plugins
-    ).inputNoteStart(noteParams)),
-  ))
-  .subscribe(identity, ::console.error)
+document.addEventListener('keydown', e => {
+  const {keyCode} = e
+  if (keyCode === 191) e.preventDefault()
+  if (pressedKeys.has(keyCode)) return
+  pressedKeys.add(keyCode)
+  const pitch = keyCodesToPitches[keyCode]
+  if (pitch === undefined) return
+  const noteParams = computeNoteParams(pitch)
+  instrumentInstance(
+    noteParams.instrument,
+    store.getState().plugins
+  ).inputNoteStart(noteParams)
+})
 
-fromEvent(document.body, 'keyup')
-  .transduce(compose(
-    map(prop('keyCode')),
-    map(tap(::pressedKeys.delete)),
-    map(flip(prop)(keyCodesToPitches)),
-    reject(isNil),
-    map(computeNoteParams),
-    map(noteParams => instrumentInstance(
-      noteParams.instrument,
-      store.getState().plugins
-    ).inputNoteStop(noteParams.id))
-  ))
-  .subscribe(identity, ::console.error)
+document.addEventListener('keyup', ({keyCode}) => {
+  pressedKeys.delete(keyCode)
+  const pitch = keyCodesToPitches[keyCode]
+  if (pitch === undefined) return
+  const noteParams = computeNoteParams(pitch)
+  instrumentInstance(
+    noteParams.instrument,
+    store.getState().plugins
+  ).inputNoteStop(noteParams.id)
+})
