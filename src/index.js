@@ -7,14 +7,9 @@ import store from './store'
 import routes from './routes'
 import './utils/loadPlugins'
 
-if (navigator.serviceWorker) {
-  render(
-    <Provider store={store}>{routes}</Provider>,
-    document.getElementById('app')
-  )
-} else {
-  render(
-    <UpgradeBrowser />,
-    document.getElementById('app')
-  )
-}
+render(
+  navigator.serviceWorker
+    ? <Provider store={store}>{routes}</Provider>
+    : <UpgradeBrowser />,
+  document.getElementById('app')
+)
