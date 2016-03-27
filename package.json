@@ -9,7 +9,7 @@
     "html": "html-minifier --collapse-whitespace -o dist/index.html src/index.html",
     "scripts": "browserify -t babelify src/index.js | sed 's/process.env.NODE_ENV/\"production\"/g' | uglifyjs -cm --screw-ie8 > dist/index.js",
     "serve": "live-server dist",
-    "start": "concurrently 'npm run watch-assets' 'npm run watch-html' 'npm run watch-scripts' 'npm run watch-styles' 'npm run serve'",
+    "start": "mkdir -p dist && concurrently 'npm run watch-assets' 'npm run watch-html' 'npm run watch-scripts' 'npm run watch-styles' 'npm run serve'",
     "styles": "node-sass src/index.scss --output-style compressed -x | cleancss -o dist/index.css",
     "test": "concurrently 'standard' 'babel-node node_modules/.bin/tape 'src/**/*-spec.js' | faucet'",
     "watch-assets": "nodemon --watch src/assets -e ico,jpg,png,svg,wav --exec npm run assets",
