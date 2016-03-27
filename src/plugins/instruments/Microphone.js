@@ -1,10 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-navigator.getUserMedia = navigator.getUserMedia ||
-                         navigator.webkitGetUserMedia ||
-                         navigator.mozGetUserMedia ||
-                         navigator.msGetUserMedia
+const getUserMedia = (
+  navigator.getUserMedia ||
+  navigator.webkitGetUserMedia ||
+  navigator.mozGetUserMedia ||
+  navigator.msGetUserMedia
+).bind(navigator)
 
 const audioContexts = new WeakMap()
 const mediaStreamSources = new WeakMap()
@@ -16,7 +18,7 @@ const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
 </div>
 
 const turnMicOff = self => mediaStreamSources.get(self).disconnect()
-const turnMicOn = self => navigator.getUserMedia(
+const turnMicOn = self => getUserMedia(
   {audio: true},
   stream => {
     // microphone available
