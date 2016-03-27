@@ -47,7 +47,7 @@
     "react-router": "^2.0.1",
     "redux": "^3.0.4",
     "rx": "^4.1.0",
-    "three": "^0.74.0",
+    "three": "^0.75.0",
     "virtual-audio-graph": "^0.16.8"
   },
   "devDependencies": {
