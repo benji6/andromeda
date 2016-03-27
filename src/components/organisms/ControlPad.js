@@ -1,9 +1,8 @@
-import {compose, identity, isNil, map, reject, tap} from 'ramda'
+import {clamp, compose, identity, isNil, map, reject, tap} from 'ramda'
 import {Observable} from 'rx'
 import React, {PropTypes} from 'react'
 import THREE from 'three'
 import {randomMesh} from '../../utils/webGLHelpers'
-import {clamp} from '../../utils/helpers'
 
 const {fromEvent, merge} = Observable
 

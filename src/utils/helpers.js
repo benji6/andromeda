@@ -1,7 +1,6 @@
 import {lazyMap} from './lazyIterables'
 import {
   addIndex,
-  curry,
   forEach,
   identity,
   map,
@@ -17,7 +16,6 @@ export const decimalPart = n => {
     ? 0
     : Number('0' + str.slice(indexOfDecimal, Infinity))
 }
-export const clamp = curry((a, b, c) => c < a ? a : c > b ? b : c)
 export const eventCheckedPath = path(['currentTarget', 'checked'])
 export const eventValuePath = path(['currentTarget', 'value'])
 export const forEachIndexed = addIndex(forEach)
