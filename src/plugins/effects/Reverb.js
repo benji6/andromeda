@@ -91,11 +91,13 @@ export default class {
         <h2>Reverb</h2>
         <ControlContainer>
           Type&nbsp;
-          <select onChange={e => {
+          <select defaultValue={reverbTypes.get(this)} onChange={e => {
             reverbTypes.set(this, e.target.value)
             updateAudioGraph.call(this)
           }}>
-            {Object.keys(reverbGraphs).map((x, i) => <option key={i}>{x}</option>)}
+            {Object.keys(reverbGraphs).map((x, i) => <option key={i} value={x}>
+              {x}
+            </option>)}
           </select>
         </ControlContainer>
         <ControlContainer>

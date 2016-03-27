@@ -113,7 +113,7 @@ export default class {
         <h2>Overdrive</h2>
         <ControlContainer>
           Type&nbsp;
-          <select onChange={({target: {value}}) => {
+          <select defaultValue={types.get(this)} onChange={({target: {value}}) => {
             types.set(this, value)
             waveshapers.get(this).curve = typeFns[value](amounts.get(this))
           }}>
