@@ -1,9 +1,12 @@
 import {fromPairs} from 'ramda'
+import audioContext from '../../audioContext'
+import createVirtualAudioGraph from 'virtual-audio-graph'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import createVirtualAudioGraph from 'virtual-audio-graph'
 
 let reverbGraphs = {}
+
+const reverbBucket = 'buckets/elemental-reverb'
 
 const containerEls = new WeakMap()
 const dryLevels = new WeakMap()
@@ -13,8 +16,6 @@ const outputs = new WeakMap()
 const reverbTypes = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 const wetLevels = new WeakMap()
-
-import audioContext from '../../audioContext'
 
 const loadReverb = (uri, name) => window.fetch(uri)
   .then(response => response.arrayBuffer())
@@ -29,9 +30,9 @@ const loadReverb = (uri, name) => window.fetch(uri)
   .then(reverb => [name, reverb])
 
 const loadAllReverbs = Promise.all([
-  loadReverb('assets/sb.wav', 'reverb chapel'),
-  loadReverb('assets/h.wav', 'reverb mausoleum'),
-  loadReverb('assets/st.wav', 'reverb stairwell')
+  loadReverb(`${reverbBucket}/chapel.wav`, 'reverb chapel'),
+  loadReverb(`${reverbBucket}/mausoleum.wav`, 'reverb mausoleum'),
+  loadReverb(`${reverbBucket}/stairwell.wav`, 'reverb stairwell')
 ]).then(fromPairs)
 
 loadAllReverbs.then(x => reverbGraphs = x)
