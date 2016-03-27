@@ -7,7 +7,10 @@ import {randomMesh} from '../../utils/webGLHelpers'
 const {fromEvent, merge} = Observable
 
 const cameraZ = 16
-const minZ = -128
+const fallAwayVelocity = 1
+const minZ = -160
+const returnVelocity = 12
+
 const sideLength = 1
 const maxDepth = 3 * sideLength
 
@@ -35,7 +38,7 @@ const renderLoop = _ => {
   const {z} = token.position
   if (controlPadHasNotBeenUsed) return
   if (!controlPadActive) {
-    if (z > minZ - maxDepth) token.position.z -= 1
+    if (z > minZ - maxDepth) token.position.z -= fallAwayVelocity
     renderer.render(scene, camera)
     return
   }
@@ -53,7 +56,6 @@ const renderLoop = _ => {
   token.rotation.z += rotationBaseAmount + rotationVelocityComponent * xMod * yMod
   token.position.x = (xRatio - 0.5) * cameraZ
   token.position.y = (0.5 - yRatio) * cameraZ
-  const returnVelocity = 8
   if (z < 0) token.position.z += z > -returnVelocity ? -z : returnVelocity
   renderer.render(scene, camera)
 }
