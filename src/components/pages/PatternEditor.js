@@ -55,7 +55,8 @@ const onPlay = dispatch => map(
   .takeUntil(playStopSubject))
   .do(({position}) => {
     dispatch(setActivePatternActivePosition(position))
-    activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop(id))
+    activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
+      instrumentObj.inputNoteStop(id))
     activeNotes.clear()
   })
   .subscribe(({
@@ -95,7 +96,8 @@ const stopVisuals = dispatch => {
 }
 
 const stopAudio = _ => {
-  activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop(id))
+  activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
+    instrumentObj.inputNoteStop(id))
   activeNotes.clear()
 }
 

@@ -65,7 +65,8 @@ export default rawConnect(({
       <ControlPad
         inputEndTransducer={compose(
           map(tap(_ => currentlyPlayingPitch = null)),
-          map(_ => instrumentInstance(instrument, plugins).inputNoteStop(controlPadId)),
+          map(_ => instrumentInstance(instrument, plugins)),
+          map(instance => instance.inputNoteStop && instance.inputNoteStop(controlPadId)),
           map(stopArpeggiator)
         )}
         inputTransducer={compose(
@@ -76,7 +77,9 @@ export default rawConnect(({
             currentlyPlayingPitch !== pitch &&
             currentlyPlayingPitch !== null &&
             stopLastNoteOnNoteChange
-          ) && instrumentInstance(instrument, plugins).inputNoteStop(controlPadId))),
+          ) &&
+            instrumentInstance(instrument, plugins).inputNoteStop &&
+            instrumentInstance(instrument, plugins).inputNoteStop(controlPadId))),
           map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
           map(ifElse(
             always(arpeggiatorIsOn),

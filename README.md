@@ -41,7 +41,7 @@ new InstrumentPlugin({audioContext})
 - `connnect` - `Function` - to be implemented in the same manner as `AudioNode.connect`
 - `disconnect` - `Function` - to be implemented in the same manner as `AudioNode.disconnect`
 - `inputNoteStart` - `Function | undefined` - optional method which accepts a note object (see specification below). If not implemented controllers will not be given the option to control this plugin.
-- `inputNoteStop` - `Function` - method which accepts the id of the note to stop
+- `inputNoteStop` - `Function | undefined` - optional method which accepts the id of the note to stop, if not provided then controllers can not send note stop signals to this plugin
 - `render` - `Function` - method which is passed a DOM element and is called when user wishes to view and possibly modify parameters within the plugin
 
 #### Note object specification
@@ -50,7 +50,7 @@ Instrument plugins receive note objects which have the following properties:
 
 - `frequency` - `Number` - frequency in Hz of the note
 - `gain` - `Number` - gain of the note using the same basis as `GainNode`
-- `id` - `String` - unique id for this note, if your instrument is monophonic this may not be so important, otherwise it is essential for keeping track of which notes are playing and which are to be stopped
+- `id` - `String` - unique id for this note which is essential for keeping track of which notes are playing and which are to be stopped
 - `startTime` - `Number | undefined` - optional property, if specified it is the time at which the note is to be started measured on the same basis as `audioContext.currentTime`, if not specified the note is expected to start immediately
 - `stopTime` - `Number | undefined` - optional property, if specified it is the time at which the note is to be stopped measured on the same basis as `audioContext.currentTime`, if not specified the note is expected to stop immediately
 

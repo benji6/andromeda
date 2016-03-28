@@ -61,7 +61,6 @@ export default class {
     source.connect(outputs.get(this))
     source.start()
   }
-  inputNoteStop () {}
   render (containerEl) {
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>

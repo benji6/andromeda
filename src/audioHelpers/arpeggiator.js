@@ -9,7 +9,8 @@ import {instrumentInstance} from '../utils/derivedData'
 
 const onStop = x => {
   const {controlPad: {instrument}, plugins} = store.getState()
-  instrumentInstance(instrument, plugins).inputNoteStop(x)
+  const instance = instrumentInstance(instrument, plugins)
+  instance.inputNoteStop && instance.inputNoteStop(x)
 }
 
 const gain = modulation => (1 - modulation) / 2
