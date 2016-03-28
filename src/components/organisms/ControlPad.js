@@ -1,13 +1,10 @@
-import {clamp, compose, identity, isNil, map, reject, tap} from 'ramda'
-import {Observable} from 'rx'
+import {clamp, isNil} from 'ramda'
 import React, {PropTypes} from 'react'
 import THREE from 'three'
 import {randomMesh} from '../../utils/webGLHelpers'
 
-const {fromEvent, merge} = Observable
-
 const cameraZ = 16
-const fallAwayVelocity = 1
+const fallAwayVelocity = 1.2
 const minZ = -160
 const returnVelocity = 12
 
@@ -72,43 +69,35 @@ const calculateXAndYRatio = e => {
 
 export default class extends React.Component {
   static propTypes = {
-    inputEndTransducer: PropTypes.func,
-    inputTransducer: PropTypes.func
+    inputEndHandler: PropTypes.func,
+    inputHandler: PropTypes.func
   };
   componentDidMount () {
-    const {inputEndTransducer, inputTransducer} = this.props
+    const {inputEndHandler, inputHandler} = this.props
     controlPadElement = document.querySelector('.control-pad')
-    const input$ = merge(
-      fromEvent(controlPadElement, 'touchstart'),
-      fromEvent(controlPadElement, 'touchmove'),
-      fromEvent(controlPadElement, 'mousedown'),
-      fromEvent(controlPadElement, 'mousemove')
-    )
-    const endInput$ = merge(
-      fromEvent(controlPadElement, 'touchend'),
-      fromEvent(controlPadElement, 'mouseup')
-    )
 
-    input$
-      .transduce(compose(
-        map(tap(e => mouseInputEnabled = e.type === 'mousedown'
-          ? true
-          : mouseInputEnabled)),
-        reject(e => e instanceof window.MouseEvent && !mouseInputEnabled),
-        map(tap(_ => controlPadActive = true)),
-        map(e => currentXYRatios = calculateXAndYRatio(e))
-      ))
-      .transduce(inputTransducer)
-      .subscribe(identity, ::console.error)
+    const inputCallback = e => {
+      mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled
+      if (e instanceof window.MouseEvent && !mouseInputEnabled) return
+      controlPadActive = true
+      currentXYRatios = calculateXAndYRatio(e)
+      inputHandler(currentXYRatios)
+    }
 
-    endInput$
-      .transduce(compose(
-        map(tap(_ => controlPadActive = false)),
-        map(tap(_ => mouseInputEnabled = false)),
-        map(e => currentXYRatios = calculateXAndYRatio(e))
-      ))
-      .transduce(inputEndTransducer)
-      .subscribe(identity, ::console.error)
+    controlPadElement.addEventListener('touchstart', inputCallback)
+    controlPadElement.addEventListener('touchmove', inputCallback)
+    controlPadElement.addEventListener('mousedown', inputCallback)
+    controlPadElement.addEventListener('mousemove', inputCallback)
+
+    const inputEndCallback = e => {
+      controlPadActive = false
+      mouseInputEnabled = false
+      currentXYRatios = calculateXAndYRatio(e)
+      inputEndHandler(currentXYRatios)
+    }
+
+    controlPadElement.addEventListener('touchend', inputEndCallback)
+    controlPadElement.addEventListener('mouseup', inputEndCallback)
 
     renderLoopActive = true
     scene = new THREE.Scene()

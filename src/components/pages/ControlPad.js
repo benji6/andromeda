@@ -4,7 +4,6 @@ import {
   compose,
   curry,
   ifElse,
-  map,
   tap
 } from 'ramda'
 import React from 'react'
@@ -63,32 +62,32 @@ export default rawConnect(({
   <div>
     <div className='text-center'>
       <ControlPad
-        inputEndTransducer={compose(
-          map(tap(_ => currentlyPlayingPitch = null)),
-          map(_ => instrumentInstance(instrument, plugins)),
-          map(instance => instance.inputNoteStop && instance.inputNoteStop(controlPadId)),
-          map(stopArpeggiator)
+        inputEndHandler={compose(
+          stopArpeggiator,
+          instance => instance.inputNoteStop && instance.inputNoteStop(controlPadId),
+          _ => instrumentInstance(instrument, plugins),
+          tap(_ => currentlyPlayingPitch = null)
         )}
-        inputTransducer={compose(
-          map(assoc('range', range)),
-          map(ifElse(_ => noScale, xYRatiosToNoScaleNote, xYRatiosToNote)),
-          map(assoc('id', controlPadId)),
-          map(tap(({pitch}) => !noScale && !portamento && (
-            currentlyPlayingPitch !== pitch &&
-            currentlyPlayingPitch !== null &&
-            stopLastNoteOnNoteChange
-          ) &&
-            instrumentInstance(instrument, plugins).inputNoteStop &&
-            instrumentInstance(instrument, plugins).inputNoteStop(controlPadId))),
-          map(tap(({pitch}) => currentlyPlayingPitch = pitch)),
-          map(ifElse(
+        inputHandler={compose(
+          ifElse(
             always(arpeggiatorIsOn),
             startArpeggiator,
             compose(
               x => instrumentInstance(instrument, plugins).inputNoteStart(x),
               createSource({octave, rootNote})
             )
-          ))
+          ),
+          tap(({pitch}) => currentlyPlayingPitch = pitch),
+          tap(({pitch}) => !noScale && !portamento && (
+            currentlyPlayingPitch !== pitch &&
+            currentlyPlayingPitch !== null &&
+            stopLastNoteOnNoteChange
+          ) &&
+            instrumentInstance(instrument, plugins).inputNoteStop &&
+            instrumentInstance(instrument, plugins).inputNoteStop(controlPadId)),
+          assoc('id', controlPadId),
+          ifElse(_ => noScale, xYRatiosToNoScaleNote, xYRatiosToNote),
+          assoc('range', range)
         )}
       />
     </div>
