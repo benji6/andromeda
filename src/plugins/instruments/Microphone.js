@@ -37,7 +37,6 @@ export default class {
   }
   connect (destination) { outputs.get(this).connect(destination) }
   disconnect (destination) { outputs.get(this).disconnect() }
-  inputNoteStart () {}
   inputNoteStop () {}
   render (containerEl) {
     ReactDOM.render(

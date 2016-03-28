@@ -1,8 +1,8 @@
 import capitalize from 'capitalize'
 import {compose, map} from 'ramda'
 import React from 'react'
+import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
 import {eventValuePath, eventCheckedPath, rawConnect} from '../../utils/helpers'
-import {instrumentInstanceNames} from '../../utils/derivedData'
 import {
   updateControlPadArpeggiatorIsOn,
   updateControlPadArpeggiatorOctaves,
@@ -38,7 +38,7 @@ export default rawConnect(({
       options={map(instrument => ({
         text: capitalize.words(instrument),
         value: instrument
-      }), instrumentInstanceNames(plugins))}
+      }), controllableInstrumentInstanceNames(plugins))}
     />
     <RangeSelector
       max='2'

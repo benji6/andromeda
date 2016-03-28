@@ -1,7 +1,7 @@
 import capitalize from 'capitalize'
 import {compose, map} from 'ramda'
 import React from 'react'
-import {instrumentInstanceNames} from '../../utils/derivedData'
+import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
 import {eventValuePath, rawConnect} from '../../utils/helpers'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import {
@@ -25,7 +25,7 @@ export default rawConnect(({keyboard, dispatch, plugins}) =>
       label='Instrument'
       options={map(
         instrument => ({text: capitalize.words(instrument), value: instrument}),
-        instrumentInstanceNames(plugins)
+        controllableInstrumentInstanceNames(plugins)
       )}
     />
     <RangeSelector
