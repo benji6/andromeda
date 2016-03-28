@@ -3,17 +3,12 @@ import {
   curry,
   curryN,
   filter,
-  identity,
-  inc,
   map,
   partial,
   range,
-  repeat,
-  T,
-  transduce
+  repeat
 } from 'ramda'
 import React from 'react'
-import {Observable, Subject} from 'rx'
 import store from '../../store'
 import {
   activePatternCellClick,
@@ -29,46 +24,24 @@ import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import {noteExists} from '../../reducers/patterns'
 import {instrumentInstance} from '../../utils/derivedData'
 
-const playStopSubject = new Subject()
 const activeNotes = new Set()
+let stopped = true
 
-const onPlay = dispatch => map(
-  count => {
+const onPlay = dispatch => {
+  let count = 0
+  stopped = false
+
+  const timeoutCallback = _ => {
+    if (stopped === true) return
     const {activePatternIndex, patterns, rootNote, scale} = store.getState()
     const {notes, octave, xLength, yLength} = patterns[activePatternIndex]
-    return {
-      notes,
-      octave,
-      position: count % xLength,
-      rootNote,
-      scale,
-      yLength
-    }
-  },
-  Observable.generateWithRelativeTime(
-    0,
-    T,
-    inc,
-    identity,
-    _ => 60000 / store.getState().bpm
-  )
-  .takeUntil(playStopSubject))
-  .do(({position}) => {
+    const position = count % xLength
     dispatch(setActivePatternActivePosition(position))
     activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
       instrumentObj.inputNoteStop(id))
     activeNotes.clear()
-  })
-  .subscribe(({
-    notes,
-    octave,
-    position,
-    rootNote,
-    scale,
-    yLength
-  }) => transduce(
+
     compose(
-      filter(({x}) => x === position),
       map(({x, y}) => {
         const {activePatternIndex, patterns, plugins} = store.getState()
         const {instrument, volume} = patterns[activePatternIndex]
@@ -83,15 +56,18 @@ const onPlay = dispatch => map(
           gain: volume,
           id
         })
-      })
-    ),
-    _ => null,
-    null,
-    notes
-  ), ::console.error)
+      }),
+      filter(({x}) => x === position)
+    )(notes)
+
+    count++
+    setTimeout(timeoutCallback, 60000 / store.getState().bpm)
+  }
+  timeoutCallback()
+}
 
 const stopVisuals = dispatch => {
-  playStopSubject.onNext()
+  stopped = true
   dispatch(setActivePatternActivePosition(null))
 }
 
