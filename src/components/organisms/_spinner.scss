@@ -1,0 +1,52 @@
+.spinner {
+  height: 8rem;
+  margin: 8rem auto;
+  position: relative;
+  width: 8rem;
+}
+
+.spinner_el {
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.spinner_el:before {
+  animation: spinner_elFadeDelay 1.2s infinite ease-in-out both;
+  background-color: $green-dawn;
+  content: '';
+  display: block;
+  height: 5%;
+  margin: 0 auto;
+  width: 15%;
+}
+
+.spinner_el2 { transform: rotate(30deg); }
+.spinner_el3 { transform: rotate(60deg); }
+.spinner_el4 { transform: rotate(90deg); }
+.spinner_el5 { transform: rotate(120deg); }
+.spinner_el6 { transform: rotate(150deg); }
+.spinner_el7 { transform: rotate(180deg); }
+.spinner_el8 { transform: rotate(210deg); }
+.spinner_el9 { transform: rotate(240deg); }
+.spinner_el10 { transform: rotate(270deg); }
+.spinner_el11 { transform: rotate(300deg); }
+.spinner_el12 { transform: rotate(330deg); }
+.spinner_el2:before { animation-delay: -1.1s; }
+.spinner_el3:before { animation-delay: -1s; }
+.spinner_el4:before { animation-delay: -0.9s; }
+.spinner_el5:before { animation-delay: -0.8s; }
+.spinner_el6:before { animation-delay: -0.7s; }
+.spinner_el7:before { animation-delay: -0.6s; }
+.spinner_el8:before { animation-delay: -0.5s; }
+.spinner_el9:before { animation-delay: -0.4s; }
+.spinner_el10:before { animation-delay: -0.3s; }
+.spinner_el11:before { animation-delay: -0.2s; }
+.spinner_el12:before { animation-delay: -0.1s; }
+
+@keyframes spinner_elFadeDelay {
+  0%, 39%, 100% { opacity: 0; }
+  40% { opacity: 1; }
+}
