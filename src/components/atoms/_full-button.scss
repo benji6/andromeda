@@ -1,8 +1,8 @@
 .full-button {
-  background: linear-gradient($squirtle-dawn, $squirtle-dusk);
+  background: linear-gradient($blue-dawn, $blue-dusk);
   border-radius: 1rem;
   border: 1px solid #058;
-  box-shadow: $squirtle-dusk 0 0 0.5rem 0.1rem;
+  box-shadow: $blue-dusk 0 0 0.5rem 0.1rem;
   box-sizing: border-box;
   color: $black;
   display: inline-block;
@@ -14,10 +14,10 @@
   text-decoration: none;
   transition-duration: $transition-fast;
   &:hover {
-    box-shadow: $squirtle-dusk 0 0 1rem 0.1rem;
+    box-shadow: $blue-dusk 0 0 1rem 0.1rem;
     transition-duration: $transition-fast;
   }
   &:active {
-    background: linear-gradient($squirtle-dusk, $squirtle-dawn);
+    background: linear-gradient($blue-dusk, $blue-dawn);
   }
 }

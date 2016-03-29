@@ -1,8 +1,8 @@
 .button-primary--small {
-  background: linear-gradient($squirtle-dawn, $squirtle-dusk);
+  background: linear-gradient($blue-dawn, $blue-dusk);
   border-radius: 0.25rem;
   border: 1px solid;
-  border-color: $squirtle-dusk;
+  border-color: $blue-dusk;
   color: $black;
   padding: 0.25rem 0.5rem;
   text-align: center;
@@ -11,12 +11,12 @@
 }
 
 .button-primary--small:active {
-  background: linear-gradient($squirtle-night, $squirtle-dawn);
-  border-color: $squirtle-night;
+  background: linear-gradient($blue-night, $blue-dawn);
+  border-color: $blue-night;
   transition-duration: $transition-instant;
 }
 
 .button-primary--small:hover {
-  background: linear-gradient($squirtle-dusk, $squirtle-dawn);
+  background: linear-gradient($blue-dusk, $blue-dawn);
   transition-duration: $transition-fast;
 }

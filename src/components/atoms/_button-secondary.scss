@@ -1,5 +1,5 @@
 .button-secondary {
-  background: $bulbasaur-dawn;
+  background: $green-dawn;
   border-radius: 1rem;
   color: $black;
   font-size: $small-font;
@@ -9,9 +9,9 @@
   transition-duration: $transition-fast;
 }
 .button-secondary:active {
-  background: $bulbasaur-night;
+  background: $green-night;
 }
 .button-secondary:hover {
-  background: $bulbasaur-dusk;
+  background: $green-dusk;
   transition-duration: $transition-fast;
 }

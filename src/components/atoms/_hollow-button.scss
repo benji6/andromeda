@@ -1,8 +1,8 @@
 .hollow-button {
-  background: linear-gradient($squirtle-night, $black, $squirtle-night);
+  background: linear-gradient($blue-night, $black, $blue-night);
   border-radius: 1rem;
-  border: 1px solid $squirtle-dusk;
-  box-shadow: $squirtle-dusk 0 0 0.5rem 0.1rem;
+  border: 1px solid $blue-dusk;
+  box-shadow: $blue-dusk 0 0 0.5rem 0.1rem;
   color: $white;
   font-size: $small-font;
   margin: 1rem 0.5rem;
@@ -11,15 +11,15 @@
   transition-duration: $transition-fast;
 }
 .hollow-button:active {
-  background: linear-gradient($black, $black, $squirtle-night);
+  background: linear-gradient($black, $black, $blue-night);
 }
 .hollow-button:hover {
-  box-shadow: $squirtle-dusk 0 0 1rem 0.1rem;
+  box-shadow: $blue-dusk 0 0 1rem 0.1rem;
   transition-duration: $transition-fast;
 }
 .hollow-button--active {
   background: black;
-  border: 1px solid $squirtle-evening;
+  border: 1px solid $blue-evening;
   box-shadow: none;
 }
 .hollow-button--active:active {
