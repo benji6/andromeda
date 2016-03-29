@@ -1,7 +1,7 @@
 .full-button {
   background: linear-gradient($blue-dawn, $blue-dusk);
   border-radius: 1rem;
-  border: 1px solid #058;
+  border: 1px solid $blue-dusk;
   box-shadow: $blue-dusk 0 0 0.5rem 0.1rem;
   box-sizing: border-box;
   color: $black;

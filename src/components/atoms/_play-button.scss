@@ -1,13 +1,13 @@
 .play-button {
   border-bottom: 2rem solid transparent;
-  border-left: 3rem solid #15a;
+  border-left: 3rem solid $blue-dusk;
   border-top: 2rem solid transparent;
   height: 0;
   margin: 1rem auto;
   width: 0;
 }
 .play-button--playing {
-  background: #15a;
+  background: $blue-dusk;
   border: 0;
   height: 4rem;
   width: 4rem;
