@@ -1,16 +1,16 @@
 import test from 'tape'
 import reducer, {initialState} from './song'
-import {updateSongNotes} from '../actions'
+import {setSongActivePosition} from '../actions'
 
-test('song reducer returns initial state', t => {
-  t.deepEqual(reducer(undefined, {}), initialState)
+const reducerName = 'song reducer'
+
+test(`${reducerName} returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState)
   t.end()
 })
 
-test('song reducer updates state', t => {
-  const newNotes = Array.from({length: 8}, (x, i) => i)
-  t.deepEqual(reducer(undefined, updateSongNotes(newNotes)),
-              {...initialState, notes: newNotes})
+test(`${reducerName} setSongActivePosition`, t => {
+  t.equal(reducer(undefined, setSongActivePosition(1)).activePosition, 1)
+  t.equal(reducer(undefined, setSongActivePosition(2)).activePosition, 2)
   t.end()
 })
