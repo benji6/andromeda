@@ -19,7 +19,7 @@ import PlayButton from '../atoms/PlayButton'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
 import PatternMenu from '../organisms/PatternMenu'
-import {noteExists} from '../../reducers/patterns'
+import {stepExists} from '../../reducers/patterns'
 import {instrumentInstance} from '../../utils/derivedData'
 
 const activeNotes = new Set()
@@ -34,7 +34,7 @@ const onPlay = dispatch => {
   const timeoutCallback = _ => {
     if (stopped === true) return
     const {activePatternIndex, patterns, rootNote, scale} = store.getState()
-    const {notes, octave} = patterns[activePatternIndex]
+    const {steps, octave} = patterns[activePatternIndex]
 
     const position = count % xLength
     dispatch(setSongActivePosition(position))
@@ -59,7 +59,7 @@ const onPlay = dispatch => {
         })
       }),
       filter(({x}) => x === position)
-    )(notes)
+    )(steps)
 
     count++
     setTimeout(timeoutCallback, 60000 / store.getState().bpm)
@@ -98,7 +98,7 @@ export default rawConnect(({
   const emptyPatternData = map(range(0), repeat(xLength, yLength))
   const patternData = mapIndexed(
     (x, rowIndex) => map(
-      colIndex => ({active: colIndex === activePosition, selected: noteExists(steps, colIndex, rowIndex)}),
+      colIndex => ({active: colIndex === activePosition, selected: stepExists(steps, colIndex, rowIndex)}),
       x
     ),
     emptyPatternData

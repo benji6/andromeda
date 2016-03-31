@@ -23,13 +23,13 @@ test(`${reducerName} reducer handles active pattern cell click`, t => {
   const activePattern = initialState[activePatternIndex]
   const payload = {x: 1, y: 2}
   const testState = [...initialState.slice(0, activePatternIndex),
-                     {...activePattern, notes: [payload]},
+                     {...activePattern, steps: [payload]},
                      ...initialState.slice(activePatternIndex + 1)]
   t.deepEqual(reducer(undefined, activePatternCellClick(payload)),
               testState)
   t.deepEqual(reducer(testState, activePatternCellClick(payload)),
               [...initialState.slice(0, activePatternIndex),
-               {...activePattern, notes: []},
+               {...activePattern, steps: []},
                ...initialState.slice(activePatternIndex + 1)])
   t.end()
 })

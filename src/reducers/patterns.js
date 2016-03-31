@@ -20,29 +20,29 @@ import {
 } from '../actions'
 import store from '../store'
 
-const overNotes = over(lensProp('notes'))
+const overNotes = over(lensProp('steps'))
 
 export const initialState = [{
   activePosition: null,
   instrument: 'Prometheus',
-  notes: [],
+  steps: [],
   octave: 0,
   xLength: 8,
   yLength: 8,
   volume: 1 / 3
 }]
 
-export const noteExists = (notes, x, y) => any(both(propEq('x', x), propEq('y', y)), notes)
+export const stepExists = (steps, x, y) => any(both(propEq('x', x), propEq('y', y)), steps)
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
     case ACTIVE_PATTERN_CELL_CLICK: {
       const {x, y} = payload
       const {activePatternIndex} = store.getState()
-      const {notes} = state[activePatternIndex]
+      const {steps} = state[activePatternIndex]
       return adjust(
         overNotes(
-          noteExists(notes, x, y) ? reject(equals(payload)) : append(payload)
+          stepExists(steps, x, y) ? reject(equals(payload)) : append(payload)
         ),
         store.getState().activePatternIndex,
         state
