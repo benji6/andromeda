@@ -10,8 +10,8 @@ import {
 import React from 'react'
 import store from '../../store'
 import {
-  activePatternCellClick,
-  setSongActivePosition
+  setSongActivePosition,
+  songCellClick
 } from '../../actions'
 import {mapIndexed, rawConnect} from '../../utils/helpers'
 import Pattern from '../organisms/Pattern'
@@ -82,7 +82,7 @@ const onStop = compose(stopAudio, stopVisuals)
 
 const cellClickHandler = curryN(
   4,
-  (dispatch, y, x) => dispatch(activePatternCellClick({x, y}))
+  (dispatch, y, x) => dispatch(songCellClick({x, y}))
 )
 
 export default rawConnect(({

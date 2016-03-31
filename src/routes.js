@@ -11,16 +11,18 @@ import KeyboardSettings from './components/pages/KeyboardSettings'
 import PatternEditorSettings from './components/pages/PatternEditorSettings'
 import PatternEditor from './components/pages/PatternEditor'
 import Settings from './components/pages/Settings'
+import Song from './components/pages/Song'
 
 export default <Router history={hashHistory}>
   <Route path='/' component={App}>
     <IndexRoute component={ControlPad} />
     <Route path='/channel/:channelId' component={Channel} />
     <Route path='/channels' component={Channels} />
-    <Route path='/controllers/control-pad/settings' component={ControlPadSettings} />
     <Route path='/controllers/control-pad' component={ControlPad} />
+    <Route path='/controllers/control-pad/settings' component={ControlPadSettings} />
     <Route path='/controllers/keyboard/settings' component={KeyboardSettings} />
     <Route path='/controllers/pattern-editor' component={PatternEditor} />
+    <Route path='/controllers/song' component={Song} />
     <Route path='/pattern-editor/settings' component={PatternEditorSettings} />
     <Route path='/plugins/effects/:name' component={Effect} />
     <Route path='/plugins/instruments/:name' component={Instrument} />
