@@ -1,8 +1,7 @@
 import test from 'tape'
 import pitchFromScaleIndex from './pitchFromScaleIndex'
-import { initialState } from '../reducers/scale'
 
-const majorScale = initialState.scales.major
+const majorScale = [0, 2, 4, 5, 7, 9, 11]
 
 test('pitchFromScaleIndex', t => {
   t.equals(pitchFromScaleIndex(majorScale, -36), -61)
