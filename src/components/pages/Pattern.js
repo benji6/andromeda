@@ -45,7 +45,7 @@ const onPlay = dispatch => {
       map(({x, y}) => {
         const {activePatternIndex, patterns, plugins} = store.getState()
         const {instrument, volume} = patterns[activePatternIndex]
-        const id = `pattern-editor-${x}-${y}`
+        const id = `pattern-${x}-${y}`
         const instrumentObj = instrumentInstance(instrument, plugins)
         activeNotes.add({instrumentObj, id})
         instrumentObj.inputNoteStart({

@@ -80,7 +80,7 @@ export default rawConnect(({
     />
     <div>
       <span className='inline-label-text'></span>
-      <FullButton to='/controllers/pattern-editor'>OK</FullButton>
+      <FullButton to='/controllers/pattern'>OK</FullButton>
     </div>
   </div>
 })
