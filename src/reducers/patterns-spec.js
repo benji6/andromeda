@@ -4,10 +4,11 @@ import reducer, {initialState} from './patterns'
 import {
   activePatternCellClick,
   setActivePatternActivePosition,
+  setActivePatternYLength,
   updateActivePatternInstrument,
   updateActivePatternOctave,
-  updateActivePatternXLength,
-  updateActivePatternVolume
+  updateActivePatternVolume,
+  updateActivePatternXLength
 } from '../actions'
 
 const reducerName = 'patterns'
@@ -43,6 +44,27 @@ test(`${reducerName} reducer updates active pattern active position`, t => {
               [...initialState.slice(0, activePatternIndex),
                {...activePattern, activePosition: payload},
                ...initialState.slice(activePatternIndex + 1)])
+  t.end()
+})
+
+test(`${reducerName} reducer setActivePatternYLength`, t => {
+  t.deepEqual(reducer([{
+    activePosition: null,
+    instrument: 'Prometheus',
+    steps: [],
+    octave: 0,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  }], setActivePatternYLength(10)), [{
+    activePosition: null,
+    instrument: 'Prometheus',
+    steps: [],
+    octave: 0,
+    xLength: 8,
+    yLength: 10,
+    volume: 1 / 3
+  }])
   t.end()
 })
 

@@ -4,6 +4,7 @@ import React from 'react'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
 import {eventValuePath, rawConnect} from '../../utils/helpers'
 import {
+  setActivePatternYLength,
   updateActivePatternInstrument,
   updateActivePatternOctave,
   updateActivePatternVolume,
@@ -20,7 +21,7 @@ export default rawConnect(({
   plugins
 }) => {
   const activePattern = patterns[activePatternIndex]
-  const {instrument, octave, xLength, volume} = activePattern
+  const {instrument, octave, xLength, yLength, volume} = activePattern
   return <div className='flex-column text-center'>
     <h2 className='text-center'>Pattern Editor Settings</h2>
     <InstrumentSelector defaultValue={instrument}
@@ -66,6 +67,20 @@ export default rawConnect(({
     />
     <RangeSelector
       key='4'
+      max='16'
+      min='1'
+      onChange={compose(
+        dispatch,
+        setActivePatternYLength,
+        Number,
+        eventValuePath
+      )}
+      output={String(yLength)}
+      text='Height'
+      value={yLength}
+    />
+    <RangeSelector
+      key='5'
       max='2'
       min='-3'
       onChange={compose(
