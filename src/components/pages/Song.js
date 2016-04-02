@@ -116,7 +116,7 @@ export default rawConnect(({
       onStop={partial(onStop, [dispatch])}
     />
     <nav>
-      <FullButton to='/controllers/pattern/settings'>Options</FullButton>
+      <FullButton to='/controllers/song/settings'>Options</FullButton>
     </nav>
   </div>
 })
