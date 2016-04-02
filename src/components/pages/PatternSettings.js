@@ -23,7 +23,7 @@ export default rawConnect(({
   const activePattern = patterns[activePatternIndex]
   const {instrument, octave, xLength, yLength, volume} = activePattern
   return <div className='flex-column text-center'>
-    <h2 className='text-center'>Pattern Editor Settings</h2>
+    <h2 className='text-center'>Pattern Settings</h2>
     <InstrumentSelector defaultValue={instrument}
       handleChange={(compose(
         dispatch,

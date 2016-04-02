@@ -14,11 +14,11 @@ import {
   songCellClick
 } from '../../actions'
 import {mapIndexed, rawConnect} from '../../utils/helpers'
-import Pattern from '../organisms/Pattern'
+import FullButton from '../atoms/FullButton'
 import PlayButton from '../atoms/PlayButton'
+import Pattern from '../organisms/Pattern'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
-import PatternMenu from '../organisms/PatternMenu'
 import {stepExists} from '../../reducers/patterns'
 import {instrumentInstance} from '../../utils/derivedData'
 
@@ -93,7 +93,6 @@ export default rawConnect(({
   rootNote,
   scale
 }) => {
-  const activePattern = patterns[activePatternIndex]
   const {activePosition, steps, xLength, yLength} = store.getState().song
   const emptyPatternData = map(range(0), repeat(xLength, yLength))
   const patternData = mapIndexed(
@@ -116,10 +115,8 @@ export default rawConnect(({
       onPlay={partial(onPlay, [dispatch])}
       onStop={partial(onStop, [dispatch])}
     />
-    <PatternMenu
-      dispatch={dispatch}
-      instrument={instrument}
-      pattern={activePattern}
-    />
+    <nav>
+      <FullButton to='/controllers/pattern/settings'>Options</FullButton>
+    </nav>
   </div>
 })
