@@ -2,10 +2,11 @@ const createAction = type => payload => ({type, payload})
 
 export const [
   ADD_CHANNEL,
-  ADD_NEW_PATTERN,
-  ADD_EFFECT,
   ADD_EFFECT_TO_CHANNEL,
+  ADD_EFFECT,
   ADD_INSTRUMENT_TO_CHANNEL,
+  ADD_NEW_PATTERN,
+  DELETE_PATTERN,
   INSTANTIATE_EFFECT,
   INSTANTIATE_INSTRUMENT,
   LOAD_PLUGIN_EFFECT,
@@ -40,10 +41,11 @@ export const [
 ] = (function * (n = 0) { while (true) yield String(n++) })()
 
 export const addChannel = createAction(ADD_CHANNEL)
-export const addNewPattern = createAction(ADD_NEW_PATTERN)
 export const addEffect = createAction(ADD_EFFECT)
 export const addEffectToChannel = createAction(ADD_EFFECT_TO_CHANNEL)
 export const addInstrumentToChannel = createAction(ADD_INSTRUMENT_TO_CHANNEL)
+export const addNewPattern = createAction(ADD_NEW_PATTERN)
+export const deletePattern = createAction(DELETE_PATTERN)
 export const instantiateEffect = createAction(INSTANTIATE_EFFECT)
 export const instantiateInstrument = createAction(INSTANTIATE_INSTRUMENT)
 export const loadPluginEffect = createAction(LOAD_PLUGIN_EFFECT)

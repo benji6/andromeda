@@ -1,4 +1,5 @@
 import {
+  always,
   compose,
   curryN,
   map,
@@ -11,6 +12,7 @@ import {connect} from 'react-redux'
 import store from '../../store'
 import {
   addNewPattern,
+  deletePattern,
   // setSongActivePosition,
   songCellClick
 } from '../../actions'
@@ -20,7 +22,7 @@ import FullButton from '../atoms/FullButton'
 // import PlayButton from '../atoms/PlayButton'
 import Pattern from '../organisms/Pattern'
 import {stepExists} from '../../reducers/patterns'
-import {Plus} from '../atoms/IconButtons'
+import {Cross, Plus} from '../atoms/IconButtons'
 
 // const activeNotes = new Set()
 
@@ -97,17 +99,22 @@ export default connectComponent(({
     ),
     emptyPatternData
   )
-
   return <div>
-    <Pattern {...{
-      onClick: cellClickHandler(dispatch),
-      patternData,
-      rootNote,
-      scale,
-      yLabel: x => <ButtonPrimarySmall to={`/controllers/pattern/${x}`}>
-        {`Pattern ${x}`}
-      </ButtonPrimarySmall>
-    }} />{
+    {patterns.length
+      ? <Pattern {...{
+        onClick: cellClickHandler(dispatch),
+        patternData,
+        rootNote,
+        scale,
+        yLabel: x => <span>
+          <Cross onClick={compose(dispatch, deletePattern, always(x))} />
+          <ButtonPrimarySmall to={`/controllers/pattern/${x}`}>
+            {`Pattern ${x}`}
+          </ButtonPrimarySmall>
+        </span>
+      }} />
+      : null}
+    {
     // <PlayButton
     //   onPlay={partial(onPlay, [dispatch])}
     //   onStop={partial(onStop, [dispatch])}

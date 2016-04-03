@@ -6,10 +6,12 @@ import {
   equals,
   lensProp,
   over,
-  reject
+  reject,
+  remove
 } from 'ramda'
 import {
   ADD_NEW_PATTERN,
+  DELETE_PATTERN,
   PATTERN_CELL_CLICK,
   SET_PATTERN_ACTIVE_POSITION,
   SET_PATTERN_Y_LENGTH,
@@ -41,6 +43,8 @@ export default (state = initialState, {type, payload}) => {
   switch (type) {
     case ADD_NEW_PATTERN:
       return append(defaultPattern, state)
+    case DELETE_PATTERN:
+      return remove(payload, 1, state)
     case PATTERN_CELL_CLICK: {
       const {patternId, x, y} = payload
       const xy = {x, y}

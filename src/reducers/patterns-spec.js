@@ -4,6 +4,7 @@ import reducer, {initialState} from './patterns'
 import {
   addNewPattern,
   patternCellClick,
+  deletePattern,
   setPatternActivePosition,
   setPatternYLength,
   updatePatternInstrument,
@@ -78,6 +79,34 @@ test(`${reducerName} setPatternActivePosition`, t => {
               [...initialState.slice(0, patternId),
                {...activePattern, activePosition: payload.value},
                ...initialState.slice(patternId + 1)])
+  t.end()
+})
+
+test(`${reducerName} deletePattern`, t => {
+  t.deepEqual(reducer([{
+    activePosition: null,
+    instrument: 'instrument 0',
+    steps: []
+  },
+  {
+    activePosition: null,
+    instrument: 'instrument 1',
+    steps: []
+  },
+  {
+    activePosition: null,
+    instrument: 'instrument 2',
+    steps: []
+  }], deletePattern(1)), [{
+    activePosition: null,
+    instrument: 'instrument 0',
+    steps: []
+  },
+  {
+    activePosition: null,
+    instrument: 'instrument 2',
+    steps: []
+  }])
   t.end()
 })
 
