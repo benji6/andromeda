@@ -87,8 +87,8 @@ export default connectComponent(({
   rootNote,
   scale
 }) => {
-  const {activePosition, steps, xLength, yLength} = store.getState().song
-  const emptyPatternData = map(range(0), repeat(xLength, yLength))
+  const {activePosition, steps, xLength} = store.getState().song
+  const emptyPatternData = map(range(0), repeat(xLength, patterns.length))
   const patternData = mapIndexed(
     (x, rowIndex) => map(
       colIndex => ({active: colIndex === activePosition, selected: stepExists(colIndex, rowIndex, steps)}),
