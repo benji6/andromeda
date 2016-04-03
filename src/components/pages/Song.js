@@ -1,5 +1,5 @@
 import {
-  // compose,
+  compose,
   curryN,
   map,
   // partial,
@@ -10,6 +10,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import store from '../../store'
 import {
+  addNewPattern,
   // setSongActivePosition,
   songCellClick
 } from '../../actions'
@@ -110,7 +111,13 @@ export default connectComponent(({
     //   onPlay={partial(onPlay, [dispatch])}
     //   onStop={partial(onStop, [dispatch])}
     // />
-    }<nav>
+    }
+    <div className='text-center'>
+      <button onClick={compose(dispatch, addNewPattern)}>
+        Add new pattern
+      </button>
+    </div>
+    <nav>
       <FullButton to='/controllers/song/settings'>Options</FullButton>
     </nav>
   </div>

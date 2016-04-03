@@ -2,6 +2,7 @@ import 'web-audio-test-api'
 import test from 'tape'
 import reducer, {initialState} from './patterns'
 import {
+  addNewPattern,
   patternCellClick,
   setPatternActivePosition,
   setPatternYLength,
@@ -13,9 +14,39 @@ import {
 
 const reducerName = 'patterns reducer'
 
-test(`${reducerName} reducer returns initial state`, t => {
+test(`${reducerName} returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState)
   t.deepEqual(reducer(undefined, {}), initialState)
+  t.end()
+})
+
+test(`${reducerName} addNewPattern`, t => {
+  t.deepEqual(reducer([{
+    activePosition: null,
+    instrument: 'Prometheus',
+    steps: [],
+    octave: 0,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  }], addNewPattern()), [{
+    activePosition: null,
+    instrument: 'Prometheus',
+    steps: [],
+    octave: 0,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  },
+  {
+    activePosition: null,
+    instrument: 'Prometheus',
+    steps: [],
+    octave: 0,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  }])
   t.end()
 })
 

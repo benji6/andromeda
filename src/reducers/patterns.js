@@ -9,6 +9,7 @@ import {
   reject
 } from 'ramda'
 import {
+  ADD_NEW_PATTERN,
   PATTERN_CELL_CLICK,
   SET_PATTERN_ACTIVE_POSITION,
   SET_PATTERN_Y_LENGTH,
@@ -20,7 +21,7 @@ import {
 
 const overSteps = over(lensProp('steps'))
 
-export const initialState = [{
+const defaultPattern = {
   activePosition: null,
   instrument: 'Prometheus',
   steps: [],
@@ -28,7 +29,8 @@ export const initialState = [{
   xLength: 8,
   yLength: 8,
   volume: 1 / 3
-}]
+}
+export const initialState = [defaultPattern]
 
 export const stepExists = (x0, y0, steps) => any(({x, y}) => x === x0 && y === y0, steps)
 const setActivePatternProp = (
@@ -37,6 +39,8 @@ const setActivePatternProp = (
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
+    case ADD_NEW_PATTERN:
+      return append(defaultPattern, state)
     case PATTERN_CELL_CLICK: {
       const {patternId, x, y} = payload
       const xy = {x, y}
