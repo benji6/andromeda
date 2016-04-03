@@ -20,6 +20,7 @@ import FullButton from '../atoms/FullButton'
 // import PlayButton from '../atoms/PlayButton'
 import Pattern from '../organisms/Pattern'
 import {stepExists} from '../../reducers/patterns'
+import {Plus} from '../atoms/IconButtons'
 
 // const activeNotes = new Set()
 
@@ -113,9 +114,8 @@ export default connectComponent(({
     // />
     }
     <div className='text-center'>
-      <button onClick={compose(dispatch, addNewPattern)}>
-        Add new pattern
-      </button>
+      <Plus onClick={compose(dispatch, addNewPattern)} />
+      New pattern
     </div>
     <nav>
       <FullButton to='/controllers/song/settings'>Options</FullButton>
