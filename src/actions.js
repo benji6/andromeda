@@ -1,42 +1,43 @@
 const createAction = type => payload => ({type, payload})
-const uniqueType = (n => _ => String(n++))(0)
 
-export const ADD_CHANNEL = uniqueType()
-export const ADD_NEW_PATTERN = uniqueType()
-export const ADD_EFFECT = uniqueType()
-export const ADD_EFFECT_TO_CHANNEL = uniqueType()
-export const ADD_INSTRUMENT_TO_CHANNEL = uniqueType()
-export const INSTANTIATE_EFFECT = uniqueType()
-export const INSTANTIATE_INSTRUMENT = uniqueType()
-export const LOAD_PLUGIN_EFFECT = uniqueType()
-export const LOAD_PLUGIN_INSTRUMENT = uniqueType()
-export const PATTERN_CELL_CLICK = uniqueType()
-export const REMOVE_CHANNEL = uniqueType()
-export const REMOVE_EFFECT_FROM_CHANNEL = uniqueType()
-export const REMOVE_INSTRUMENT_FROM_CHANNEL = uniqueType()
-export const SET_PATTERN_ACTIVE_POSITION = uniqueType()
-export const SET_PATTERN_Y_LENGTH = uniqueType()
-export const SET_SONG_ACTIVE_POSITION = uniqueType()
-export const SONG_CELL_CLICK = uniqueType()
-export const UPDATE_BPM = uniqueType()
-export const UPDATE_CONTROL_PAD_ARPEGGIATOR_IS_ON = uniqueType()
-export const UPDATE_CONTROL_PAD_ARPEGGIATOR_OCTAVES = uniqueType()
-export const UPDATE_CONTROL_PAD_INSTRUMENT = uniqueType()
-export const UPDATE_CONTROL_PAD_NO_SCALE = uniqueType()
-export const UPDATE_CONTROL_PAD_OCTAVE = uniqueType()
-export const UPDATE_CONTROL_PAD_PORTAMENTO = uniqueType()
-export const UPDATE_CONTROL_PAD_RANGE = uniqueType()
-export const UPDATE_CONTROL_PAD_SELECTED_ARPEGGIATOR_PATTERN = uniqueType()
-export const UPDATE_KEYBOARD_INSTRUMENT = uniqueType()
-export const UPDATE_KEYBOARD_OCTAVE = uniqueType()
-export const UPDATE_KEYBOARD_VOLUME = uniqueType()
-export const UPDATE_PATTERN_INSTRUMENT = uniqueType()
-export const UPDATE_PATTERN_OCTAVE = uniqueType()
-export const UPDATE_PATTERN_VOLUME = uniqueType()
-export const UPDATE_PATTERN_X_LENGTH = uniqueType()
-export const UPDATE_PLAYING = uniqueType()
-export const UPDATE_ROOT_NOTE = uniqueType()
-export const UPDATE_SELECTED_SCALE = uniqueType()
+export const [
+  ADD_CHANNEL,
+  ADD_NEW_PATTERN,
+  ADD_EFFECT,
+  ADD_EFFECT_TO_CHANNEL,
+  ADD_INSTRUMENT_TO_CHANNEL,
+  INSTANTIATE_EFFECT,
+  INSTANTIATE_INSTRUMENT,
+  LOAD_PLUGIN_EFFECT,
+  LOAD_PLUGIN_INSTRUMENT,
+  PATTERN_CELL_CLICK,
+  REMOVE_CHANNEL,
+  REMOVE_EFFECT_FROM_CHANNEL,
+  REMOVE_INSTRUMENT_FROM_CHANNEL,
+  SET_PATTERN_ACTIVE_POSITION,
+  SET_PATTERN_Y_LENGTH,
+  SET_SONG_ACTIVE_POSITION,
+  SONG_CELL_CLICK,
+  UPDATE_BPM,
+  UPDATE_CONTROL_PAD_ARPEGGIATOR_IS_ON,
+  UPDATE_CONTROL_PAD_ARPEGGIATOR_OCTAVES,
+  UPDATE_CONTROL_PAD_INSTRUMENT,
+  UPDATE_CONTROL_PAD_NO_SCALE,
+  UPDATE_CONTROL_PAD_OCTAVE,
+  UPDATE_CONTROL_PAD_PORTAMENTO,
+  UPDATE_CONTROL_PAD_RANGE,
+  UPDATE_CONTROL_PAD_SELECTED_ARPEGGIATOR_PATTERN,
+  UPDATE_KEYBOARD_INSTRUMENT,
+  UPDATE_KEYBOARD_OCTAVE,
+  UPDATE_KEYBOARD_VOLUME,
+  UPDATE_PATTERN_INSTRUMENT,
+  UPDATE_PATTERN_OCTAVE,
+  UPDATE_PATTERN_VOLUME,
+  UPDATE_PATTERN_X_LENGTH,
+  UPDATE_PLAYING,
+  UPDATE_ROOT_NOTE,
+  UPDATE_SELECTED_SCALE
+] = (function * (n = 0) { while (true) yield String(n++) })()
 
 export const addChannel = createAction(ADD_CHANNEL)
 export const addNewPattern = createAction(ADD_NEW_PATTERN)
