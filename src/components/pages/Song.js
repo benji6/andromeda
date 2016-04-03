@@ -1,9 +1,8 @@
 import {
-  compose,
+  // compose,
   curryN,
-  filter,
   map,
-  partial,
+  // partial,
   range,
   repeat
 } from 'ramda'
@@ -11,76 +10,52 @@ import React from 'react'
 import {connect} from 'react-redux'
 import store from '../../store'
 import {
-  setSongActivePosition,
+  // setSongActivePosition,
   songCellClick
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
 import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
 import FullButton from '../atoms/FullButton'
-import PlayButton from '../atoms/PlayButton'
+// import PlayButton from '../atoms/PlayButton'
 import Pattern from '../organisms/Pattern'
-import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
-import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
 import {stepExists} from '../../reducers/patterns'
-import {instrumentInstance} from '../../utils/derivedData'
 
-const activeNotes = new Set()
+// const activeNotes = new Set()
 
-let stopped = true
+// let stopped = true
 
-const onPlay = dispatch => {
-  const {xLength, yLength} = store.getState().song
-  let count = 0
-  stopped = false
+// const onPlay = dispatch => {
+//   const {xLength} = store.getState().song
+//   let count = 0
+//   stopped = false
+//
+//   const timeoutCallback = _ => {
+//     if (stopped === true) return
+//
+//     const position = count % xLength
+//     dispatch(setSongActivePosition(position))
+//     activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
+//       instrumentObj.inputNoteStop(id))
+//     activeNotes.clear()
+//
+//     count++
+//     setTimeout(timeoutCallback, 60000 / store.getState().bpm)
+//   }
+//   timeoutCallback()
+// }
 
-  const timeoutCallback = _ => {
-    if (stopped === true) return
-    const {activePatternIndex, patterns, rootNote, scale} = store.getState()
-    const {steps, octave} = patterns[activePatternIndex]
+// const stopVisuals = dispatch => {
+//   stopped = true
+//   dispatch(setSongActivePosition(null))
+// }
 
-    const position = count % xLength
-    dispatch(setSongActivePosition(position))
-    activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
-      instrumentObj.inputNoteStop(id))
-    activeNotes.clear()
+// const stopAudio = _ => {
+//   activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
+//     instrumentObj.inputNoteStop(id))
+//   activeNotes.clear()
+// }
 
-    compose(
-      map(({x, y}) => {
-        const {activePatternIndex, patterns, plugins} = store.getState()
-        const {instrument, volume} = patterns[activePatternIndex]
-        const id = `pattern-${x}-${y}`
-        const instrumentObj = instrumentInstance(instrument, plugins)
-        activeNotes.add({instrumentObj, id})
-        instrumentObj.inputNoteStart({
-          frequency: pitchToFrequency(pitchFromScaleIndex(
-            scale.scales[scale.scaleName],
-            yLength - 1 - y + scale.scales[scale.scaleName].length * octave
-          ) + rootNote),
-          gain: volume,
-          id
-        })
-      }),
-      filter(({x}) => x === position)
-    )(steps)
-
-    count++
-    setTimeout(timeoutCallback, 60000 / store.getState().bpm)
-  }
-  timeoutCallback()
-}
-
-const stopVisuals = dispatch => {
-  stopped = true
-  dispatch(setSongActivePosition(null))
-}
-
-const stopAudio = _ => {
-  activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
-    instrumentObj.inputNoteStop(id))
-  activeNotes.clear()
-}
-
-const onStop = compose(stopAudio, stopVisuals)
+// const onStop = compose(stopAudio, stopVisuals)
 
 const cellClickHandler = curryN(
   4,
@@ -127,15 +102,15 @@ export default connectComponent(({
       patternData,
       rootNote,
       scale,
-      yLabel: x => <ButtonPrimarySmall to='/controllers/pattern/'>
+      yLabel: x => <ButtonPrimarySmall to={`/controllers/pattern/${x}`}>
         {`Pattern ${x}`}
       </ButtonPrimarySmall>
-    }} />
-    <PlayButton
-      onPlay={partial(onPlay, [dispatch])}
-      onStop={partial(onStop, [dispatch])}
-    />
-    <nav>
+    }} />{
+    // <PlayButton
+    //   onPlay={partial(onPlay, [dispatch])}
+    //   onStop={partial(onStop, [dispatch])}
+    // />
+}<nav>
       <FullButton to='/controllers/song/settings'>Options</FullButton>
     </nav>
   </div>

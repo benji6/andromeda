@@ -5,11 +5,11 @@ import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
 import {eventValuePath} from '../../utils/helpers'
 import {
-  setActivePatternYLength,
-  updateActivePatternInstrument,
-  updateActivePatternOctave,
-  updateActivePatternVolume,
-  updateActivePatternXLength
+  setPatternYLength,
+  updatePatternInstrument,
+  updatePatternOctave,
+  updatePatternVolume,
+  updatePatternXLength
 } from '../../actions'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import RangeSelector from '../molecules/RangeSelector'
@@ -20,27 +20,37 @@ const connectComponent = connect(({
   dispatch,
   patterns,
   plugins
-}) => ({
-  activePatternIndex,
-  dispatch,
-  patterns,
-  plugins
-}))
+}, {params: {patternId}}) => {
+  const activePattern = patterns[patternId]
+  const {instrument, octave, xLength, yLength, volume} = activePattern
+  return {
+    dispatch,
+    instrument,
+    octave,
+    patternId,
+    plugins,
+    volume,
+    xLength,
+    yLength
+  }
+})
 
 export default connectComponent(({
-  activePatternIndex,
   dispatch,
-  patterns,
-  plugins
-}) => {
-  const activePattern = patterns[activePatternIndex]
-  const {instrument, octave, xLength, yLength, volume} = activePattern
-  return <div className='flex-column text-center'>
-    <h2 className='text-center'>Pattern Settings</h2>
+  instrument,
+  octave,
+  patternId,
+  plugins,
+  volume,
+  xLength,
+  yLength
+}) =>
+  <div className='flex-column text-center'>
+    <h2 className='text-center'>Pattern {patternId} Settings</h2>
     <InstrumentSelector defaultValue={instrument}
       handleChange={(compose(
         dispatch,
-        updateActivePatternInstrument,
+        updatePatternInstrument,
         eventValuePath
       ))}
       label='Instrument'
@@ -55,7 +65,7 @@ export default connectComponent(({
       min='0'
       onChange={compose(
         dispatch,
-        updateActivePatternVolume,
+        updatePatternVolume,
         Number,
         eventValuePath
       )}
@@ -70,7 +80,7 @@ export default connectComponent(({
       min='1'
       onChange={compose(
         dispatch,
-        updateActivePatternXLength,
+        updatePatternXLength,
         Number,
         eventValuePath
       )}
@@ -84,7 +94,7 @@ export default connectComponent(({
       min='1'
       onChange={compose(
         dispatch,
-        setActivePatternYLength,
+        setPatternYLength,
         Number,
         eventValuePath
       )}
@@ -98,7 +108,7 @@ export default connectComponent(({
       min='-3'
       onChange={compose(
         dispatch,
-        updateActivePatternOctave,
+        updatePatternOctave,
         Number,
         eventValuePath
       )}
@@ -108,7 +118,6 @@ export default connectComponent(({
     />
     <div>
       <span className='inline-label-text'></span>
-      <FullButton to='/controllers/pattern'>OK</FullButton>
+      <FullButton to={`/controllers/pattern/${patternId}`}>OK</FullButton>
     </div>
-  </div>
-})
+  </div>)

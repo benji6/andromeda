@@ -13,8 +13,8 @@ import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
 import store from '../../store'
 import {
-  activePatternCellClick,
-  setActivePatternActivePosition
+  patternCellClick,
+  setPatternActivePosition
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
 import FullButton from '../atoms/FullButton'
@@ -29,24 +29,24 @@ import {instrumentInstance} from '../../utils/derivedData'
 const activeNotes = new Set()
 let stopped = true
 
-const onPlay = dispatch => {
+const onPlay = (dispatch, patternId) => {
   let count = 0
   stopped = false
 
   const timeoutCallback = _ => {
     if (stopped === true) return
-    const {activePatternIndex, patterns, rootNote, scale} = store.getState()
-    const {steps, octave, xLength, yLength} = patterns[activePatternIndex]
+    const {patterns, rootNote, scale} = store.getState()
+    const {steps, octave, xLength, yLength} = patterns[patternId]
     const position = count % xLength
-    dispatch(setActivePatternActivePosition(position))
+    dispatch(setPatternActivePosition({patternId, value: position}))
     activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
       instrumentObj.inputNoteStop(id))
     activeNotes.clear()
 
     compose(
       map(({x, y}) => {
-        const {activePatternIndex, patterns, plugins} = store.getState()
-        const {instrument, volume} = patterns[activePatternIndex]
+        const {patterns, plugins} = store.getState()
+        const {instrument, volume} = patterns[patternId]
         const id = `pattern-${x}-${y}`
         const instrumentObj = instrumentInstance(instrument, plugins)
         activeNotes.add({instrumentObj, id})
@@ -68,9 +68,9 @@ const onPlay = dispatch => {
   timeoutCallback()
 }
 
-const stopVisuals = dispatch => {
+const stopVisuals = (dispatch, patternId) => {
   stopped = true
-  dispatch(setActivePatternActivePosition(null))
+  dispatch(setPatternActivePosition({patternId, value: null}))
 }
 
 const stopAudio = _ => {
@@ -89,8 +89,8 @@ const yLabel = curry(
 )
 
 const cellClickHandler = curryN(
-  4,
-  (dispatch, y, x) => dispatch(activePatternCellClick({x, y}))
+  5,
+  (dispatch, patternId, y, x) => dispatch(patternCellClick({patternId, x, y}))
 )
 
 const emptyPatternData = defaultMemoize((xLength, yLength) => map(range(0), repeat(xLength, yLength)))
@@ -103,8 +103,8 @@ const connectComponent = connect(({
   playing,
   rootNote,
   scale
-}) => {
-  const {activePosition, steps, xLength, yLength} = patterns[activePatternIndex]
+}, {params: {patternId}}) => {
+  const {activePosition, steps, xLength, yLength} = patterns[patternId]
 
   const patternData = mapIndexed(
     (x, rowIndex) => map(
@@ -117,6 +117,7 @@ const connectComponent = connect(({
   return {
     dispatch,
     patternData,
+    patternId: Number(patternId),
     playing,
     rootNote,
     scale,
@@ -127,6 +128,7 @@ const connectComponent = connect(({
 export default connectComponent(({
   dispatch,
   patternData,
+  patternId,
   playing,
   rootNote,
   scale,
@@ -134,7 +136,7 @@ export default connectComponent(({
 }) => {
   return <div>
     <Pattern {...{
-      onClick: cellClickHandler(dispatch),
+      onClick: cellClickHandler(dispatch, patternId),
       patternData,
       rootNote,
       scale,
@@ -142,12 +144,12 @@ export default connectComponent(({
     }} />
     <PlayButton
       dispatch={dispatch}
-      onPlay={partial(onPlay, [dispatch])}
-      onStop={partial(onStop, [dispatch])}
+      onPlay={partial(onPlay, [dispatch, patternId])}
+      onStop={partial(onStop, [dispatch, patternId])}
       playing={playing}
     />
     <nav>
-      <FullButton to='/controllers/pattern/settings'>Options</FullButton>
+      <FullButton to={`/controllers/pattern/${patternId}/settings`}>Options</FullButton>
     </nav>
   </div>
 })

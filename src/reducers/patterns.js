@@ -9,17 +9,16 @@ import {
   reject
 } from 'ramda'
 import {
-  ACTIVE_PATTERN_CELL_CLICK,
-  SET_ACTIVE_PATTERN_ACTIVE_POSITION,
-  SET_ACTIVE_PATTERN_Y_LENGTH,
-  UPDATE_ACTIVE_PATTERN_INSTRUMENT,
-  UPDATE_ACTIVE_PATTERN_OCTAVE,
-  UPDATE_ACTIVE_PATTERN_VOLUME,
-  UPDATE_ACTIVE_PATTERN_X_LENGTH
+  PATTERN_CELL_CLICK,
+  SET_PATTERN_ACTIVE_POSITION,
+  SET_PATTERN_Y_LENGTH,
+  UPDATE_PATTERN_INSTRUMENT,
+  UPDATE_PATTERN_OCTAVE,
+  UPDATE_PATTERN_VOLUME,
+  UPDATE_PATTERN_X_LENGTH
 } from '../actions'
-import store from '../store'
 
-const overNotes = over(lensProp('steps'))
+const overSteps = over(lensProp('steps'))
 
 export const initialState = [{
   activePosition: null,
@@ -33,35 +32,35 @@ export const initialState = [{
 
 export const stepExists = (x0, y0, steps) => any(({x, y}) => x === x0 && y === y0, steps)
 const setActivePatternProp = (
-  key, val, store, state
-) => adjust(assoc(key, val), store.getState().activePatternIndex, state)
+  key, {patternId, value}, state
+) => adjust(assoc(key, value), patternId, state)
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
-    case ACTIVE_PATTERN_CELL_CLICK: {
-      const {x, y} = payload
-      const {activePatternIndex} = store.getState()
-      const {steps} = state[activePatternIndex]
+    case PATTERN_CELL_CLICK: {
+      const {patternId, x, y} = payload
+      const xy = {x, y}
+      const {steps} = state[patternId]
       return adjust(
-        overNotes(stepExists(x, y, steps)
-          ? reject(equals(payload))
-          : append(payload)),
-        store.getState().activePatternIndex,
+        overSteps(stepExists(x, y, steps)
+          ? reject(equals(xy))
+          : append(xy)),
+        patternId,
         state
       )
     }
-    case SET_ACTIVE_PATTERN_ACTIVE_POSITION:
-      return setActivePatternProp('activePosition', payload, store, state)
-    case SET_ACTIVE_PATTERN_Y_LENGTH:
-      return setActivePatternProp('yLength', payload, store, state)
-    case UPDATE_ACTIVE_PATTERN_INSTRUMENT:
-      return setActivePatternProp('instrument', payload, store, state)
-    case UPDATE_ACTIVE_PATTERN_OCTAVE:
-      return setActivePatternProp('octave', payload, store, state)
-    case UPDATE_ACTIVE_PATTERN_X_LENGTH:
-      return setActivePatternProp('xLength', payload, store, state)
-    case UPDATE_ACTIVE_PATTERN_VOLUME:
-      return setActivePatternProp('volume', payload, store, state)
+    case SET_PATTERN_ACTIVE_POSITION:
+      return setActivePatternProp('activePosition', payload, state)
+    case SET_PATTERN_Y_LENGTH:
+      return setActivePatternProp('yLength', payload, state)
+    case UPDATE_PATTERN_INSTRUMENT:
+      return setActivePatternProp('instrument', payload, state)
+    case UPDATE_PATTERN_OCTAVE:
+      return setActivePatternProp('octave', payload, state)
+    case UPDATE_PATTERN_X_LENGTH:
+      return setActivePatternProp('xLength', payload, state)
+    case UPDATE_PATTERN_VOLUME:
+      return setActivePatternProp('volume', payload, state)
     default: return state
   }
 }
