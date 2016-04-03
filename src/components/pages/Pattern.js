@@ -135,6 +135,7 @@ export default connectComponent(({
   yLength
 }) => {
   return <div>
+    <h2 className='text-center'>{`Pattern ${patternId}`}</h2>
     <Pattern {...{
       onClick: cellClickHandler(dispatch, patternId),
       patternData,
