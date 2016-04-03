@@ -14,6 +14,7 @@ import {
   songCellClick
 } from '../../actions'
 import {mapIndexed, rawConnect} from '../../utils/helpers'
+import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
 import FullButton from '../atoms/FullButton'
 import PlayButton from '../atoms/PlayButton'
 import Pattern from '../organisms/Pattern'
@@ -109,7 +110,9 @@ export default rawConnect(({
       patternData,
       rootNote,
       scale,
-      yLabel: x => x
+      yLabel: x => <ButtonPrimarySmall to='/controllers/pattern/'>
+        {`Pattern ${x}`}
+      </ButtonPrimarySmall>
     }} />
     <PlayButton
       onPlay={partial(onPlay, [dispatch])}
