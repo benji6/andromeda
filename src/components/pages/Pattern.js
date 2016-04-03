@@ -96,6 +96,7 @@ export default rawConnect(({
   dispatch,
   instrument,
   patterns,
+  playing,
   rootNote,
   scale
 }) => {
@@ -119,8 +120,10 @@ export default rawConnect(({
       yLabel: yLabel(scale, yLength, rootNote)
     }} />
     <PlayButton
+      dispatch={dispatch}
       onPlay={partial(onPlay, [dispatch])}
       onStop={partial(onStop, [dispatch])}
+      playing={playing}
     />
     <nav>
       <FullButton to='/controllers/pattern/settings'>Options</FullButton>

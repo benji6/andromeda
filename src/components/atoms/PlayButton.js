@@ -1,12 +1,13 @@
 import React from 'react'
-import {connect} from 'react-redux'
 import {updatePlaying} from '../../actions'
 
-export default connect(x => x)(({onPlay, onStop, dispatch, playing}) =>
-  <div
+export default ({onPlay, onStop, dispatch, playing}) =>
+<div className='text-center'>
+  <button
     className={`play-button${playing ? ' play-button--playing' : ''}`}
     onClick={_ => {
       if (playing) onStop(); else onPlay()
       dispatch(updatePlaying(!playing))
     }}
-  />)
+  />
+</div>
