@@ -110,7 +110,7 @@ export default connectComponent(({
     //   onPlay={partial(onPlay, [dispatch])}
     //   onStop={partial(onStop, [dispatch])}
     // />
-}<nav>
+    }<nav>
       <FullButton to='/controllers/song/settings'>Options</FullButton>
     </nav>
   </div>
