@@ -3,11 +3,9 @@ import {
   any,
   append,
   assoc,
-  both,
   equals,
   lensProp,
   over,
-  propEq,
   reject
 } from 'ramda'
 import {
@@ -33,7 +31,7 @@ export const initialState = [{
   volume: 1 / 3
 }]
 
-export const stepExists = (steps, x, y) => any(both(propEq('x', x), propEq('y', y)), steps)
+export const stepExists = (x0, y0, steps) => any(({x, y}) => x === x0 && y === y0, steps)
 const setActivePatternProp = (
   key, val, store, state
 ) => adjust(assoc(key, val), store.getState().activePatternIndex, state)
@@ -45,7 +43,7 @@ export default (state = initialState, {type, payload}) => {
       const {activePatternIndex} = store.getState()
       const {steps} = state[activePatternIndex]
       return adjust(
-        overNotes(stepExists(steps, x, y)
+        overNotes(stepExists(x, y, steps)
           ? reject(equals(payload))
           : append(payload)),
         store.getState().activePatternIndex,

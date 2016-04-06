@@ -48,6 +48,7 @@
     "react-redux": "^4.4.1",
     "react-router": "^2.0.1",
     "redux": "^3.0.4",
+    "reselect": "^2.2.1",
     "three": "^0.75.0",
     "virtual-audio-graph": "^0.16.8"
   },

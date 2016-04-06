@@ -115,7 +115,7 @@ export default connectComponent(({
   const emptyPatternData = map(range(0), repeat(xLength, yLength))
   const patternData = mapIndexed(
     (x, rowIndex) => map(
-      colIndex => ({active: colIndex === activePosition, selected: stepExists(steps, colIndex, rowIndex)}),
+      colIndex => ({active: colIndex === activePosition, selected: stepExists(colIndex, rowIndex, steps)}),
       x
     ),
     emptyPatternData

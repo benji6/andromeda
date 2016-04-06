@@ -10,6 +10,7 @@ import {
 } from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
+import {defaultMemoize} from 'reselect'
 import store from '../../store'
 import {
   activePatternCellClick,
@@ -92,6 +93,8 @@ const cellClickHandler = curryN(
   (dispatch, y, x) => dispatch(activePatternCellClick({x, y}))
 )
 
+const emptyPatternData = defaultMemoize((xLength, yLength) => map(range(0), repeat(xLength, yLength)))
+
 const connectComponent = connect(({
   activePatternIndex,
   dispatch,
@@ -102,39 +105,33 @@ const connectComponent = connect(({
   scale
 }) => {
   const {activePosition, steps, xLength, yLength} = patterns[activePatternIndex]
+
+  const patternData = mapIndexed(
+    (x, rowIndex) => map(
+      colIndex => ({active: colIndex === activePosition, selected: stepExists(colIndex, rowIndex, steps)}),
+      x
+    ),
+    emptyPatternData(xLength, yLength)
+  )
+
   return {
-    activePosition,
     dispatch,
-    instrument,
+    patternData,
     playing,
     rootNote,
     scale,
-    steps,
-    xLength,
     yLength
   }
 })
 
 export default connectComponent(({
-  activePosition,
   dispatch,
-  instrument,
+  patternData,
   playing,
   rootNote,
   scale,
-  steps,
-  xLength,
   yLength
 }) => {
-  const emptyPatternData = map(range(0), repeat(xLength, yLength))
-  const patternData = mapIndexed(
-    (x, rowIndex) => map(
-      colIndex => ({active: colIndex === activePosition, selected: stepExists(steps, colIndex, rowIndex)}),
-      x
-    ),
-    emptyPatternData
-  )
-
   return <div>
     <Pattern {...{
       onClick: cellClickHandler(dispatch),
