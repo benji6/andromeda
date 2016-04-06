@@ -1,8 +1,9 @@
 import capitalize from 'capitalize'
 import {compose, map} from 'ramda'
 import React from 'react'
+import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
-import {eventValuePath, rawConnect} from '../../utils/helpers'
+import {eventValuePath} from '../../utils/helpers'
 import {
   setActivePatternYLength,
   updateActivePatternInstrument,
@@ -14,7 +15,19 @@ import InstrumentSelector from '../molecules/InstrumentSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import FullButton from '../atoms/FullButton'
 
-export default rawConnect(({
+const connectComponent = connect(({
+  activePatternIndex,
+  dispatch,
+  patterns,
+  plugins
+}) => ({
+  activePatternIndex,
+  dispatch,
+  patterns,
+  plugins
+}))
+
+export default connectComponent(({
   activePatternIndex,
   dispatch,
   patterns,

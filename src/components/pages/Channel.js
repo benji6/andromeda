@@ -1,12 +1,12 @@
 import {difference, head, isEmpty, map, nth, pluck, prop, tail} from 'ramda'
 import React from 'react'
+import {connect} from 'react-redux'
 import {
   addEffectToChannel,
   addInstrumentToChannel,
   removeEffectFromChannel,
   removeInstrumentFromChannel
 } from '../../actions'
-import {rawConnect} from '../../utils/helpers'
 import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
 import FullButton from '../atoms/FullButton'
 import {Cross, Plus} from '../atoms/IconButtons'
@@ -16,14 +16,26 @@ import {mapIndexed} from '../../utils/helpers'
 let selectedAddEffect = null
 let selectedAddSource = null
 
-export default rawConnect(({
+const connectComponent = connect(({
   dispatch,
-  params,
   plugins: {channels, effectInstances, instrumentInstances}
+}, {params}) => ({
+  channelId: Number(params.channelId),
+  channels,
+  dispatch,
+  effectInstances,
+  instrumentInstances
+}))
+
+export default connectComponent(({
+  channelId,
+  channels,
+  dispatch,
+  effectInstances,
+  instrumentInstances
 }) => {
-  const channelId = Number(params.channelId)
-  const sources = prop('instruments', nth(params.channelId, channels))
-  const effects = prop('effects', nth(params.channelId, channels))
+  const sources = prop('instruments', nth(channelId, channels))
+  const effects = prop('effects', nth(channelId, channels))
   const addSources = difference(pluck('name', instrumentInstances), sources)
   const addEffects = difference(pluck('name', effectInstances), effects)
   selectedAddSource = head(addSources)

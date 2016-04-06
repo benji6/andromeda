@@ -9,12 +9,13 @@ import {
   repeat
 } from 'ramda'
 import React from 'react'
+import {connect} from 'react-redux'
 import store from '../../store'
 import {
   activePatternCellClick,
   setActivePatternActivePosition
 } from '../../actions'
-import {mapIndexed, rawConnect} from '../../utils/helpers'
+import {mapIndexed} from '../../utils/helpers'
 import FullButton from '../atoms/FullButton'
 import PlayButton from '../atoms/PlayButton'
 import Pattern from '../organisms/Pattern'
@@ -91,7 +92,7 @@ const cellClickHandler = curryN(
   (dispatch, y, x) => dispatch(activePatternCellClick({x, y}))
 )
 
-export default rawConnect(({
+const connectComponent = connect(({
   activePatternIndex,
   dispatch,
   instrument,
@@ -100,8 +101,31 @@ export default rawConnect(({
   rootNote,
   scale
 }) => {
-  const activePattern = patterns[activePatternIndex]
-  const {activePosition, steps, xLength, yLength} = activePattern
+  const {activePosition, steps, xLength, yLength} = patterns[activePatternIndex]
+  return {
+    activePosition,
+    dispatch,
+    instrument,
+    playing,
+    rootNote,
+    scale,
+    steps,
+    xLength,
+    yLength
+  }
+})
+
+export default connectComponent(({
+  activePosition,
+  dispatch,
+  instrument,
+  playing,
+  rootNote,
+  scale,
+  steps,
+  xLength,
+  yLength
+}) => {
   const emptyPatternData = map(range(0), repeat(xLength, yLength))
   const patternData = mapIndexed(
     (x, rowIndex) => map(

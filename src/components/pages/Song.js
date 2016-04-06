@@ -8,12 +8,13 @@ import {
   repeat
 } from 'ramda'
 import React from 'react'
+import {connect} from 'react-redux'
 import store from '../../store'
 import {
   setSongActivePosition,
   songCellClick
 } from '../../actions'
-import {mapIndexed, rawConnect} from '../../utils/helpers'
+import {mapIndexed} from '../../utils/helpers'
 import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
 import FullButton from '../atoms/FullButton'
 import PlayButton from '../atoms/PlayButton'
@@ -86,7 +87,23 @@ const cellClickHandler = curryN(
   (dispatch, y, x) => dispatch(songCellClick({x, y}))
 )
 
-export default rawConnect(({
+const connectComponent = connect(({
+  activePatternIndex,
+  dispatch,
+  instrument,
+  patterns,
+  rootNote,
+  scale
+}) => ({
+  activePatternIndex,
+  dispatch,
+  instrument,
+  patterns,
+  rootNote,
+  scale
+}))
+
+export default connectComponent(({
   activePatternIndex,
   dispatch,
   instrument,

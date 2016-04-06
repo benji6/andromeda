@@ -1,10 +1,16 @@
 import React from 'react'
-import {rawConnect} from '../../utils/helpers'
+import {connect} from 'react-redux'
 import {effectInstance} from '../../utils/derivedData'
 import FullButton from '../atoms/FullButton'
 import PluginMount from '../atoms/PluginMount'
 
-export default rawConnect(({
+const connectComponent = connect(({plugins}, {history, params}) => ({
+  history,
+  params,
+  plugins
+}))
+
+export default connectComponent(({
   history,
   params,
   plugins

@@ -1,11 +1,16 @@
 import {always, compose, map, pluck} from 'ramda'
 import React from 'react'
-import {rawConnect} from '../../utils/helpers'
+import {connect} from 'react-redux'
 import FullButton from '../atoms/FullButton'
 import {Cross, Plus} from '../atoms/IconButtons'
 import {addChannel, removeChannel} from '../../actions'
 
-export default rawConnect(({dispatch, plugins: {channels}}) =>
+const connectComponent = connect(({dispatch, plugins: {channels}}) => ({
+  dispatch,
+  channels
+}))
+
+export default connectComponent(({dispatch, channels}) =>
   <div className='flex-column text-center'>
     {map(
       channel => <div key={channel}>

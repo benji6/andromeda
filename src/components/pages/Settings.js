@@ -1,21 +1,38 @@
 import capitalize from 'capitalize'
 import {compose, keys, map} from 'ramda'
+import {connect} from 'react-redux'
 import React from 'react'
 import {updateBpm, updateSelectedRootNote, updateSelectedScale} from '../../actions'
 import FullButton from '../atoms/FullButton'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
-import {eventValuePath, rawConnect} from '../../utils/helpers'
+import {eventValuePath} from '../../utils/helpers'
 
 const minBpm = 32
 
-export default rawConnect(({
+const connectComponent = connect(({
   bpm,
   dispatch,
   microphone,
   rootNote,
   scale: {scaleName, scales}
+}) => ({
+  bpm,
+  dispatch,
+  microphone,
+  rootNote,
+  scaleName,
+  scales
+}))
+
+export default connectComponent(({
+  bpm,
+  dispatch,
+  microphone,
+  rootNote,
+  scaleName,
+  scales
 }) =>
   <div className='settings-view'>
     <div className='flex-column text-center'>

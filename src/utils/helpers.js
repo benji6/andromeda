@@ -2,12 +2,10 @@ import {lazyMap} from './lazyIterables'
 import {
   addIndex,
   forEach,
-  identity,
   map,
   path,
   reduce
 } from 'ramda'
-import {connect} from 'react-redux'
 
 export const decimalPart = n => {
   const str = String(n)
@@ -23,4 +21,3 @@ export const lazyMapIndexed = addIndex(lazyMap)
 export const mapIndexed = addIndex(map)
 export const randomElement = xs => xs[Math.floor(Math.random() * xs.length)]
 export const reduceIndexed = addIndex(reduce)
-export const rawConnect = connect(identity)

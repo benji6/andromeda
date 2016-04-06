@@ -1,8 +1,9 @@
 import capitalize from 'capitalize'
 import {compose, map} from 'ramda'
 import React from 'react'
+import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
-import {eventValuePath, eventCheckedPath, rawConnect} from '../../utils/helpers'
+import {eventValuePath, eventCheckedPath} from '../../utils/helpers'
 import {
   updateControlPadArpeggiatorIsOn,
   updateControlPadArpeggiatorOctaves,
@@ -19,7 +20,19 @@ import RangeSelector from '../molecules/RangeSelector'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import Selector from '../molecules/Selector'
 
-export default rawConnect(({
+const connectComponent = connect(({
+  arpeggiatorPatterns,
+  controlPad,
+  dispatch,
+  plugins
+}) => ({
+  arpeggiatorPatterns,
+  controlPad,
+  dispatch,
+  plugins
+}))
+
+export default connectComponent(({
   arpeggiatorPatterns,
   controlPad,
   dispatch,

@@ -7,7 +7,7 @@ import {
   tap
 } from 'ramda'
 import React from 'react'
-import {rawConnect} from '../../utils/helpers'
+import {connect} from 'react-redux'
 import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
 import ControlPad from '../organisms/ControlPad'
 import FullButton from '../atoms/FullButton'
@@ -47,7 +47,7 @@ const createSource = curry((
   id
 }))
 
-export default rawConnect(({
+const connectComponent = connect(({
   controlPad: {
     arpeggiatorIsOn,
     instrument,
@@ -57,6 +57,26 @@ export default rawConnect(({
     range
   },
   plugins,
+  rootNote
+}) => ({
+  arpeggiatorIsOn,
+  instrument,
+  noScale,
+  octave,
+  plugins,
+  portamento,
+  range,
+  rootNote
+}))
+
+export default connectComponent(({
+  arpeggiatorIsOn,
+  instrument,
+  noScale,
+  octave,
+  plugins,
+  portamento,
+  range,
   rootNote
 }) =>
   <div>
