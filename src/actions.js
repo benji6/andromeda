@@ -16,6 +16,7 @@ export const [
   [REMOVE_EFFECT_FROM_CHANNEL, removeEffectFromChannel],
   [REMOVE_INSTRUMENT_FROM_CHANNEL, removeInstrumentFromChannel],
   [SET_PATTERN_ACTIVE_POSITION, setPatternActivePosition],
+  [SET_PATTERN_PLAYING, setPatternPlaying],
   [SET_PATTERN_Y_LENGTH, setPatternYLength],
   [SET_SONG_ACTIVE_POSITION, setSongActivePosition],
   [SONG_CELL_CLICK, songCellClick],
@@ -35,7 +36,6 @@ export const [
   [UPDATE_PATTERN_OCTAVE, updatePatternOctave],
   [UPDATE_PATTERN_VOLUME, updatePatternVolume],
   [UPDATE_PATTERN_X_LENGTH, updatePatternXLength],
-  [UPDATE_PLAYING, updatePlaying],
   [UPDATE_ROOT_NOTE, updateRootNote],
   [UPDATE_SELECTED_SCALE, updateSelectedScale]
 ] = (function * (t) { while (true) yield [t = Symbol(), createAction(t)] })()

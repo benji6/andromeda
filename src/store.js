@@ -5,7 +5,6 @@ import controlPad from './reducers/controlPad'
 import effects from './reducers/effects'
 import keyboard from './reducers/keyboard'
 import patterns from './reducers/patterns'
-import playing from './reducers/playing'
 import plugins from './reducers/plugins'
 import rootNote from './reducers/rootNote'
 import scale from './reducers/scale'
@@ -18,7 +17,6 @@ export default createStore(combineReducers({
   effects,
   keyboard,
   patterns,
-  playing,
   plugins,
   rootNote,
   scale,

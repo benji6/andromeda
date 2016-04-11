@@ -14,6 +14,7 @@ import {
   DELETE_PATTERN,
   PATTERN_CELL_CLICK,
   SET_PATTERN_ACTIVE_POSITION,
+  SET_PATTERN_PLAYING,
   SET_PATTERN_Y_LENGTH,
   UPDATE_PATTERN_INSTRUMENT,
   UPDATE_PATTERN_OCTAVE,
@@ -28,6 +29,7 @@ const defaultPattern = {
   instrument: 'Prometheus',
   steps: [],
   octave: 0,
+  playing: false,
   xLength: 8,
   yLength: 8,
   volume: 1 / 3
@@ -59,6 +61,8 @@ export default (state = initialState, {type, payload}) => {
     }
     case SET_PATTERN_ACTIVE_POSITION:
       return setActivePatternProp('activePosition', payload, state)
+    case SET_PATTERN_PLAYING:
+      return setActivePatternProp('playing', payload, state)
     case SET_PATTERN_Y_LENGTH:
       return setActivePatternProp('yLength', payload, state)
     case UPDATE_PATTERN_INSTRUMENT:

@@ -100,17 +100,16 @@ const connectComponent = connect(({
   dispatch,
   instrument,
   patterns,
-  playing,
   rootNote,
   scale
 }, {params: {patternId}}) => {
-  const {activePosition, steps, xLength, yLength} = patterns[patternId]
+  const {activePosition, playing, steps, xLength, yLength} = patterns[patternId]
 
   const patternData = mapIndexed(
-    (x, rowIndex) => map(
-      colIndex => ({active: colIndex === activePosition, selected: stepExists(colIndex, rowIndex, steps)}),
-      x
-    ),
+    (x, rowIndex) => map(colIndex => ({
+      active: colIndex === activePosition,
+      selected: stepExists(colIndex, rowIndex, steps)
+    }), x),
     emptyPatternData(xLength, yLength)
   )
 
@@ -133,8 +132,8 @@ export default connectComponent(({
   rootNote,
   scale,
   yLength
-}) => {
-  return <div>
+}) =>
+  <div>
     <h2 className='text-center'>{`Pattern ${patternId}`}</h2>
     <Pattern {...{
       onClick: cellClickHandler(dispatch, patternId),
@@ -143,14 +142,14 @@ export default connectComponent(({
       scale,
       yLabel: yLabel(scale, yLength, rootNote)
     }} />
-    <PlayButton
-      dispatch={dispatch}
-      onPlay={partial(onPlay, [dispatch, patternId])}
-      onStop={partial(onStop, [dispatch, patternId])}
-      playing={playing}
-    />
+    <PlayButton {...{
+      dispatch,
+      onPlay: partial(onPlay, [dispatch, patternId]),
+      onStop: partial(onStop, [dispatch, patternId]),
+      patternId,
+      playing
+    }} />
     <nav>
       <FullButton to={`/controllers/pattern/${patternId}/settings`}>Options</FullButton>
     </nav>
-  </div>
-})
+  </div>)

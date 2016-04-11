@@ -3,9 +3,10 @@ import test from 'tape'
 import reducer, {initialState} from './patterns'
 import {
   addNewPattern,
-  patternCellClick,
   deletePattern,
+  patternCellClick,
   setPatternActivePosition,
+  setPatternPlaying,
   setPatternYLength,
   updatePatternInstrument,
   updatePatternOctave,
@@ -17,7 +18,6 @@ const reducerName = 'patterns reducer'
 
 test(`${reducerName} returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState)
-  t.deepEqual(reducer(undefined, {}), initialState)
   t.end()
 })
 
@@ -27,6 +27,7 @@ test(`${reducerName} addNewPattern`, t => {
     instrument: 'Prometheus',
     steps: [],
     octave: 0,
+    playing: false,
     xLength: 8,
     yLength: 8,
     volume: 1 / 3
@@ -35,6 +36,7 @@ test(`${reducerName} addNewPattern`, t => {
     instrument: 'Prometheus',
     steps: [],
     octave: 0,
+    playing: false,
     xLength: 8,
     yLength: 8,
     volume: 1 / 3
@@ -44,9 +46,38 @@ test(`${reducerName} addNewPattern`, t => {
     instrument: 'Prometheus',
     steps: [],
     octave: 0,
+    playing: false,
     xLength: 8,
     yLength: 8,
     volume: 1 / 3
+  }])
+  t.end()
+})
+
+test(`${reducerName} deletePattern`, t => {
+  t.deepEqual(reducer([{
+    activePosition: null,
+    instrument: 'instrument 0',
+    steps: []
+  },
+  {
+    activePosition: null,
+    instrument: 'instrument 1',
+    steps: []
+  },
+  {
+    activePosition: null,
+    instrument: 'instrument 2',
+    steps: []
+  }], deletePattern(1)), [{
+    activePosition: null,
+    instrument: 'instrument 0',
+    steps: []
+  },
+  {
+    activePosition: null,
+    instrument: 'instrument 2',
+    steps: []
   }])
   t.end()
 })
@@ -82,30 +113,25 @@ test(`${reducerName} setPatternActivePosition`, t => {
   t.end()
 })
 
-test(`${reducerName} deletePattern`, t => {
+test(`${reducerName} setPatternPlaying`, t => {
   t.deepEqual(reducer([{
     activePosition: null,
-    instrument: 'instrument 0',
-    steps: []
-  },
-  {
+    instrument: 'Prometheus',
+    playing: false,
+    steps: [],
+    octave: 0,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  }], setPatternPlaying({patternId: 0, value: true})), [{
     activePosition: null,
-    instrument: 'instrument 1',
-    steps: []
-  },
-  {
-    activePosition: null,
-    instrument: 'instrument 2',
-    steps: []
-  }], deletePattern(1)), [{
-    activePosition: null,
-    instrument: 'instrument 0',
-    steps: []
-  },
-  {
-    activePosition: null,
-    instrument: 'instrument 2',
-    steps: []
+    instrument: 'Prometheus',
+    steps: [],
+    octave: 0,
+    playing: true,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
   }])
   t.end()
 })
