@@ -106,12 +106,12 @@ export default connectComponent(({
         patternData,
         rootNote,
         scale,
-        yLabel: x => <span>
+        yLabel: x => <div className='padding-1'>
           <Cross onClick={compose(dispatch, deletePattern, always(x))} />
           <ButtonPrimarySmall to={`/controllers/pattern/${x}`}>
             {`Pattern ${x}`}
           </ButtonPrimarySmall>
-        </span>
+        </div>
       }} />
       : null}
     {
@@ -120,7 +120,7 @@ export default connectComponent(({
     //   onStop={partial(onStop, [dispatch])}
     // />
     }
-    <div className='text-center'>
+    <div className='text-center padding-1'>
       <Plus onClick={compose(dispatch, addNewPattern)} />
       New pattern
     </div>
