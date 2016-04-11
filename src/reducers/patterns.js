@@ -24,7 +24,8 @@ import {
 
 const overSteps = over(lensProp('steps'))
 
-const defaultPattern = {
+const defaultPattern = () => ({
+  activeNotes: new Set(),
   activePosition: null,
   instrument: 'Prometheus',
   steps: [],
@@ -33,8 +34,8 @@ const defaultPattern = {
   xLength: 8,
   yLength: 8,
   volume: 1 / 3
-}
-export const initialState = [defaultPattern]
+})
+export const initialState = [defaultPattern()]
 
 export const stepExists = (x0, y0, steps) => any(({x, y}) => x === x0 && y === y0, steps)
 const setActivePatternProp = (
@@ -43,10 +44,8 @@ const setActivePatternProp = (
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
-    case ADD_NEW_PATTERN:
-      return append(defaultPattern, state)
-    case DELETE_PATTERN:
-      return remove(payload, 1, state)
+    case ADD_NEW_PATTERN: return append(defaultPattern(), state)
+    case DELETE_PATTERN: return remove(payload, 1, state)
     case PATTERN_CELL_CLICK: {
       const {patternId, x, y} = payload
       const xy = {x, y}

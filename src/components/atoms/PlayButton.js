@@ -6,8 +6,8 @@ export default ({onPlay, onStop, dispatch, patternId, playing}) =>
   <button
     className={`play-button${playing ? ' play-button--playing' : ''}`}
     onClick={_ => {
-      if (playing) onStop(); else onPlay()
       dispatch(setPatternPlaying({patternId, value: !playing}))
+      setTimeout(_ => { if (playing) onStop(); else onPlay() })
     }}
   />
 </div>

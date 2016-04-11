@@ -4,14 +4,12 @@ import {
   curryN,
   filter,
   map,
-  partial,
   range,
   repeat
 } from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
-import store from '../../store'
 import {
   patternCellClick,
   setPatternActivePosition
@@ -25,61 +23,6 @@ import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import {stepExists} from '../../reducers/patterns'
 import {instrumentInstance} from '../../utils/derivedData'
-
-const activeNotes = new Set()
-let stopped = true
-
-const onPlay = (dispatch, patternId) => {
-  let count = 0
-  stopped = false
-
-  const timeoutCallback = _ => {
-    if (stopped === true) return
-    const {patterns, rootNote, scale} = store.getState()
-    const {steps, octave, xLength, yLength} = patterns[patternId]
-    const position = count % xLength
-    dispatch(setPatternActivePosition({patternId, value: position}))
-    activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
-      instrumentObj.inputNoteStop(id))
-    activeNotes.clear()
-
-    compose(
-      map(({x, y}) => {
-        const {patterns, plugins} = store.getState()
-        const {instrument, volume} = patterns[patternId]
-        const id = `pattern-${x}-${y}`
-        const instrumentObj = instrumentInstance(instrument, plugins)
-        activeNotes.add({instrumentObj, id})
-        instrumentObj.inputNoteStart({
-          frequency: pitchToFrequency(pitchFromScaleIndex(
-            scale.scales[scale.scaleName],
-            yLength - 1 - y + scale.scales[scale.scaleName].length * octave
-          ) + rootNote),
-          gain: volume,
-          id
-        })
-      }),
-      filter(({x}) => x === position)
-    )(steps)
-
-    count++
-    setTimeout(timeoutCallback, 60000 / store.getState().bpm)
-  }
-  timeoutCallback()
-}
-
-const stopVisuals = (dispatch, patternId) => {
-  stopped = true
-  dispatch(setPatternActivePosition({patternId, value: null}))
-}
-
-const stopAudio = _ => {
-  activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
-    instrumentObj.inputNoteStop(id))
-  activeNotes.clear()
-}
-
-const onStop = compose(stopAudio, stopVisuals)
 
 const yLabel = curry(
   (scale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
@@ -97,13 +40,24 @@ const emptyPatternData = defaultMemoize((xLength, yLength) => map(range(0), repe
 
 const connectComponent = connect(({
   activePatternIndex,
+  bpm,
   dispatch,
-  instrument,
   patterns,
+  plugins,
   rootNote,
   scale
 }, {params: {patternId}}) => {
-  const {activePosition, playing, steps, xLength, yLength} = patterns[patternId]
+  const {
+    activeNotes,
+    activePosition,
+    instrument,
+    octave,
+    playing,
+    steps,
+    volume,
+    xLength,
+    yLength
+  } = patterns[patternId]
 
   const patternData = mapIndexed(
     (x, rowIndex) => map(colIndex => ({
@@ -114,42 +68,118 @@ const connectComponent = connect(({
   )
 
   return {
+    activeNotes,
+    bpm,
     dispatch,
+    instrument,
+    octave,
     patternData,
     patternId: Number(patternId),
     playing,
+    plugins,
     rootNote,
     scale,
+    steps,
+    volume,
+    xLength,
     yLength
   }
 })
 
-export default connectComponent(({
-  dispatch,
-  patternData,
-  patternId,
-  playing,
-  rootNote,
-  scale,
-  yLength
-}) =>
-  <div>
-    <h2 className='text-center'>{`Pattern ${patternId}`}</h2>
-    <Pattern {...{
-      onClick: cellClickHandler(dispatch, patternId),
+export default connectComponent(class extends React.Component {
+  onPlay () {
+    let count = 0
+    const timeoutCallback = _ => {
+      if (this.props.playing !== true) return
+      const {
+        activeNotes,
+        octave,
+        patternId,
+        rootNote,
+        scale,
+        steps,
+        xLength,
+        yLength
+      } = this.props
+      const position = count % xLength
+      this.props.dispatch(setPatternActivePosition({patternId, value: position}))
+      activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
+        instrumentObj.inputNoteStop(id))
+      activeNotes.clear()
+
+      compose(
+        map(({x, y}) => {
+          const {instrument, plugins, volume} = this.props
+          const id = `pattern-${patternId}-${x}-${y}`
+          const instrumentObj = instrumentInstance(instrument, plugins)
+          activeNotes.add({instrumentObj, id})
+          instrumentObj.inputNoteStart({
+            frequency: pitchToFrequency(pitchFromScaleIndex(
+              scale.scales[scale.scaleName],
+              yLength - 1 - y + scale.scales[scale.scaleName].length * octave
+            ) + rootNote),
+            gain: volume,
+            id
+          })
+        }),
+        filter(({x}) => x === position)
+      )(steps)
+
+      count++
+      setTimeout(timeoutCallback, 60000 / this.props.bpm)
+    }
+    timeoutCallback()
+  }
+
+  onStop () {
+    this.stopAudio()
+    this.stopVisuals()
+  }
+
+  stopAudio () {
+    const {activeNotes} = this.props
+    activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
+      instrumentObj.inputNoteStop(id))
+    activeNotes.clear()
+  }
+
+  stopVisuals () {
+    this.props.dispatch(setPatternActivePosition({
+      patternId: this.props.patternId,
+      value: null
+    }))
+  }
+
+  render () {
+    const {
+      dispatch,
       patternData,
+      patternId,
+      playing,
       rootNote,
       scale,
-      yLabel: yLabel(scale, yLength, rootNote)
-    }} />
-    <PlayButton {...{
-      dispatch,
-      onPlay: partial(onPlay, [dispatch, patternId]),
-      onStop: partial(onStop, [dispatch, patternId]),
-      patternId,
-      playing
-    }} />
-    <nav>
-      <FullButton to={`/controllers/pattern/${patternId}/settings`}>Options</FullButton>
-    </nav>
-  </div>)
+      yLength
+    } = this.props
+
+    return <div>
+      <h2 className='text-center'>{`Pattern ${patternId}`}</h2>
+      <Pattern {...{
+        onClick: cellClickHandler(dispatch, patternId),
+        patternData,
+        rootNote,
+        scale,
+        yLabel: yLabel(scale, yLength, rootNote)
+      }} />
+      <PlayButton {...{
+        dispatch,
+        onPlay: ::this.onPlay,
+        onStop: ::this.onStop,
+        patternId,
+        playing
+      }} />
+      <nav>
+        <FullButton to={`/controllers/pattern/${patternId}/settings`}>Options</FullButton>
+      </nav>
+    </div>
+  }
+})
