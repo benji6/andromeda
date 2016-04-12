@@ -23,6 +23,7 @@ import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import {stepExists} from '../../reducers/patterns'
 import {instrumentInstance} from '../../utils/derivedData'
+import store from '../../store'
 
 const yLabel = curry(
   (scale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
@@ -31,12 +32,11 @@ const yLabel = curry(
   ) + rootNote)
 )
 
-const cellClickHandler = curryN(
-  5,
-  (dispatch, patternId, y, x) => dispatch(patternCellClick({patternId, x, y}))
-)
+const cellClickHandler = curryN(5, (dispatch, patternId, y, x) =>
+  dispatch(patternCellClick({patternId, x, y})))
 
-const emptyPatternData = defaultMemoize((xLength, yLength) => map(range(0), repeat(xLength, yLength)))
+const emptyPatternData = defaultMemoize((xLength, yLength) =>
+  map(range(0), repeat(xLength, yLength)))
 
 const connectComponent = connect(({
   activePatternIndex,
@@ -90,7 +90,9 @@ export default connectComponent(class extends React.Component {
   onPlay () {
     let count = 0
     const timeoutCallback = _ => {
-      if (this.props.playing !== true) return
+      if (store.getState().patterns[this.props.patternId].playing !== true) {
+        return
+      }
       const {
         activeNotes,
         octave,
@@ -178,7 +180,9 @@ export default connectComponent(class extends React.Component {
         playing
       }} />
       <nav>
-        <FullButton to={`/controllers/pattern/${patternId}/settings`}>Options</FullButton>
+        <FullButton to={`/controllers/pattern/${patternId}/settings`}>
+          Options
+        </FullButton>
       </nav>
     </div>
   }
