@@ -10,6 +10,7 @@ const feedbacks = new WeakMap()
 const highCuts = new WeakMap()
 const lowCuts = new WeakMap()
 const outputs = new WeakMap()
+const pingPongs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 const wetLevels = new WeakMap()
 
@@ -26,7 +27,7 @@ const updateAudioGraph = function () {
     2: ['stereoPanner', 0, {pan: 1}],
     3: ['delay', [2, 8], {maxDelayTime, delayTime: delayTimes.get(this)}],
     4: ['gain', 3, {gain: feedbacks.get(this)}],
-    5: ['delay', [1, 3], {maxDelayTime, delayTime: delayTimes.get(this)}],
+    5: ['delay', pingPongs.get(this) ? [1, 3] : [0, 8], {maxDelayTime, delayTime: delayTimes.get(this)}],
     6: ['biquadFilter', 5, {frequency: highCuts.get(this)}],
     7: ['biquadFilter', 6, {frequency: lowCuts.get(this), type: 'highpass'}],
     8: ['gain', 7, {gain: feedbacks.get(this)}],
@@ -46,6 +47,7 @@ export default class {
     highCuts.set(this, 16000)
     lowCuts.set(this, 50)
     outputs.set(this, output)
+    pingPongs.set(this, true)
     virtualAudioGraphs.set(this, virtualAudioGraph)
     wetLevels.set(this, 1)
 
@@ -63,6 +65,17 @@ export default class {
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Delay</h2>
+        <ControlContainer>
+          Ping pong&nbsp;
+          <input
+            defaultChecked={pingPongs.get(this)}
+            onChange={e => {
+              pingPongs.set(this, e.target.checked)
+              updateAudioGraph.call(this)
+            }}
+            type='checkbox'
+          />
+        </ControlContainer>
         <ControlContainer>
           Dry level&nbsp;
           <input
