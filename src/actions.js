@@ -1,7 +1,7 @@
-function* createActions () {
+const createActions = function * () {
   const createAction = type => payload => ({type, payload})
   while (true) {
-    let sym = Symbol()
+    const sym = Symbol()
     yield [sym, createAction(sym)]
   }
 }

@@ -53,7 +53,7 @@ export default class {
     selectedSamples.set(this, selectedSample)
   }
   connect (destination) { outputs.get(this).connect(destination) }
-  disconnect (destination) { outputs.get(this).disconnect() }
+  disconnect (destination) { outputs.get(this).disconnect(destination) }
   inputNoteStart ({frequency}) {
     const source = audioContexts.get(this).createBufferSource()
     source.buffer = buffers.get(this)
