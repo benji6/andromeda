@@ -23,6 +23,7 @@ test(`${reducerName} returns initial state`, t => {
 
 test(`${reducerName} addNewPattern`, t => {
   t.deepEqual(reducer([{
+    activeNotes: new Set(),
     activePosition: null,
     instrument: 'Prometheus',
     steps: [],
@@ -32,6 +33,7 @@ test(`${reducerName} addNewPattern`, t => {
     yLength: 8,
     volume: 1 / 3
   }], addNewPattern()), [{
+    activeNotes: new Set(),
     activePosition: null,
     instrument: 'Prometheus',
     steps: [],
@@ -42,6 +44,7 @@ test(`${reducerName} addNewPattern`, t => {
     volume: 1 / 3
   },
   {
+    activeNotes: new Set(),
     activePosition: null,
     instrument: 'Prometheus',
     steps: [],
