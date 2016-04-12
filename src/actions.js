@@ -1,4 +1,10 @@
-const createAction = type => payload => ({type, payload})
+function* createActions () {
+  const createAction = type => payload => ({type, payload})
+  while (true) {
+    let sym = Symbol()
+    yield [sym, createAction(sym)]
+  }
+}
 
 export const [
   [ADD_CHANNEL, addChannel],
@@ -38,4 +44,4 @@ export const [
   [UPDATE_PATTERN_X_LENGTH, updatePatternXLength],
   [UPDATE_ROOT_NOTE, updateRootNote],
   [UPDATE_SELECTED_SCALE, updateSelectedScale]
-] = (function * (t) { while (true) yield [t = Symbol(), createAction(t)] })()
+] = createActions()
