@@ -42,7 +42,7 @@ export default class {
     outputs.get(this).connect(destination)
   }
   disconnect (destination) {
-    outputs.get(this).disconnect()
+    outputs.get(this).disconnect(destination)
   }
   inputNoteStart ({frequency, gain, id, startTime, stopTime}) {
     const newNodes = {

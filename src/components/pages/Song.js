@@ -83,9 +83,7 @@ const connectComponent = connect(({
 }))
 
 export default connectComponent(({
-  activePatternIndex,
   dispatch,
-  instrument,
   patterns,
   rootNote,
   scale

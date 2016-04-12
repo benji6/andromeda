@@ -71,7 +71,7 @@ export default class {
     })
     loadAllReverbs
       .then(x => virtualAudioGraph.defineNodes(x))
-      .then(x => updateAudioGraph.call(this))
+      .then(_ => updateAudioGraph.call(this))
       .then(_ => {
         const containerEl = containerEls.get(this)
         if (containerEl) this.render(containerEls.get(this))
@@ -83,7 +83,7 @@ export default class {
     outputs.get(this).connect(destination)
   }
   disconnect (destination) {
-    outputs.get(this).disconnect()
+    outputs.get(this).disconnect(destination)
   }
   render (containerEl) {
     containerEls.set(this, containerEl)

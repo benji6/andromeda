@@ -29,7 +29,6 @@ const connectComponent = connect(({
 export default connectComponent(({
   bpm,
   dispatch,
-  microphone,
   rootNote,
   scaleName,
   scales

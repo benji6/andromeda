@@ -64,7 +64,7 @@ const type5 = _ => Float32Array.from({length: samples}, (_, i) => {
 })
 
 const type6 = amount => {
-  var a = 2 + Math.round(amount * 14)
+  const a = 2 + Math.round(amount * 14)
   const bits = Math.round(Math.pow(2, a - 1))
   return Float32Array.from({length: samples}, (_, i) => {
     const x = i * 2 / samples - 1
@@ -105,7 +105,7 @@ export default class {
     outputGainNodes.get(this).connect(destination)
   }
   disconnect (destination) {
-    outputGainNodes.get(this).disconnect()
+    outputGainNodes.get(this).disconnect(destination)
   }
   render (containerEl) {
     ReactDOM.render(

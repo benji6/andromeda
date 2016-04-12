@@ -27,7 +27,7 @@ export default class {
     gainNodes.get(this).connect(destination)
   }
   disconnect (destination) {
-    gainNodes.get(this).disconnect()
+    gainNodes.get(this).disconnect(destination)
   }
   render (containerEl) {
     ReactDOM.render(
