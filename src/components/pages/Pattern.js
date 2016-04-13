@@ -106,7 +106,7 @@ export default connectComponent(class extends React.Component {
 
       if (playing !== true) return
 
-      const {rootNote, scale} = state
+      const {bpm, rootNote, scale} = state
 
       const position = count % xLength
       this.props.dispatch(setPatternActivePosition({patternId, value: position}))
@@ -133,7 +133,7 @@ export default connectComponent(class extends React.Component {
       )(steps)
 
       count++
-      setTimeout(timeoutCallback, 60000 / this.props.bpm)
+      setTimeout(timeoutCallback, 60000 / bpm)
     }
     timeoutCallback()
   }
