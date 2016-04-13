@@ -9,7 +9,7 @@ import {
 } from '../../actions'
 import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
 import FullButton from '../atoms/FullButton'
-import {Cross, Plus} from '../atoms/IconButtons'
+import {Cross, Plus} from '../atoms/ButtonIcons'
 import FullSelect from '../atoms/FullSelect'
 import {mapIndexed} from '../../utils/helpers'
 

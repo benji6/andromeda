@@ -2,7 +2,7 @@ import {always, compose, map, pluck} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import FullButton from '../atoms/FullButton'
-import {Cross, Plus} from '../atoms/IconButtons'
+import {Cross, Plus} from '../atoms/ButtonIcons'
 import {addChannel, removeChannel} from '../../actions'
 
 const connectComponent = connect(({dispatch, plugins: {channels}}) => ({
@@ -22,7 +22,6 @@ export default connectComponent(({dispatch, channels}) =>
       pluck('name', channels)
     )}
     <div>
-      Add New Channel
-      <Plus onClick={compose(dispatch, addChannel)}/>
+      <Plus onClick={compose(dispatch, addChannel)}>Add new channel</Plus>
     </div>
   </div>)

@@ -3,7 +3,6 @@ import {
   compose,
   curryN,
   map,
-  // partial,
   range,
   repeat
 } from 'ramda'
@@ -13,53 +12,14 @@ import store from '../../store'
 import {
   addNewPattern,
   deletePattern,
-  // setSongActivePosition,
   songCellClick
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
 import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
 import FullButton from '../atoms/FullButton'
-// import PlayButton from '../atoms/PlayButton'
 import Pattern from '../organisms/Pattern'
 import {stepExists} from '../../reducers/patterns'
-import {Cross, Plus} from '../atoms/IconButtons'
-
-// const activeNotes = new Set()
-
-// let stopped = true
-
-// const onPlay = dispatch => {
-//   const {xLength} = store.getState().song
-//   let count = 0
-//   stopped = false
-//
-//   const timeoutCallback = _ => {
-//     if (stopped === true) return
-//
-//     const position = count % xLength
-//     dispatch(setSongActivePosition(position))
-//     activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
-//       instrumentObj.inputNoteStop(id))
-//     activeNotes.clear()
-//
-//     count++
-//     setTimeout(timeoutCallback, 60000 / store.getState().bpm)
-//   }
-//   timeoutCallback()
-// }
-
-// const stopVisuals = dispatch => {
-//   stopped = true
-//   dispatch(setSongActivePosition(null))
-// }
-
-// const stopAudio = _ => {
-//   activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
-//     instrumentObj.inputNoteStop(id))
-//   activeNotes.clear()
-// }
-
-// const onStop = compose(stopAudio, stopVisuals)
+import {Cross, Plus} from '../atoms/ButtonIcons'
 
 const cellClickHandler = curryN(
   4,
@@ -112,15 +72,8 @@ export default connectComponent(({
         </div>
       }} />
       : null}
-    {
-    // <PlayButton
-    //   onPlay={partial(onPlay, [dispatch])}
-    //   onStop={partial(onStop, [dispatch])}
-    // />
-    }
     <div className='text-center padding-1'>
-      <Plus onClick={compose(dispatch, addNewPattern)} />
-      New pattern
+      <Plus onClick={compose(dispatch, addNewPattern)}>New pattern</Plus>
     </div>
     <nav>
       <FullButton to='/controllers/song/settings'>Options</FullButton>
