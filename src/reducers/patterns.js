@@ -38,7 +38,7 @@ const defaultPattern = () => ({
 export const initialState = [defaultPattern()]
 
 export const stepExists = (x0, y0, steps) => any(({x, y}) => x === x0 && y === y0, steps)
-const setActivePatternProp = (
+const setPatternProp = (
   key, {patternId, value}, state
 ) => adjust(assoc(key, value), patternId, state)
 
@@ -59,19 +59,19 @@ export default (state = initialState, {type, payload}) => {
       )
     }
     case SET_PATTERN_ACTIVE_POSITION:
-      return setActivePatternProp('activePosition', payload, state)
+      return setPatternProp('activePosition', payload, state)
     case SET_PATTERN_PLAYING:
-      return setActivePatternProp('playing', payload, state)
+      return setPatternProp('playing', payload, state)
     case SET_PATTERN_Y_LENGTH:
-      return setActivePatternProp('yLength', payload, state)
+      return setPatternProp('yLength', payload, state)
     case UPDATE_PATTERN_INSTRUMENT:
-      return setActivePatternProp('instrument', payload, state)
+      return setPatternProp('instrument', payload, state)
     case UPDATE_PATTERN_OCTAVE:
-      return setActivePatternProp('octave', payload, state)
+      return setPatternProp('octave', payload, state)
     case UPDATE_PATTERN_X_LENGTH:
-      return setActivePatternProp('xLength', payload, state)
+      return setPatternProp('xLength', payload, state)
     case UPDATE_PATTERN_VOLUME:
-      return setActivePatternProp('volume', payload, state)
+      return setPatternProp('volume', payload, state)
     default: return state
   }
 }

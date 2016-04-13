@@ -1,9 +1,8 @@
 import capitalize from 'capitalize'
-import {compose, map} from 'ramda'
+import {map} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
-import {eventValuePath} from '../../utils/helpers'
 import {
   setPatternYLength,
   updatePatternInstrument,
@@ -27,7 +26,7 @@ const connectComponent = connect(({
     dispatch,
     instrument,
     octave,
-    patternId,
+    patternId: Number(patternId),
     plugins,
     volume,
     xLength,
@@ -48,11 +47,10 @@ export default connectComponent(({
   <div className='flex-column text-center'>
     <h2 className='text-center'>Pattern {patternId} Settings</h2>
     <InstrumentSelector defaultValue={instrument}
-      handleChange={(compose(
-        dispatch,
-        updatePatternInstrument,
-        eventValuePath
-      ))}
+      handleChange={e => dispatch(updatePatternInstrument({
+        patternId,
+        value: e.target.value,
+      }))}
       label='Instrument'
       options={map(
         instr => ({text: capitalize.words(instr), value: instr}),
@@ -63,12 +61,10 @@ export default connectComponent(({
       key='2'
       max='1'
       min='0'
-      onChange={compose(
-        dispatch,
-        updatePatternVolume,
-        Number,
-        eventValuePath
-      )}
+      onChange={e => dispatch(updatePatternVolume({
+        patternId,
+        value: Number(e.target.value),
+      }))}
       output={Math.round(volume * 100)}
       step='0.01'
       text='Volume'
@@ -78,12 +74,10 @@ export default connectComponent(({
       key='3'
       max='16'
       min='1'
-      onChange={compose(
-        dispatch,
-        updatePatternXLength,
-        Number,
-        eventValuePath
-      )}
+      onChange={e => dispatch(updatePatternXLength({
+        patternId,
+        value: Number(e.target.value),
+      }))}
       output={String(xLength)}
       text='Length'
       value={xLength}
@@ -92,12 +86,10 @@ export default connectComponent(({
       key='4'
       max='16'
       min='1'
-      onChange={compose(
-        dispatch,
-        setPatternYLength,
-        Number,
-        eventValuePath
-      )}
+      onChange={e => dispatch(setPatternYLength({
+        patternId,
+        value: Number(e.target.value),
+      }))}
       output={String(yLength)}
       text='Height'
       value={yLength}
@@ -106,12 +98,10 @@ export default connectComponent(({
       key='5'
       max='2'
       min='-3'
-      onChange={compose(
-        dispatch,
-        updatePatternOctave,
-        Number,
-        eventValuePath
-      )}
+      onChange={e => dispatch(updatePatternOctave({
+        patternId,
+        value: Number(e.target.value),
+      }))}
       output={octave}
       text='Octave'
       value={octave}

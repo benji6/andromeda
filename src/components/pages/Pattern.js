@@ -89,20 +89,25 @@ const connectComponent = connect(({
 export default connectComponent(class extends React.Component {
   onPlay () {
     let count = 0
+    const {patternId} = this.props
+
     const timeoutCallback = _ => {
-      if (store.getState().patterns[this.props.patternId].playing !== true) {
-        return
-      }
+      const state = store.getState()
       const {
         activeNotes,
+        instrument,
         octave,
-        patternId,
-        rootNote,
-        scale,
+        playing,
         steps,
+        volume,
         xLength,
-        yLength
-      } = this.props
+        yLength,
+      } = state.patterns[patternId]
+
+      if (playing !== true) return
+
+      const {rootNote, scale} = state
+
       const position = count % xLength
       this.props.dispatch(setPatternActivePosition({patternId, value: position}))
       activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
@@ -111,7 +116,7 @@ export default connectComponent(class extends React.Component {
 
       compose(
         map(({x, y}) => {
-          const {instrument, plugins, volume} = this.props
+          const {plugins} = this.props
           const id = `pattern-${patternId}-${x}-${y}`
           const instrumentObj = instrumentInstance(instrument, plugins)
           activeNotes.add({instrumentObj, id})
