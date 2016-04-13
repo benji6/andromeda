@@ -22,8 +22,8 @@ export default <Router history={hashHistory}>
     <Route path='/controllers/control-pad' component={ControlPad} />
     <Route path='/controllers/control-pad/settings' component={ControlPadSettings} />
     <Route path='/controllers/keyboard/settings' component={KeyboardSettings} />
-    <Route path='/controllers/pattern' component={Pattern} />
-    <Route path='/controllers/pattern/settings' component={PatternSettings} />
+    <Route path='/controllers/pattern/:patternId' component={Pattern} />
+    <Route path='/controllers/pattern/:patternId/settings' component={PatternSettings} />
     <Route path='/controllers/song' component={Song} />
     <Route path='/controllers/song/settings' component={SongSettings} />
     <Route path='/plugins/effects/:name' component={Effect} />

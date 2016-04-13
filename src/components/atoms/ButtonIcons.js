@@ -1,8 +1,8 @@
 import React from 'react'
 
-const createButton = (modifier, text) => ({...props}) =>
+const createButton = (modifier, text) => ({children, ...props}) =>
   <button className={`icon-button icon-button--${modifier}`} {...props}>
-    {text}
+    {text} <span className={'font-size-1'}>{children}</span>
   </button>
 
 export const Cross = createButton('red-hover', 'x')

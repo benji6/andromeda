@@ -15,8 +15,7 @@ import {
 
 export const initialState = {
   activePosition: null,
-  xLength: 4,
-  yLength: 1,
+  xLength: 0,
   steps: []
 }
 

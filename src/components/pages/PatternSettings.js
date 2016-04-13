@@ -1,15 +1,14 @@
 import capitalize from 'capitalize'
-import {compose, map} from 'ramda'
+import {map} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
-import {eventValuePath} from '../../utils/helpers'
 import {
-  setActivePatternYLength,
-  updateActivePatternInstrument,
-  updateActivePatternOctave,
-  updateActivePatternVolume,
-  updateActivePatternXLength
+  setPatternYLength,
+  updatePatternInstrument,
+  updatePatternOctave,
+  updatePatternVolume,
+  updatePatternXLength
 } from '../../actions'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import RangeSelector from '../molecules/RangeSelector'
@@ -20,29 +19,38 @@ const connectComponent = connect(({
   dispatch,
   patterns,
   plugins
-}) => ({
-  activePatternIndex,
-  dispatch,
-  patterns,
-  plugins
-}))
+}, {params: {patternId}}) => {
+  const activePattern = patterns[patternId]
+  const {instrument, octave, xLength, yLength, volume} = activePattern
+  return {
+    dispatch,
+    instrument,
+    octave,
+    patternId: Number(patternId),
+    plugins,
+    volume,
+    xLength,
+    yLength
+  }
+})
 
 export default connectComponent(({
-  activePatternIndex,
   dispatch,
-  patterns,
-  plugins
-}) => {
-  const activePattern = patterns[activePatternIndex]
-  const {instrument, octave, xLength, yLength, volume} = activePattern
-  return <div className='flex-column text-center'>
-    <h2 className='text-center'>Pattern Settings</h2>
+  instrument,
+  octave,
+  patternId,
+  plugins,
+  volume,
+  xLength,
+  yLength
+}) =>
+  <div className='flex-column text-center'>
+    <h2 className='text-center'>Pattern {patternId} Settings</h2>
     <InstrumentSelector defaultValue={instrument}
-      handleChange={(compose(
-        dispatch,
-        updateActivePatternInstrument,
-        eventValuePath
-      ))}
+      handleChange={e => dispatch(updatePatternInstrument({
+        patternId,
+        value: e.target.value,
+      }))}
       label='Instrument'
       options={map(
         instr => ({text: capitalize.words(instr), value: instr}),
@@ -53,12 +61,10 @@ export default connectComponent(({
       key='2'
       max='1'
       min='0'
-      onChange={compose(
-        dispatch,
-        updateActivePatternVolume,
-        Number,
-        eventValuePath
-      )}
+      onChange={e => dispatch(updatePatternVolume({
+        patternId,
+        value: Number(e.target.value),
+      }))}
       output={Math.round(volume * 100)}
       step='0.01'
       text='Volume'
@@ -68,12 +74,10 @@ export default connectComponent(({
       key='3'
       max='16'
       min='1'
-      onChange={compose(
-        dispatch,
-        updateActivePatternXLength,
-        Number,
-        eventValuePath
-      )}
+      onChange={e => dispatch(updatePatternXLength({
+        patternId,
+        value: Number(e.target.value),
+      }))}
       output={String(xLength)}
       text='Length'
       value={xLength}
@@ -82,12 +86,10 @@ export default connectComponent(({
       key='4'
       max='16'
       min='1'
-      onChange={compose(
-        dispatch,
-        setActivePatternYLength,
-        Number,
-        eventValuePath
-      )}
+      onChange={e => dispatch(setPatternYLength({
+        patternId,
+        value: Number(e.target.value),
+      }))}
       output={String(yLength)}
       text='Height'
       value={yLength}
@@ -96,19 +98,16 @@ export default connectComponent(({
       key='5'
       max='2'
       min='-3'
-      onChange={compose(
-        dispatch,
-        updateActivePatternOctave,
-        Number,
-        eventValuePath
-      )}
+      onChange={e => dispatch(updatePatternOctave({
+        patternId,
+        value: Number(e.target.value),
+      }))}
       output={octave}
       text='Octave'
       value={octave}
     />
     <div>
       <span className='inline-label-text'></span>
-      <FullButton to='/controllers/pattern'>OK</FullButton>
+      <FullButton to={`/controllers/pattern/${patternId}`}>OK</FullButton>
     </div>
-  </div>
-})
+  </div>)

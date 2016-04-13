@@ -8,11 +8,12 @@
     "build": "rm -rf dist && mkdir dist && concurrently 'npm run assets' 'npm run html' 'npm run scripts' 'npm run styles' && find dist -type f -exec gzip -9 {} \\; -exec mv {}.gz {} \\;",
     "deploy": "concurrently 'npm t' 'npm run build' && aws s3 cp --recursive dist s3://elemental.audio --acl \"public-read\" --content-encoding \"gzip\"",
     "html": "html-minifier --collapse-whitespace -o dist/index.html src/index.html",
+    "lint": "eslint src",
     "scripts": "browserify -t babelify src/index.js | sed 's/process.env.NODE_ENV/\"production\"/g' | sed 's/buckets\\/elemental-reverb/http:\\/\\/elemental-reverb.s3-website-eu-west-1.amazonaws.com/g' | sed 's/buckets\\/elemental-samples/http:\\/\\/elemental-samples.s3-website-eu-west-1.amazonaws.com/g' | uglifyjs -cm --screw-ie8 > dist/index.js",
     "serve": "live-server dist",
     "start": "mkdir -p dist && concurrently 'npm run watch-assets' 'npm run watch-buckets' 'npm run watch-html' 'npm run watch-scripts' 'npm run watch-styles' 'npm run serve'",
     "styles": "node-sass src/index.scss --output-style compressed -x | cleancss -o dist/index.css",
-    "test": "concurrently 'standard' 'babel-node node_modules/.bin/tape 'src/**/*-spec.js' | faucet'",
+    "test": "concurrently 'npm run lint' 'babel-node node_modules/.bin/tape 'src/**/*-spec.js' | faucet'",
     "watch-assets": "nodemon --watch src/assets -e ico,jpg,png,svg,wav --exec npm run assets",
     "watch-buckets": "nodemon --watch buckets -e ico,jpg,png,svg,wav --exec npm run buckets",
     "watch-html": "nodemon --watch src/index.html --exec npm run html",
@@ -45,17 +46,17 @@
     "randomcolor": "^0.4.4",
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
-    "react-redux": "^4.4.2",
+    "react-redux": "^4.4.4",
     "react-router": "^2.1.1",
     "redux": "^3.4.0",
     "reselect": "^2.3.0",
     "three": "^0.75.0",
-    "virtual-audio-graph": "^0.16.8"
+    "virtual-audio-graph": "^0.16.9"
   },
   "devDependencies": {
     "babel": "^6.3.26",
     "babel-cli": "^6.7.5",
-    "babel-eslint": "^4.1.3",
+    "babel-eslint": "^6.0.2",
     "babel-plugin-ramda": "^1.0.0",
     "babel-plugin-transform-runtime": "^6.7.5",
     "babel-preset-es2015": "^6.3.13",
@@ -66,17 +67,15 @@
     "browserify": "^13.0.0",
     "clean-css": "^3.4.12",
     "concurrently": "^2.0.0",
+    "eslint": "^2.7.0",
+    "eslint-plugin-react": "^4.3.0",
     "faucet": "0.0.1",
     "html-minifier": "^1.5.0",
     "node-sass": "^3.4.2",
     "nodemon": "^1.8.1",
-    "standard": "^5.4.1",
     "tape": "^4.5.1",
     "uglify-js": "^2.6.1",
     "watchify": "^3.5.0",
     "web-audio-test-api": "^0.5.2"
-  },
-  "standard": {
-    "parser": "babel-eslint"
   }
 }

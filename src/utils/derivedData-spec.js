@@ -18,7 +18,7 @@ test('derivedData - arpeggiatedScale', t => {
   t.deepEqual(
     [...take(16, arpeggiatedScale({
       arpeggiatorPatterns: {
-        'up': cycle
+        up: cycle
       },
       scale: {
         scaleName: 'major',
@@ -36,7 +36,7 @@ test('derivedData - arpeggiatedScale', t => {
   t.deepEqual(
     [...take(16, arpeggiatedScale({
       arpeggiatorPatterns: {
-        'up': cycle
+        up: cycle
       },
       scale: {
         scaleName: 'major',

@@ -2,52 +2,144 @@ import 'web-audio-test-api'
 import test from 'tape'
 import reducer, {initialState} from './patterns'
 import {
-  activePatternCellClick,
-  setActivePatternActivePosition,
-  setActivePatternYLength,
-  updateActivePatternInstrument,
-  updateActivePatternOctave,
-  updateActivePatternVolume,
-  updateActivePatternXLength
+  addNewPattern,
+  deletePattern,
+  patternCellClick,
+  setPatternActivePosition,
+  setPatternPlaying,
+  setPatternYLength,
+  updatePatternInstrument,
+  updatePatternOctave,
+  updatePatternVolume,
+  updatePatternXLength,
 } from '../actions'
 
-const reducerName = 'patterns'
+const reducerName = 'patterns reducer'
 
-test(`${reducerName} reducer returns initial state`, t => {
+test(`${reducerName} returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState)
-  t.deepEqual(reducer(undefined, {}), initialState)
   t.end()
 })
 
-test(`${reducerName} reducer handles active pattern cell click`, t => {
-  const activePatternIndex = 0
-  const activePattern = initialState[activePatternIndex]
-  const payload = {x: 1, y: 2}
-  const testState = [...initialState.slice(0, activePatternIndex),
-                     {...activePattern, steps: [payload]},
-                     ...initialState.slice(activePatternIndex + 1)]
-  t.deepEqual(reducer(undefined, activePatternCellClick(payload)),
-              testState)
-  t.deepEqual(reducer(testState, activePatternCellClick(payload)),
-              [...initialState.slice(0, activePatternIndex),
-               {...activePattern, steps: []},
-               ...initialState.slice(activePatternIndex + 1)])
+test(`${reducerName} addNewPattern`, t => {
+  t.deepEqual(reducer([{
+    activeNotes: new Set(),
+    activePosition: null,
+    instrument: 'Prometheus',
+    steps: [],
+    octave: 0,
+    playing: false,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  }], addNewPattern()), [{
+    activeNotes: new Set(),
+    activePosition: null,
+    instrument: 'Prometheus',
+    steps: [],
+    octave: 0,
+    playing: false,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  },
+  {
+    activeNotes: new Set(),
+    activePosition: null,
+    instrument: 'Prometheus',
+    steps: [],
+    octave: 0,
+    playing: false,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  }])
   t.end()
 })
 
-test(`${reducerName} reducer updates active pattern active position`, t => {
-  const activePatternIndex = 0
-  const activePattern = initialState[activePatternIndex]
-  const payload = 3
-
-  t.deepEqual(reducer(undefined, setActivePatternActivePosition(payload)),
-              [...initialState.slice(0, activePatternIndex),
-               {...activePattern, activePosition: payload},
-               ...initialState.slice(activePatternIndex + 1)])
+test(`${reducerName} deletePattern`, t => {
+  t.deepEqual(reducer([{
+    activePosition: null,
+    instrument: 'instrument 0',
+    steps: []
+  },
+  {
+    activePosition: null,
+    instrument: 'instrument 1',
+    steps: []
+  },
+  {
+    activePosition: null,
+    instrument: 'instrument 2',
+    steps: []
+  }], deletePattern(1)), [{
+    activePosition: null,
+    instrument: 'instrument 0',
+    steps: []
+  },
+  {
+    activePosition: null,
+    instrument: 'instrument 2',
+    steps: []
+  }])
   t.end()
 })
 
-test(`${reducerName} reducer setActivePatternYLength`, t => {
+test(`${reducerName} patternCellClick`, t => {
+  const payload = {patternId: 0, x: 1, y: 2}
+  t.deepEqual(reducer([{
+    instrument: 'Prometheus',
+    steps: []
+  }], patternCellClick(payload)), [{
+    instrument: 'Prometheus',
+    steps: [{x: 1, y: 2}]
+  }])
+  t.deepEqual(reducer([{
+    instrument: 'Prometheus',
+    steps: [{x: 1, y: 2}]
+  }], patternCellClick(payload)), [{
+    instrument: 'Prometheus',
+    steps: []
+  }])
+  t.end()
+})
+
+test(`${reducerName} setPatternActivePosition`, t => {
+  const patternId = 0
+  const activePattern = initialState[patternId]
+  const payload = {patternId, value: 3}
+
+  t.deepEqual(reducer(undefined, setPatternActivePosition(payload)),
+              [...initialState.slice(0, patternId),
+               {...activePattern, activePosition: payload.value},
+               ...initialState.slice(patternId + 1)])
+  t.end()
+})
+
+test(`${reducerName} setPatternPlaying`, t => {
+  t.deepEqual(reducer([{
+    activePosition: null,
+    instrument: 'Prometheus',
+    playing: false,
+    steps: [],
+    octave: 0,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  }], setPatternPlaying({patternId: 0, value: true})), [{
+    activePosition: null,
+    instrument: 'Prometheus',
+    steps: [],
+    octave: 0,
+    playing: true,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  }])
+  t.end()
+})
+
+test(`${reducerName} setPatternYLength`, t => {
   t.deepEqual(reducer([{
     activePosition: null,
     instrument: 'Prometheus',
@@ -56,7 +148,7 @@ test(`${reducerName} reducer setActivePatternYLength`, t => {
     xLength: 8,
     yLength: 8,
     volume: 1 / 3
-  }], setActivePatternYLength(10)), [{
+  }], setPatternYLength({patternId: 0, value: 10})), [{
     activePosition: null,
     instrument: 'Prometheus',
     steps: [],
@@ -68,50 +160,50 @@ test(`${reducerName} reducer setActivePatternYLength`, t => {
   t.end()
 })
 
-test(`${reducerName} reducer updateActivePatternInstrument`, t => {
-  const activePatternIndex = 0
-  const activePattern = initialState[activePatternIndex]
-  const payload = 3
+test(`${reducerName} updatePatternInstrument`, t => {
+  const patternId = 0
+  const activePattern = initialState[patternId]
+  const payload = {patternId, value: 'test instrument'}
 
-  t.deepEqual(reducer(undefined, updateActivePatternInstrument(payload)),
-              [...initialState.slice(0, activePatternIndex),
-               {...activePattern, instrument: payload},
-               ...initialState.slice(activePatternIndex + 1)])
+  t.deepEqual(reducer(undefined, updatePatternInstrument(payload)),
+              [...initialState.slice(0, patternId),
+               {...activePattern, instrument: payload.value},
+               ...initialState.slice(patternId + 1)])
   t.end()
 })
 
-test(`${reducerName} reducer updates active pattern octave`, t => {
-  const activePatternIndex = 0
-  const activePattern = initialState[activePatternIndex]
-  const payload = 5
+test(`${reducerName} updatePatternOctave`, t => {
+  const patternId = 0
+  const activePattern = initialState[patternId]
+  const payload = {patternId, value: 5}
 
-  t.deepEqual(reducer(undefined, updateActivePatternOctave(payload)),
-              [...initialState.slice(0, activePatternIndex),
-               {...activePattern, octave: payload},
-               ...initialState.slice(activePatternIndex + 1)])
+  t.deepEqual(reducer(undefined, updatePatternOctave(payload)),
+              [...initialState.slice(0, patternId),
+               {...activePattern, octave: payload.value},
+               ...initialState.slice(patternId + 1)])
   t.end()
 })
 
-test(`${reducerName} reducer updates active pattern xLength`, t => {
-  const activePatternIndex = 0
-  const activePattern = initialState[activePatternIndex]
-  const payload = 5
+test(`${reducerName} updatePatternXLength`, t => {
+  const patternId = 0
+  const activePattern = initialState[patternId]
+  const payload = {patternId, value: 5}
 
-  t.deepEqual(reducer(undefined, updateActivePatternXLength(payload)),
-              [...initialState.slice(0, activePatternIndex),
-               {...activePattern, xLength: payload},
-               ...initialState.slice(activePatternIndex + 1)])
+  t.deepEqual(reducer(undefined, updatePatternXLength(payload)),
+              [...initialState.slice(0, patternId),
+               {...activePattern, xLength: payload.value},
+               ...initialState.slice(patternId + 1)])
   t.end()
 })
 
-test(`${reducerName} reducer updateActivePatternVolume`, t => {
-  const activePatternIndex = 0
-  const activePattern = initialState[activePatternIndex]
-  const payload = 0.42
+test(`${reducerName} updatePatternVolume`, t => {
+  const patternId = 0
+  const activePattern = initialState[patternId]
+  const payload = {patternId, value: 0.42}
 
-  t.deepEqual(reducer(undefined, updateActivePatternVolume(payload)),
-              [...initialState.slice(0, activePatternIndex),
-               {...activePattern, volume: payload},
-               ...initialState.slice(activePatternIndex + 1)])
+  t.deepEqual(reducer(undefined, updatePatternVolume(payload)),
+              [...initialState.slice(0, patternId),
+               {...activePattern, volume: payload.value},
+               ...initialState.slice(patternId + 1)])
   t.end()
 })

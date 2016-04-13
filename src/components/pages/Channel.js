@@ -9,7 +9,7 @@ import {
 } from '../../actions'
 import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
 import FullButton from '../atoms/FullButton'
-import {Cross, Plus} from '../atoms/IconButtons'
+import {Cross, Plus} from '../atoms/ButtonIcons'
 import FullSelect from '../atoms/FullSelect'
 import {mapIndexed} from '../../utils/helpers'
 
@@ -63,7 +63,7 @@ export default connectComponent(({
           onChange={e => selectedAddEffect = e.target.value}
           options={map(text => ({text, value: text}), addEffects)}
         />
-        <Plus onClick={e => dispatch(addEffectToChannel({
+        <Plus onClick={_ => dispatch(addEffectToChannel({
           channel: channelId,
           name: selectedAddEffect
         }))}/>
@@ -90,7 +90,7 @@ export default connectComponent(({
           onChange={e => selectedAddSource = e.target.value}
           options={map(text => ({text, value: text}), addSources)}
         />
-        <Plus onClick={e => {
+        <Plus onClick={_ => {
           dispatch(addInstrumentToChannel({
             channel: channelId,
             name: selectedAddSource

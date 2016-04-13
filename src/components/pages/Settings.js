@@ -2,7 +2,7 @@ import capitalize from 'capitalize'
 import {compose, keys, map} from 'ramda'
 import {connect} from 'react-redux'
 import React from 'react'
-import {updateBpm, updateSelectedRootNote, updateSelectedScale} from '../../actions'
+import {updateBpm, updateRootNote, updateSelectedScale} from '../../actions'
 import FullButton from '../atoms/FullButton'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
@@ -29,7 +29,6 @@ const connectComponent = connect(({
 export default connectComponent(({
   bpm,
   dispatch,
-  microphone,
   rootNote,
   scaleName,
   scales
@@ -54,7 +53,7 @@ export default connectComponent(({
         min='-36'
         onChange={compose(
           dispatch,
-          updateSelectedRootNote,
+          updateRootNote,
           Number,
           eventValuePath
         )}

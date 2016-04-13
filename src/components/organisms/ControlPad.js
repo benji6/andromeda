@@ -1,7 +1,9 @@
-import {clamp, isNil} from 'ramda'
+import {curry, isNil} from 'ramda'
 import React, {PropTypes} from 'react'
 import THREE from 'three'
 import {randomMesh} from '../../utils/webGLHelpers'
+
+const clamp = curry((min, max, value) => value < min ? min : value > max ? max : value)
 
 const cameraZ = 16
 const fallAwayVelocity = 1.2

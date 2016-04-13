@@ -10,4 +10,4 @@ export const initialState = {
   'up and down': xs => cycle(concat(xs, reverse(xs)))
 }
 
-export default (state = initialState, action) => state
+export default (state = initialState) => state
