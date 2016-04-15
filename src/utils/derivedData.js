@@ -28,12 +28,11 @@ const getInstance = curry((viewLens, name, plugins) => compose(
   viewLens
 )(plugins))
 
-export const currentScale = ({scaleName}) => scales[scaleName]
 export const arpeggiatedScale = ({
-  scale,
+  settings: {selectedScale},
   controlPad: {arpeggiatorOctaves, selectedArpeggiatorPattern}
 }) => arpeggiatorPatterns[selectedArpeggiatorPattern](flatten(map(
-  x => map(compose(add(x), flip(nth)(currentScale(scale))), [0, 2, 4]),
+  x => map(compose(add(x), flip(nth)(scales[selectedScale])), [0, 2, 4]),
   map(multiply(12), range(0, arpeggiatorOctaves)))
 ))
 export const effectInstance = getInstance(viewEffectInstances)

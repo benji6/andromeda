@@ -13,24 +13,22 @@ import scales from '../../constants/scales'
 const minBpm = 32
 
 const connectComponent = connect(({
-  bpm,
   dispatch,
   microphone,
-  rootNote,
-  scale: {scaleName}
+  settings: {bpm, rootNote, selectedScale},
 }) => ({
   bpm,
   dispatch,
   microphone,
   rootNote,
-  scaleName,
+  selectedScale,
 }))
 
 export default connectComponent(({
   bpm,
   dispatch,
   rootNote,
-  scaleName,
+  selectedScale,
 }) =>
   <div className='settings-view'>
     <div className='flex-column text-center'>
@@ -61,7 +59,7 @@ export default connectComponent(({
         value={rootNote}
       />
       <Selector
-        defaultValue={scaleName}
+        defaultValue={selectedScale}
         handleChange={compose(dispatch, updateSelectedScale, eventValuePath)}
         label='Scale'
         options={map(

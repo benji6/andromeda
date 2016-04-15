@@ -27,8 +27,8 @@ import store from '../../store'
 import scales from '../../constants/scales'
 
 const yLabel = curry(
-  (scale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
-    scales[scale.scaleName],
+  (selectedScale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
+    scales[selectedScale],
     yLength - i - 1
   ) + rootNote)
 )
@@ -41,12 +41,10 @@ const emptyPatternData = defaultMemoize((xLength, yLength) =>
 
 const connectComponent = connect(({
   activePatternIndex,
-  bpm,
   dispatch,
   patterns,
   plugins,
-  rootNote,
-  scale
+  settings: {bpm, rootNote, selectedScale},
 }, {params: {patternId}}) => {
   const {
     activeNotes,
@@ -79,11 +77,11 @@ const connectComponent = connect(({
     playing,
     plugins,
     rootNote,
-    scale,
+    selectedScale,
     steps,
     volume,
     xLength,
-    yLength
+    yLength,
   }
 })
 
@@ -107,7 +105,7 @@ export default connectComponent(class extends React.Component {
 
       if (playing !== true) return
 
-      const {bpm, rootNote, scale} = state
+      const {settings: {bpm, rootNote, selectedScale}} = state
 
       const position = count % xLength
       this.props.dispatch(setPatternActivePosition({patternId, value: position}))
@@ -123,8 +121,8 @@ export default connectComponent(class extends React.Component {
           activeNotes.add({instrumentObj, id})
           instrumentObj.inputNoteStart({
             frequency: pitchToFrequency(pitchFromScaleIndex(
-              scales[scale.scaleName],
-              yLength - 1 - y + scales[scale.scaleName].length * octave
+              scales[selectedScale],
+              yLength - 1 - y + scales[selectedScale].length * octave
             ) + rootNote),
             gain: volume,
             id
@@ -165,8 +163,8 @@ export default connectComponent(class extends React.Component {
       patternId,
       playing,
       rootNote,
-      scale,
-      yLength
+      selectedScale,
+      yLength,
     } = this.props
 
     return <div>
@@ -174,16 +172,14 @@ export default connectComponent(class extends React.Component {
       <Pattern {...{
         onClick: cellClickHandler(dispatch, patternId),
         patternData,
-        rootNote,
-        scale,
-        yLabel: yLabel(scale, yLength, rootNote)
+        yLabel: yLabel(selectedScale, yLength, rootNote),
       }} />
       <PlayButton {...{
         dispatch,
         onPlay: ::this.onPlay,
         onStop: ::this.onStop,
         patternId,
-        playing
+        playing,
       }} />
       <nav>
         <FullButton to={`/controllers/pattern/${patternId}/settings`}>
