@@ -1,17 +1,9 @@
 import test from 'tape'
 import {
   arpeggiatedScale,
-  currentScale,
   instrumentInstance
 } from './derivedData'
 import {cycle, take} from './lazyIterables'
-
-test('derivedData - currentScale', t => {
-  t.deepEqual(currentScale({
-    scaleName: 'pentatonic'
-  }), [0, 3, 5, 7, 10])
-  t.end()
-})
 
 test('derivedData - arpeggiatedScale', t => {
   t.deepEqual(
@@ -19,8 +11,8 @@ test('derivedData - arpeggiatedScale', t => {
       arpeggiatorPatterns: {
         up: cycle
       },
-      scale: {
-        scaleName: 'ionian (major)',
+      settings: {
+        selectedScale: 'ionian (major)',
       },
       controlPad: {
         arpeggiatorOctaves: 2,
@@ -34,8 +26,8 @@ test('derivedData - arpeggiatedScale', t => {
       arpeggiatorPatterns: {
         up: cycle
       },
-      scale: {
-        scaleName: 'ionian (major)',
+      settings: {
+        selectedScale: 'ionian (major)',
       },
       controlPad: {
         arpeggiatorOctaves: 1,

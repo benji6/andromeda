@@ -8,11 +8,12 @@ import {
 } from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
+import {instrumentInstance} from '../../utils/derivedData'
 import {startArpeggiator, stopArpeggiator} from '../../audioHelpers/arpeggiator'
 import ControlPad from '../organisms/ControlPad'
 import FullButton from '../atoms/FullButton'
-import {currentScale, instrumentInstance} from '../../utils/derivedData'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
+import scales from '../../constants/scales'
 import store from '../../store'
 
 const controlPadId = 'controlPad'
@@ -21,7 +22,7 @@ let stopLastNoteOnNoteChange = true
 let currentlyPlayingPitch = null
 
 const calculatePitch = ratio => {
-  const scale = currentScale(store.getState().scale)
+  const scale = scales[store.getState().settings.selectedScale]
   const {length} = scale
   stopLastNoteOnNoteChange = true
   const i = Math.floor((length + 1) * ratio)
@@ -57,7 +58,7 @@ const connectComponent = connect(({
     range
   },
   plugins,
-  rootNote
+  settings: {rootNote},
 }) => ({
   arpeggiatorIsOn,
   instrument,
@@ -66,7 +67,7 @@ const connectComponent = connect(({
   plugins,
   portamento,
   range,
-  rootNote
+  rootNote,
 }))
 
 export default connectComponent(({
@@ -77,7 +78,7 @@ export default connectComponent(({
   plugins,
   portamento,
   range,
-  rootNote
+  rootNote,
 }) =>
   <div>
     <div className='text-center'>

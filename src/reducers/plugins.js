@@ -42,8 +42,8 @@ const effectInstancesLens = lensProp('effectInstances')
 const instrumentInstancesLens = lensProp('instrumentInstances')
 const instrumentsLens = lensProp('instruments')
 
-const channels = view(channelsLens)
-const constructor = view(lensProp('constructor'))
+const viewChannels = view(channelsLens)
+const viewConstructor = view(lensProp('constructor'))
 const destination = view(lensProp('destination'))
 const effects = view(effectsLens)
 const effectInstances = view(effectInstancesLens)
@@ -62,18 +62,18 @@ const overInstruments = over(instrumentsLens)
 
 const nameEquals = x => compose(equals(x), name)
 const findNameEquals = curry((x, y) => compose(find, nameEquals)(x)(y))
-const findConstructor = compose(constructor, findNameEquals)
+const findConstructor = compose(viewConstructor, findNameEquals)
 const sortByName = sortBy(name)
 
 const overChannelEffects = curry((f, channelId, state) => overChannels(
-  adjust(overEffects(f), findIndex(nameEquals(channelId), channels(state))),
+  adjust(overEffects(f), findIndex(nameEquals(channelId), viewChannels(state))),
   state
 ))
 const overChannelInstruments = curry((f, channelId, state) => overChannels(
-  adjust(overInstruments(f), findIndex(nameEquals(channelId), channels(state))),
+  adjust(overInstruments(f), findIndex(nameEquals(channelId), viewChannels(state))),
   state
 ))
-const channel = curry((a, b) => findNameEquals(a, channels(b)))
+const channel = curry((a, b) => findNameEquals(a, viewChannels(b)))
 const effectInstance = curry((a, b) => instance(findNameEquals(a, effectInstances(b))))
 const effectInstanceDestination = compose(destination, effectInstance)
 const instrumentInstance = curry((a, b) => instance(findNameEquals(a, instrumentInstances(b))))
@@ -97,16 +97,13 @@ const disconnect = x => (x.disconnect(), x)
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
-    case ADD_CHANNEL: return overChannels(
-      compose(
-        sortByName,
-        append(createChannel(lowestUniqueNatural(pluck(
-          'name',
-          channels(state)
-        ))))
-      ),
-      state
-    )
+    case ADD_CHANNEL: return overChannels(compose(
+      sortByName,
+      append(createChannel(lowestUniqueNatural(pluck(
+        'name',
+        viewChannels(state)
+      ))))
+    ), state)
     case ADD_EFFECT_TO_CHANNEL: {
       const thisEffectInstance = effectInstance(payload.name, state)
       const lastEffect = last(effects(channel(payload.channel, state)))
@@ -163,7 +160,7 @@ export default (state = initialState, {type, payload}) => {
     case REMOVE_CHANNEL: {
       const channel = findNameEquals(
         payload,
-        channels(state)
+        viewChannels(state)
       )
       forEach(compose(
         disconnect,

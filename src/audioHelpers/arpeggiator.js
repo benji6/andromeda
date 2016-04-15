@@ -19,10 +19,9 @@ let looper = null
 
 export const startArpeggiator = ({id, pitch, modulation}) => {
   const {
-    bpm,
+    settings: {bpm, rootNote},
     controlPad: {instrument, octave},
     plugins,
-    rootNote
   } = store.getState()
 
   const onStart = x => {

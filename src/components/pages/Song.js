@@ -31,22 +31,16 @@ const connectComponent = connect(({
   dispatch,
   instrument,
   patterns,
-  rootNote,
-  scale
 }) => ({
   activePatternIndex,
   dispatch,
   instrument,
   patterns,
-  rootNote,
-  scale
 }))
 
 export default connectComponent(({
   dispatch,
   patterns,
-  rootNote,
-  scale
 }) => {
   const {activePosition, steps, xLength} = store.getState().song
   const emptyPatternData = map(range(0), repeat(xLength, patterns.length))
@@ -62,8 +56,6 @@ export default connectComponent(({
       ? <Pattern {...{
         onClick: cellClickHandler(dispatch),
         patternData,
-        rootNote,
-        scale,
         yLabel: x => <div className='padding-1'>
           <Cross onClick={compose(dispatch, deletePattern, always(x))} />
           <ButtonPrimarySmall to={`/controllers/pattern/${x}`}>
