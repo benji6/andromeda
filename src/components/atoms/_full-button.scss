@@ -1,23 +1,25 @@
 .full-button {
   background: linear-gradient($blue-dawn, $blue-dusk);
   border-radius: 1rem;
-  border: 1px solid $blue-dusk;
-  box-shadow: $blue-dusk 0 0 0.5rem 0.1rem;
+  border: 0.1rem solid $blue-dusk;
+  box-shadow: $blue-dusk 0 0 0.5rem;
   box-sizing: border-box;
   color: $black;
   display: inline-block;
   font-size: $normal-font;
   padding: 0.67rem;
   margin: 1rem 0.5rem;
-  width: 12rem;
+  min-width: 10rem;
+  padding-left: 2rem;
+  padding-right: 2rem;
   text-align: center;
   text-decoration: none;
   transition-duration: $transition-fast;
-  &:hover {
-    box-shadow: $blue-dusk 0 0 1rem 0.1rem;
-    transition-duration: $transition-fast;
-  }
-  &:active {
-    background: linear-gradient($blue-dusk, $blue-dawn);
-  }
+}
+.full-button:hover {
+  box-shadow: $blue-dusk 0 0 1rem 0.1rem;
+  transition-duration: $transition-fast;
+}
+.full-button:active {
+  background: linear-gradient($blue-dusk, $blue-dawn);
 }

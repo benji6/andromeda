@@ -1,0 +1,9 @@
+.InputSelect {
+  -moz-appearance: none;
+}
+.InputSelect[disabled] {
+  visibility: hidden;
+}
+.InputSelect option {
+  background: $gray-7;
+}
