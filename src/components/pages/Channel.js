@@ -10,7 +10,7 @@ import {
 import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
 import FullButton from '../atoms/FullButton'
 import {Cross, Plus} from '../atoms/ButtonIcons'
-import FullSelect from '../atoms/FullSelect'
+import InputSelect from '../atoms/InputSelect'
 import {mapIndexed} from '../../utils/helpers'
 
 let selectedAddEffect = null
@@ -58,7 +58,7 @@ export default connectComponent(({
       )}
       {!isEmpty(addEffects) && <p className='text-center'>Add effect</p>}
       {!isEmpty(addEffects) && <div className='text-center'>
-        <FullSelect
+        <InputSelect
           defaultValue={selectedAddEffect}
           onChange={e => selectedAddEffect = e.target.value}
           options={map(text => ({text, value: text}), addEffects)}
@@ -85,7 +85,7 @@ export default connectComponent(({
       </div>
       {!isEmpty(addSources) && <p className='text-center'>Add source</p>}
       {!isEmpty(addSources) && <div className='text-center'>
-        <FullSelect
+        <InputSelect
           defaultValue={selectedAddSource}
           onChange={e => selectedAddSource = e.target.value}
           options={map(text => ({text, value: text}), addSources)}

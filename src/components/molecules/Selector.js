@@ -1,7 +1,7 @@
 import capitalize from 'capitalize'
 import React from 'react'
 import InputLabel from '../atoms/InputLabel'
-import FullSelect from '../atoms/FullSelect'
+import InputSelect from '../atoms/InputSelect'
 
 export default ({
   children,
@@ -14,7 +14,7 @@ export default ({
   <div>
     <label className='selector'>
       <InputLabel text={capitalize(label)} />
-      <FullSelect
+      <InputSelect
         defaultValue={defaultValue}
         disabled={disabled}
         onChange={handleChange}
