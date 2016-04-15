@@ -15,6 +15,7 @@ import {
   updateControlPadSelectedArpeggiatorPattern
 } from '../../actions'
 import FullButton from '../atoms/FullButton'
+import InputLabel from '../atoms/InputLabel'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import InstrumentSelector from '../molecules/InstrumentSelector'
@@ -127,7 +128,7 @@ export default connectComponent(({
       text='No Scale'
     />
     <div>
-      <span className='inline-label-text'></span>
+      <InputLabel />
       <FullButton to='/controllers/control-pad'>OK</FullButton>
     </div>
   </div>)

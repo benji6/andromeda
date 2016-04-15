@@ -13,6 +13,7 @@ import {
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import FullButton from '../atoms/FullButton'
+import InputLabel from '../atoms/InputLabel'
 
 const connectComponent = connect(({
   activePatternIndex,
@@ -107,7 +108,7 @@ export default connectComponent(({
       value={octave}
     />
     <div>
-      <span className='inline-label-text'></span>
+      <InputLabel />
       <FullButton to={`/controllers/pattern/${patternId}`}>OK</FullButton>
     </div>
   </div>)

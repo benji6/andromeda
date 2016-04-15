@@ -13,7 +13,7 @@ export default ({
 }) =>
   <div>
     <label className='selector'>
-      <InputLabel text={capitalize(label)} />
+      <InputLabel>{capitalize(label)}</InputLabel>
       <InputSelect
         defaultValue={defaultValue}
         disabled={disabled}
