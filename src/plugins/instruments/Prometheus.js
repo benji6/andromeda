@@ -1,19 +1,43 @@
-import {dissoc} from 'ramda'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 
 const graphs = new WeakMap()
-const outputs = new WeakMap()
-const virtualAudioGraphs = new WeakMap()
+const notes = new WeakMap()
 const osc1Settings = new WeakMap()
 const osc2Settings = new WeakMap()
+const outputs = new WeakMap()
+const virtualAudioGraphs = new WeakMap()
+
+const notesToGraph = notes => notes.reduce((acc, {
+  frequency, gain, id, startTime, stopTime
+}) => ({
+  ...acc,
+  0: ['gain', 'output', {gain}],
+  [id]: ['oscBank', 0, {
+    gain,
+    frequency,
+    startTime,
+    stopTime
+  }],
+}), {})
+
+const updateAudio = function () {
+  virtualAudioGraphs.get(this).update(notesToGraph(notes.get(this)))
+}
+
+const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
+  <label>
+    {children}
+  </label>
+</div>
 
 export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
     outputs.set(this, output)
     graphs.set(this, {})
+    notes.set(this, [])
     osc1Settings.set(this, {detune: 0, type: 'sine'})
     osc2Settings.set(this, {detune: 10, type: 'sine'})
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
@@ -42,96 +66,90 @@ export default class {
   disconnect (destination) {
     outputs.get(this).disconnect(destination)
   }
-  inputNoteStart ({frequency, gain, id, startTime, stopTime}) {
-    const newNodes = {
-      ...graphs.get(this),
-      0: ['gain', 'output', {gain}],
-      [id]: ['oscBank', 0, {
-        gain,
-        frequency,
-        startTime,
-        stopTime
-      }]
-    }
-    graphs.set(this, newNodes)
-    virtualAudioGraphs.get(this).update(newNodes)
+  inputNoteStart (note) {
+    const newNotes = [...notes.get(this), note]
+    notes.set(this, newNotes)
+    updateAudio.call(this)
   }
   inputNoteStop (id) {
-    const newGraph = dissoc(id, graphs.get(this))
-    graphs.set(this, newGraph)
-    virtualAudioGraphs.get(this).update(newGraph)
+    const newNotes = notes.get(this).filter(note => note.id !== id)
+    notes.set(this, newNotes)
+    updateAudio.call(this)
   }
   render (containerEl) {
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Prometheus</h2>
         <h3>Osc 1</h3>
-
-        <div>
-          <label>
-            Type&nbsp;
-            <select
-              defaultValue={osc1Settings.get(this).type}
-              onChange={e => osc1Settings.set(
-                this,
-                {...osc1Settings.get(this), type: e.target.value}
-              )}
-            >
-              <option value='sawtooth'>Sawtooth</option>
-              <option value='sine'>Sine</option>
-              <option value='square'>Square</option>
-              <option value='triangle'>Triangle</option>
-            </select>
-          </label>
-        </div>
-        <div>
-          <label>
-            Detune&nbsp;
-            <input
-              defaultValue={osc1Settings.get(this).detune}
-              max='50'
-              min='-50'
-              onInput={e => osc1Settings.set(
-                this,
-                {...osc1Settings.get(this), detune: Number(e.target.value)}
-              )}
-              type='range'
-            />
-          </label>
-        </div>
+        <ControlContainer>
+          Type&nbsp;
+          <select
+            defaultValue={osc1Settings.get(this).type}
+            onChange={({target: {value}}) => {
+              osc1Settings.set(this, {
+                ...osc1Settings.get(this),
+                type: value
+              })
+              updateAudio.call(this)
+            }}
+          >
+            <option value='sawtooth'>Sawtooth</option>
+            <option value='sine'>Sine</option>
+            <option value='square'>Square</option>
+            <option value='triangle'>Triangle</option>
+          </select>
+        </ControlContainer>
+        <ControlContainer>
+          Detune&nbsp;
+          <input
+            defaultValue={osc1Settings.get(this).detune}
+            max='50'
+            min='-50'
+            onInput={e => {
+              osc1Settings.set(this, {
+                ...osc1Settings.get(this),
+                detune: Number(e.target.value)
+              })
+              updateAudio.call(this)
+            }}
+            type='range'
+          />
+        </ControlContainer>
         <h3>Osc 2</h3>
-        <div>
-          <label>
-            Type&nbsp;
-            <select
-              defaultValue={osc2Settings.get(this).type}
-              onChange={e => osc2Settings.set(
-                this,
-                {...osc1Settings.get(this), type: e.target.value}
-              )}
-            >
-              <option value='sawtooth'>Sawtooth</option>
-              <option value='sine'>Sine</option>
-              <option value='square'>Square</option>
-              <option value='triangle'>Triangle</option>
-            </select>
-          </label>
-        </div>
-        <div>
-          <label>
-            Detune&nbsp;
-            <input
-              defaultValue={osc2Settings.get(this).detune}
-              max='50'
-              min='-50'
-              onInput={e => osc2Settings.set(
-                this,
-                {...osc2Settings.get(this), detune: Number(e.target.value)}
-              )}
-              type='range'
-            />
-          </label>
-        </div>
+        <ControlContainer>
+          Type&nbsp;
+          <select
+            defaultValue={osc2Settings.get(this).type}
+            onChange={e => {
+              osc2Settings.set(this, {
+                ...osc1Settings.get(this),
+                type: e.target.value
+              })
+              updateAudio.call(this)
+            }}
+          >
+            <option value='sawtooth'>Sawtooth</option>
+            <option value='sine'>Sine</option>
+            <option value='square'>Square</option>
+            <option value='triangle'>Triangle</option>
+          </select>
+        </ControlContainer>
+        <ControlContainer>
+          Detune&nbsp;
+          <input
+            defaultValue={osc2Settings.get(this).detune}
+            max='50'
+            min='-50'
+            onInput={e => {
+              osc2Settings.set(this, {
+                ...osc2Settings.get(this),
+                detune: Number(e.target.value)
+              })
+              updateAudio.call(this)
+            }}
+            type='range'
+          />
+        </ControlContainer>
       </div>,
       containerEl
     )
