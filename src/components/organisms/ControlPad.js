@@ -1,5 +1,5 @@
 import {curry, isNil} from 'ramda'
-import React, {PropTypes} from 'react'
+import React from 'react'
 import THREE from 'three'
 import {randomMesh} from '../../utils/webGLHelpers'
 
@@ -70,10 +70,6 @@ const calculateXAndYRatio = e => {
 }
 
 export default class extends React.Component {
-  static propTypes = {
-    inputEndHandler: PropTypes.func,
-    inputHandler: PropTypes.func
-  };
   componentDidMount () {
     const {inputEndHandler, inputHandler} = this.props
     controlPadElement = document.querySelector('.control-pad')
