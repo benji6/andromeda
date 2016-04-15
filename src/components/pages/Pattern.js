@@ -24,10 +24,11 @@ import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import {stepExists} from '../../reducers/patterns'
 import {instrumentInstance} from '../../utils/derivedData'
 import store from '../../store'
+import scales from '../../constants/scales'
 
 const yLabel = curry(
   (scale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
-    scale.scales[scale.scaleName],
+    scales[scale.scaleName],
     yLength - i - 1
   ) + rootNote)
 )
@@ -122,8 +123,8 @@ export default connectComponent(class extends React.Component {
           activeNotes.add({instrumentObj, id})
           instrumentObj.inputNoteStart({
             frequency: pitchToFrequency(pitchFromScaleIndex(
-              scale.scales[scale.scaleName],
-              yLength - 1 - y + scale.scales[scale.scaleName].length * octave
+              scales[scale.scaleName],
+              yLength - 1 - y + scales[scale.scaleName].length * octave
             ) + rootNote),
             gain: volume,
             id

@@ -15,6 +15,7 @@ import {
   view
 } from 'ramda'
 import arpeggiatorPatterns from '../constants/arpeggiatorPatterns'
+import scales from '../constants/scales'
 
 const viewEffectInstances = view(lensProp('effectInstances'))
 const viewInstance = view(lensProp('instance'))
@@ -27,7 +28,7 @@ const getInstance = curry((viewLens, name, plugins) => compose(
   viewLens
 )(plugins))
 
-export const currentScale = ({scaleName, scales}) => scales[scaleName]
+export const currentScale = ({scaleName}) => scales[scaleName]
 export const arpeggiatedScale = ({
   scale,
   controlPad: {arpeggiatorOctaves, selectedArpeggiatorPattern}
