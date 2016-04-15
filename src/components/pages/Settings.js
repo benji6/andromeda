@@ -8,6 +8,7 @@ import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
 import {eventValuePath} from '../../utils/helpers'
+import scales from '../../constants/scales'
 
 const minBpm = 32
 
@@ -16,14 +17,13 @@ const connectComponent = connect(({
   dispatch,
   microphone,
   rootNote,
-  scale: {scaleName, scales}
+  scale: {scaleName}
 }) => ({
   bpm,
   dispatch,
   microphone,
   rootNote,
   scaleName,
-  scales
 }))
 
 export default connectComponent(({
@@ -31,7 +31,6 @@ export default connectComponent(({
   dispatch,
   rootNote,
   scaleName,
-  scales
 }) =>
   <div className='settings-view'>
     <div className='flex-column text-center'>

@@ -8,9 +8,8 @@ import {cycle, take} from './lazyIterables'
 
 test('derivedData - currentScale', t => {
   t.deepEqual(currentScale({
-    scales: {a: [0, 2, 4]},
-    scaleName: 'a'
-  }), [0, 2, 4])
+    scaleName: 'pentatonic'
+  }), [0, 3, 5, 7, 10])
   t.end()
 })
 
@@ -21,10 +20,7 @@ test('derivedData - arpeggiatedScale', t => {
         up: cycle
       },
       scale: {
-        scaleName: 'major',
-        scales: {
-          major: [0, 2, 4, 5, 7, 9, 11]
-        }
+        scaleName: 'ionian (major)',
       },
       controlPad: {
         arpeggiatorOctaves: 2,
@@ -39,10 +35,7 @@ test('derivedData - arpeggiatedScale', t => {
         up: cycle
       },
       scale: {
-        scaleName: 'major',
-        scales: {
-          major: [0, 2, 4, 5, 7, 9, 11]
-        }
+        scaleName: 'ionian (major)',
       },
       controlPad: {
         arpeggiatorOctaves: 1,
