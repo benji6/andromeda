@@ -20,21 +20,19 @@ import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import Selector from '../molecules/Selector'
+import arpeggiatorPatterns from '../../constants/arpeggiatorPatterns'
 
 const connectComponent = connect(({
-  arpeggiatorPatterns,
   controlPad,
   dispatch,
   plugins
 }) => ({
-  arpeggiatorPatterns,
   controlPad,
   dispatch,
   plugins
 }))
 
 export default connectComponent(({
-  arpeggiatorPatterns,
   controlPad,
   dispatch,
   plugins
