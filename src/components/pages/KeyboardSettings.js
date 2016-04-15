@@ -11,6 +11,7 @@ import {
   updateKeyboardVolume
 } from '../../actions'
 import FullButton from '../atoms/FullButton'
+import InputLabel from '../atoms/InputLabel'
 import RangeSelector from '../molecules/RangeSelector'
 
 const connectComponent = connect(({keyboard, dispatch, plugins}) =>
@@ -50,7 +51,7 @@ export default connectComponent(({keyboard, dispatch, plugins}) =>
       value={keyboard.octave}
     />
     <div>
-      <span className='inline-label-text'></span>
+      <InputLabel />
       <FullButton to='/settings'>OK</FullButton>
     </div>
   </div>)

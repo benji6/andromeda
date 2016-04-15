@@ -4,6 +4,6 @@ import InputLabel from '../atoms/InputLabel'
 
 export default ({text, ...props}) =>
   <label className='selector'>
-    <InputLabel text={text} />
+    <InputLabel>{text}</InputLabel>
     <Slider type='range' {...props} />
   </label>
