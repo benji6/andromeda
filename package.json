@@ -9,7 +9,7 @@
     "deploy": "concurrently 'npm t' 'npm run build' && aws s3 cp --recursive dist s3://elemental.audio --acl \"public-read\" --content-encoding \"gzip\"",
     "html": "html-minifier --collapse-whitespace -o dist/index.html src/index.html",
     "lint": "eslint src",
-    "scripts": "browserify -t babelify src/index.js | sed 's/process.env.NODE_ENV/\"production\"/g' | sed 's/buckets\\/elemental-reverb/http:\\/\\/elemental-reverb.s3-website-eu-west-1.amazonaws.com/g' | sed 's/buckets\\/elemental-samples/http:\\/\\/elemental-samples.s3-website-eu-west-1.amazonaws.com/g' | uglifyjs -cm --screw-ie8 > dist/index.js",
+    "scripts": "browserify -t babelify src/index.js | sed 's/process.env.NODE_ENV/\\x27production\\x27/g' | sed 's/buckets\\/elemental-reverb/http:\\/\\/elemental-reverb.s3-website-eu-west-1.amazonaws.com/g' | sed 's/buckets\\/elemental-samples/http:\\/\\/elemental-samples.s3-website-eu-west-1.amazonaws.com/g' | uglifyjs -cm --screw-ie8 > dist/index.js",
     "serve": "live-server dist",
     "spec": "babel-node node_modules/.bin/tape 'src/**/*-spec.js' | faucet",
     "start": "mkdir -p dist && concurrently 'npm run watch-assets' 'npm run watch-buckets' 'npm run watch-html' 'npm run watch-scripts' 'npm run watch-styles' 'npm run serve'",
