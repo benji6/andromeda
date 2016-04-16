@@ -71,6 +71,16 @@ export default class {
     notes.set(this, newNotes)
     updateAudio.call(this)
   }
+  inputNoteModify (note) {
+    const currentNotes = notes.get(this)
+    const extantNoteIdx = currentNotes.findIndex(({id}) => id === note.id)
+    notes.set(this, [
+      ...currentNotes.slice(0, extantNoteIdx),
+      note,
+      ...currentNotes.slice(extantNoteIdx + 1),
+    ])
+    updateAudio.call(this)
+  }
   inputNoteStop (id) {
     const newNotes = notes.get(this).filter(note => note.id !== id)
     notes.set(this, newNotes)

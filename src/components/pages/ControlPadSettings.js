@@ -5,22 +5,17 @@ import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
 import {eventValuePath, eventCheckedPath} from '../../utils/helpers'
 import {
-  updateControlPadArpeggiatorIsOn,
-  updateControlPadArpeggiatorOctaves,
   updateControlPadInstrument,
   updateControlPadNoScale,
   updateControlPadOctave,
   updateControlPadPortamento,
   updateControlPadRange,
-  updateControlPadSelectedArpeggiatorPattern
 } from '../../actions'
 import FullButton from '../atoms/FullButton'
 import InputLabel from '../atoms/InputLabel'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 import InstrumentSelector from '../molecules/InstrumentSelector'
-import Selector from '../molecules/Selector'
-import arpeggiatorPatterns from '../../constants/arpeggiatorPatterns'
 
 const connectComponent = connect(({
   controlPad,
@@ -77,43 +72,6 @@ export default connectComponent(({
       output={controlPad.range}
       text='Range'
       value={controlPad.range}
-    />
-    <CheckboxSelector
-      checked={controlPad.arpeggiatorIsOn}
-      onChange={compose(
-        dispatch,
-        updateControlPadArpeggiatorIsOn,
-        eventCheckedPath
-      )}
-      text='Arpeggiator'
-    />
-    <Selector
-      defaultValue={controlPad.selectedArpeggiatorPattern}
-      disabled={!controlPad.arpeggiatorIsOn}
-      handleChange={compose(
-        dispatch,
-        updateControlPadSelectedArpeggiatorPattern,
-        eventValuePath
-      )}
-      label='Arpeggiator Pattern'
-      options={map(value => ({
-        text: capitalize.words(value),
-        value
-      }), Object.keys(arpeggiatorPatterns))}
-    />
-    <RangeSelector
-      disabled={!controlPad.arpeggiatorIsOn}
-      max='4'
-      min='1'
-      onChange={compose(
-        dispatch,
-        updateControlPadArpeggiatorOctaves,
-        Number,
-        eventValuePath
-      )}
-      output={controlPad.arpeggiatorOctaves}
-      text='Arpeggiator Octaves'
-      value={controlPad.arpeggiatorOctaves}
     />
     <CheckboxSelector
       checked={controlPad.portamento}
