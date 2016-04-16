@@ -17,7 +17,6 @@ export const [
   [REMOVE_INSTRUMENT_FROM_CHANNEL, removeInstrumentFromChannel],
   [SET_PATTERN_ACTIVE_POSITION, setPatternActivePosition],
   [SET_PATTERN_PLAYING, setPatternPlaying],
-  [SET_PATTERN_Y_LENGTH, setPatternYLength],
   [SET_SONG_ACTIVE_POSITION, setSongActivePosition],
   [SONG_CELL_CLICK, songCellClick],
   [UPDATE_BPM, updateBpm],

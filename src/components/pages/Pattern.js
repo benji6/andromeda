@@ -27,10 +27,10 @@ import store from '../../store'
 import scales from '../../constants/scales'
 
 const yLabel = curry(
-  (selectedScale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
+  (selectedScale, yLength, rootNote, octave, i) => noteNameFromPitch(pitchFromScaleIndex(
     scales[selectedScale],
     yLength - i - 1
-  ) + rootNote)
+  ) + rootNote + 12 * octave)
 )
 
 const cellClickHandler = curryN(5, (dispatch, patternId, y, x) =>
@@ -55,7 +55,7 @@ const connectComponent = connect(({
     steps,
     volume,
     xLength,
-    yLength
+    yLength,
   } = patterns[patternId]
 
   const patternData = mapIndexed(
@@ -159,6 +159,7 @@ export default connectComponent(class extends React.Component {
   render () {
     const {
       dispatch,
+      octave,
       patternData,
       patternId,
       playing,
@@ -172,7 +173,7 @@ export default connectComponent(class extends React.Component {
       <Pattern {...{
         onClick: cellClickHandler(dispatch, patternId),
         patternData,
-        yLabel: yLabel(selectedScale, yLength, rootNote),
+        yLabel: yLabel(selectedScale, yLength, rootNote, octave),
       }} />
       <PlayButton {...{
         dispatch,

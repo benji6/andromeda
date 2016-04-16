@@ -4,7 +4,6 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
 import {
-  setPatternYLength,
   updatePatternInstrument,
   updatePatternOctave,
   updatePatternVolume,
@@ -22,7 +21,7 @@ const connectComponent = connect(({
   plugins
 }, {params: {patternId}}) => {
   const activePattern = patterns[patternId]
-  const {instrument, octave, xLength, yLength, volume} = activePattern
+  const {instrument, octave, xLength, volume} = activePattern
   return {
     dispatch,
     instrument,
@@ -31,7 +30,6 @@ const connectComponent = connect(({
     plugins,
     volume,
     xLength,
-    yLength
   }
 })
 
@@ -43,7 +41,6 @@ export default connectComponent(({
   plugins,
   volume,
   xLength,
-  yLength
 }) =>
   <div className='flex-column text-center'>
     <h2 className='text-center'>Pattern {patternId} Settings</h2>
@@ -84,21 +81,9 @@ export default connectComponent(({
       value={xLength}
     />
     <RangeSelector
-      key='4'
-      max='16'
-      min='1'
-      onChange={e => dispatch(setPatternYLength({
-        patternId,
-        value: Number(e.target.value),
-      }))}
-      output={String(yLength)}
-      text='Height'
-      value={yLength}
-    />
-    <RangeSelector
       key='5'
       max='2'
-      min='-3'
+      min='-4'
       onChange={e => dispatch(updatePatternOctave({
         patternId,
         value: Number(e.target.value),

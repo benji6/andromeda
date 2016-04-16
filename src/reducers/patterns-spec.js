@@ -1,13 +1,12 @@
 import 'web-audio-test-api'
 import test from 'tape'
-import reducer, {initialState} from './patterns'
+import reducer from './patterns'
 import {
   addNewPattern,
   deletePattern,
   patternCellClick,
   setPatternActivePosition,
   setPatternPlaying,
-  setPatternYLength,
   updatePatternInstrument,
   updatePatternOctave,
   updatePatternVolume,
@@ -15,6 +14,17 @@ import {
 } from '../actions'
 
 const reducerName = 'patterns reducer'
+const initialState = [{
+  activeNotes: new Set(),
+  activePosition: null,
+  instrument: 'Prometheus',
+  steps: [],
+  octave: -1,
+  playing: false,
+  xLength: 8,
+  yLength: 16,
+  volume: 1 / 3
+}]
 
 test(`${reducerName} returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState)
@@ -30,7 +40,7 @@ test(`${reducerName} addNewPattern`, t => {
     octave: 0,
     playing: false,
     xLength: 8,
-    yLength: 8,
+    yLength: 24,
     volume: 1 / 3
   }], addNewPattern()), [{
     activeNotes: new Set(),
@@ -40,20 +50,10 @@ test(`${reducerName} addNewPattern`, t => {
     octave: 0,
     playing: false,
     xLength: 8,
-    yLength: 8,
+    yLength: 24,
     volume: 1 / 3
   },
-  {
-    activeNotes: new Set(),
-    activePosition: null,
-    instrument: 'Prometheus',
-    steps: [],
-    octave: 0,
-    playing: false,
-    xLength: 8,
-    yLength: 8,
-    volume: 1 / 3
-  }])
+  initialState[0]])
   t.end()
 })
 
@@ -134,27 +134,6 @@ test(`${reducerName} setPatternPlaying`, t => {
     playing: true,
     xLength: 8,
     yLength: 8,
-    volume: 1 / 3
-  }])
-  t.end()
-})
-
-test(`${reducerName} setPatternYLength`, t => {
-  t.deepEqual(reducer([{
-    activePosition: null,
-    instrument: 'Prometheus',
-    steps: [],
-    octave: 0,
-    xLength: 8,
-    yLength: 8,
-    volume: 1 / 3
-  }], setPatternYLength({patternId: 0, value: 10})), [{
-    activePosition: null,
-    instrument: 'Prometheus',
-    steps: [],
-    octave: 0,
-    xLength: 8,
-    yLength: 10,
     volume: 1 / 3
   }])
   t.end()
