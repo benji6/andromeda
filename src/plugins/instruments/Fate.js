@@ -11,20 +11,56 @@ const oscTypes = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 
-const notesToGraph = notes => notes.reduce((acc, {
-  frequency, gain, id, startTime, stopTime
-}) => ({
-  ...acc,
-  [id]: ['oscBank', 'output', {
-    gain,
+const oscBank = ({
+  detune,
+  gain,
+  frequency,
+  masterGain,
+  oscTotal,
+  oscType,
+  startTime,
+  stopTime,
+}) => {
+  const totalOscillators = oscTotal
+  const type = oscType
+  const osc = i => ['oscillator', 0, {
+    detune: (i - Math.floor(totalOscillators / 2)) * detune,
     frequency,
     startTime,
-    stopTime
-  }],
-}), {})
+    stopTime,
+    type: type === 'random'
+      ? ['sawtooth', 'sine', 'square', 'triangle'][Math.floor(Math.random() * 4)]
+      : type,
+  }]
+  const oscillators = zipObj(
+    range(1, totalOscillators + 1),
+    map(osc, range(0, totalOscillators))
+  )
+  return merge(oscillators, {
+    masterGain: ['gain', 'output', {gain: masterGain}],
+    0: ['gain', 'masterGain', {gain}],
+  })
+}
 
+const notesToGraph = function (notes) {
+  return notes.reduce((acc, {
+    frequency, gain, id, startTime, stopTime
+  }) => ({
+    ...acc,
+    [id]: [oscBank, 'output', {
+      detune: detunes.get(this),
+      gain,
+      frequency,
+      masterGain: masterGains.get(this),
+      oscTotal: oscTotals.get(this),
+      oscType: oscTypes.get(this),
+      startTime,
+      stopTime,
+    }],
+  }), {})
+}
 const updateAudio = function () {
-  virtualAudioGraphs.get(this).update(notesToGraph(notes.get(this)))
+  virtualAudioGraphs.get(this).update(notesToGraph.call(this, notes.get(this)))
 }
 
 const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
@@ -49,29 +85,6 @@ export default class {
       output
     })
 
-    virtualAudioGraph.defineNodes({
-      oscBank: ({gain, frequency, startTime, stopTime}) => {
-        const totalOscillators = oscTotals.get(this)
-        const type = oscTypes.get(this)
-        const osc = i => ['oscillator', 0, {
-          detune: (i - Math.floor(totalOscillators / 2)) * detunes.get(this),
-          frequency,
-          startTime,
-          stopTime,
-          type: type === 'random'
-            ? ['sawtooth', 'sine', 'square', 'triangle'][Math.floor(Math.random() * 4)]
-            : type
-        }]
-        const oscillators = zipObj(
-          range(1, totalOscillators + 1),
-          map(osc, range(0, totalOscillators))
-        )
-        return merge(oscillators, {
-          masterGain: ['gain', 'output', {gain: masterGains.get(this)}],
-          0: ['gain', 'masterGain', {gain}],
-        })
-      }
-    })
     virtualAudioGraphs.set(this, virtualAudioGraph)
   }
   connect (destination) {

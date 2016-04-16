@@ -49,11 +49,11 @@
     "react": "^15.0.1",
     "react-dom": "^15.0.1",
     "react-redux": "^4.4.5",
-    "react-router": "^2.2.2",
+    "react-router": "^2.2.4",
     "redux": "^3.4.0",
     "reselect": "^2.3.0",
     "three": "^0.75.0",
-    "virtual-audio-graph": "^0.16.9"
+    "virtual-audio-graph": "^0.17.0"
   },
   "devDependencies": {
     "babel": "^6.3.26",

@@ -17,6 +17,8 @@ const reverbTypes = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 const wetLevels = new WeakMap()
 
+let reverbsFactories
+
 const loadReverb = (uri, name) => window.fetch(uri)
   .then(response => response.arrayBuffer())
   .then(data => new Promise(
@@ -49,7 +51,7 @@ const updateAudioGraph = function () {
     1: ['biquadFilter', 'output', {frequency: highCuts.get(this)}],
     2: ['biquadFilter', 1, {frequency: lowCuts.get(this), type: 'highpass'}],
     3: ['gain', 2, {gain: wetLevels.get(this)}],
-    4: [reverbTypes.get(this), 3],
+    4: [reverbsFactories[reverbTypes.get(this)], 3],
     input: ['gain', [0, 4]]
   })
 }
@@ -70,9 +72,9 @@ export default class {
       input: ['gain', 'output']
     })
     loadAllReverbs
-      .then(x => virtualAudioGraph.defineNodes(x))
-      .then(_ => updateAudioGraph.call(this))
-      .then(_ => {
+      .then(x => {
+        reverbsFactories = x
+        updateAudioGraph.call(this)
         const containerEl = containerEls.get(this)
         if (containerEl) this.render(containerEls.get(this))
       })
