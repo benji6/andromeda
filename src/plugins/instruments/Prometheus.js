@@ -11,21 +11,58 @@ const osc3Settings = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 
-const notesToGraph = notes => notes.reduce((acc, {
-  frequency, gain, id, startTime, stopTime
-}) => ({
-  ...acc,
+const osc = ({detune, gain, frequency, pitch, startTime, stopTime, type}) => ({
   0: ['gain', 'output', {gain}],
-  [id]: ['oscBank', 0, {
-    gain,
+  1: ['oscillator', 0, {
+    detune,
+    frequency: pitchToFrequency(frequencyToPitch(frequency) + pitch),
+    startTime,
+    stopTime,
+    type,
+  }],
+})
+const oscBank = ({gain, frequency, osc1, osc2, osc3, startTime, stopTime}) => ({
+  0: ['gain', 'output', {gain}],
+  1: [osc, 0, {
+    ...osc1,
     frequency,
     startTime,
     stopTime
   }],
-}), {})
+  2: [osc, 0, {
+    ...osc2,
+    frequency,
+    startTime,
+    stopTime
+  }],
+  3: [osc, 0, {
+    ...osc3,
+    frequency,
+    startTime,
+    stopTime
+  }],
+})
+
+const notesToGraph = function (notes) {
+  return notes.reduce((acc, {
+    frequency, gain, id, startTime, stopTime
+  }) => ({
+    ...acc,
+    0: ['gain', 'output', {gain}],
+    [id]: [oscBank, 0, {
+      frequency,
+      gain,
+      osc1: osc1Settings.get(this),
+      osc2: osc2Settings.get(this),
+      osc3: osc3Settings.get(this),
+      startTime,
+      stopTime,
+    }],
+  }), {})
+}
 
 const updateAudio = function () {
-  virtualAudioGraphs.get(this).update(notesToGraph(notes.get(this)))
+  virtualAudioGraphs.get(this).update(notesToGraph.call(this, notes.get(this)))
 }
 
 const ControlContainer = ({children}) => <div style={{padding: '0.25rem'}}>
@@ -118,39 +155,6 @@ export default class {
     osc3Settings.set(this, {detune: -7, gain: 1.2, name: 3, pitch: -24, type: 'sine'})
     outputs.set(this, output)
 
-    virtualAudioGraph.defineNodes({
-      osc: ({detune, gain, frequency, pitch, startTime, stopTime, type}) => ({
-        0: ['gain', 'output', {gain}],
-        1: ['oscillator', 0, {
-          detune,
-          frequency: pitchToFrequency(frequencyToPitch(frequency) + pitch),
-          startTime,
-          stopTime,
-          type,
-        }],
-      }),
-      oscBank: ({gain, frequency, startTime, stopTime}) => ({
-        0: ['gain', 'output', {gain}],
-        1: ['osc', 0, {
-          ...osc1Settings.get(this),
-          frequency,
-          startTime,
-          stopTime
-        }],
-        2: ['osc', 0, {
-          ...osc2Settings.get(this),
-          frequency,
-          startTime,
-          stopTime
-        }],
-        3: ['osc', 0, {
-          ...osc3Settings.get(this),
-          frequency,
-          startTime,
-          stopTime
-        }],
-      })
-    })
     virtualAudioGraphs.set(this, virtualAudioGraph)
   }
   connect (destination) {

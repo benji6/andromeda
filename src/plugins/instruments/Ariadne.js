@@ -12,20 +12,59 @@ const notes = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 
-const notesToGraph = notes => notes.reduce((acc, {
-  frequency, gain, id, startTime, stopTime
+const oscBank = ({
+  carrierDetune,
+  carrierOscType,
+  gain,
+  frequency,
+  masterGain,
+  modulatorDetune,
+  modulatorOscType,
+  modulatorRatio,
+  startTime,
+  stopTime,
 }) => ({
-  ...acc,
-  [id]: ['oscBank', 'output', {
+  masterGain: ['gain', ['output'], {gain: masterGain}],
+  0: ['gain', ['masterGain'], {gain}],
+  1: ['oscillator', 0, {
+    detune: carrierDetune,
     frequency,
-    gain,
     startTime,
-    stopTime
+    stopTime,
+    type: carrierOscType,
   }],
-}), {})
+  2: ['gain', {key: 1, destination: 'frequency'}, {gain: 1024}],
+  3: ['oscillator', 2, {
+    detune: modulatorDetune,
+    frequency: frequency * modulatorRatio,
+    type: modulatorOscType,
+    startTime,
+    stopTime,
+  }],
+})
+
+const notesToGraph = function (notes) {
+  return notes.reduce((acc, {
+    frequency, gain, id, startTime, stopTime
+  }) => ({
+    ...acc,
+    [id]: [oscBank, 'output', {
+      carrierDetune: carrierDetunes.get(this),
+      carrierOscType: carrierOscTypes.get(this),
+      masterGain: masterGains.get(this),
+      modulatorDetune: modulatorDetunes.get(this),
+      modulatorOscType: modulatorOscTypes.get(this),
+      modulatorRatio: modulatorRatios.get(this),
+      frequency,
+      gain,
+      startTime,
+      stopTime
+    }],
+  }), {})
+}
 
 const updateAudio = function () {
-  virtualAudioGraphs.get(this).update(notesToGraph(notes.get(this)))
+  virtualAudioGraphs.get(this).update(notesToGraph.call(this, notes.get(this)))
 }
 
 const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
@@ -49,27 +88,6 @@ export default class {
 
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
 
-    virtualAudioGraph.defineNodes({
-      oscBank: ({gain, frequency, startTime, stopTime}) => ({
-        masterGain: ['gain', ['output'], {gain: masterGains.get(this)}],
-        0: ['gain', ['masterGain'], {gain}],
-        1: ['oscillator', 0, {
-          detune: carrierDetunes.get(this),
-          frequency,
-          startTime,
-          stopTime,
-          type: carrierOscTypes.get(this,
-        )}],
-        2: ['gain', {key: 1, destination: 'frequency'}, {gain: 1024}],
-        3: ['oscillator', 2, {
-          detune: modulatorDetunes.get(this),
-          frequency: frequency * modulatorRatios.get(this),
-          type: modulatorOscTypes.get(this),
-          startTime,
-          stopTime,
-        }],
-      })
-    })
     virtualAudioGraphs.set(this, virtualAudioGraph)
   }
   connect (destination) {
