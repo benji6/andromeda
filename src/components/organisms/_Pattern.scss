@@ -1,8 +1,11 @@
-.pattern {
+.Pattern {
   align-content: center;
-  display: flex;
   flex-wrap: wrap;
   justify-content: center;
   margin: auto;
   width: $pattern-total-width;
+}
+.Pattern_body {
+  height: 52vh;
+  overflow: auto;
 }
