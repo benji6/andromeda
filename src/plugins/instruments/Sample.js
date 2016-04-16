@@ -54,7 +54,7 @@ export default class {
   }
   connect (destination) { outputs.get(this).connect(destination) }
   disconnect (destination) { outputs.get(this).disconnect(destination) }
-  inputNoteStart ({frequency}) {
+  noteStart ({frequency}) {
     const source = audioContexts.get(this).createBufferSource()
     source.buffer = buffers.get(this)
     source.playbackRate.value = frequency / 440

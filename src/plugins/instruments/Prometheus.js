@@ -66,12 +66,12 @@ export default class {
   disconnect (destination) {
     outputs.get(this).disconnect(destination)
   }
-  inputNoteStart (note) {
+  noteStart (note) {
     const newNotes = [...notes.get(this), note]
     notes.set(this, newNotes)
     updateAudio.call(this)
   }
-  inputNoteModify (note) {
+  noteModify (note) {
     const currentNotes = notes.get(this)
     const extantNoteIdx = currentNotes.findIndex(({id}) => id === note.id)
     notes.set(this, [
@@ -81,7 +81,7 @@ export default class {
     ])
     updateAudio.call(this)
   }
-  inputNoteStop (id) {
+  noteStop (id) {
     const newNotes = notes.get(this).filter(note => note.id !== id)
     notes.set(this, newNotes)
     updateAudio.call(this)

@@ -54,7 +54,7 @@ export default class {
   disconnect (destination) {
     outputs.get(this).disconnect(destination)
   }
-  inputNoteStart ({frequency, gain, id, startTime, stopTime}) {
+  noteStart ({frequency, gain, id, startTime, stopTime}) {
     const newNodes = {
       ...graphs.get(this),
       [id]: ['oscBank', 'output', {
@@ -68,7 +68,7 @@ export default class {
     graphs.set(this, newNodes)
     virtualAudioGraphs.get(this).update(newNodes)
   }
-  inputNoteStop (id) {
+  noteStop (id) {
     const newGraph = dissoc(id, graphs.get(this))
     graphs.set(this, newGraph)
     virtualAudioGraphs.get(this).update(newGraph)

@@ -109,8 +109,8 @@ export default connectComponent(class extends React.Component {
 
       const position = count % xLength
       this.props.dispatch(setPatternActivePosition({patternId, value: position}))
-      activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
-        instrumentObj.inputNoteStop(id))
+      activeNotes.forEach(({id, instrumentObj}) => instrumentObj.noteStop &&
+        instrumentObj.noteStop(id))
       activeNotes.clear()
 
       compose(
@@ -119,7 +119,7 @@ export default connectComponent(class extends React.Component {
           const id = `pattern-${patternId}-${x}-${y}`
           const instrumentObj = instrumentInstance(instrument, plugins)
           activeNotes.add({instrumentObj, id})
-          instrumentObj.inputNoteStart({
+          instrumentObj.noteStart({
             frequency: pitchToFrequency(pitchFromScaleIndex(
               scales[selectedScale],
               yLength - 1 - y + scales[selectedScale].length * octave
@@ -144,8 +144,8 @@ export default connectComponent(class extends React.Component {
 
   stopAudio () {
     const {activeNotes} = this.props
-    activeNotes.forEach(({id, instrumentObj}) => instrumentObj.inputNoteStop &&
-      instrumentObj.inputNoteStop(id))
+    activeNotes.forEach(({id, instrumentObj}) => instrumentObj.noteStop &&
+      instrumentObj.noteStop(id))
     activeNotes.clear()
   }
 
