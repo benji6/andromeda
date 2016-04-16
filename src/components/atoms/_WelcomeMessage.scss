@@ -1,0 +1,30 @@
+.WelcomeMessage {
+  color: $blue-midday;
+  padding: 0.5rem 1rem;
+  position: fixed;
+  font-size: $font-tiny;
+  bottom: -100;
+  right: 0;
+  opacity: 0;
+  animation: welcome-message-animation 6s 1;
+  animation-delay: 0.1s;
+}
+
+@keyframes welcome-message-animation {
+  0% {
+    opacity: 0.25;
+    bottom: 0;
+  }
+  10% {
+    opacity: 0.7;
+  }
+  70% {
+    opacity: 0.7;
+  }
+  99% {
+    opacity: 0;
+  }
+  100% {
+    bottom: 0;
+  }
+}

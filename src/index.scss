@@ -1,17 +1,18 @@
 @import 'utils/vars';
 @import 'utils/globals';
 
-@import 'components/atoms/checkbox';
 @import 'components/atoms/button-primary--small';
 @import 'components/atoms/button-secondary';
+@import 'components/atoms/checkbox';
 @import 'components/atoms/full-button';
-@import 'components/atoms/InputSelect';
 @import 'components/atoms/hollow-button';
 @import 'components/atoms/icon-button';
 @import 'components/atoms/InputLabel';
+@import 'components/atoms/InputSelect';
 @import 'components/atoms/play-button';
 @import 'components/atoms/slider';
 @import 'components/atoms/step';
+@import 'components/atoms/WelcomeMessage';
 @import 'components/atoms/x-label';
 @import 'components/atoms/y-label';
 @import 'components/molecules/pattern-row';
