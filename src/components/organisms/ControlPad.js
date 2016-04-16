@@ -71,15 +71,19 @@ const calculateXAndYRatio = e => {
 
 export default class extends React.Component {
   componentDidMount () {
-    const {inputEndHandler, inputHandler} = this.props
+    const {inputStopHandler, inputStartHandler, inputModifyHandler} = this.props
     controlPadElement = document.querySelector('.control-pad')
 
     const inputCallback = e => {
       mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled
       if (e instanceof window.MouseEvent && !mouseInputEnabled) return
-      controlPadActive = true
       currentXYRatios = calculateXAndYRatio(e)
-      inputHandler(currentXYRatios)
+      if (controlPadActive) {
+        inputModifyHandler(currentXYRatios)
+        return
+      }
+      controlPadActive = true
+      inputStartHandler(currentXYRatios)
     }
 
     controlPadElement.addEventListener('touchstart', inputCallback)
@@ -87,11 +91,9 @@ export default class extends React.Component {
     controlPadElement.addEventListener('mousedown', inputCallback)
     controlPadElement.addEventListener('mousemove', inputCallback)
 
-    const inputEndCallback = e => {
-      controlPadActive = false
-      mouseInputEnabled = false
-      currentXYRatios = calculateXAndYRatio(e)
-      inputEndHandler(currentXYRatios)
+    const inputEndCallback = _ => {
+      controlPadActive = mouseInputEnabled = false
+      inputStopHandler()
     }
 
     controlPadElement.addEventListener('touchend', inputEndCallback)

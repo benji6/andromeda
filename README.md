@@ -22,10 +22,10 @@ new EffectPlugin({audioContext})
 
 `effectPlugin` instances should then expose the following API:
 
-- `connnect` - `Function` - to be implemented in the same manner as `AudioNode.connect`
-- `destination` - `AudioNode | AudioParam` - property which is an unchanging reference to an object which is a valid argument for `AudioNode.connect`
-- `disconnect` - `Function` - to be implemented in the same manner as `AudioNode.disconnect`
-- `render` - `Function` - method which is passed a DOM element and is called when user wishes to view and possibly edit the plugin
+- `connnect` - `Function` - required method - to be implemented in the same manner as `AudioNode.connect`
+- `destination` - `AudioNode | AudioParam` - required property - an unchanging reference to an object which is a valid argument for `AudioNode.connect`
+- `disconnect` - `Function` - required method - to be implemented in the same manner as `AudioNode.disconnect`
+- `render` - `Function` - required method - called with a DOM element when the user wishes to view and possibly edit parameters in theplugin
 
 ### Instrument plugin API
 
@@ -37,12 +37,12 @@ new InstrumentPlugin({audioContext})
 
 `instrumentPlugin` instances should then expose the following API:
 
-- `connnect` - `Function` - to be implemented in the same manner as `AudioNode.connect`
-- `disconnect` - `Function` - to be implemented in the same manner as `AudioNode.disconnect`
-- `inputNoteStart` - `Function | undefined` - optional method which accepts a note object (see specification below). If not implemented controllers will not be given the option to control this plugin.
-- `inputNoteStop` - `Function | undefined` - optional method which accepts the id of the note to stop. If not implemented then controllers can not send note stop signals to this plugin
-- `inputNoteModify` - `Function | undefined` - optional method which accepts a note object (see specification below). If not implemented controllers will not attempt to modify a note which is already playing.
-- `render` - `Function` - method which is passed a DOM element and is called when user wishes to view and possibly modify parameters within the plugin
+- `connnect` - `Function` - required method - to be implemented in the same manner as `AudioNode.connect`
+- `disconnect` - `Function` - required method - to be implemented in the same manner as `AudioNode.disconnect`
+- `inputNoteStart` - `Function | undefined` - optional method - called with a note object (see specification below). If available then controllers will be able to control this plugin
+- `inputNoteStop` - `Function | undefined` - optional method - called with the id of the note to stop. If available then controllers will be able to stop notes which are currently playing
+- `inputNoteModify` - `Function | undefined` - optional method - called with a note object (see specification below). If available then controllers will be able to modify notes which are currently playing
+- `render` - `Function` - required method - called with a DOM element when user wishes to view and possibly modify parameters within the plugin
 
 #### Note object specification
 
