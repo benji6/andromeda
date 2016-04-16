@@ -24,6 +24,6 @@ export const effectInstance = getInstance(viewEffectInstances)
 export const instrumentInstance = getInstance(viewInstrumentInstances)
 export const controllableInstrumentInstanceNames = compose(
   map(viewName),
-  filter(x => viewInstance(x).inputNoteStart),
+  filter(x => viewInstance(x).noteStart),
   viewInstrumentInstances
 )

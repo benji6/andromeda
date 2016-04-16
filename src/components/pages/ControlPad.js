@@ -53,7 +53,7 @@ export default connectComponent(({
         inputStopHandler: _ => {
           currentlyPlayingPitch = null
           const instance = instrumentInstance(instrument, plugins)
-          instance.inputNoteStop && instance.inputNoteStop(controlPadId)
+          instance.noteStop && instance.noteStop(controlPadId)
         },
         inputStartHandler: ({xRatio, yRatio}) => {
           const instance = instrumentInstance(instrument, plugins)
@@ -62,7 +62,7 @@ export default connectComponent(({
             ? 12 * range * xRatio
             : calculatePitch(range * xRatio)
 
-          instance.inputNoteStart({
+          instance.noteStart({
             frequency: pitchToFrequency(currentlyPlayingPitch + 12 * octave + rootNote),
             gain: (1 - yRatio) / 2,
             id: controlPadId
@@ -79,8 +79,8 @@ export default connectComponent(({
             currentlyPlayingPitch !== pitch &&
             currentlyPlayingPitch !== null
 
-          if (isNewNote && instance.inputNoteStop) {
-            instance.inputNoteStop(controlPadId)
+          if (isNewNote && instance.noteStop) {
+            instance.noteStop(controlPadId)
           }
 
           currentlyPlayingPitch = pitch
@@ -90,8 +90,8 @@ export default connectComponent(({
             id: controlPadId
           }
           isNewNote
-            ? instance.inputNoteStart && instance.inputNoteStart(note)
-            : instance.inputNoteModify && instance.inputNoteModify(note)
+            ? instance.noteStart && instance.noteStart(note)
+            : instance.noteModify && instance.noteModify(note)
         },
       }}/>
     </div>

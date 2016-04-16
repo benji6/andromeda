@@ -39,9 +39,9 @@ new InstrumentPlugin({audioContext})
 
 - `connnect` - `Function` - required method - to be implemented in the same manner as `AudioNode.connect`
 - `disconnect` - `Function` - required method - to be implemented in the same manner as `AudioNode.disconnect`
-- `inputNoteStart` - `Function | undefined` - optional method - called with a note object (see specification below). If available then controllers will be able to control this plugin
-- `inputNoteStop` - `Function | undefined` - optional method - called with the id of the note to stop. If available then controllers will be able to stop notes which are currently playing
-- `inputNoteModify` - `Function | undefined` - optional method - called with a note object (see specification below). If available then controllers will be able to modify notes which are currently playing
+- `noteStart` - `Function | undefined` - optional method - called with a note object (see specification below). If available then controllers will be able to control this plugin
+- `noteStop` - `Function | undefined` - optional method - called with the id of the note to stop. If available then controllers will be able to stop notes which are currently playing
+- `noteModify` - `Function | undefined` - optional method - called with a note object (see specification below). If available then controllers will be able to modify notes which are currently playing
 - `render` - `Function` - required method - called with a DOM element when user wishes to view and possibly modify parameters within the plugin
 
 #### Note object specification

@@ -70,7 +70,7 @@ document.addEventListener('keydown', e => {
   instrumentInstance(
     noteParams.instrument,
     store.getState().plugins
-  ).inputNoteStart(noteParams)
+  ).noteStart(noteParams)
 })
 
 document.addEventListener('keyup', ({keyCode}) => {
@@ -82,5 +82,5 @@ document.addEventListener('keyup', ({keyCode}) => {
     noteParams.instrument,
     store.getState().plugins
   )
-  instrumentObj.inputNoteStop && instrumentObj.inputNoteStop(noteParams.id)
+  instrumentObj.noteStop && instrumentObj.noteStop(noteParams.id)
 })
