@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 
-const graphs = new WeakMap()
 const notes = new WeakMap()
 const osc1Settings = new WeakMap()
 const osc2Settings = new WeakMap()
@@ -36,7 +35,6 @@ export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
     outputs.set(this, output)
-    graphs.set(this, {})
     notes.set(this, [])
     osc1Settings.set(this, {detune: 0, type: 'sine'})
     osc2Settings.set(this, {detune: 10, type: 'sine'})

@@ -4,7 +4,6 @@ import createVirtualAudioGraph from 'virtual-audio-graph'
 
 const carrierDetunes = new WeakMap()
 const carrierOscTypes = new WeakMap()
-const graphs = new WeakMap()
 const masterGains = new WeakMap()
 const modulatorDetunes = new WeakMap()
 const modulatorOscTypes = new WeakMap()
@@ -41,7 +40,6 @@ export default class {
 
     carrierDetunes.set(this, 0)
     carrierOscTypes.set(this, 'sine')
-    graphs.set(this, {})
     masterGains.set(this, 1)
     modulatorDetunes.set(this, 0)
     modulatorOscTypes.set(this, 'sine')
