@@ -49,7 +49,7 @@ const renderLoop = _ => {
     ? -(yRatio - 0.5) ** 2
     : (yRatio - 0.5) ** 2
   const rotationBaseAmount = 0.01
-  const rotationVelocityComponent = 0.8
+  const rotationVelocityComponent = 1.5
   token.rotation.x += rotationBaseAmount + rotationVelocityComponent * xMod
   token.rotation.y += rotationBaseAmount + rotationVelocityComponent * yMod
   token.rotation.z += rotationBaseAmount + rotationVelocityComponent * xMod * yMod
