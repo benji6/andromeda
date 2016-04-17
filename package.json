@@ -53,7 +53,7 @@
     "redux": "^3.4.0",
     "reselect": "^2.3.0",
     "three": "^0.75.0",
-    "virtual-audio-graph": "^0.17.2"
+    "virtual-audio-graph": "^0.17.3"
   },
   "devDependencies": {
     "babel": "^6.3.26",
