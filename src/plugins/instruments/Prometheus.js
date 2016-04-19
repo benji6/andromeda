@@ -21,15 +21,18 @@ const osc = ({detune, frequency, gain, pitch, startTime, stopTime, type}) => ({
 })
 
 const notesToGraph = function (notes) {
-  const config = configs.get(this)
+  const {filter, oscillators, masterGain} = configs.get(this)
   return notes.reduce((acc, {frequency, gain, id, startTime, stopTime}) => {
     const noteGainId = `noteGain-${id}`
-    acc[noteGainId] = ['gain', 'masterGain', {gain}]
-    config.oscillators.forEach((oscParams, i) => {
+    acc[noteGainId] = ['gain', 'filter', {gain}]
+    oscillators.forEach((oscParams, i) => {
       acc[`osc${i}${id}`] = [osc, noteGainId, {...oscParams, frequency, startTime, stopTime}]
     })
     return acc
-  }, {masterGain: ['gain', 'output', {gain: config.masterGain}]})
+  }, {
+    masterGain: ['gain', 'output', {gain: masterGain}],
+    filter: ['biquadFilter', 'masterGain', {frequency: filter.frequency}],
+  })
 }
 
 const updateAudio = function () {
@@ -111,11 +114,14 @@ export default class {
     notes.set(this, [])
 
     configs.set(this, {
-      masterGain: 1,
+      filter: {
+        frequency: 8192,
+      },
+      masterGain: 0.75,
       oscillators: [
-        {detune: 0, gain: 0.6, name: 1, pitch: 0, type: 'triangle'},
-        {detune: 13, gain: 0.8, name: 2, pitch: 7, type: 'sine'},
-        {detune: -7, gain: 1.2, name: 3, pitch: -24, type: 'sine'},
+        {detune: 0, gain: 0.35, name: 1, pitch: 0, type: 'triangle'},
+        {detune: 13, gain: 0.5, name: 2, pitch: 7, type: 'sine'},
+        {detune: -7, gain: 0.9, name: 3, pitch: -24, type: 'sine'},
       ]
     })
 
@@ -151,7 +157,7 @@ export default class {
   }
   render (containerEl) {
     const config = configs.get(this)
-    const {masterGain, oscillators} = config
+    const {filter, masterGain, oscillators} = config
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Prometheus</h2>
@@ -163,6 +169,23 @@ export default class {
             min='0'
             onInput={e => {
               configs.set(this, {...config, masterGain: e.target.value})
+              updateAudio.call(this)
+            }}
+            step='0.01'
+            type='range'
+          />
+        </ControlContainer>
+        <ControlContainer>
+          Filter frequency&nbsp;
+          <input
+            defaultValue={filter.frequency}
+            max='20000'
+            min='0'
+            onInput={e => {
+              configs.set(this, {
+                ...config,
+                filter: {...filter, frequency: e.target.value},
+              })
               updateAudio.call(this)
             }}
             step='0.01'
