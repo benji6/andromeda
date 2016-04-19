@@ -24,12 +24,12 @@ const notesToGraph = function (notes) {
   const config = configs.get(this)
   return notes.reduce((acc, {frequency, gain, id, startTime, stopTime}) => {
     const noteGainId = `noteGain-${id}`
-    acc[noteGainId] = ['gain', 'output', {gain}]
+    acc[noteGainId] = ['gain', 'masterGain', {gain}]
     config.oscillators.forEach((oscParams, i) => {
       acc[`osc${i}${id}`] = [osc, noteGainId, {...oscParams, frequency, startTime, stopTime}]
     })
     return acc
-  }, {})
+  }, {masterGain: ['gain', 'output', {gain: config.masterGain}]})
 }
 
 const updateAudio = function () {
@@ -111,6 +111,7 @@ export default class {
     notes.set(this, [])
 
     configs.set(this, {
+      masterGain: 1,
       oscillators: [
         {detune: 0, gain: 0.6, name: 1, pitch: 0, type: 'triangle'},
         {detune: 13, gain: 0.8, name: 2, pitch: 7, type: 'sine'},
@@ -149,10 +150,25 @@ export default class {
     updateAudio.call(this)
   }
   render (containerEl) {
-    const {oscillators} = configs.get(this)
+    const config = configs.get(this)
+    const {masterGain, oscillators} = config
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Prometheus</h2>
+        <ControlContainer>
+          Master gain&nbsp;
+          <input
+            defaultValue={masterGain}
+            max='1.5'
+            min='0'
+            onInput={e => {
+              configs.set(this, {...config, masterGain: e.target.value})
+              updateAudio.call(this)
+            }}
+            step='0.01'
+            type='range'
+          />
+        </ControlContainer>
         {oscillators.map((oscSettings, i) => <span key={i}>{OscSettings.call(this, {
           i,
           settings: oscSettings
