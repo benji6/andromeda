@@ -4,14 +4,12 @@ import createVirtualAudioGraph from 'virtual-audio-graph'
 import frequencyToPitch from '../../audioHelpers/frequencyToPitch'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 
+const configs = new WeakMap()
 const notes = new WeakMap()
-const osc1Settings = new WeakMap()
-const osc2Settings = new WeakMap()
-const osc3Settings = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 
-const osc = ({detune, gain, frequency, pitch, startTime, stopTime, type}) => ({
+const osc = ({detune, frequency, gain, pitch, startTime, stopTime, type}) => ({
   0: ['gain', 'output', {gain}],
   1: ['oscillator', 0, {
     detune,
@@ -21,44 +19,17 @@ const osc = ({detune, gain, frequency, pitch, startTime, stopTime, type}) => ({
     type,
   }],
 })
-const oscBank = ({gain, frequency, osc1, osc2, osc3, startTime, stopTime}) => ({
-  0: ['gain', 'output', {gain}],
-  1: [osc, 0, {
-    ...osc1,
-    frequency,
-    startTime,
-    stopTime
-  }],
-  2: [osc, 0, {
-    ...osc2,
-    frequency,
-    startTime,
-    stopTime
-  }],
-  3: [osc, 0, {
-    ...osc3,
-    frequency,
-    startTime,
-    stopTime
-  }],
-})
 
 const notesToGraph = function (notes) {
-  return notes.reduce((acc, {
-    frequency, gain, id, startTime, stopTime
-  }) => ({
-    ...acc,
-    0: ['gain', 'output', {gain}],
-    [id]: [oscBank, 0, {
-      frequency,
-      gain,
-      osc1: osc1Settings.get(this),
-      osc2: osc2Settings.get(this),
-      osc3: osc3Settings.get(this),
-      startTime,
-      stopTime,
-    }],
-  }), {})
+  const config = configs.get(this)
+  return notes.reduce((acc, {frequency, gain, id, startTime, stopTime}) => {
+    const noteGainId = `noteGain-${id}`
+    acc[noteGainId] = ['gain', 'output', {gain}]
+    config.oscillators.forEach((oscParams, i) => {
+      acc[`osc${i}${id}`] = [osc, noteGainId, {...oscParams, frequency, startTime, stopTime}]
+    })
+    return acc
+  }, {})
 }
 
 const updateAudio = function () {
@@ -71,20 +42,26 @@ const ControlContainer = ({children}) => <div style={{padding: '0.25rem'}}>
   </label>
 </div>
 
-const OscSettings = function ({settingsRef}) {
+const OscSettings = function ({i, settings}) {
+  const updateOsc = (key, val) => {
+    const config = configs.get(this)
+    configs.set(this, {
+      ...config,
+      oscillators: [
+        ...config.oscillators.slice(0, i),
+        {...config.oscillators[i], [key]: val},
+        ...config.oscillators.slice(i + 1),
+      ],
+    })
+    updateAudio.call(this)
+  }
   return <div {...{style: {display: 'inline-block'}}}>
-    <h3>Osc {settingsRef.get(this).name}</h3>
+    <h3>Osc {i}</h3>
     <ControlContainer>
       Type&nbsp;
       <select
-        defaultValue={settingsRef.get(this).type}
-        onChange={({target: {value}}) => {
-          settingsRef.set(this, {
-            ...settingsRef.get(this),
-            type: value
-          })
-          updateAudio.call(this)
-        }}
+        defaultValue={settings.type}
+        onChange={({target: {value}}) => updateOsc('type', value)}
       >
         <option value='sawtooth'>Sawtooth</option>
         <option value='sine'>Sine</option>
@@ -95,16 +72,10 @@ const OscSettings = function ({settingsRef}) {
     <ControlContainer>
       Gain&nbsp;
       <input
-        defaultValue={settingsRef.get(this).gain}
+        defaultValue={settings.gain}
         max='2'
         min='0'
-        onInput={e => {
-          settingsRef.set(this, {
-            ...settingsRef.get(this),
-            gain: Number(e.target.value)
-          })
-          updateAudio.call(this)
-        }}
+        onInput={e => updateOsc('gain', Number(e.target.value))}
         step='0.01'
         type='range'
       />
@@ -112,32 +83,20 @@ const OscSettings = function ({settingsRef}) {
     <ControlContainer>
       Pitch&nbsp;
       <input
-        defaultValue={settingsRef.get(this).pitch}
+        defaultValue={settings.pitch}
         max='24'
         min='-24'
-        onInput={e => {
-          settingsRef.set(this, {
-            ...settingsRef.get(this),
-            pitch: Number(e.target.value)
-          })
-          updateAudio.call(this)
-        }}
+        onInput={e => updateOsc('pitch', Number(e.target.value))}
         type='range'
       />
     </ControlContainer>
     <ControlContainer>
       Detune&nbsp;
       <input
-        defaultValue={settingsRef.get(this).detune}
+        defaultValue={settings.detune}
         max='50'
         min='-50'
-        onInput={e => {
-          settingsRef.set(this, {
-            ...settingsRef.get(this),
-            detune: Number(e.target.value)
-          })
-          updateAudio.call(this)
-        }}
+        onInput={e => updateOsc('detune', Number(e.target.value))}
         type='range'
       />
     </ControlContainer>
@@ -150,9 +109,15 @@ export default class {
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
 
     notes.set(this, [])
-    osc1Settings.set(this, {detune: 0, gain: 0.6, name: 1, pitch: 0, type: 'triangle'})
-    osc2Settings.set(this, {detune: 13, gain: 0.8, name: 2, pitch: 7, type: 'sine'})
-    osc3Settings.set(this, {detune: -7, gain: 1.2, name: 3, pitch: -24, type: 'sine'})
+
+    configs.set(this, {
+      oscillators: [
+        {detune: 0, gain: 0.6, name: 1, pitch: 0, type: 'triangle'},
+        {detune: 13, gain: 0.8, name: 2, pitch: 7, type: 'sine'},
+        {detune: -7, gain: 1.2, name: 3, pitch: -24, type: 'sine'},
+      ]
+    })
+
     outputs.set(this, output)
 
     virtualAudioGraphs.set(this, virtualAudioGraph)
@@ -184,12 +149,14 @@ export default class {
     updateAudio.call(this)
   }
   render (containerEl) {
+    const {oscillators} = configs.get(this)
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Prometheus</h2>
-        {OscSettings.call(this, {settingsRef: osc1Settings})}
-        {OscSettings.call(this, {settingsRef: osc2Settings})}
-        {OscSettings.call(this, {settingsRef: osc3Settings})}
+        {oscillators.map((oscSettings, i) => <span key={i}>{OscSettings.call(this, {
+          i,
+          settings: oscSettings
+        })}</span>)}
       </div>,
       containerEl
     )
