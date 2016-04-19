@@ -31,7 +31,7 @@ const notesToGraph = function (notes) {
     return acc
   }, {
     masterGain: ['gain', 'output', {gain: masterGain}],
-    filter: ['biquadFilter', 'masterGain', {frequency: filter.frequency}],
+    filter: ['biquadFilter', 'masterGain', {frequency: filter.frequency, Q: filter.Q}],
   })
 }
 
@@ -116,6 +116,7 @@ export default class {
     configs.set(this, {
       filter: {
         frequency: 8192,
+        Q: 1,
       },
       masterGain: 0.75,
       oscillators: [
@@ -168,7 +169,7 @@ export default class {
             max='1.5'
             min='0'
             onInput={e => {
-              configs.set(this, {...config, masterGain: e.target.value})
+              configs.set(this, {...configs.get(this), masterGain: e.target.value})
               updateAudio.call(this)
             }}
             step='0.01'
@@ -178,17 +179,34 @@ export default class {
         <ControlContainer>
           Filter frequency&nbsp;
           <input
-            defaultValue={filter.frequency}
-            max='20000'
-            min='0'
+            defaultValue={Math.log(filter.frequency)}
+            max={Math.log(20000)}
+            min={Math.log(20)}
             onInput={e => {
               configs.set(this, {
                 ...config,
-                filter: {...filter, frequency: e.target.value},
+                filter: {...configs.get(this).filter, frequency: Math.exp(Number(e.target.value))},
               })
               updateAudio.call(this)
             }}
             step='0.01'
+            type='range'
+          />
+        </ControlContainer>
+        <ControlContainer>
+          Filter resonance&nbsp;
+          <input
+            defaultValue={filter.Q}
+            max='20'
+            min='0'
+            onInput={e => {
+              configs.set(this, {
+                ...config,
+                filter: {...configs.get(this).filter, Q: Number(e.target.value)},
+              })
+              updateAudio.call(this)
+            }}
+            step='0.1'
             type='range'
           />
         </ControlContainer>
