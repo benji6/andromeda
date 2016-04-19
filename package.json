@@ -1,6 +1,6 @@
 {
   "name": "elemental",
-  "version": "0.25.3",
+  "version": "0.26.0",
   "description": "Make music in your browser!",
   "scripts": {
     "assets": "cp -r src/assets dist",
