@@ -157,8 +157,7 @@ export default class {
     updateAudio.call(this)
   }
   render (containerEl) {
-    const config = configs.get(this)
-    const {filter, masterGain, oscillators} = config
+    const {filter, masterGain, oscillators} = configs.get(this)
     ReactDOM.render(
       <div style={{textAlign: 'center'}}>
         <h2>Prometheus</h2>
@@ -184,7 +183,7 @@ export default class {
             min={Math.log(20)}
             onInput={e => {
               configs.set(this, {
-                ...config,
+                ...configs.get(this),
                 filter: {...configs.get(this).filter, frequency: Math.exp(Number(e.target.value))},
               })
               updateAudio.call(this)
@@ -201,7 +200,7 @@ export default class {
             min='0'
             onInput={e => {
               configs.set(this, {
-                ...config,
+                ...configs.get(this),
                 filter: {...configs.get(this).filter, Q: Number(e.target.value)},
               })
               updateAudio.call(this)
