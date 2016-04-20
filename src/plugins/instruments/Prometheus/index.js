@@ -157,12 +157,15 @@ export default class {
     const {filter, masterGain, masterPan, oscillators} = configs.get(this)
     ReactDOM.render(
       <div {...{style: {color: '#ace', textAlign: 'center'}}}>
-        <h2>Prometheus</h2>
+        <h2 {...{style: {
+            fontSize: '1.3rem',
+            margin: '1rem',
+          }}}>PROMETHEUS</h2>
         <div>
-          <Module>
+          <Module title='Master'>
             <ModuleRange {...{
               defaultValue: masterGain,
-              label: 'Master gain',
+              label: 'Gain',
               max: 1.5,
               min: 0,
               onInput: e => {
@@ -173,7 +176,7 @@ export default class {
             }} />
             <ModuleRange {...{
               defaultValue: masterPan,
-              label: 'Master pan',
+              label: 'Pan',
               max: 1,
               min: -1,
               onInput: e => {
@@ -182,9 +185,13 @@ export default class {
               },
               step: 0.01,
             }} />
+          </Module>
+        </div>
+        <div>
+          <Module title='Filter'>
             <ModuleRange {...{
               defaultValue: Math.log(filter.frequency),
-              label: 'Filter frequency',
+              label: 'Frequency',
               max: Math.log(20000),
               min: Math.log(20),
               onInput: e => {
@@ -198,7 +205,7 @@ export default class {
             }} />
             <ModuleRange {...{
               defaultValue: Math.log(filter.Q),
-              label: 'Filter resonance',
+              label: 'Resonance',
               max: 20,
               min: 0,
               onInput: e => {

@@ -1,7 +1,6 @@
 import React from 'react'
-import {width} from './constants'
+import {height, width} from './constants'
 import _ModuleInput from './_ModuleInput'
-import {height} from './constants'
 
 export default ({label, ...props}) => <_ModuleInput {...{label}}>
   <input {...{
