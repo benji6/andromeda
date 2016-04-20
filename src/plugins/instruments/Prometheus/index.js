@@ -110,15 +110,16 @@ export default class {
 
     configs.set(this, {
       filter: {
-        frequency: 8192,
-        Q: 1,
+        frequency: 4096,
+        Q: 5,
       },
       masterGain: 0.75,
       masterPan: 0,
       oscillators: [
         {detune: 0, gain: 0.35, name: 1, pan: -0.3, pitch: 0, type: 'triangle'},
         {detune: 13, gain: 0.5, name: 2, pan: 0.6, pitch: 7, type: 'sine'},
-        {detune: -7, gain: 0.9, name: 3, pan: -0.1, pitch: -24, type: 'sine'},
+        {detune: -7, gain: 0.9, name: 3, pan: 0.1, pitch: -24, type: 'sine'},
+        {detune: 10, gain: 0.2, name: 4, pan: -0.4, pitch: 12, type: 'square'},
       ]
     })
 
