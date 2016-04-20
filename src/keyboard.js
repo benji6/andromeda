@@ -67,10 +67,11 @@ document.addEventListener('keydown', e => {
   const pitch = keyCodesToPitches[keyCode]
   if (pitch === undefined) return
   const noteParams = computeNoteParams(pitch)
-  instrumentInstance(
+  const instrumentObj = instrumentInstance(
     noteParams.instrument,
     store.getState().plugins
-  ).noteStart(noteParams)
+  )
+  instrumentObj.noteStart && instrumentObj.noteStart(noteParams)
 })
 
 document.addEventListener('keyup', ({keyCode}) => {
