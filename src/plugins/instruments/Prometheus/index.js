@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 import frequencyToPitch from '../../../audioHelpers/frequencyToPitch'
 import pitchToFrequency from '../../../audioHelpers/pitchToFrequency'
-import InputRangeSmall from './components/InputRangeSmall'
-import SelectSmall from './components/SelectSmall'
+import ModuleRange from './components/ModuleRange'
+import ModuleSelect from './components/ModuleSelect'
 import Module from './components/Module'
 
 const configs = new WeakMap()
@@ -57,9 +57,8 @@ const OscSettings = function ({i, settings}) {
     })
     updateAudio.call(this)
   }
-  return <Module>
-    <h3>Osc {i}</h3>
-    <SelectSmall
+  return <Module {...{title: `Osc ${i + 1}`}} >
+    <ModuleSelect
       defaultValue={settings.type}
       onChange={({target: {value}}) => updateOsc('type', value)}
       label='Type'
@@ -68,8 +67,8 @@ const OscSettings = function ({i, settings}) {
       <option value='sine'>Sine</option>
       <option value='square'>Square</option>
       <option value='triangle'>Triangle</option>
-    </SelectSmall>
-    <InputRangeSmall {...{
+    </ModuleSelect>
+    <ModuleRange {...{
       defaultValue: settings.gain,
       label: 'Gain',
       max: 2,
@@ -77,7 +76,7 @@ const OscSettings = function ({i, settings}) {
       onInput: e => updateOsc('gain', Number(e.target.value)),
       step: 0.01,
     }} />
-    <InputRangeSmall {...{
+    <ModuleRange {...{
       defaultValue: settings.pan,
       label: 'Pan',
       max: 1,
@@ -85,14 +84,14 @@ const OscSettings = function ({i, settings}) {
       onInput: e => updateOsc('pan', Number(e.target.value)),
       step: 0.01,
     }} />
-    <InputRangeSmall {...{
+    <ModuleRange {...{
       defaultValue: settings.pitch,
       label: 'Pitch',
       max: 24,
       min: -24,
       onInput: e => updateOsc('pitch', Number(e.target.value)),
     }} />
-    <InputRangeSmall {...{
+    <ModuleRange {...{
       defaultValue: settings.detune,
       label: 'Detune',
       max: 50,
@@ -160,7 +159,7 @@ export default class {
         <h2>Prometheus</h2>
         <div>
           <Module>
-            <InputRangeSmall {...{
+            <ModuleRange {...{
               defaultValue: masterGain,
               label: 'Master gain',
               max: 1.5,
@@ -171,7 +170,7 @@ export default class {
               },
               step: 0.01,
             }} />
-            <InputRangeSmall {...{
+            <ModuleRange {...{
               defaultValue: masterPan,
               label: 'Master pan',
               max: 1,
@@ -182,7 +181,7 @@ export default class {
               },
               step: 0.01,
             }} />
-            <InputRangeSmall {...{
+            <ModuleRange {...{
               defaultValue: Math.log(filter.frequency),
               label: 'Filter frequency',
               max: Math.log(20000),
@@ -196,7 +195,7 @@ export default class {
               },
               step: 0.01,
             }} />
-            <InputRangeSmall {...{
+            <ModuleRange {...{
               defaultValue: Math.log(filter.Q),
               label: 'Filter resonance',
               max: 20,
