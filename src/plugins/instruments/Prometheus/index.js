@@ -36,7 +36,11 @@ const notesToGraph = function (notes) {
   }, {
     masterGain: ['gain', 'output', {gain: masterGain}],
     masterPan: ['stereoPanner', 'masterGain', {pan: masterPan}],
-    filter: ['biquadFilter', 'masterPan', {frequency: filter.frequency, Q: filter.Q}],
+    filter: ['biquadFilter', 'masterPan', {
+      frequency: filter.frequency,
+      type: filter.type,
+      Q: filter.Q,
+    }],
   })
 }
 
@@ -111,6 +115,7 @@ export default class {
     configs.set(this, {
       filter: {
         frequency: 4096,
+        type: 'lowpass',
         Q: 5,
       },
       masterGain: 0.75,
@@ -155,6 +160,21 @@ export default class {
   }
   render (containerEl) {
     const {filter, masterGain, masterPan, oscillators} = configs.get(this)
+
+    const updateProp = (key, val) => {
+      configs.set(this, {...configs.get(this), [key]: val})
+      updateAudio.call(this)
+    }
+
+    const updateFilterProp = (key, val) => {
+      const currentConfig = configs.get(this)
+      configs.set(this, {
+        ...currentConfig,
+        filter: {...currentConfig.filter, [key]: val},
+      })
+      updateAudio.call(this)
+    }
+
     ReactDOM.render(
       <div {...{style: {color: '#ace', textAlign: 'center'}}}>
         <h2 {...{style: {
@@ -168,10 +188,7 @@ export default class {
               label: 'Gain',
               max: 1.5,
               min: 0,
-              onInput: e => {
-                configs.set(this, {...configs.get(this), masterGain: e.target.value})
-                updateAudio.call(this)
-              },
+              onInput: e => updateProp('masterGain', e.target.value),
               step: 0.01,
             }} />
             <ModuleRange {...{
@@ -179,28 +196,31 @@ export default class {
               label: 'Pan',
               max: 1,
               min: -1,
-              onInput: e => {
-                configs.set(this, {...configs.get(this), masterPan: e.target.value})
-                updateAudio.call(this)
-              },
+              onInput: e => updateProp('masterPan', e.target.value),
               step: 0.01,
             }} />
           </Module>
         </div>
         <div>
           <Module title='Filter'>
+            <ModuleSelect {...{
+              defaultValue: filter.type,
+              onChange: e => updateFilterProp('type', e.target.value),
+              label: 'Type',
+            }}
+            >
+              <option value='allpass'>Allpass</option>
+              <option value='bandpass'>Bandpass</option>
+              <option value='highpass'>Highpass</option>
+              <option value='lowpass'>Lowpass</option>
+              <option value='notch'>Notch</option>
+            </ModuleSelect>
             <ModuleRange {...{
               defaultValue: Math.log(filter.frequency),
               label: 'Frequency',
               max: Math.log(20000),
               min: Math.log(20),
-              onInput: e => {
-                configs.set(this, {
-                  ...configs.get(this),
-                  filter: {...configs.get(this).filter, frequency: Math.exp(Number(e.target.value))},
-                })
-                updateAudio.call(this)
-              },
+              onInput: e => updateFilterProp('frequency', Math.exp(Number(e.target.value))),
               step: 0.01,
             }} />
             <ModuleRange {...{
@@ -208,13 +228,7 @@ export default class {
               label: 'Resonance',
               max: 20,
               min: 0,
-              onInput: e => {
-                configs.set(this, {
-                  ...configs.get(this),
-                  filter: {...configs.get(this).filter, Q: Number(e.target.value)},
-                })
-                updateAudio.call(this)
-              },
+              onInput: e => updateFilterProp('Q', Number(e.target.value)),
               step: 0.1,
             }} />
           </Module>
