@@ -42,15 +42,15 @@ export default class {
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
 
     delayTimes.set(this, 1 / 3)
-    dryLevels.set(this, 2 / 3)
-    feedbacks.set(this, 1 / 3)
+    dryLevels.set(this, 0.9)
+    feedbacks.set(this, 0.25)
     highCuts.set(this, 16000)
     lowCuts.set(this, 50)
     outputs.set(this, output)
     pingPongs.set(this, true)
     virtualAudioGraphs.set(this, virtualAudioGraph)
-    wetLevels.set(this, 1)
-
+    wetLevels.set(this, 0.6)
+1
     updateAudioGraph.call(this)
 
     this.destination = virtualAudioGraph.getAudioNodeById('input')
