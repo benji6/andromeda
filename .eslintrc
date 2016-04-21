@@ -143,6 +143,9 @@
     "prefer-spread": 2,
     "quote-props": [2, "as-needed"],
     "quotes": [2, "single"],
+    "react/jsx-no-duplicate-props": 2,
+    "react/jsx-no-undef": 2,
+    "react/jsx-uses-react": 2,
     "react/jsx-uses-vars": 2,
     "require-yield": 2,
     "semi-spacing": 2,
@@ -159,11 +162,5 @@
     "vars-on-top": 2,
     "wrap-iife": 2,
     "yoda": 2
-  },
-    "settings": {
-    "react": {
-      "pragma": "React",
-      "version": "0.14.0"
-    }
   }
 }
