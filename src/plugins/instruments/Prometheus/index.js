@@ -6,6 +6,7 @@ import pitchToFrequency from '../../../audioHelpers/pitchToFrequency'
 import ModuleRange from './components/ModuleRange'
 import ModuleSelect from './components/ModuleSelect'
 import Module from './components/Module'
+import OscModule from './components/OscModule'
 
 const configs = new WeakMap()
 const notes = new WeakMap()
@@ -46,63 +47,6 @@ const notesToGraph = function (notes) {
 
 const updateAudio = function () {
   virtualAudioGraphs.get(this).update(notesToGraph.call(this, notes.get(this)))
-}
-
-const OscSettings = function ({i, settings}) {
-  const updateOsc = (key, val) => {
-    const config = configs.get(this)
-    configs.set(this, {
-      ...config,
-      oscillators: [
-        ...config.oscillators.slice(0, i),
-        {...config.oscillators[i], [key]: val},
-        ...config.oscillators.slice(i + 1),
-      ],
-    })
-    updateAudio.call(this)
-  }
-  return <Module {...{title: `Osc ${i + 1}`}} >
-    <ModuleSelect
-      defaultValue={settings.type}
-      onChange={({target: {value}}) => updateOsc('type', value)}
-      label='Type'
-    >
-      <option value='sawtooth'>Sawtooth</option>
-      <option value='sine'>Sine</option>
-      <option value='square'>Square</option>
-      <option value='triangle'>Triangle</option>
-    </ModuleSelect>
-    <ModuleRange {...{
-      defaultValue: settings.gain,
-      label: 'Gain',
-      max: 2,
-      min: 0,
-      onInput: e => updateOsc('gain', Number(e.target.value)),
-      step: 0.01,
-    }} />
-    <ModuleRange {...{
-      defaultValue: settings.pan,
-      label: 'Pan',
-      max: 1,
-      min: -1,
-      onInput: e => updateOsc('pan', Number(e.target.value)),
-      step: 0.01,
-    }} />
-    <ModuleRange {...{
-      defaultValue: settings.pitch,
-      label: 'Pitch',
-      max: 24,
-      min: -24,
-      onInput: e => updateOsc('pitch', Number(e.target.value)),
-    }} />
-    <ModuleRange {...{
-      defaultValue: settings.detune,
-      label: 'Detune',
-      max: 50,
-      min: -50,
-      onInput: e => updateOsc('detune', Number(e.target.value)),
-    }} />
-  </Module>
 }
 
 export default class {
@@ -233,10 +177,23 @@ export default class {
             }} />
           </Module>
         </div>
-        {oscillators.map((oscSettings, i) => <span key={i}>{OscSettings.call(this, {
+        {oscillators.map((settings, i) => <OscModule {...{
           i,
-          settings: oscSettings
-        })}</span>)}
+          key: i,
+          settings,
+          updateOsc: (key, val) => {
+            const config = configs.get(this)
+            configs.set(this, {
+              ...config,
+              oscillators: [
+                ...config.oscillators.slice(0, i),
+                {...config.oscillators[i], [key]: val},
+                ...config.oscillators.slice(i + 1),
+              ],
+            })
+            updateAudio.call(this)
+          },
+        }} />)}
       </div>,
       containerEl
     )
