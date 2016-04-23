@@ -2,6 +2,7 @@ import React from 'react'
 import ModuleFilter from './ModuleFilter'
 import ModuleMaster from './ModuleMaster'
 import ModuleOsc from './ModuleOsc'
+import {blue, size5, size6} from './constants'
 
 export default class extends React.Component {
   componentDidMount () {
@@ -26,10 +27,10 @@ export default class extends React.Component {
       filter,
       oscillators,
     } = this.state
-    return <div {...{style: {color: '#ace', textAlign: 'center'}}}>
+    return <div {...{style: {color: blue, textAlign: 'center'}}}>
       <h2 {...{style: {
-        fontSize: '1.3rem',
-        margin: '1rem',
+        fontSize: size6,
+        margin: size5,
       }}}>PROMETHEUS</h2>
       <ModuleMaster {...{
         masterGain,

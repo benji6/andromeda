@@ -1,15 +1,21 @@
 import React from 'react'
-import {height} from './constants'
+import {blue, size0, size1, size4, size5} from './constants'
 
 export default ({children, title, ...props}) => <div {...{
-  style: {display: 'inline-block', padding: '1rem 1rem 0 1rem'},
+  style: {
+    border: `${size1} solid ${blue}`,
+    borderRadius: size5,
+    display: 'inline-block',
+    margin: size4,
+    padding: size4,
+  },
   ...props,
 }}>
   {title ? <h3 {...{style: {
-    fontSize: '1rem',
+    fontSize: size5,
     fontWeight: '600',
-    margin: '0rem',
-    paddingBottom: height,
+    margin: size0,
+    paddingBottom: size4,
   }}}>{title}</h3> : null}
   <div {...{style: {display: 'table'}}}>{children}</div>
 </div>

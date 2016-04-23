@@ -1,7 +1,7 @@
 import React from 'react'
 import {width} from './constants'
-import _ModuleInput from './_ModuleInput'
+import ModuleInput from './ModuleInput'
 
-export default ({label, ...props}) => <_ModuleInput {...{label}}>
+export default ({label, ...props}) => <ModuleInput {...{label}}>
   <select {...{display: 'table-cell', style: {width}, ...props}} />
-</_ModuleInput>
+</ModuleInput>
