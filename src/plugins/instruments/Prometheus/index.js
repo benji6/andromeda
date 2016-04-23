@@ -1,52 +1,17 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import createStore from 'st88'
 import createVirtualAudioGraph from 'virtual-audio-graph'
-import frequencyToPitch from '../../../audioHelpers/frequencyToPitch'
-import pitchToFrequency from '../../../audioHelpers/pitchToFrequency'
-import ModuleRange from './components/ModuleRange'
-import ModuleSelect from './components/ModuleSelect'
-import Module from './components/Module'
-import OscModule from './components/OscModule'
+import Prometheus from './components/Prometheus'
+import notesToGraph from './notesToGraph'
 
-const configs = new WeakMap()
+const stores = new WeakMap()
 const notes = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 
-const osc = ({detune, frequency, gain, pan, pitch, startTime, stopTime, type}) => ({
-  0: ['gain', 'output', {gain}],
-  1: ['stereoPanner', 0, {pan}],
-  2: ['oscillator', 1, {
-    detune,
-    frequency: pitchToFrequency(frequencyToPitch(frequency) + pitch),
-    startTime,
-    stopTime,
-    type,
-  }],
-})
-
-const notesToGraph = function (notes) {
-  const {filter, oscillators, masterGain, masterPan} = configs.get(this)
-  return notes.reduce((acc, {frequency, gain, id, startTime, stopTime}) => {
-    const noteGainId = `noteGain-${id}`
-    acc[noteGainId] = ['gain', 'filter', {gain}]
-    oscillators.forEach((oscParams, i) => {
-      acc[`osc${i}${id}`] = [osc, noteGainId, {...oscParams, frequency, startTime, stopTime}]
-    })
-    return acc
-  }, {
-    masterGain: ['gain', 'output', {gain: masterGain}],
-    masterPan: ['stereoPanner', 'masterGain', {pan: masterPan}],
-    filter: ['biquadFilter', 'masterPan', {
-      frequency: filter.frequency,
-      type: filter.type,
-      Q: filter.Q,
-    }],
-  })
-}
-
-const updateAudio = function () {
-  virtualAudioGraphs.get(this).update(notesToGraph.call(this, notes.get(this)))
+const updateAudio = function (state) {
+  virtualAudioGraphs.get(this).update(notesToGraph(state, notes.get(this)))
 }
 
 export default class {
@@ -55,12 +20,12 @@ export default class {
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
 
     notes.set(this, [])
-
-    configs.set(this, {
+    const store = createStore({
       filter: {
         frequency: 4096,
-        type: 'lowpass',
+        gain: 1,
         Q: 5,
+        type: 'lowpass',
       },
       masterGain: 0.75,
       masterPan: 0,
@@ -72,8 +37,10 @@ export default class {
       ]
     })
 
-    outputs.set(this, output)
+    store.subscribe(updateAudio.bind(this))
 
+    stores.set(this, store)
+    outputs.set(this, output)
     virtualAudioGraphs.set(this, virtualAudioGraph)
   }
   connect (destination) {
@@ -85,7 +52,7 @@ export default class {
   noteStart (note) {
     const newNotes = [...notes.get(this), note]
     notes.set(this, newNotes)
-    updateAudio.call(this)
+    updateAudio.call(this, stores.get(this).getState())
   }
   noteModify (note) {
     const currentNotes = notes.get(this)
@@ -95,106 +62,45 @@ export default class {
       note,
       ...currentNotes.slice(extantNoteIdx + 1),
     ])
-    updateAudio.call(this)
+    updateAudio.call(this, stores.get(this).getState())
   }
   noteStop (id) {
     const newNotes = notes.get(this).filter(note => note.id !== id)
     notes.set(this, newNotes)
-    updateAudio.call(this)
+    updateAudio.call(this, stores.get(this).getState())
   }
   render (containerEl) {
-    const {filter, masterGain, masterPan, oscillators} = configs.get(this)
+    const store = stores.get(this)
 
     const updateProp = (key, val) => {
-      configs.set(this, {...configs.get(this), [key]: val})
-      updateAudio.call(this)
+      store.dispatch(state => ({...state, [key]: val}))
     }
 
     const updateFilterProp = (key, val) => {
-      const currentConfig = configs.get(this)
-      configs.set(this, {
-        ...currentConfig,
-        filter: {...currentConfig.filter, [key]: val},
-      })
-      updateAudio.call(this)
+      store.dispatch(state => ({
+        ...state,
+        filter: {...state.filter, [key]: val},
+      }))
+    }
+
+    const updateOsc = i => (key, val) => {
+      store.dispatch(state => ({
+        ...state,
+        oscillators: [
+          ...state.oscillators.slice(0, i),
+          {...state.oscillators[i], [key]: val},
+          ...state.oscillators.slice(i + 1),
+        ],
+      }))
     }
 
     ReactDOM.render(
-      <div {...{style: {color: '#ace', textAlign: 'center'}}}>
-        <h2 {...{style: {
-            fontSize: '1.3rem',
-            margin: '1rem',
-          }}}>PROMETHEUS</h2>
-        <div>
-          <Module title='Master'>
-            <ModuleRange {...{
-              defaultValue: masterGain,
-              label: 'Gain',
-              max: 1.5,
-              min: 0,
-              onInput: e => updateProp('masterGain', e.target.value),
-              step: 0.01,
-            }} />
-            <ModuleRange {...{
-              defaultValue: masterPan,
-              label: 'Pan',
-              max: 1,
-              min: -1,
-              onInput: e => updateProp('masterPan', e.target.value),
-              step: 0.01,
-            }} />
-          </Module>
-        </div>
-        <div>
-          <Module title='Filter'>
-            <ModuleSelect {...{
-              defaultValue: filter.type,
-              onChange: e => updateFilterProp('type', e.target.value),
-              label: 'Type',
-            }}
-            >
-              <option value='allpass'>Allpass</option>
-              <option value='bandpass'>Bandpass</option>
-              <option value='highpass'>Highpass</option>
-              <option value='lowpass'>Lowpass</option>
-              <option value='notch'>Notch</option>
-            </ModuleSelect>
-            <ModuleRange {...{
-              defaultValue: Math.log(filter.frequency),
-              label: 'Frequency',
-              max: Math.log(20000),
-              min: Math.log(20),
-              onInput: e => updateFilterProp('frequency', Math.exp(Number(e.target.value))),
-              step: 0.01,
-            }} />
-            <ModuleRange {...{
-              defaultValue: Math.log(filter.Q),
-              label: 'Resonance',
-              max: 20,
-              min: 0,
-              onInput: e => updateFilterProp('Q', Number(e.target.value)),
-              step: 0.1,
-            }} />
-          </Module>
-        </div>
-        {oscillators.map((settings, i) => <OscModule {...{
-          i,
-          key: i,
-          settings,
-          updateOsc: (key, val) => {
-            const config = configs.get(this)
-            configs.set(this, {
-              ...config,
-              oscillators: [
-                ...config.oscillators.slice(0, i),
-                {...config.oscillators[i], [key]: val},
-                ...config.oscillators.slice(i + 1),
-              ],
-            })
-            updateAudio.call(this)
-          },
-        }} />)}
-      </div>,
+      <Prometheus {...{
+        store,
+        updateProp,
+        updateOsc,
+        updateFilterProp,
+      }} />,
       containerEl
     )
   }
