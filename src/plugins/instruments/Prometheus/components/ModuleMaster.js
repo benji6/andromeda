@@ -10,7 +10,7 @@ export default ({masterGain, masterPan, updateProp}) =>
         label: 'Gain',
         max: 1.5,
         min: 0,
-        onInput: e => updateProp('masterGain', e.target.value),
+        onInput: e => updateProp('masterGain', Number(e.target.value)),
         step: 0.01,
       }} />
       <ModuleRange {...{
@@ -18,7 +18,7 @@ export default ({masterGain, masterPan, updateProp}) =>
         label: 'Pan',
         max: 1,
         min: -1,
-        onInput: e => updateProp('masterPan', e.target.value),
+        onInput: e => updateProp('masterPan', Number(e.target.value)),
         step: 0.01,
       }} />
     </Module>

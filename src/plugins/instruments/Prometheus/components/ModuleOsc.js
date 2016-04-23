@@ -33,6 +33,7 @@ export default ({i, updateOsc, settings}) =>
     }} />
     <ModuleRange {...{
       defaultValue: settings.pitch,
+      displayValue: settings.pitch,
       label: 'Pitch',
       max: 24,
       min: -24,
@@ -40,6 +41,7 @@ export default ({i, updateOsc, settings}) =>
     }} />
     <ModuleRange {...{
       defaultValue: settings.detune,
+      displayValue: settings.detune,
       label: 'Detune',
       max: 50,
       min: -50,
