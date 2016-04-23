@@ -1,19 +1,19 @@
 import React from 'react'
-import {height, width} from './constants'
-import _ModuleInput from './_ModuleInput'
+import {size2, size4, width} from './constants'
+import ModuleInput from './ModuleInput'
 
-export default ({label, ...props}) => <_ModuleInput {...{label}}>
+export default ({label, ...props}) => <ModuleInput {...{label}}>
   <input {...{
-    style: {display: 'table-cell', height, width},
+    style: {display: 'table-cell', height: size4, width},
     type: 'range',
     ...props,
   }} />
   <div {...{
     style: {
       display: 'table-cell',
-      height,
-      paddingLeft: '0.25rem',
-      minWidth: '2.25rem'
+      height: size4,
+      paddingLeft: size2,
+      minWidth: '2.25rem',
     },
   }}>{props.displayValue || props.defaultValue.toFixed(2)}</div>
-</_ModuleInput>
+</ModuleInput>
