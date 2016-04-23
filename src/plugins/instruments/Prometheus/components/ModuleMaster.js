@@ -1,24 +1,23 @@
 import React from 'react'
-import Module from './Module'
-import ModuleRange from './ModuleRange'
+import Module, {Range} from './Module'
 
-export default ({masterGain, masterPan, updateProp}) =>
+export default ({master: {gain, pan}, updateMaster}) =>
   <div>
     <Module title='Master'>
-      <ModuleRange {...{
-        defaultValue: masterGain,
+      <Range {...{
+        defaultValue: gain,
         label: 'Gain',
         max: 1.5,
         min: 0,
-        onInput: e => updateProp('masterGain', Number(e.target.value)),
+        onInput: e => updateMaster('gain', Number(e.target.value)),
         step: 0.01,
       }} />
-      <ModuleRange {...{
-        defaultValue: masterPan,
+      <Range {...{
+        defaultValue: pan,
         label: 'Pan',
         max: 1,
         min: -1,
-        onInput: e => updateProp('masterPan', Number(e.target.value)),
+        onInput: e => updateMaster('pan', Number(e.target.value)),
         step: 0.01,
       }} />
     </Module>
