@@ -21,11 +21,12 @@ const typesToParams = {
 
 const ControlFrequency = ({frequency, updateFilterProp}) => <ModuleRange {...{
   defaultValue: Math.log(frequency),
+  displayValue: Math.round(frequency),
   label: 'Frequency',
   max: Math.log(20000),
   min: Math.log(20),
   onInput: e => updateFilterProp('frequency', Math.exp(Number(e.target.value))),
-  step: 0.01,
+  step: 0.001,
 }} />
 
 const ControlGain = ({gain, updateFilterProp}) => <ModuleRange {...{

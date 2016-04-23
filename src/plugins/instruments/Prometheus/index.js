@@ -23,7 +23,7 @@ export default class {
     const store = createStore({
       filter: {
         frequency: 4096,
-        gain: 1,
+        gain: -12,
         Q: 5,
         type: 'lowpass',
       },
