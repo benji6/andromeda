@@ -1,21 +1,14 @@
 import React from 'react'
-import Module from './Module'
-import ModuleRange from './ModuleRange'
-import ModuleSelect from './ModuleSelect'
+import Module, {Range} from './Module'
+import SelectOscType from './SelectOscType'
 
 export default ({i, updateOsc, settings}) =>
   <Module {...{title: `Osc ${i + 1}`}} >
-    <ModuleSelect
-      defaultValue={settings.type}
-      onChange={({target: {value}}) => updateOsc('type', value)}
-      label='Type'
-    >
-      <option value='sawtooth'>Sawtooth</option>
-      <option value='sine'>Sine</option>
-      <option value='square'>Square</option>
-      <option value='triangle'>Triangle</option>
-    </ModuleSelect>
-    <ModuleRange {...{
+    <SelectOscType {...{
+      defaultValue: settings.type,
+      onChange: ({target: {value}}) => updateOsc('type', value),
+    }}/>
+    <Range {...{
       defaultValue: settings.gain,
       label: 'Gain',
       max: 2,
@@ -23,7 +16,7 @@ export default ({i, updateOsc, settings}) =>
       onInput: e => updateOsc('gain', Number(e.target.value)),
       step: 0.01,
     }} />
-    <ModuleRange {...{
+    <Range {...{
       defaultValue: settings.pan,
       label: 'Pan',
       max: 1,
@@ -31,7 +24,7 @@ export default ({i, updateOsc, settings}) =>
       onInput: e => updateOsc('pan', Number(e.target.value)),
       step: 0.01,
     }} />
-    <ModuleRange {...{
+    <Range {...{
       defaultValue: settings.pitch,
       displayValue: settings.pitch,
       label: 'Pitch',
@@ -39,7 +32,7 @@ export default ({i, updateOsc, settings}) =>
       min: -24,
       onInput: e => updateOsc('pitch', Number(e.target.value)),
     }} />
-    <ModuleRange {...{
+    <Range {...{
       defaultValue: settings.detune,
       displayValue: settings.detune,
       label: 'Detune',
