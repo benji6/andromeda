@@ -1,4 +1,5 @@
 import React from 'react'
+import ModuleAdsr from './ModuleAdsr'
 import ModuleFilter from './ModuleFilter'
 import ModuleLfo from './ModuleLfo'
 import ModuleMaster from './ModuleMaster'
@@ -18,17 +19,21 @@ export default class extends React.Component {
   }
   render () {
     const {
+      updateAdsr,
       updateFilter,
       updateLfo,
       updateMaster,
       updateOsc,
     } = this.props
+
     const {
+      adsr,
       filter,
       lfo,
       master,
       oscillators,
     } = this.state
+
     return <div {...{style: {color: blue, textAlign: 'center'}}}>
       <h2 {...{style: {fontSize: size6, margin: size5}}}>PROMETHEUS</h2>
       <ModuleMaster {...{master, updateMaster}} />
@@ -39,7 +44,10 @@ export default class extends React.Component {
         type: filter.type,
         updateFilter,
       }}/>
-      <ModuleLfo {...{lfo, updateLfo}} />
+      <div>
+        <ModuleAdsr {...{adsr, updateAdsr}} />
+        <ModuleLfo {...{lfo, updateLfo}} />
+      </div>
       {oscillators.map((settings, i) => <ModuleOsc {...{
         i,
         key: i,

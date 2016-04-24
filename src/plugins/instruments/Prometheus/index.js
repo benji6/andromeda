@@ -21,6 +21,12 @@ export default class {
 
     notes.set(this, [])
     const store = createStore({
+      adsr: {
+        a: 1,
+        d: 1,
+        s: 0.5,
+        r: 1,
+      },
       filter: {
         frequency: 1024,
         gain: -12,
@@ -83,6 +89,7 @@ export default class {
       [prop]: {...state[prop], [key]: val},
     }))
 
+    const updateAdsr = updateProp('adsr')
     const updateFilter = updateProp('filter')
     const updateLfo = updateProp('lfo')
     const updateMaster = updateProp('master')
@@ -99,6 +106,7 @@ export default class {
     ReactDOM.render(
       <Prometheus {...{
         store,
+        updateAdsr,
         updateFilter,
         updateLfo,
         updateOsc,
