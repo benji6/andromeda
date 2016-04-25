@@ -21,19 +21,32 @@ export default class {
 
     notes.set(this, [])
     const store = createStore({
+      adsr: {
+        a: 1,
+        d: 1,
+        s: 0.5,
+        r: 1,
+      },
       filter: {
-        frequency: 4096,
+        frequency: 1024,
         gain: -12,
-        Q: 5,
+        Q: 3,
         type: 'lowpass',
       },
-      masterGain: 0.75,
-      masterPan: 0,
+      lfo: {
+        frequency: 0.3,
+        gain: 256,
+        type: 'triangle',
+      },
+      master: {
+        gain: 0.75,
+        pan: 0,
+      },
       oscillators: [
         {detune: 0, gain: 0.35, name: 1, pan: -0.3, pitch: 0, type: 'triangle'},
-        {detune: 13, gain: 0.5, name: 2, pan: 0.6, pitch: 7, type: 'sine'},
-        {detune: -7, gain: 0.9, name: 3, pan: 0.1, pitch: -24, type: 'sine'},
-        {detune: 10, gain: 0.2, name: 4, pan: -0.4, pitch: 12, type: 'square'},
+        {detune: 13, gain: 0.5, name: 2, pan: 0.4, pitch: 7, type: 'triangle'},
+        {detune: -7, gain: 0.8, name: 3, pan: 0.1, pitch: -24, type: 'sawtooth'},
+        {detune: 10, gain: 0.175, name: 4, pan: -0.4, pitch: 12, type: 'square'},
       ]
     })
 
@@ -71,35 +84,33 @@ export default class {
   }
   render (containerEl) {
     const store = stores.get(this)
+    const updateProp = prop => (key, val) => store.dispatch(state => ({
+      ...state,
+      [prop]: {...state[prop], [key]: val},
+    }))
 
-    const updateProp = (key, val) => {
-      store.dispatch(state => ({...state, [key]: val}))
-    }
+    const updateAdsr = updateProp('adsr')
+    const updateFilter = updateProp('filter')
+    const updateLfo = updateProp('lfo')
+    const updateMaster = updateProp('master')
 
-    const updateFilterProp = (key, val) => {
-      store.dispatch(state => ({
-        ...state,
-        filter: {...state.filter, [key]: val},
-      }))
-    }
-
-    const updateOsc = i => (key, val) => {
-      store.dispatch(state => ({
-        ...state,
-        oscillators: [
-          ...state.oscillators.slice(0, i),
-          {...state.oscillators[i], [key]: val},
-          ...state.oscillators.slice(i + 1),
-        ],
-      }))
-    }
+    const updateOsc = i => (key, val) => store.dispatch(state => ({
+      ...state,
+      oscillators: [
+        ...state.oscillators.slice(0, i),
+        {...state.oscillators[i], [key]: val},
+        ...state.oscillators.slice(i + 1),
+      ],
+    }))
 
     ReactDOM.render(
       <Prometheus {...{
         store,
-        updateProp,
+        updateAdsr,
+        updateFilter,
+        updateLfo,
         updateOsc,
-        updateFilterProp,
+        updateMaster,
       }} />,
       containerEl
     )
