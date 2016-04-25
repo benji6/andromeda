@@ -54,7 +54,7 @@
     "reselect": "^2.3.0",
     "st88": "git@github.com:benji6/st88.git",
     "three": "^0.75.0",
-    "virtual-audio-graph": "^0.17.3"
+    "virtual-audio-graph": "^0.17.4"
   },
   "devDependencies": {
     "babel": "^6.3.26",
