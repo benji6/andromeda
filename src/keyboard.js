@@ -1,3 +1,4 @@
+import {forEach} from 'ramda'
 import store from './store'
 import pitchToFrequency from './audioHelpers/pitchToFrequency'
 import {instrumentInstance} from './utils/derivedData'
@@ -59,6 +60,18 @@ const computeNoteParams = pitch => {
   }
 }
 
+const stopAndRemoveNote = keyCode => {
+  pressedKeys.delete(keyCode)
+  const pitch = keyCodesToPitches[keyCode]
+  if (pitch === undefined) return
+  const noteParams = computeNoteParams(pitch)
+  const instrumentObj = instrumentInstance(
+    noteParams.instrument,
+    store.getState().plugins
+  )
+  instrumentObj.noteStop && instrumentObj.noteStop(noteParams.id)
+}
+
 document.addEventListener('keydown', e => {
   const {keyCode} = e
   if (keyCode === 191) e.preventDefault()
@@ -66,10 +79,17 @@ document.addEventListener('keydown', e => {
   pressedKeys.add(keyCode)
   const pitch = keyCodesToPitches[keyCode]
   if (pitch === undefined) return
+  const state = store.getState()
+  if (state.keyboard.monophonic) {
+    forEach(
+      code => code !== keyCode && stopAndRemoveNote(code),
+      pressedKeys
+    )
+  }
   const noteParams = computeNoteParams(pitch)
   const instrumentObj = instrumentInstance(
     noteParams.instrument,
-    store.getState().plugins
+    state.plugins
   )
   instrumentObj.noteStart && instrumentObj.noteStart(noteParams)
 })

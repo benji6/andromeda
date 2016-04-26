@@ -1,6 +1,7 @@
 import test from 'tape'
 import reducer, {initialState} from './keyboard'
 import {
+  keyboardMonophonicSet,
   updateKeyboardInstrument,
   updateKeyboardOctave,
   updateKeyboardVolume
@@ -11,6 +12,18 @@ const reducerName = 'keyboard'
 test(`${reducerName} reducer returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState)
   t.deepEqual(reducer(undefined, {}), initialState)
+  t.end()
+})
+
+test(`${reducerName} reducer keyboardMonophonicSet`, t => {
+  t.deepEqual(
+    reducer({monophonic: false}, keyboardMonophonicSet(true)),
+    {monophonic: true}
+  )
+  t.deepEqual(
+    reducer({monophonic: true}, keyboardMonophonicSet(false)),
+    {monophonic: false}
+  )
   t.end()
 })
 
