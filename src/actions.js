@@ -9,6 +9,7 @@ export const [
   [DELETE_PATTERN, deletePattern],
   [INSTANTIATE_EFFECT, instantiateEffect],
   [INSTANTIATE_INSTRUMENT, instantiateInstrument],
+  [KEYBOARD_MONOPHONIC_SET, keyboardMonophonicSet],
   [LOAD_PLUGIN_EFFECT, loadPluginEffect],
   [LOAD_PLUGIN_INSTRUMENT, loadPluginInstrument],
   [PATTERN_CELL_CLICK, patternCellClick],

@@ -6,12 +6,14 @@ import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
 import {eventValuePath} from '../../utils/helpers'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import {
+  keyboardMonophonicSet,
   updateKeyboardInstrument,
   updateKeyboardOctave,
   updateKeyboardVolume
 } from '../../actions'
 import FullButton from '../atoms/FullButton'
 import InputLabel from '../atoms/InputLabel'
+import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 
 const connectComponent = connect(({keyboard, dispatch, plugins}) =>
@@ -50,6 +52,11 @@ export default connectComponent(({keyboard, dispatch, plugins}) =>
       text='Octave'
       value={keyboard.octave}
     />
+    <CheckboxSelector {...{
+      checked: keyboard.monophonic,
+      onChange: e => dispatch(keyboardMonophonicSet(e.target.checked)),
+      text: 'Monophonic',
+    }} />
     <div>
       <InputLabel />
       <FullButton to='/settings'>OK</FullButton>
