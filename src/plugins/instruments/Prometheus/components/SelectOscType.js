@@ -1,5 +1,5 @@
 import React from 'react'
-import {Select} from './Module'
+import {Select} from '../../../../components/organisms/Module'
 
 export default ({defaultValue, onChange}) => <Select {...{
   defaultValue,
