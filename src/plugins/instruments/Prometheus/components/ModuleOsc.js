@@ -1,5 +1,5 @@
 import React from 'react'
-import Module, {Range} from './Module'
+import Module, {Range} from '../../../../components/organisms/Module'
 import SelectOscType from './SelectOscType'
 
 export default ({i, updateOsc, settings}) =>

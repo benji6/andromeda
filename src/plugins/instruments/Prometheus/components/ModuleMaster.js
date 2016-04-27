@@ -1,5 +1,5 @@
 import React from 'react'
-import Module, {Range} from './Module'
+import Module, {Range} from '../../../../components/organisms/Module'
 
 export default ({master: {gain, pan}, updateMaster}) =>
   <div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import Module, {Range, Select} from './Module'
+import Module, {Range, Select} from '../../../../components/organisms/Module'
 import capitalize from 'capitalize'
 
 const paramsAll = ['frequency', 'gain', 'Q']

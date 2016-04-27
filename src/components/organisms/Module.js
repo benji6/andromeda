@@ -8,7 +8,7 @@ import {
   size4,
   size5,
   width,
-} from './constants'
+} from '../constants'
 
 const Input = ({children, label}) => <label {...{
   style: {
