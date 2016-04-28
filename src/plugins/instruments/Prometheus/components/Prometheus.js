@@ -3,7 +3,10 @@ import ModuleFilter from './ModuleFilter'
 import ModuleLfo from './ModuleLfo'
 import ModuleMaster from './ModuleMaster'
 import ModuleOsc from './ModuleOsc'
-import {blue, size5, size6} from '../../../../components/constants'
+
+const blue = '#ace'
+const size5 = '1rem'
+const size6 = '1.25rem'
 
 export default class extends React.Component {
   componentDidMount () {
