@@ -1,0 +1,39 @@
+$width: 10rem;
+
+.ControlModule {
+  border: $size1 solid $blue7;
+  border-radius: $size5;
+  display: inline-block;
+  margin: $size4;
+  padding: $size4;
+}
+.ControlModule__Input {
+  display: table-row;
+  font-size: $size4;
+  padding: $size4;
+}
+.ControlModule__Input__Label {
+  display: table-cell;
+  padding: $size3 $size3 $size2 $size2;
+  text-align: left;
+}
+.ControlModule__Output {
+  display: table-cell;
+  height: $size4;
+  padding-left: $size2;
+  min-width: 2.25rem;
+}
+.ControlModule__Range {
+  display: table-cell;
+  height: $size4;
+  width: $width;
+}
+.ControlModule__Select {
+  width: $width;
+}
+.ControlModule__Title {
+  font-size: $size5;
+  font-weight: 600;
+  margin: $size0;
+  padding-bottom: $size4;
+}
