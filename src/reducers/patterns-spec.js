@@ -6,6 +6,7 @@ import {
   deletePattern,
   patternCellClick,
   setPatternActivePosition,
+  setPatternMarkerPosition,
   setPatternPlaying,
   updatePatternInstrument,
   updatePatternOctave,
@@ -19,6 +20,7 @@ const initialState = [{
   activePosition: null,
   instrument: 'Prometheus',
   steps: [],
+  markerPosition: 0,
   octave: -1,
   playing: false,
   xLength: 8,
@@ -113,6 +115,16 @@ test(`${reducerName} setPatternActivePosition`, t => {
               [...initialState.slice(0, patternId),
                {...activePattern, activePosition: payload.value},
                ...initialState.slice(patternId + 1)])
+  t.end()
+})
+
+test(`${reducerName} setPatternMarkerPosition`, t => {
+  t.deepEqual(
+    reducer(
+      [{id: 0, markerPosition: 0.1}],
+      setPatternMarkerPosition({patternId: 0, value: 0.4})
+    ),
+    [{id: 0, markerPosition: 0.4}])
   t.end()
 })
 

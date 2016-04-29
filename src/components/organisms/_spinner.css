@@ -15,7 +15,7 @@
 
 .spinner_el:before {
   animation: spinner_elFadeDelay 1.2s infinite ease-in-out both;
-  background-color: $green-dawn;
+  background-color: $green-6;
   content: '';
   display: block;
   height: 5%;

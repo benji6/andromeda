@@ -1,7 +1,7 @@
 $width: 10rem;
 
 .ControlModule {
-  border: $size1 solid $blue7;
+  border: $size1 solid $blue-6;
   border-radius: $size5;
   display: inline-block;
   margin: $size4;

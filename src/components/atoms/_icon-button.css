@@ -7,6 +7,6 @@
   font-weight: 900;
   transition: color $transition-fast;
 }
-.icon-button--green-hover:hover { color: $green-dawn; }
+.icon-button--green-hover:hover { color: $green-6; }
 .icon-button--blue-hover:hover { color: $blue-dawn; }
-.icon-button--red-hover:hover { color: $red-dawn; }
+.icon-button--red-hover:hover { color: $red-6; }
