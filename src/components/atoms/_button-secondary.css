@@ -1,5 +1,5 @@
 .button-secondary {
-  background: $green-dawn;
+  background: $green-6;
   border-radius: 1rem;
   color: $black;
   font-size: $font-small;
@@ -9,9 +9,9 @@
   transition-duration: $transition-fast;
 }
 .button-secondary:active {
-  background: $green-night;
+  background: $green-2;
 }
 .button-secondary:hover {
-  background: $green-dusk;
+  background: $green-4;
   transition-duration: $transition-fast;
 }
