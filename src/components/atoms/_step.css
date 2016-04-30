@@ -1,6 +1,6 @@
 .step {
   background: $blue-midnight;
-  border: $pattern-side-length / 48 solid $black;
+  border: calc($pattern-side-length / 48) solid $black;
   box-sizing: border-box;
   cursor: pointer;
   height: 100%;
