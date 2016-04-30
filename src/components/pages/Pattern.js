@@ -12,7 +12,6 @@ import {defaultMemoize} from 'reselect'
 import audioContext from '../../audioContext'
 import {
   patternCellClick,
-  setPatternActivePosition,
   setPatternMarkerPosition,
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
@@ -41,7 +40,6 @@ const emptyPatternData = defaultMemoize((xLength, yLength) =>
   map(range(0), repeat(xLength, yLength)))
 
 const connectComponent = connect(({
-  activePatternIndex,
   dispatch,
   patterns,
   plugins,
@@ -49,7 +47,6 @@ const connectComponent = connect(({
 }, {params: {patternId}}) => {
   const {
     activeNotes,
-    activePosition,
     instrument,
     markerPosition,
     octave,
@@ -62,7 +59,6 @@ const connectComponent = connect(({
 
   const patternData = mapIndexed(
     (x, rowIndex) => map(colIndex => ({
-      active: colIndex === activePosition,
       selected: stepExists(colIndex, rowIndex, steps)
     }), x),
     emptyPatternData(xLength, yLength)
@@ -185,14 +181,6 @@ export default connectComponent(class extends React.Component {
       instrumentObj.noteStop(id), activeNotes)
     activeNotes.clear()
     dispatch(setPatternMarkerPosition({patternId, value: 0}))
-    this.stopVisuals()
-  }
-
-  stopVisuals () {
-    this.props.dispatch(setPatternActivePosition({
-      patternId: this.props.patternId,
-      value: null
-    }))
   }
 
   render () {

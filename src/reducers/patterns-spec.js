@@ -5,7 +5,6 @@ import {
   addNewPattern,
   deletePattern,
   patternCellClick,
-  setPatternActivePosition,
   setPatternMarkerPosition,
   setPatternPlaying,
   updatePatternInstrument,
@@ -17,7 +16,6 @@ import {
 const reducerName = 'patterns reducer'
 const initialState = [{
   activeNotes: new Set(),
-  activePosition: null,
   instrument: 'Prometheus',
   steps: [],
   markerPosition: 0,
@@ -36,7 +34,6 @@ test(`${reducerName} returns initial state`, t => {
 test(`${reducerName} addNewPattern`, t => {
   t.deepEqual(reducer([{
     activeNotes: new Set(),
-    activePosition: null,
     instrument: 'Prometheus',
     steps: [],
     octave: 0,
@@ -46,7 +43,6 @@ test(`${reducerName} addNewPattern`, t => {
     volume: 1 / 3
   }], addNewPattern()), [{
     activeNotes: new Set(),
-    activePosition: null,
     instrument: 'Prometheus',
     steps: [],
     octave: 0,
@@ -61,26 +57,21 @@ test(`${reducerName} addNewPattern`, t => {
 
 test(`${reducerName} deletePattern`, t => {
   t.deepEqual(reducer([{
-    activePosition: null,
     instrument: 'instrument 0',
     steps: []
   },
   {
-    activePosition: null,
     instrument: 'instrument 1',
     steps: []
   },
   {
-    activePosition: null,
     instrument: 'instrument 2',
     steps: []
   }], deletePattern(1)), [{
-    activePosition: null,
     instrument: 'instrument 0',
     steps: []
   },
   {
-    activePosition: null,
     instrument: 'instrument 2',
     steps: []
   }])
@@ -106,18 +97,6 @@ test(`${reducerName} patternCellClick`, t => {
   t.end()
 })
 
-test(`${reducerName} setPatternActivePosition`, t => {
-  const patternId = 0
-  const activePattern = initialState[patternId]
-  const payload = {patternId, value: 3}
-
-  t.deepEqual(reducer(undefined, setPatternActivePosition(payload)),
-              [...initialState.slice(0, patternId),
-               {...activePattern, activePosition: payload.value},
-               ...initialState.slice(patternId + 1)])
-  t.end()
-})
-
 test(`${reducerName} setPatternMarkerPosition`, t => {
   t.deepEqual(
     reducer(
@@ -130,7 +109,6 @@ test(`${reducerName} setPatternMarkerPosition`, t => {
 
 test(`${reducerName} setPatternPlaying`, t => {
   t.deepEqual(reducer([{
-    activePosition: null,
     instrument: 'Prometheus',
     playing: false,
     steps: [],
@@ -139,7 +117,6 @@ test(`${reducerName} setPatternPlaying`, t => {
     yLength: 8,
     volume: 1 / 3
   }], setPatternPlaying({patternId: 0, value: true})), [{
-    activePosition: null,
     instrument: 'Prometheus',
     steps: [],
     octave: 0,
