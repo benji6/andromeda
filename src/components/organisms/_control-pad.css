@@ -3,7 +3,7 @@
     circle,
     $turquoise-light 0%,
     $black 17.5%,
-    $black 100% * 11 / 12,
+    $black 91.67%,
     $blue-midnight 100%
   );
   cursor: crosshair;
