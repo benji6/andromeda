@@ -13,7 +13,6 @@ import {
   ADD_NEW_PATTERN,
   DELETE_PATTERN,
   PATTERN_CELL_CLICK,
-  SET_PATTERN_ACTIVE_POSITION,
   SET_PATTERN_MARKER_POSITION,
   SET_PATTERN_PLAYING,
   UPDATE_PATTERN_INSTRUMENT,
@@ -26,7 +25,6 @@ const overSteps = over(lensProp('steps'))
 
 const defaultPattern = () => ({
   activeNotes: new Set(),
-  activePosition: null,
   instrument: 'Prometheus',
   steps: [],
   markerPosition: 0,
@@ -59,8 +57,6 @@ export default (state = initialState, {type, payload}) => {
         state
       )
     }
-    case SET_PATTERN_ACTIVE_POSITION:
-      return setPatternProp('activePosition', payload, state)
     case SET_PATTERN_MARKER_POSITION:
       return setPatternProp('markerPosition', payload, state)
     case SET_PATTERN_PLAYING:

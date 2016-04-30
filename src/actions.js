@@ -22,7 +22,6 @@ export const [
   [REMOVE_CHANNEL, removeChannel],
   [REMOVE_EFFECT_FROM_CHANNEL, removeEffectFromChannel],
   [REMOVE_INSTRUMENT_FROM_CHANNEL, removeInstrumentFromChannel],
-  [SET_PATTERN_ACTIVE_POSITION, setPatternActivePosition],
   [SET_PATTERN_MARKER_POSITION, setPatternMarkerPosition],
   [SET_PATTERN_PLAYING, setPatternPlaying],
   [UPDATE_BPM, updateBpm],
