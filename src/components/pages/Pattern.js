@@ -13,6 +13,7 @@ import audioContext from '../../audioContext'
 import {
   patternCellClick,
   setPatternMarkerPosition,
+  setPatternPlayStartTime,
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
 import FullButton from '../atoms/FullButton'
@@ -54,6 +55,7 @@ const connectComponent = connect(({
     markerPosition,
     octave,
     playing,
+    playStartTime,
     steps,
     volume,
     xLength,
@@ -77,6 +79,7 @@ const connectComponent = connect(({
     patternData,
     patternId: Number(patternId),
     playing,
+    playStartTime,
     plugins,
     rootNote,
     selectedScale,
@@ -87,10 +90,33 @@ const connectComponent = connect(({
   }
 })
 
+const visualLoop = patternId => _ => {
+  const state = store.getState()
+  const {playStartTime, xLength} = state.patterns[patternId]
+  const {settings: {bpm}} = state
+  const noteDuration = 60 / bpm
+  const patternDuration = xLength * noteDuration
+  animationFrameRequest = requestAnimationFrame(visualLoop(patternId))
+  store.dispatch(setPatternMarkerPosition({
+    patternId,
+    value: (audioContext.currentTime - playStartTime) / patternDuration % 1,
+  }))
+}
+
 export default connectComponent(class extends React.Component {
+  componentWillMount () {
+    const {patternId, playing} = this.props
+    playing && visualLoop(patternId)()
+  }
+
+  componentWillUnmount () {
+    cancelAnimationFrame(animationFrameRequest)
+  }
+
   onPlay () {
-    const playStartTime = audioContext.currentTime
     const {patternId} = this.props
+    store.dispatch(setPatternPlayStartTime({patternId, value: audioContext.currentTime}))
+    const {playStartTime} = this.props
     let nextLoopEndTime = playStartTime
     const audioLoop = (i = 0) => {
       const state = store.getState()
@@ -131,21 +157,8 @@ export default connectComponent(class extends React.Component {
       }, steps)
     }
 
-    const visualLoop = _ => {
-      const state = store.getState()
-      const {xLength} = state.patterns[patternId]
-      const {settings: {bpm}} = state
-      const noteDuration = 60 / bpm
-      const patternDuration = xLength * noteDuration
-      animationFrameRequest = requestAnimationFrame(visualLoop)
-      store.dispatch(setPatternMarkerPosition({
-        patternId,
-        value: (audioContext.currentTime - playStartTime) / patternDuration % 1,
-      }))
-    }
-
     audioLoop()
-    visualLoop()
+    visualLoop(patternId)()
   }
 
   onStop () {
