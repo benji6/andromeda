@@ -3,6 +3,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 
+const audioContexts = new WeakMap()
 const detunes = new WeakMap()
 const masterGains = new WeakMap()
 const notes = new WeakMap()
@@ -73,6 +74,7 @@ export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
 
+    audioContexts.set(this, audioContext)
     detunes.set(this, 12)
     notes.set(this, [])
     masterGains.set(this, 0.75)
@@ -94,7 +96,12 @@ export default class {
     outputs.get(this).disconnect(destination)
   }
   noteStart (note) {
-    const newNotes = [...notes.get(this), note]
+    const newNotes = [
+      ...notes.get(this).filter(note => note.hasOwnProperty('stopTime')
+        ? note.stopTime > audioContexts.get(this).currentTime
+        : true),
+      note
+    ]
     notes.set(this, newNotes)
     updateAudio.call(this)
   }

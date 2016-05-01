@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 import createStore from 'st88'
 
+const audioContexts = new WeakMap()
 const notes = new WeakMap()
 const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
@@ -93,6 +94,8 @@ export default class {
       output,
     })
     store.subscribe(updateAudio.bind(this))
+
+    audioContexts.set(this, audioContext)
     stores.set(this, store)
     notes.set(this, [])
     outputs.set(this, output)
@@ -108,7 +111,12 @@ export default class {
     outputs.get(this).disconnect(destination)
   }
   noteStart (note) {
-    const newNotes = [...notes.get(this), note]
+    const newNotes = [
+      ...notes.get(this).filter(note => note.hasOwnProperty('stopTime')
+        ? note.stopTime > audioContexts.get(this).currentTime
+        : true),
+      note
+    ]
     notes.set(this, newNotes)
     updateAudio.call(this, stores.get(this).getState())
   }
