@@ -120,6 +120,7 @@ export default connectComponent(class extends React.Component {
     let nextLoopEndTime = playStartTime
     const audioLoop = (i = 0) => {
       const state = store.getState()
+      const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
       const {
         activeNotes,
         instrument,
@@ -128,8 +129,7 @@ export default connectComponent(class extends React.Component {
         volume,
         xLength,
         yLength,
-      } = state.patterns[patternId]
-      const {plugins, settings: {bpm, rootNote, selectedScale}} = state
+      } = patterns[patternId]
       const instrumentObj = instrumentInstance(instrument, plugins)
       const noteDuration = 60 / bpm
       const patternDuration = xLength * noteDuration
@@ -137,7 +137,7 @@ export default connectComponent(class extends React.Component {
       nextLoopEndTime += patternDuration
 
       timeoutId = setTimeout(
-        _ => audioLoop(++i),
+        _ => audioLoop(i + 1),
         (nextLoopEndTime - audioContext.currentTime - 0.1) * 1000
       )
 
@@ -155,6 +155,7 @@ export default connectComponent(class extends React.Component {
           stopTime: currentLoopEndTime + noteDuration * (x + 1),
         })
       }, steps)
+      i++
     }
 
     audioLoop()
