@@ -7,6 +7,7 @@ import {
   patternCellClick,
   setPatternMarkerPosition,
   setPatternPlaying,
+  setPatternPlayStartTime,
   updatePatternInstrument,
   updatePatternOctave,
   updatePatternVolume,
@@ -21,6 +22,7 @@ const initialState = [{
   markerPosition: 0,
   octave: -1,
   playing: false,
+  playStartTime: null,
   xLength: 8,
   yLength: 16,
   volume: 1 / 3
@@ -124,6 +126,21 @@ test(`${reducerName} setPatternPlaying`, t => {
     xLength: 8,
     yLength: 8,
     volume: 1 / 3
+  }])
+  t.end()
+})
+
+test(`${reducerName} setPatternPlayStartTime`, t => {
+  t.deepEqual(reducer([{
+    instrument: 'Prometheus',
+    playing: false,
+    steps: [],
+    playStartTime: 0,
+  }], setPatternPlayStartTime({patternId: 0, value: 10})), [{
+    instrument: 'Prometheus',
+    playing: false,
+    steps: [],
+    playStartTime: 10,
   }])
   t.end()
 })

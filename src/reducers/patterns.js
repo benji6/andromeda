@@ -14,6 +14,7 @@ import {
   DELETE_PATTERN,
   PATTERN_CELL_CLICK,
   SET_PATTERN_MARKER_POSITION,
+  SET_PATTERN_PLAY_START_TIME,
   SET_PATTERN_PLAYING,
   UPDATE_PATTERN_INSTRUMENT,
   UPDATE_PATTERN_OCTAVE,
@@ -30,6 +31,7 @@ const defaultPattern = () => ({
   markerPosition: 0,
   octave: -1,
   playing: false,
+  playStartTime: null,
   xLength: 8,
   yLength: 16,
   volume: 1 / 3
@@ -59,6 +61,8 @@ export default (state = initialState, {type, payload}) => {
     }
     case SET_PATTERN_MARKER_POSITION:
       return setPatternProp('markerPosition', payload, state)
+    case SET_PATTERN_PLAY_START_TIME:
+      return setPatternProp('playStartTime', payload, state)
     case SET_PATTERN_PLAYING:
       return setPatternProp('playing', payload, state)
     case UPDATE_PATTERN_INSTRUMENT:
