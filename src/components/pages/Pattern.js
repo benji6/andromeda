@@ -26,6 +26,9 @@ import {instrumentInstance} from '../../utils/derivedData'
 import store from '../../store'
 import scales from '../../constants/scales'
 
+let animationFrameRequest
+let timeoutId
+
 const yLabel = curry(
   (selectedScale, yLength, rootNote, octave, i) => noteNameFromPitch(pitchFromScaleIndex(
     scales[selectedScale],
@@ -86,93 +89,63 @@ const connectComponent = connect(({
 
 export default connectComponent(class extends React.Component {
   onPlay () {
-    const {patternId} = this.props
-    const state = store.getState()
-    const {
-      activeNotes,
-      instrument,
-      octave,
-      steps,
-      volume,
-      xLength,
-      yLength,
-    } = state.patterns[patternId]
-    const {plugins, settings: {bpm, rootNote, selectedScale}} = state
-    const instrumentObj = instrumentInstance(instrument, plugins)
-    const noteDuration = 60 / bpm
     const playStartTime = audioContext.currentTime
-    forEach(({x, y}) => {
-      const id = `pattern-${patternId}-${x}-${y}`
-      activeNotes.add({instrumentObj, id})
-      instrumentObj.noteStart({
-        frequency: pitchToFrequency(pitchFromScaleIndex(
-          scales[selectedScale],
-          yLength - 1 - y + scales[selectedScale].length * octave
-        ) + rootNote),
-        gain: volume,
-        id,
-        startTime: playStartTime + noteDuration * x,
-        stopTime: playStartTime + noteDuration * (x + 1),
-      })
-    }, steps)
-    const patternDuration = xLength * noteDuration
-    const renderLoop = _ => {
+    const {patternId} = this.props
+    let nextLoopEndTime = playStartTime
+    const audioLoop = (i = 0) => {
       const state = store.getState()
-      if (state.patterns[patternId].playing !== true) return
-      requestAnimationFrame(renderLoop)
+      const {
+        activeNotes,
+        instrument,
+        octave,
+        steps,
+        volume,
+        xLength,
+        yLength,
+      } = state.patterns[patternId]
+      const {plugins, settings: {bpm, rootNote, selectedScale}} = state
+      const instrumentObj = instrumentInstance(instrument, plugins)
+      const noteDuration = 60 / bpm
+      const patternDuration = xLength * noteDuration
+      const currentLoopEndTime = nextLoopEndTime
+      nextLoopEndTime += patternDuration
+
+      timeoutId = setTimeout(
+        _ => audioLoop(++i),
+        (nextLoopEndTime - audioContext.currentTime - 0.1) * 1000
+      )
+
+      forEach(({x, y}) => {
+        const id = `pattern-${patternId}-${x}-${y}-${i}`
+        activeNotes.add({instrumentObj, id})
+        instrumentObj.noteStart({
+          frequency: pitchToFrequency(pitchFromScaleIndex(
+            scales[selectedScale],
+            yLength - 1 - y + scales[selectedScale].length * octave
+          ) + rootNote),
+          gain: volume,
+          id,
+          startTime: currentLoopEndTime + noteDuration * x,
+          stopTime: currentLoopEndTime + noteDuration * (x + 1),
+        })
+      }, steps)
+    }
+
+    const visualLoop = _ => {
+      const state = store.getState()
+      const {xLength} = state.patterns[patternId]
+      const {settings: {bpm}} = state
+      const noteDuration = 60 / bpm
+      const patternDuration = xLength * noteDuration
+      animationFrameRequest = requestAnimationFrame(visualLoop)
       store.dispatch(setPatternMarkerPosition({
         patternId,
         value: (audioContext.currentTime - playStartTime) / patternDuration % 1,
       }))
     }
-    renderLoop()
-    // let count = 0
-    // const {patternId} = this.props
-    // const timeoutCallback = _ => {
-    //   const state = store.getState()
-    //   const {
-    //     activeNotes,
-    //     instrument,
-    //     octave,
-    //     playing,
-    //     steps,
-    //     volume,
-    //     xLength,
-    //     yLength,
-    //   } = state.patterns[patternId]
-    //
-    //   if (playing !== true) return
-    //
-    //   const {settings: {bpm, rootNote, selectedScale}} = state
-    //
-    //   const position = count % xLength
-    //   this.props.dispatch(setPatternActivePosition({patternId, value: position}))
-    //   activeNotes.forEach(({id, instrumentObj}) => instrumentObj.noteStop &&
-    //     instrumentObj.noteStop(id))
-    //   activeNotes.clear()
-    //
-    //   compose(
-    //     map(({x, y}) => {
-    //       const {plugins} = this.props
-    //       const id = `pattern-${patternId}-${x}-${y}`
-    //       const instrumentObj = instrumentInstance(instrument, plugins)
-    //       activeNotes.add({instrumentObj, id})
-    //       instrumentObj.noteStart({
-    //         frequency: pitchToFrequency(pitchFromScaleIndex(
-    //           scales[selectedScale],
-    //           yLength - 1 - y + scales[selectedScale].length * octave
-    //         ) + rootNote),
-    //         gain: volume,
-    //         id
-    //       })
-    //     }),
-    //     filter(({x}) => x === position)
-    //   )(steps)
-    //
-    //   count++
-    //   setTimeout(timeoutCallback, 60000 / bpm)
-    // }
-    // timeoutCallback()
+
+    audioLoop()
+    visualLoop()
   }
 
   onStop () {
@@ -180,6 +153,8 @@ export default connectComponent(class extends React.Component {
     forEach(({id, instrumentObj}) => instrumentObj.noteStop &&
       instrumentObj.noteStop(id), activeNotes)
     activeNotes.clear()
+    clearTimeout(timeoutId)
+    cancelAnimationFrame(animationFrameRequest)
     dispatch(setPatternMarkerPosition({patternId, value: 0}))
   }
 
