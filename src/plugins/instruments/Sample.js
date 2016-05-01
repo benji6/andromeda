@@ -54,12 +54,12 @@ export default class {
   }
   connect (destination) { outputs.get(this).connect(destination) }
   disconnect (destination) { outputs.get(this).disconnect(destination) }
-  noteStart ({frequency}) {
+  noteStart ({frequency, startTime}) {
     const source = audioContexts.get(this).createBufferSource()
     source.buffer = buffers.get(this)
     source.playbackRate.value = frequency / 440
     source.connect(outputs.get(this))
-    source.start()
+    source.start(startTime)
   }
   render (containerEl) {
     ReactDOM.render(
