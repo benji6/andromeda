@@ -69,7 +69,7 @@ const stopAndRemoveNote = keyCode => {
     noteParams.instrument,
     store.getState().plugins
   )
-  instrumentObj.noteStop && instrumentObj.noteStop(noteParams.id)
+  instrumentObj.noteStop(noteParams.id)
 }
 
 document.addEventListener('keydown', e => {
@@ -91,7 +91,7 @@ document.addEventListener('keydown', e => {
     noteParams.instrument,
     state.plugins
   )
-  instrumentObj.noteStart && instrumentObj.noteStart(noteParams)
+  instrumentObj.noteStart(noteParams)
 })
 
 document.addEventListener('keyup', ({keyCode}) => {
@@ -103,5 +103,5 @@ document.addEventListener('keyup', ({keyCode}) => {
     noteParams.instrument,
     store.getState().plugins
   )
-  instrumentObj.noteStop && instrumentObj.noteStop(noteParams.id)
+  instrumentObj.noteStop(noteParams.id)
 })

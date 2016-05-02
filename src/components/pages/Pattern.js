@@ -164,8 +164,7 @@ export default connectComponent(class extends React.Component {
 
   onStop () {
     const {activeNotes, dispatch, patternId} = this.props
-    forEach(({id, instrumentObj}) => instrumentObj.noteStop &&
-      instrumentObj.noteStop(id), activeNotes)
+    forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
     activeNotes.clear()
     clearTimeout(timeoutId)
     cancelAnimationFrame(animationFrameRequest)

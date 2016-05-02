@@ -53,7 +53,7 @@ export default connectComponent(({
         inputStopHandler: _ => {
           currentlyPlayingPitch = null
           const instance = instrumentInstance(instrument, plugins)
-          instance.noteStop && instance.noteStop(controlPadId)
+          instance.noteStop(controlPadId)
         },
         inputStartHandler: ({xRatio, yRatio}) => {
           const instance = instrumentInstance(instrument, plugins)
@@ -90,8 +90,8 @@ export default connectComponent(({
             id: controlPadId
           }
           isNewNote
-            ? instance.noteStart && instance.noteStart(note)
-            : instance.noteModify && instance.noteModify(note)
+            ? instance.noteStart(note)
+            : instance.noteModify(note)
         },
       }}/>
     </div>
