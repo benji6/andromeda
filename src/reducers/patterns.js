@@ -14,6 +14,7 @@ import {
   DELETE_PATTERN,
   PATTERN_CELL_CLICK,
   SET_PATTERN_MARKER_POSITION,
+  SET_PATTERN_NEXT_LOOP_END_TIME,
   SET_PATTERN_PLAY_START_TIME,
   SET_PATTERN_PLAYING,
   UPDATE_PATTERN_INSTRUMENT,
@@ -61,6 +62,8 @@ export default (state = initialState, {type, payload}) => {
     }
     case SET_PATTERN_MARKER_POSITION:
       return setPatternProp('markerPosition', payload, state)
+    case SET_PATTERN_NEXT_LOOP_END_TIME:
+      return setPatternProp('nextLoopEndTime', payload, state)
     case SET_PATTERN_PLAY_START_TIME:
       return setPatternProp('playStartTime', payload, state)
     case SET_PATTERN_PLAYING:

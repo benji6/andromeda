@@ -1,8 +1,10 @@
 import {
   curry,
   curryN,
+  find,
   forEach,
   map,
+  none,
   range,
   repeat
 } from 'ramda'
@@ -13,6 +15,7 @@ import audioContext from '../../audioContext'
 import {
   patternCellClick,
   setPatternMarkerPosition,
+  setPatternNextLoopEndTime,
   setPatternPlayStartTime,
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
@@ -37,8 +40,48 @@ const yLabel = curry(
   ) + rootNote + 12 * octave)
 )
 
-const cellClickHandler = curryN(5, (dispatch, patternId, y, x) =>
-  dispatch(patternCellClick({patternId, x, y})))
+const cellClickHandler = curryN(5, (dispatch, patternId, y, x) => {
+  const state = store.getState()
+  const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
+  const {
+    activeNotes,
+    instrument,
+    nextLoopEndTime,
+    octave,
+    playing,
+    steps,
+    volume,
+    xLength,
+    yLength,
+  } = patterns[patternId]
+  dispatch(patternCellClick({patternId, x, y}))
+  if (!playing) return
+  const isAddedNote = none(note => note.x === x && note.y === y, steps)
+  if (isAddedNote) {
+    const instrumentObj = instrumentInstance(instrument, plugins)
+    const noteDuration = 60 / bpm
+    const id = `pattern-${patternId}-${x}-${y}`
+    const note = {
+      frequency: pitchToFrequency(pitchFromScaleIndex(
+        scales[selectedScale],
+        yLength - 1 - y + scales[selectedScale].length * octave
+      ) + rootNote),
+      gain: volume,
+      id,
+      startTime: nextLoopEndTime + noteDuration * (x - xLength),
+      stopTime: nextLoopEndTime + noteDuration * (x - xLength + 1),
+    }
+    activeNotes.add({instrumentObj, id})
+    instrumentObj.noteStart(note)
+  } else {
+    const arr = [...activeNotes]
+    const {id, instrumentObj} = find(
+      ({id}) => id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1,
+      arr
+    )
+    instrumentObj.noteStop(id)
+  }
+})
 
 const emptyPatternData = defaultMemoize((xLength, yLength) =>
   map(range(0), repeat(xLength, yLength)))
@@ -94,8 +137,7 @@ const visualLoop = patternId => _ => {
   const state = store.getState()
   const {playStartTime, xLength} = state.patterns[patternId]
   const {settings: {bpm}} = state
-  const noteDuration = 60 / bpm
-  const patternDuration = xLength * noteDuration
+  const patternDuration = xLength * 60 / bpm
   animationFrameRequest = requestAnimationFrame(visualLoop(patternId))
   store.dispatch(setPatternMarkerPosition({
     patternId,
@@ -117,13 +159,14 @@ export default connectComponent(class extends React.Component {
     const {patternId} = this.props
     store.dispatch(setPatternPlayStartTime({patternId, value: audioContext.currentTime}))
     const {playStartTime} = this.props
-    let nextLoopEndTime = playStartTime
+    store.dispatch(setPatternNextLoopEndTime({patternId, value: playStartTime}))
     const audioLoop = (i = 0) => {
       const state = store.getState()
       const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
       const {
         activeNotes,
         instrument,
+        nextLoopEndTime,
         octave,
         steps,
         volume,
@@ -134,11 +177,15 @@ export default connectComponent(class extends React.Component {
       const noteDuration = 60 / bpm
       const patternDuration = xLength * noteDuration
       const currentLoopEndTime = nextLoopEndTime
-      nextLoopEndTime += patternDuration
+      const newLoopEndTime = nextLoopEndTime + patternDuration
+      store.dispatch(setPatternNextLoopEndTime({
+        patternId,
+        value: newLoopEndTime,
+      }))
 
       timeoutId = setTimeout(
         _ => audioLoop(i + 1),
-        (nextLoopEndTime - audioContext.currentTime - 0.1) * 1000
+        (newLoopEndTime - audioContext.currentTime - 0.1) * 1000
       )
 
       const notes = map(({x, y}) => {

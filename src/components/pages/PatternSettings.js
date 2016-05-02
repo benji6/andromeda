@@ -7,7 +7,7 @@ import {
   updatePatternInstrument,
   updatePatternOctave,
   updatePatternVolume,
-  updatePatternXLength
+  updatePatternXLength,
 } from '../../actions'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import RangeSelector from '../molecules/RangeSelector'

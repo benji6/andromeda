@@ -1,3 +1,4 @@
+import {dissoc} from 'ramda'
 import test from 'tape'
 import reducer from './plugins'
 import {
@@ -122,20 +123,23 @@ test(`${reducerName} reducer - instantiateEffect`, t => {
 })
 
 test(`${reducerName} reducer - instantiateInstrument`, t => {
-  const constructor = class {connect () {}}
+  const constructor = () => ({
+    connect () {},
+    disconnect () {},
+    render () {},
+  })
   t.deepEqual(
-    reducer({
+    dissoc('instrumentInstances', reducer({
       channels: [],
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
       instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
-    }, instantiateInstrument({name: 'fake instance name', plugin: 'test instrument plugin'})),
+    }, instantiateInstrument({name: 'fake instance name', plugin: 'test instrument plugin'}))),
     {
       channels: [],
       effectInstances: [],
       effectPlugins: [],
-      instrumentInstances: [{name: 'fake instance name', instance: new constructor()}],
       instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
     }
   )
