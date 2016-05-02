@@ -1,4 +1,5 @@
 import audioContext from '../audioContext'
+import pluginWrapperInstrument from '../utils/pluginWrapperInstrument'
 import {
   adjust,
   append,
@@ -143,10 +144,10 @@ export default (state = initialState, {type, payload}) => {
       }), state)
     }
     case INSTANTIATE_INSTRUMENT: {
-      const instance = new (findConstructor(
+      const instance = pluginWrapperInstrument(new (findConstructor(
         payload.plugin,
         state.instrumentPlugins
-      ))({audioContext})
+      ))({audioContext}))
       connectToAudioCtx(instance)
       return overInstrumentInstances(
         append({instance, name: payload.name}),
