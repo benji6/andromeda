@@ -68,6 +68,13 @@ export default class {
     notes.set(this, newNotes)
     updateAudio.call(this, stores.get(this).getState())
   }
+  notesStart (notesToStart) {
+    const newNotes = notes.get(this).filter(note => note.hasOwnProperty('stopTime')
+      ? note.stopTime > audioContexts.get(this).currentTime
+      : true).concat(notesToStart)
+    notes.set(this, newNotes)
+    updateAudio.call(this, stores.get(this).getState())
+  }
   noteModify (note) {
     const currentNotes = notes.get(this)
     const extantNoteIdx = currentNotes.findIndex(({id}) => id === note.id)
