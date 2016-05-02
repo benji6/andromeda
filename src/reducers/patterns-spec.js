@@ -6,6 +6,7 @@ import {
   deletePattern,
   patternCellClick,
   setPatternMarkerPosition,
+  setPatternNextLoopEndTime,
   setPatternPlaying,
   setPatternPlayStartTime,
   updatePatternInstrument,
@@ -105,7 +106,19 @@ test(`${reducerName} setPatternMarkerPosition`, t => {
       [{id: 0, markerPosition: 0.1}],
       setPatternMarkerPosition({patternId: 0, value: 0.4})
     ),
-    [{id: 0, markerPosition: 0.4}])
+    [{id: 0, markerPosition: 0.4}]
+  )
+  t.end()
+})
+
+test(`${reducerName} setPatternNextLoopEndTime`, t => {
+  t.deepEqual(
+    reducer(
+      [{id: 0, nextLoopEndTime: 100}],
+      setPatternNextLoopEndTime({patternId: 0, value: 120})
+    ),
+    [{id: 0, nextLoopEndTime: 120}]
+  )
   t.end()
 })
 

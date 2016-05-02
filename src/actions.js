@@ -17,6 +17,7 @@ export const [
   [REMOVE_EFFECT_FROM_CHANNEL, removeEffectFromChannel],
   [REMOVE_INSTRUMENT_FROM_CHANNEL, removeInstrumentFromChannel],
   [SET_PATTERN_MARKER_POSITION, setPatternMarkerPosition],
+  [SET_PATTERN_NEXT_LOOP_END_TIME, setPatternNextLoopEndTime],
   [SET_PATTERN_PLAY_START_TIME, setPatternPlayStartTime],
   [SET_PATTERN_PLAYING, setPatternPlaying],
   [UPDATE_BPM, updateBpm],
