@@ -141,10 +141,10 @@ export default connectComponent(class extends React.Component {
         (nextLoopEndTime - audioContext.currentTime - 0.1) * 1000
       )
 
-      forEach(({x, y}) => {
+      const notes = map(({x, y}) => {
         const id = `pattern-${patternId}-${x}-${y}-${i}`
         activeNotes.add({instrumentObj, id})
-        instrumentObj.noteStart({
+        return {
           frequency: pitchToFrequency(pitchFromScaleIndex(
             scales[selectedScale],
             yLength - 1 - y + scales[selectedScale].length * octave
@@ -153,8 +153,10 @@ export default connectComponent(class extends React.Component {
           id,
           startTime: currentLoopEndTime + noteDuration * x,
           stopTime: currentLoopEndTime + noteDuration * (x + 1),
-        })
+        }
       }, steps)
+
+      instrumentObj.notesStart(notes)
       i++
     }
 
