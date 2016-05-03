@@ -4,6 +4,9 @@ import reducer from './patterns'
 import {
   addNewPattern,
   deletePattern,
+  patternActiveNotesAppend,
+  patternActiveNotesClear,
+  patternActiveNotesReject,
   patternCellClick,
   setPatternMarkerPosition,
   setPatternNextLoopEndTime,
@@ -17,7 +20,7 @@ import {
 
 const reducerName = 'patterns reducer'
 const initialState = [{
-  activeNotes: new Set(),
+  activeNotes: [],
   instrument: 'Prometheus',
   steps: [],
   markerPosition: 0,
@@ -36,7 +39,6 @@ test(`${reducerName} returns initial state`, t => {
 
 test(`${reducerName} addNewPattern`, t => {
   t.deepEqual(reducer([{
-    activeNotes: new Set(),
     instrument: 'Prometheus',
     steps: [],
     octave: 0,
@@ -45,7 +47,6 @@ test(`${reducerName} addNewPattern`, t => {
     yLength: 24,
     volume: 1 / 3
   }], addNewPattern()), [{
-    activeNotes: new Set(),
     instrument: 'Prometheus',
     steps: [],
     octave: 0,
@@ -77,6 +78,39 @@ test(`${reducerName} deletePattern`, t => {
   {
     instrument: 'instrument 2',
     steps: []
+  }])
+  t.end()
+})
+
+test(`${reducerName} patternActiveNotesAppend`, t => {
+  t.deepEqual(reducer([{
+    activeNotes: [{b: 'note'}],
+    instrument: 'Prometheus',
+  }], patternActiveNotesAppend({patternId: 0, value: {a: 'note'}})), [{
+    activeNotes: [{b: 'note'}, {a: 'note'}],
+    instrument: 'Prometheus',
+  }])
+  t.end()
+})
+
+test(`${reducerName} patternActiveNotesClear`, t => {
+  t.deepEqual(reducer([{
+    activeNotes: [{b: 'note'}, {a: 'note'}],
+    instrument: 'Prometheus',
+  }], patternActiveNotesClear(0)), [{
+    activeNotes: [],
+    instrument: 'Prometheus',
+  }])
+  t.end()
+})
+
+test(`${reducerName} patternActiveNotesReject`, t => {
+  t.deepEqual(reducer([{
+    activeNotes: [13, 14],
+    instrument: 'Prometheus',
+  }], patternActiveNotesReject({patternId: 0, value: x => x === 13})), [{
+    activeNotes: [14],
+    instrument: 'Prometheus',
   }])
   t.end()
 })

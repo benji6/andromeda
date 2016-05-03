@@ -13,6 +13,9 @@ import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
 import audioContext from '../../audioContext'
 import {
+  patternActiveNotesAppend,
+  patternActiveNotesClear,
+  patternActiveNotesReject,
   patternCellClick,
   setPatternMarkerPosition,
   setPatternNextLoopEndTime,
@@ -71,14 +74,14 @@ const cellClickHandler = curryN(5, (dispatch, patternId, y, x) => {
       startTime: nextLoopEndTime + noteDuration * (x - xLength),
       stopTime: nextLoopEndTime + noteDuration * (x - xLength + 1),
     }
-    activeNotes.add({instrumentObj, id})
+    store.dispatch(patternActiveNotesAppend({patternId, value: {id, instrumentObj}}))
     instrumentObj.noteStart(note)
   } else {
-    const arr = [...activeNotes]
     const {id, instrumentObj} = find(
       ({id}) => id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1,
-      arr
+      activeNotes
     )
+    store.dispatch(patternActiveNotesReject({patternId, value: x => x.id === id}))
     instrumentObj.noteStop(id)
   }
 })
@@ -164,7 +167,6 @@ export default connectComponent(class extends React.Component {
       const state = store.getState()
       const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
       const {
-        activeNotes,
         instrument,
         nextLoopEndTime,
         octave,
@@ -190,7 +192,11 @@ export default connectComponent(class extends React.Component {
 
       const notes = map(({x, y}) => {
         const id = `pattern-${patternId}-${x}-${y}-${i}`
-        activeNotes.add({instrumentObj, id})
+        store.dispatch(patternActiveNotesReject({
+          patternId,
+          value: x => x.id.indexOf(id.slice(0, id.lastIndexOf('-'))) !== -1,
+        }))
+        store.dispatch(patternActiveNotesAppend({patternId, value: {id, instrumentObj}}))
         return {
           frequency: pitchToFrequency(pitchFromScaleIndex(
             scales[selectedScale],
@@ -214,7 +220,7 @@ export default connectComponent(class extends React.Component {
   onStop () {
     const {activeNotes, dispatch, patternId} = this.props
     forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
-    activeNotes.clear()
+    store.dispatch(patternActiveNotesClear(patternId))
     clearTimeout(timeoutId)
     cancelAnimationFrame(animationFrameRequest)
     dispatch(setPatternMarkerPosition({patternId, value: 0}))
