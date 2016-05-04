@@ -25,7 +25,6 @@
     "comma-spacing": [2, {"before": false, "after": true}],
     "comma-style": [2, "last"],
     "computed-property-spacing": [2, "never"],
-    "consistent-return": 2,
     "constructor-super": 2,
     "curly": [2, "multi-line"],
     "dot-location": [2, "property"],

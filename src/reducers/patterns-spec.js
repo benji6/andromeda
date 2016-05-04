@@ -7,6 +7,7 @@ import {
   patternActiveNotesAppend,
   patternActiveNotesClear,
   patternActiveNotesReject,
+  patternActiveNotesSet,
   patternCellClick,
   setPatternMarkerPosition,
   setPatternNextLoopEndTime,
@@ -110,6 +111,17 @@ test(`${reducerName} patternActiveNotesReject`, t => {
     instrument: 'Prometheus',
   }], patternActiveNotesReject({patternId: 0, value: x => x === 13})), [{
     activeNotes: [14],
+    instrument: 'Prometheus',
+  }])
+  t.end()
+})
+
+test(`${reducerName} patternActiveNotesSet`, t => {
+  t.deepEqual(reducer([{
+    activeNotes: [13, 14],
+    instrument: 'Prometheus',
+  }], patternActiveNotesSet({patternId: 0, value: [1, 2]})), [{
+    activeNotes: [1, 2],
     instrument: 'Prometheus',
   }])
   t.end()
