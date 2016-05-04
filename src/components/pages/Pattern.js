@@ -1,4 +1,5 @@
 import {
+  concat,
   curry,
   curryN,
   find,
@@ -6,7 +7,8 @@ import {
   map,
   none,
   range,
-  repeat
+  reject,
+  repeat,
 } from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
@@ -14,6 +16,7 @@ import {defaultMemoize} from 'reselect'
 import audioContext from '../../audioContext'
 import {
   patternActiveNotesAppend,
+  patternActiveNotesSet,
   patternActiveNotesClear,
   patternActiveNotesReject,
   patternCellClick,
@@ -167,6 +170,7 @@ export default connectComponent(class extends React.Component {
       const state = store.getState()
       const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
       const {
+        activeNotes,
         instrument,
         nextLoopEndTime,
         octave,
@@ -190,24 +194,28 @@ export default connectComponent(class extends React.Component {
         (newLoopEndTime - audioContext.currentTime - 0.1) * 1000
       )
 
-      const notes = map(({x, y}) => {
-        const id = `pattern-${patternId}-${x}-${y}-${i}`
-        store.dispatch(patternActiveNotesReject({
-          patternId,
-          value: x => x.id.indexOf(id.slice(0, id.lastIndexOf('-'))) !== -1,
-        }))
-        store.dispatch(patternActiveNotesAppend({patternId, value: {id, instrumentObj}}))
-        return {
-          frequency: pitchToFrequency(pitchFromScaleIndex(
-            scales[selectedScale],
-            yLength - 1 - y + scales[selectedScale].length * octave
-          ) + rootNote),
-          gain: volume,
-          id,
-          startTime: currentLoopEndTime + noteDuration * x,
-          stopTime: currentLoopEndTime + noteDuration * (x + 1),
-        }
-      }, steps)
+      store.dispatch(patternActiveNotesSet({patternId, value: concat(
+        reject(({id}) => {
+          for (const {x, y} of steps) {
+            if (id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1) return true
+          }
+        }, activeNotes),
+        map(({x, y}) => ({
+          id: `pattern-${patternId}-${x}-${y}-${i}`,
+          instrumentObj,
+        }), steps)
+      )}))
+
+      const notes = map(({x, y}) => ({
+        frequency: pitchToFrequency(pitchFromScaleIndex(
+          scales[selectedScale],
+          yLength - 1 - y + scales[selectedScale].length * octave
+        ) + rootNote),
+        gain: volume,
+        id: `pattern-${patternId}-${x}-${y}-${i}`,
+        startTime: currentLoopEndTime + noteDuration * x,
+        stopTime: currentLoopEndTime + noteDuration * (x + 1),
+      }), steps)
 
       instrumentObj.notesStart(notes)
       i++
@@ -220,7 +228,7 @@ export default connectComponent(class extends React.Component {
   onStop () {
     const {activeNotes, dispatch, patternId} = this.props
     forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
-    store.dispatch(patternActiveNotesClear(patternId))
+    dispatch(patternActiveNotesClear(patternId))
     clearTimeout(timeoutId)
     cancelAnimationFrame(animationFrameRequest)
     dispatch(setPatternMarkerPosition({patternId, value: 0}))

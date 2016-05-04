@@ -15,6 +15,7 @@ import {
   PATTERN_ACTIVE_NOTES_APPEND,
   PATTERN_ACTIVE_NOTES_CLEAR,
   PATTERN_ACTIVE_NOTES_REJECT,
+  PATTERN_ACTIVE_NOTES_SET,
   PATTERN_CELL_CLICK,
   SET_PATTERN_MARKER_POSITION,
   SET_PATTERN_NEXT_LOOP_END_TIME,
@@ -68,6 +69,8 @@ export default (state = initialState, {type, payload}) => {
         state
       )
     }
+    case PATTERN_ACTIVE_NOTES_SET:
+      return setPatternProp('activeNotes', payload, state)
     case PATTERN_CELL_CLICK: {
       const {patternId, x, y} = payload
       const xy = {x, y}

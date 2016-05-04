@@ -15,6 +15,7 @@ export const [
   [PATTERN_ACTIVE_NOTES_APPEND, patternActiveNotesAppend],
   [PATTERN_ACTIVE_NOTES_CLEAR, patternActiveNotesClear],
   [PATTERN_ACTIVE_NOTES_REJECT, patternActiveNotesReject],
+  [PATTERN_ACTIVE_NOTES_SET, patternActiveNotesSet],
   [PATTERN_CELL_CLICK, patternCellClick],
   [REMOVE_CHANNEL, removeChannel],
   [REMOVE_EFFECT_FROM_CHANNEL, removeEffectFromChannel],
