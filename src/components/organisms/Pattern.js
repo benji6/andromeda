@@ -10,8 +10,12 @@ export default class extends React.Component {
     patternBody.scrollTop = patternBody.clientHeight
   }
   render () {
-    const {onClick, patternData, yLabel} = this.props
+    const {markerPosition, onClick, patternData, yLabel} = this.props
+    const markerLeft = 100 / (patternData[0].length + 1)
     return <div className='Pattern'>
+      <div className='pattern__marker' {...{style: {
+        left: `${markerLeft + (100 - markerLeft - 0.9) * markerPosition - 0.5}%`,
+      }}}/>
       <XLabels labels={range(0, patternData[0].length + 1)} />
       <div className='Pattern_body'>
         {mapIndexed(

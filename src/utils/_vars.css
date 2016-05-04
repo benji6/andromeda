@@ -4,7 +4,7 @@ $white: #fff;
 
 $transparent: rgba(0, 0, 0, 0);
 
-$blue7: #ace;
+$blue-6: #ace;
 
 $blue-afternoon: #02c;
 $blue-dawn: #26f;
@@ -22,13 +22,16 @@ $gray-3: #555;
 $gray-2: #333;
 $gray-1: #111;
 
-$green-dawn: #2f6;
-$green-dusk: #0a5;
-$green-evening: #091;
-$green-midnight: #020;
-$green-night: #042;
+$green-c: #aec;
+$green-6: #2f6;
+$green-5: #0c3;
+$green-4: #0a5;
+$green-3: #091;
+$green-2: #042;
+$green-1: #020;
 
-$red-dawn: #f32;
+$red-6: #f32;
+$red-5: #e00;
 
 $turquoise: #18f;
 $turquoise-light: #3df;

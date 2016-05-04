@@ -5,6 +5,7 @@ import createVirtualAudioGraph from 'virtual-audio-graph'
 import Prometheus from './components/Prometheus'
 import notesToGraph from './notesToGraph'
 
+const audioContexts = new WeakMap()
 const stores = new WeakMap()
 const notes = new WeakMap()
 const outputs = new WeakMap()
@@ -46,6 +47,7 @@ export default class {
 
     store.subscribe(updateAudio.bind(this))
 
+    audioContexts.set(this, audioContext)
     stores.set(this, store)
     outputs.set(this, output)
     virtualAudioGraphs.set(this, virtualAudioGraph)
@@ -57,7 +59,19 @@ export default class {
     outputs.get(this).disconnect(destination)
   }
   noteStart (note) {
-    const newNotes = [...notes.get(this), note]
+    const newNotes = [
+      ...notes.get(this).filter(note => note.hasOwnProperty('stopTime')
+        ? note.stopTime > audioContexts.get(this).currentTime
+        : true),
+      note
+    ]
+    notes.set(this, newNotes)
+    updateAudio.call(this, stores.get(this).getState())
+  }
+  notesStart (notesToStart) {
+    const newNotes = notes.get(this).filter(note => note.hasOwnProperty('stopTime')
+      ? note.stopTime > audioContexts.get(this).currentTime
+      : true).concat(notesToStart)
     notes.set(this, newNotes)
     updateAudio.call(this, stores.get(this).getState())
   }

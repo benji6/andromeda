@@ -1,18 +1,28 @@
 import {
-  compose,
+  concat,
   curry,
   curryN,
-  filter,
+  find,
+  forEach,
   map,
+  none,
   range,
-  repeat
+  reject,
+  repeat,
 } from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
+import audioContext from '../../audioContext'
 import {
+  patternActiveNotesAppend,
+  patternActiveNotesSet,
+  patternActiveNotesClear,
+  patternActiveNotesReject,
   patternCellClick,
-  setPatternActivePosition
+  setPatternMarkerPosition,
+  setPatternNextLoopEndTime,
+  setPatternPlayStartTime,
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
 import FullButton from '../atoms/FullButton'
@@ -26,6 +36,9 @@ import {instrumentInstance} from '../../utils/derivedData'
 import store from '../../store'
 import scales from '../../constants/scales'
 
+let animationFrameRequest
+let timeoutId
+
 const yLabel = curry(
   (selectedScale, yLength, rootNote, octave, i) => noteNameFromPitch(pitchFromScaleIndex(
     scales[selectedScale],
@@ -33,14 +46,53 @@ const yLabel = curry(
   ) + rootNote + 12 * octave)
 )
 
-const cellClickHandler = curryN(5, (dispatch, patternId, y, x) =>
-  dispatch(patternCellClick({patternId, x, y})))
+const cellClickHandler = curryN(5, (dispatch, patternId, y, x) => {
+  const state = store.getState()
+  const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
+  const {
+    activeNotes,
+    instrument,
+    nextLoopEndTime,
+    octave,
+    playing,
+    steps,
+    volume,
+    xLength,
+    yLength,
+  } = patterns[patternId]
+  dispatch(patternCellClick({patternId, x, y}))
+  if (!playing) return
+  const isAddedNote = none(note => note.x === x && note.y === y, steps)
+  if (isAddedNote) {
+    const instrumentObj = instrumentInstance(instrument, plugins)
+    const noteDuration = 60 / bpm
+    const id = `pattern-${patternId}-${x}-${y}`
+    const note = {
+      frequency: pitchToFrequency(pitchFromScaleIndex(
+        scales[selectedScale],
+        yLength - 1 - y + scales[selectedScale].length * octave
+      ) + rootNote),
+      gain: volume,
+      id,
+      startTime: nextLoopEndTime + noteDuration * (x - xLength),
+      stopTime: nextLoopEndTime + noteDuration * (x - xLength + 1),
+    }
+    store.dispatch(patternActiveNotesAppend({patternId, value: {id, instrumentObj}}))
+    instrumentObj.noteStart(note)
+  } else {
+    const {id, instrumentObj} = find(
+      ({id}) => id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1,
+      activeNotes
+    )
+    store.dispatch(patternActiveNotesReject({patternId, value: x => x.id === id}))
+    instrumentObj.noteStop(id)
+  }
+})
 
 const emptyPatternData = defaultMemoize((xLength, yLength) =>
   map(range(0), repeat(xLength, yLength)))
 
 const connectComponent = connect(({
-  activePatternIndex,
   dispatch,
   patterns,
   plugins,
@@ -48,10 +100,11 @@ const connectComponent = connect(({
 }, {params: {patternId}}) => {
   const {
     activeNotes,
-    activePosition,
     instrument,
+    markerPosition,
     octave,
     playing,
+    playStartTime,
     steps,
     volume,
     xLength,
@@ -60,7 +113,6 @@ const connectComponent = connect(({
 
   const patternData = mapIndexed(
     (x, rowIndex) => map(colIndex => ({
-      active: colIndex === activePosition,
       selected: stepExists(colIndex, rowIndex, steps)
     }), x),
     emptyPatternData(xLength, yLength)
@@ -71,10 +123,12 @@ const connectComponent = connect(({
     bpm,
     dispatch,
     instrument,
+    markerPosition,
     octave,
     patternData,
     patternId: Number(patternId),
     playing,
+    playStartTime,
     plugins,
     rootNote,
     selectedScale,
@@ -85,80 +139,105 @@ const connectComponent = connect(({
   }
 })
 
-export default connectComponent(class extends React.Component {
-  onPlay () {
-    let count = 0
-    const {patternId} = this.props
+const visualLoop = patternId => _ => {
+  const state = store.getState()
+  const {playStartTime, xLength} = state.patterns[patternId]
+  const {settings: {bpm}} = state
+  const patternDuration = xLength * 60 / bpm
+  animationFrameRequest = requestAnimationFrame(visualLoop(patternId))
+  store.dispatch(setPatternMarkerPosition({
+    patternId,
+    value: (audioContext.currentTime - playStartTime) / patternDuration % 1,
+  }))
+}
 
-    const timeoutCallback = _ => {
+export default connectComponent(class extends React.Component {
+  componentWillMount () {
+    const {patternId, playing} = this.props
+    playing && visualLoop(patternId)()
+  }
+
+  componentWillUnmount () {
+    cancelAnimationFrame(animationFrameRequest)
+  }
+
+  onPlay () {
+    const {patternId} = this.props
+    store.dispatch(setPatternPlayStartTime({patternId, value: audioContext.currentTime}))
+    const {playStartTime} = this.props
+    store.dispatch(setPatternNextLoopEndTime({patternId, value: playStartTime}))
+    const audioLoop = (i = 0) => {
       const state = store.getState()
+      const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
       const {
         activeNotes,
         instrument,
+        nextLoopEndTime,
         octave,
-        playing,
         steps,
         volume,
         xLength,
         yLength,
-      } = state.patterns[patternId]
+      } = patterns[patternId]
+      const instrumentObj = instrumentInstance(instrument, plugins)
+      const noteDuration = 60 / bpm
+      const patternDuration = xLength * noteDuration
+      const currentLoopEndTime = nextLoopEndTime
+      const newLoopEndTime = nextLoopEndTime + patternDuration
+      store.dispatch(setPatternNextLoopEndTime({
+        patternId,
+        value: newLoopEndTime,
+      }))
 
-      if (playing !== true) return
+      timeoutId = setTimeout(
+        _ => audioLoop(i + 1),
+        (newLoopEndTime - audioContext.currentTime - 0.1) * 1000
+      )
 
-      const {settings: {bpm, rootNote, selectedScale}} = state
+      store.dispatch(patternActiveNotesSet({patternId, value: concat(
+        reject(({id}) => {
+          for (const {x, y} of steps) {
+            if (id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1) return true
+          }
+        }, activeNotes),
+        map(({x, y}) => ({
+          id: `pattern-${patternId}-${x}-${y}-${i}`,
+          instrumentObj,
+        }), steps)
+      )}))
 
-      const position = count % xLength
-      this.props.dispatch(setPatternActivePosition({patternId, value: position}))
-      activeNotes.forEach(({id, instrumentObj}) => instrumentObj.noteStop &&
-        instrumentObj.noteStop(id))
-      activeNotes.clear()
+      const notes = map(({x, y}) => ({
+        frequency: pitchToFrequency(pitchFromScaleIndex(
+          scales[selectedScale],
+          yLength - 1 - y + scales[selectedScale].length * octave
+        ) + rootNote),
+        gain: volume,
+        id: `pattern-${patternId}-${x}-${y}-${i}`,
+        startTime: currentLoopEndTime + noteDuration * x,
+        stopTime: currentLoopEndTime + noteDuration * (x + 1),
+      }), steps)
 
-      compose(
-        map(({x, y}) => {
-          const {plugins} = this.props
-          const id = `pattern-${patternId}-${x}-${y}`
-          const instrumentObj = instrumentInstance(instrument, plugins)
-          activeNotes.add({instrumentObj, id})
-          instrumentObj.noteStart({
-            frequency: pitchToFrequency(pitchFromScaleIndex(
-              scales[selectedScale],
-              yLength - 1 - y + scales[selectedScale].length * octave
-            ) + rootNote),
-            gain: volume,
-            id
-          })
-        }),
-        filter(({x}) => x === position)
-      )(steps)
-
-      count++
-      setTimeout(timeoutCallback, 60000 / bpm)
+      instrumentObj.notesStart(notes)
+      i++
     }
-    timeoutCallback()
+
+    audioLoop()
+    visualLoop(patternId)()
   }
 
   onStop () {
-    this.stopAudio()
-    this.stopVisuals()
-  }
-
-  stopAudio () {
-    const {activeNotes} = this.props
-    activeNotes.forEach(({id, instrumentObj}) => instrumentObj.noteStop &&
-      instrumentObj.noteStop(id))
-    activeNotes.clear()
-  }
-
-  stopVisuals () {
-    this.props.dispatch(setPatternActivePosition({
-      patternId: this.props.patternId,
-      value: null
-    }))
+    const {activeNotes, dispatch, patternId} = this.props
+    forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
+    dispatch(patternActiveNotesClear(patternId))
+    clearTimeout(timeoutId)
+    cancelAnimationFrame(animationFrameRequest)
+    dispatch(setPatternMarkerPosition({patternId, value: 0}))
   }
 
   render () {
     const {
       dispatch,
+      markerPosition,
       octave,
       patternData,
       patternId,
@@ -171,6 +250,7 @@ export default connectComponent(class extends React.Component {
     return <div>
       <h2 className='text-center'>{`Pattern ${patternId}`}</h2>
       <Pattern {...{
+        markerPosition,
         onClick: cellClickHandler(dispatch, patternId),
         patternData,
         yLabel: yLabel(selectedScale, yLength, rootNote, octave),
