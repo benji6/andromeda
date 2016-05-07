@@ -6,7 +6,7 @@
   position: relative;
   width: $pattern-total-width;
 }
-.Pattern_body {
+.pattern__body {
   height: 52vh;
   overflow: auto;
 }

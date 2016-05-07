@@ -6,7 +6,7 @@ import PatternRow from '../molecules/PatternRow'
 
 export default class extends React.Component {
   componentDidMount () {
-    const patternBody = document.querySelector('.Pattern_body')
+    const patternBody = this.refs['.pattern__body']
     patternBody.scrollTop = patternBody.clientHeight
   }
   render () {
@@ -17,7 +17,7 @@ export default class extends React.Component {
         transform: `translateX(${markerLeft + (100 - markerLeft - 0.9) * markerPosition - 0.3}vw)`,
       }}}/>
       <XLabels labels={range(0, patternData[0].length + 1)} />
-      <div className='Pattern_body'>
+      <div {...{className: 'pattern__body', ref: 'pattern__body'}}>
         {mapIndexed(
           (rowData, i) => <PatternRow
             cells={rowData}
