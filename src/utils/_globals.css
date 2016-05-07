@@ -15,7 +15,7 @@ nav {
 
 .display-table { display: table }
 .inline-block { display: inline-block; }
-.font-size-1 {font-size: $font-medium;}
+.font-size-1 {font-size: $size-5;}
 .margin-bottom { margin-bottom: 2rem; }
 .margin-horizontal-small { margin-left: 0.5rem; margin-right: 0.5rem; }
 .padding-0 { padding: 0.5rem; }

@@ -1,21 +1,21 @@
 .button-primary {
   background: linear-gradient($blue-dawn, $blue-dusk);
-  border-radius: $size6;
-  border: $size1 solid $blue-dusk;
-  box-shadow: $blue-dusk 0 0 $size3;
+  border-radius: $size-7;
+  border: $size-1 solid $blue-dusk;
+  box-shadow: $blue-dusk 0 0 $size-3;
   box-sizing: border-box;
   color: $black;
   display: inline-block;
-  font-size: $font-medium;
-  margin: $size4;
+  font-size: $size-5;
+  margin: $size-4;
   min-width: 10rem;
-  padding: $size4 $size5;
+  padding: $size-4 $size-5;
   text-align: center;
   text-decoration: none;
   transition-duration: $transition-fast;
 }
 .button-primary:hover {
-  box-shadow: $blue-dusk 0 0 $size5 $size1;
+  box-shadow: $blue-dusk 0 0 $size-5 $size-1;
   transition-duration: $transition-fast;
 }
 .button-primary:active {

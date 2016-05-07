@@ -1,7 +1,7 @@
 .y-label {
   align-items: center;
   box-sizing: border-box;
-  font-size: $font-tiny;
+  font-size: $size-4;
   text-align: center;
   width: 100%;
 }

@@ -2,7 +2,7 @@
   color: $blue-midday;
   padding: 0.5rem 1rem;
   position: fixed;
-  font-size: $font-tiny;
+  font-size: $size-4;
   bottom: -100;
   right: 0;
   opacity: 0;
