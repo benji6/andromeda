@@ -1,4 +1,4 @@
-.WelcomeMessage {
+.welcome-message {
   color: $blue-midday;
   padding: 0.5rem 1rem;
   position: fixed;

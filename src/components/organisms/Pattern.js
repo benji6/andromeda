@@ -12,7 +12,7 @@ export default class extends React.Component {
   render () {
     const {markerPosition, onClick, patternData, yLabel} = this.props
     const markerLeft = 100 / (patternData[0].length + 1)
-    return <div className='Pattern'>
+    return <div className='pattern'>
       <div className='pattern__marker' {...{style: {
         transform: `translateX(${markerLeft + (100 - markerLeft - 0.9) * markerPosition - 0.3}vw)`,
       }}}/>
