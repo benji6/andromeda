@@ -4,7 +4,7 @@
 @import 'components/atoms/button-primary--small';
 @import 'components/atoms/button-secondary';
 @import 'components/atoms/checkbox';
-@import 'components/atoms/full-button';
+@import 'components/atoms/button-primary';
 @import 'components/atoms/hollow-button';
 @import 'components/atoms/icon-button';
 @import 'components/atoms/InputLabel';

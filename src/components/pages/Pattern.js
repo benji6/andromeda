@@ -25,7 +25,7 @@ import {
   setPatternPlayStartTime,
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
-import FullButton from '../atoms/FullButton'
+import ButtonPrimary from '../atoms/ButtonPrimary'
 import PlayButton from '../atoms/PlayButton'
 import Pattern from '../organisms/Pattern'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
@@ -263,9 +263,9 @@ export default connectComponent(class extends React.Component {
         playing,
       }} />
       <nav>
-        <FullButton to={`/controllers/pattern/${patternId}/settings`}>
+        <ButtonPrimary to={`/controllers/pattern/${patternId}/settings`}>
           Options
-        </FullButton>
+        </ButtonPrimary>
       </nav>
     </div>
   }

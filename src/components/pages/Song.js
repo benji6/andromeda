@@ -9,7 +9,7 @@ import {
   deletePattern,
 } from '../../actions'
 import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
-import FullButton from '../atoms/FullButton'
+import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import {mapIndexed} from '../../utils/helpers'
 
@@ -43,7 +43,7 @@ export default connectComponent(({
       <Plus onClick={compose(dispatch, addNewPattern)}>New pattern</Plus>
     </div>
     <nav>
-      <FullButton to='/controllers/song/settings'>Options</FullButton>
+      <ButtonPrimary to='/controllers/song/settings'>Options</ButtonPrimary>
     </nav>
   </div>
 })

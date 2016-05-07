@@ -3,7 +3,7 @@ import {compose, keys, map} from 'ramda'
 import {connect} from 'react-redux'
 import React from 'react'
 import {updateBpm, updateRootNote, updateSelectedScale} from '../../actions'
-import FullButton from '../atoms/FullButton'
+import ButtonPrimary from '../atoms/ButtonPrimary'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
@@ -68,7 +68,7 @@ export default connectComponent(({
         )}
       />
       <div>
-        <FullButton to='/controllers/keyboard/settings'>Keyboard Settings</FullButton>
+        <ButtonPrimary to='/controllers/keyboard/settings'>Keyboard Settings</ButtonPrimary>
       </div>
     </div>
   </div>)
