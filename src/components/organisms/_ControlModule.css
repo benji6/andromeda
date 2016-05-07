@@ -1,39 +1,39 @@
 $width: 10rem;
 
 .ControlModule {
-  border: $size1 solid $blue-6;
-  border-radius: $size5;
+  border: $size-1 solid $blue-6;
+  border-radius: $size-5;
   display: inline-block;
-  margin: $size4;
-  padding: $size4;
+  margin: $size-4;
+  padding: $size-4;
 }
 .ControlModule__Input {
   display: table-row;
-  font-size: $size4;
-  padding: $size4;
+  font-size: $size-4;
+  padding: $size-4;
 }
 .ControlModule__Input__Label {
   display: table-cell;
-  padding: $size3 $size3 $size2 $size2;
+  padding: $size-3 $size-3 $size-2 $size-2;
   text-align: left;
 }
 .ControlModule__Output {
   display: table-cell;
-  height: $size4;
-  padding-left: $size2;
+  height: $size-4;
+  padding-left: $size-2;
   min-width: 2.25rem;
 }
 .ControlModule__Range {
   display: table-cell;
-  height: $size4;
+  height: $size-4;
   width: $width;
 }
 .ControlModule__Select {
   width: $width;
 }
 .ControlModule__Title {
-  font-size: $size5;
+  font-size: $size-5;
   font-weight: 600;
-  margin: $size0;
-  padding-bottom: $size4;
+  margin: 0;
+  padding-bottom: $size-4;
 }

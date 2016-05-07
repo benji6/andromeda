@@ -6,6 +6,6 @@ export default ({output, ...props}) =>
     <div>
       <output>{props.disabled ? <span>&nbsp;</span> : output}</output>
     </div>
-    <input type='range' {...props} />
+    <input className='slider__input' type='range' {...props} />
   </div>
 /* eslint-enable */

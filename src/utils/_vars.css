@@ -37,20 +37,13 @@ $red-5: #e00;
 $turquoise: #18f;
 $turquoise-light: #3df;
 
-$font-tiny: 0.7rem;
-$font-small: 0.8rem;
-$font-medium: 1rem;
-
-
-$size0: 0rem;
-$size1: 0.1rem;
-$size2: 0.25rem;
-$size3: 0.5rem;
-$size4: 0.75rem;
-$size5: 1rem;
-$size6: 1.5rem;
-$size6: 2rem;
-
+$size-1: 0.1rem;
+$size-2: 0.25rem;
+$size-3: 0.5rem;
+$size-4: 0.75rem;
+$size-5: 1rem;
+$size-6: 1.5rem;
+$size-7: 2rem;
 
 $transition-fast: 0.2s;
 $transition-instant: 0s;
