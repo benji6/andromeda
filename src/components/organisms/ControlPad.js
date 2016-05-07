@@ -72,7 +72,7 @@ const calculateXAndYRatio = e => {
 export default class extends React.Component {
   componentDidMount () {
     const {inputStopHandler, inputStartHandler, inputModifyHandler} = this.props
-    controlPadElement = document.querySelector('.control-pad')
+    controlPadElement = this.refs['control-pad']
 
     const inputCallback = e => {
       mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled
@@ -132,6 +132,11 @@ export default class extends React.Component {
   }
 
   render () {
-    return <canvas width='768' height='768' className='control-pad'></canvas>
+    return <canvas {...{
+      className: 'control-pad',
+      height: 768,
+      ref: 'control-pad',
+      width: 768,
+    }}></canvas>
   }
 }
