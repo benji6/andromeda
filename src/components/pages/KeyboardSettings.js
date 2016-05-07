@@ -11,7 +11,7 @@ import {
   updateKeyboardOctave,
   updateKeyboardVolume
 } from '../../actions'
-import FullButton from '../atoms/FullButton'
+import ButtonPrimary from '../atoms/ButtonPrimary'
 import InputLabel from '../atoms/InputLabel'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
@@ -59,6 +59,6 @@ export default connectComponent(({keyboard, dispatch, plugins}) =>
     }} />
     <div>
       <InputLabel />
-      <FullButton to='/settings'>OK</FullButton>
+      <ButtonPrimary to='/settings'>OK</ButtonPrimary>
     </div>
   </div>)

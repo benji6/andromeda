@@ -8,7 +8,7 @@ import {
   removeInstrumentFromChannel
 } from '../../actions'
 import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
-import FullButton from '../atoms/FullButton'
+import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import InputSelect from '../atoms/InputSelect'
 import {mapIndexed} from '../../utils/helpers'
@@ -46,9 +46,9 @@ export default connectComponent(({
       <h2 className='text-center'>Effects</h2>
       {mapIndexed(
         (name, i) => <div key={i} className='text-center'>
-          <FullButton to={`/plugins/effects/${name}`}>
+          <ButtonPrimary to={`/plugins/effects/${name}`}>
             {name}
-          </FullButton>
+          </ButtonPrimary>
           <Cross onClick={_ => dispatch(removeEffectFromChannel({
             channel: channelId,
             name

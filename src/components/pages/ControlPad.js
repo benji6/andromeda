@@ -2,7 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {instrumentInstance} from '../../utils/derivedData'
 import ControlPad from '../organisms/ControlPad'
-import FullButton from '../atoms/FullButton'
+import ButtonPrimary from '../atoms/ButtonPrimary'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import scales from '../../constants/scales'
 import store from '../../store'
@@ -96,6 +96,6 @@ export default connectComponent(({
       }}/>
     </div>
     <nav>
-      <FullButton to='/controllers/control-pad/settings'>Options</FullButton>
+      <ButtonPrimary to='/controllers/control-pad/settings'>Options</ButtonPrimary>
     </nav>
   </div>)

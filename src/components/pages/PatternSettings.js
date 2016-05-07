@@ -11,7 +11,7 @@ import {
 } from '../../actions'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import RangeSelector from '../molecules/RangeSelector'
-import FullButton from '../atoms/FullButton'
+import ButtonPrimary from '../atoms/ButtonPrimary'
 import InputLabel from '../atoms/InputLabel'
 
 const connectComponent = connect(({
@@ -94,6 +94,6 @@ export default connectComponent(({
     />
     <div>
       <InputLabel />
-      <FullButton to={`/controllers/pattern/${patternId}`}>OK</FullButton>
+      <ButtonPrimary to={`/controllers/pattern/${patternId}`}>OK</ButtonPrimary>
     </div>
   </div>)

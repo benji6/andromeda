@@ -1,25 +1,23 @@
-.full-button {
+.button-primary {
   background: linear-gradient($blue-dawn, $blue-dusk);
-  border-radius: 1rem;
-  border: 0.1rem solid $blue-dusk;
-  box-shadow: $blue-dusk 0 0 0.5rem;
+  border-radius: $size6;
+  border: $size1 solid $blue-dusk;
+  box-shadow: $blue-dusk 0 0 $size3;
   box-sizing: border-box;
   color: $black;
   display: inline-block;
   font-size: $font-medium;
-  padding: 0.67rem;
-  margin: 1rem 0.5rem;
+  margin: $size4;
   min-width: 10rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
+  padding: $size4 $size5;
   text-align: center;
   text-decoration: none;
   transition-duration: $transition-fast;
 }
-.full-button:hover {
-  box-shadow: $blue-dusk 0 0 1rem 0.1rem;
+.button-primary:hover {
+  box-shadow: $blue-dusk 0 0 $size5 $size1;
   transition-duration: $transition-fast;
 }
-.full-button:active {
+.button-primary:active {
   background: linear-gradient($blue-dusk, $blue-dawn);
 }

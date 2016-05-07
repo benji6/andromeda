@@ -11,7 +11,7 @@ import {
   updateControlPadPortamento,
   updateControlPadRange,
 } from '../../actions'
-import FullButton from '../atoms/FullButton'
+import ButtonPrimary from '../atoms/ButtonPrimary'
 import InputLabel from '../atoms/InputLabel'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
@@ -85,6 +85,6 @@ export default connectComponent(({
     />
     <div>
       <InputLabel />
-      <FullButton to='/controllers/control-pad'>OK</FullButton>
+      <ButtonPrimary to='/controllers/control-pad'>OK</ButtonPrimary>
     </div>
   </div>)
