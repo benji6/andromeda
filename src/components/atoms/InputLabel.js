@@ -1,3 +1,3 @@
 import React from 'react'
 
-export default ({children}) => <div className='InputLabel'>{children}</div>
+export default ({children}) => <div className='input-label'>{children}</div>
