@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import createStore from 'st88'
+import {createStore, connect} from 'st88'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 import Prometheus from './components/Prometheus'
 import notesToGraph from './notesToGraph'
@@ -92,32 +92,29 @@ export default class {
   }
   render (containerEl) {
     const store = stores.get(this)
+    const setProp = prop => val => store.dispatch(state => ({
+      ...state,
+      [prop]: val,
+    }))
     const updateProp = prop => (key, val) => store.dispatch(state => ({
       ...state,
       [prop]: {...state[prop], [key]: val},
     }))
-
-    const updateFilter = updateProp('filter')
-    const updateLfo = updateProp('lfo')
-    const updateMaster = updateProp('master')
-
-    const updateOsc = i => (key, val) => store.dispatch(state => ({
+    setProp('updateFilter')(updateProp('filter'))
+    setProp('updateLfo')(updateProp('lfo'))
+    setProp('updateMaster')(updateProp('master'))
+    setProp('updateFilter')(updateProp('filter'))
+    setProp('updateOsc')(i => (key, val) => store.dispatch(state => ({
       ...state,
       oscillators: [
         ...state.oscillators.slice(0, i),
         {...state.oscillators[i], [key]: val},
         ...state.oscillators.slice(i + 1),
       ],
-    }))
+    })))
 
     ReactDOM.render(
-      <Prometheus {...{
-        store,
-        updateFilter,
-        updateLfo,
-        updateOsc,
-        updateMaster,
-      }} />,
+      connect(store)(Prometheus),
       containerEl
     )
   }
