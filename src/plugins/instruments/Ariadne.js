@@ -2,7 +2,7 @@ import {assoc} from 'ramda'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
-import createStore from 'st88'
+import {createStore} from 'st88'
 
 const audioContexts = new WeakMap()
 const notes = new WeakMap()
