@@ -6,7 +6,7 @@ import PatternRow from '../molecules/PatternRow'
 
 export default class extends React.Component {
   componentDidMount () {
-    const patternBody = this.refs['.pattern__body']
+    const patternBody = this.refs.pattern__body
     patternBody.scrollTop = patternBody.clientHeight
   }
   render () {
