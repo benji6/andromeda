@@ -14,7 +14,6 @@ export default ({i, updateOsc, settings}) =>
       max: 2,
       min: 0,
       onInput: e => updateOsc('gain', Number(e.target.value)),
-      step: 0.01,
     }} />
     <Range {...{
       defaultValue: settings.pan,
@@ -22,7 +21,6 @@ export default ({i, updateOsc, settings}) =>
       max: 1,
       min: -1,
       onInput: e => updateOsc('pan', Number(e.target.value)),
-      step: 0.01,
     }} />
     <Range {...{
       defaultValue: settings.pitch,
