@@ -3,19 +3,17 @@ import audioContext from '../../audioContext'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 import React from 'react'
 import ReactDOM from 'react-dom'
+import ControlModule, {Range, Select} from '../../components/organisms/ControlModule'
+import {createStore, connect} from 'st88'
 
 let reverbGraphs = {}
 
 const reverbBucket = 'buckets/elemental-reverb'
 
 const containerEls = new WeakMap()
-const dryLevels = new WeakMap()
-const highCuts = new WeakMap()
-const lowCuts = new WeakMap()
 const outputs = new WeakMap()
-const reverbTypes = new WeakMap()
+const stores = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
-const wetLevels = new WeakMap()
 
 let reverbsFactories
 
@@ -39,34 +37,37 @@ const loadAllReverbs = Promise.all([
 
 loadAllReverbs.then(x => reverbGraphs = x)
 
-const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
-  <label>
-    {children}
-  </label>
-</div>
-
-const updateAudioGraph = function () {
-  virtualAudioGraphs.get(this).update({
-    0: ['gain', 'output', {gain: dryLevels.get(this)}],
-    1: ['biquadFilter', 'output', {frequency: highCuts.get(this)}],
-    2: ['biquadFilter', 1, {frequency: lowCuts.get(this), type: 'highpass'}],
-    3: ['gain', 2, {gain: wetLevels.get(this)}],
-    4: [reverbsFactories[reverbTypes.get(this)], 3],
-    input: ['gain', [0, 4]]
-  })
-}
+const updateAudioGraph = virtualAudioGraph => ({
+  dryLevel,
+  highCut,
+  lowCut,
+  reverbType,
+  wetLevel,
+}) => virtualAudioGraph.update({
+  0: ['gain', 'output', {gain: dryLevel}],
+  1: ['biquadFilter', 'output', {frequency: highCut}],
+  2: ['biquadFilter', 1, {frequency: lowCut, type: 'highpass'}],
+  3: ['gain', 2, {gain: wetLevel}],
+  4: [reverbsFactories[reverbType], 3],
+  input: ['gain', [0, 4]]
+})
 
 export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
+    const store = createStore({
+      dryLevel: 0.35,
+      highCut: 8000,
+      lowCut: 50,
+      reverbType: 'reverb chapel',
+      wetLevel: 0.8,
+    })
 
-    dryLevels.set(this, 0.35)
-    highCuts.set(this, 8000)
-    lowCuts.set(this, 50)
+    store.subscribe(updateAudioGraph(virtualAudioGraph))
+
+    stores.set(this, store)
     outputs.set(this, output)
-    reverbTypes.set(this, 'reverb chapel')
-    wetLevels.set(this, 0.8)
 
     virtualAudioGraph.update({
       input: ['gain', 'output']
@@ -74,7 +75,6 @@ export default class {
     loadAllReverbs
       .then(x => {
         reverbsFactories = x
-        updateAudioGraph.call(this)
         const containerEl = containerEls.get(this)
         if (containerEl) this.render(containerEls.get(this))
       })
@@ -88,78 +88,54 @@ export default class {
     outputs.get(this).disconnect(destination)
   }
   render (containerEl) {
+    const store = stores.get(this)
+    const setProp = (prop, val) => store.dispatch(state => ({...state, [prop]: val}))
     containerEls.set(this, containerEl)
     ReactDOM.render(
-      <div style={{textAlign: 'center'}}>
+      connect(store)(({
+        dryLevel,
+        highCut,
+        lowCut,
+        reverbType,
+        wetLevel,
+      }) => <div style={{textAlign: 'center'}}>
         <h2>Reverb</h2>
-        <ControlContainer>
-          Type&nbsp;
-          <select defaultValue={reverbTypes.get(this)} onChange={e => {
-            reverbTypes.set(this, e.target.value)
-            updateAudioGraph.call(this)
-          }}>
+        <ControlModule>
+          <Select {...{
+              defaultValue: reverbType,
+              label: 'Type',
+              onChange: e => setProp('reverbType', e.target.value),
+            }}>
             {Object.keys(reverbGraphs).map((x, i) => <option key={i} value={x}>
               {x}
             </option>)}
-          </select>
-        </ControlContainer>
-        <ControlContainer>
-          Dry level&nbsp;
-          <input
-            defaultValue={dryLevels.get(this)}
-            max='1'
-            min='0'
-            onInput={e => {
-              dryLevels.set(this, Number(e.target.value))
-              updateAudioGraph.call(this)
-            }}
-            step='0.01'
-            type='range'
-          />
-        </ControlContainer>
-        <ControlContainer>
-          Wet level&nbsp;
-          <input
-            defaultValue={wetLevels.get(this)}
-            max='1'
-            min='0'
-            onInput={e => {
-              wetLevels.set(this, Number(e.target.value))
-              updateAudioGraph.call(this)
-            }}
-            step='0.01'
-            type='range'
-          />
-        </ControlContainer>
-        <ControlContainer>
-          Low cutoff&nbsp;
-          <input
-            defaultValue={Math.log(lowCuts.get(this))}
-            max={Math.log(20000)}
-            min={Math.log(20)}
-            onInput={e => {
-              lowCuts.set(this, Math.exp(Number(e.target.value)))
-              updateAudioGraph.call(this)
-            }}
-            step='0.1'
-            type='range'
-          />
-        </ControlContainer>
-        <ControlContainer>
-          High cutoff&nbsp;
-          <input
-            defaultValue={Math.log(highCuts.get(this))}
-            max={Math.log(20000)}
-            min={Math.log(20)}
-            onInput={e => {
-              highCuts.set(this, Math.exp(Number(e.target.value)))
-              updateAudioGraph.call(this)
-            }}
-            step='0.1'
-            type='range'
-          />
-        </ControlContainer>
-      </div>,
+          </Select>
+          <Range {...{
+            label: 'Dry level',
+            defaultValue: dryLevel,
+            onInput: e => setProp('dryLevel', Number(e.target.value)),
+          }}/>
+          <Range {...{
+            label: 'Wet level',
+            defaultValue: wetLevel,
+            onInput: e => setProp('wetLevel', Number(e.target.value)),
+          }}/>
+          <Range {...{
+            label: 'Low cutoff',
+            defaultValue: Math.log(lowCut),
+            max: Math.log(20000),
+            min: Math.log(20),
+            onInput: e => setProp('lowCut', Math.exp(Number(e.target.value))),
+          }}/>
+          <Range {...{
+            label: 'High cutoff',
+            defaultValue: Math.log(highCut),
+            max: Math.log(20000),
+            min: Math.log(20),
+            onInput: e => setProp('highCut', Math.exp(Number(e.target.value))),
+          }}/>
+        </ControlModule>
+      </div>),
       containerEl
     )
   }
