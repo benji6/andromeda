@@ -1,9 +1,9 @@
 import React from 'react'
-import Module, {Range} from '../../../../components/organisms/ControlModule'
+import ControlModule, {Range} from '../../../../components/organisms/ControlModule'
 import SelectOscType from './SelectOscType'
 
 export default ({i, updateOsc, settings}) =>
-  <Module {...{title: `Osc ${i + 1}`}} >
+  <ControlModule {...{title: `Osc ${i + 1}`}} >
     <SelectOscType {...{
       defaultValue: settings.type,
       onChange: ({target: {value}}) => updateOsc('type', value),
@@ -12,13 +12,11 @@ export default ({i, updateOsc, settings}) =>
       defaultValue: settings.gain,
       label: 'Gain',
       max: 2,
-      min: 0,
       onInput: e => updateOsc('gain', Number(e.target.value)),
     }} />
     <Range {...{
       defaultValue: settings.pan,
       label: 'Pan',
-      max: 1,
       min: -1,
       onInput: e => updateOsc('pan', Number(e.target.value)),
     }} />
@@ -38,4 +36,4 @@ export default ({i, updateOsc, settings}) =>
       min: -50,
       onInput: e => updateOsc('detune', Number(e.target.value)),
     }} />
-  </Module>
+  </ControlModule>

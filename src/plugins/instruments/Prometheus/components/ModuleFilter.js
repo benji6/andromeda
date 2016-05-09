@@ -1,5 +1,5 @@
 import React from 'react'
-import Module, {Range, Select} from '../../../../components/organisms/ControlModule'
+import ControlModule, {Range, Select} from '../../../../components/organisms/ControlModule'
 import capitalize from 'capitalize'
 
 const paramsAll = ['frequency', 'gain', 'Q']
@@ -38,12 +38,11 @@ const ControlQ = ({Q, updateFilter}) => <Range {...{
   defaultValue: Q,
   label: 'Q',
   max: 24,
-  min: 0,
   onInput: e => updateFilter('Q', Number(e.target.value)),
 }} />
 
 export default ({frequency, gain, Q, type, updateFilter}) =>
-  <Module {...{title: 'Filter'}}>
+  <ControlModule {...{title: 'Filter'}}>
     <Select {...{
       defaultValue: type,
       onChange: e => updateFilter('type', e.target.value),
@@ -62,4 +61,4 @@ export default ({frequency, gain, Q, type, updateFilter}) =>
           ? <ControlGain {...{gain, key: param, updateFilter}} />
           : <ControlQ {...{key: param, Q, updateFilter}} />)
     }
-  </Module>
+  </ControlModule>
