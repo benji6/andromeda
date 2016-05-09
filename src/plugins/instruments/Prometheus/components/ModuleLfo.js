@@ -14,7 +14,6 @@ export default ({lfo: {gain, frequency, type}, updateLfo}) =>
       max: 16,
       min: 0.01,
       onInput: e => updateLfo('frequency', Number(e.target.value)),
-      step: 0.01,
     }} />
     <Range {...{
       defaultValue: gain,
@@ -23,6 +22,5 @@ export default ({lfo: {gain, frequency, type}, updateLfo}) =>
       max: 1024,
       min: 0,
       onInput: e => updateLfo('gain', Number(e.target.value)),
-      step: 0.01,
     }} />
   </Module>

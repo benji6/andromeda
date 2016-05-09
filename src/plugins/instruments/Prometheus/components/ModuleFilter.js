@@ -24,7 +24,6 @@ const ControlFrequency = ({frequency, updateFilter}) => <Range {...{
   max: Math.log(20000),
   min: Math.log(20),
   onInput: e => updateFilter('frequency', Math.exp(Number(e.target.value))),
-  step: 0.001,
 }} />
 
 const ControlGain = ({gain, updateFilter}) => <Range {...{
@@ -33,7 +32,6 @@ const ControlGain = ({gain, updateFilter}) => <Range {...{
   max: 20,
   min: -20,
   onInput: e => updateFilter('gain', Number(e.target.value)),
-  step: 0.1,
 }} />
 
 const ControlQ = ({Q, updateFilter}) => <Range {...{
@@ -42,7 +40,6 @@ const ControlQ = ({Q, updateFilter}) => <Range {...{
   max: 24,
   min: 0,
   onInput: e => updateFilter('Q', Number(e.target.value)),
-  step: 0.1,
 }} />
 
 export default ({frequency, gain, Q, type, updateFilter}) =>
