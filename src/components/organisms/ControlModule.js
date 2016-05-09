@@ -6,10 +6,18 @@ const Input = ({children, label}) =>
     {children}
   </label>
 
-export const Range = ({label, step, ...props}) => <Input {...{label}}>
+export const Range = ({
+  label,
+  max = 1,
+  min = 0,
+  step = (max - min) / 1000,
+  ...props,
+}) => <Input {...{label}}>
   <input {...{
     className: 'control-module__Range',
-    step: step === undefined ? (props.max - props.min) / 1000 : step,
+    max,
+    min,
+    step,
     type: 'range',
     ...props,
   }} />

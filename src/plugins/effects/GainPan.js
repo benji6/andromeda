@@ -1,27 +1,29 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import {createStore, connect} from 'st88'
+import ControlModule, {Range} from '../../components/organisms/ControlModule'
 
 const gainNodes = new WeakMap()
 const panNodes = new WeakMap()
-const gainValues = new WeakMap()
-const panValues = new WeakMap()
-
-const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
-  <label>
-    {children}
-  </label>
-</div>
+const stores = new WeakMap()
 
 export default class {
   constructor ({audioContext}) {
     const gainNode = audioContext.createGain()
     const panNode = audioContext.createStereoPanner()
-    gainValues.set(this, 1)
-    panValues.set(this, 0)
+    const store = createStore({gain: 1, pan: 0})
+
+    store.subscribe(({gain, pan}) => {
+      gainNodes.get(this).gain.value = gain
+      panNodes.get(this).pan.value = pan
+    })
+
+    this.destination = panNode
+
     gainNodes.set(this, gainNode)
     panNodes.set(this, panNode)
     panNode.connect(gainNode)
-    this.destination = panNode
+    stores.set(this, store)
   }
   connect (destination) {
     gainNodes.get(this).connect(destination)
@@ -30,40 +32,28 @@ export default class {
     gainNodes.get(this).disconnect(destination)
   }
   render (containerEl) {
+    const store = stores.get(this)
+    const setGain = gain => store.dispatch(state => ({...state, gain}))
+    const setPan = pan => store.dispatch(state => ({...state, pan}))
+
     ReactDOM.render(
-      <div style={{textAlign: 'center'}}>
+      connect(store)(({gain, pan}) => <div style={{textAlign: 'center'}}>
         <h2>GainPan</h2>
-        <ControlContainer>
-            Gain&nbsp;
-            <input
-              defaultValue={gainValues.get(this)}
-              max='2'
-              min='0'
-              onInput={e => {
-                const value = Number(e.target.value)
-                gainNodes.get(this).gain.value = value
-                gainValues.set(this, value)
-              }}
-              step='0.05'
-              type='range'
-            />
-        </ControlContainer>
-        <ControlContainer>
-            Pan&nbsp;
-            <input
-              defaultValue={panValues.get(this)}
-              max='1'
-              min='-1'
-              onInput={e => {
-                const value = Number(e.target.value)
-                panNodes.get(this).pan.value = value
-                panValues.set(this, value)
-              }}
-              step='0.05'
-              type='range'
-            />
-        </ControlContainer>
-      </div>,
+        <ControlModule>
+          <Range {...{
+            defaultValue: gain,
+            label: 'Gain',
+            max: 2,
+            onInput: e => setGain(Number(e.target.value)),
+          }}/>
+          <Range {...{
+            defaultValue: pan,
+            label: 'Pan',
+            min: -1,
+            onInput: e => setPan(Number(e.target.value)),
+          }}/>
+        </ControlModule>
+      </div>),
       containerEl
     )
   }

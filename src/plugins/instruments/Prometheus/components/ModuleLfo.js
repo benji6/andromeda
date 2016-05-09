@@ -1,9 +1,9 @@
 import React from 'react'
-import Module, {Range} from '../../../../components/organisms/ControlModule'
+import ControlModule, {Range} from '../../../../components/organisms/ControlModule'
 import SelectOscType from './SelectOscType'
 
 export default ({lfo: {gain, frequency, type}, updateLfo}) =>
-  <Module {...{title: 'LFO'}}>
+  <ControlModule {...{title: 'LFO'}}>
     <SelectOscType {...{
       defaultValue: type,
       onChange: e => updateLfo('type', e.target.value)
@@ -20,7 +20,6 @@ export default ({lfo: {gain, frequency, type}, updateLfo}) =>
       displayValue: Math.round(gain),
       label: 'Amount',
       max: 1024,
-      min: 0,
       onInput: e => updateLfo('gain', Number(e.target.value)),
     }} />
-  </Module>
+  </ControlModule>
