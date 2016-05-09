@@ -17,7 +17,7 @@ import {
   instantiateEffect,
   instantiateInstrument,
   loadPluginEffect,
-  loadPluginInstrument
+  loadPluginInstrument,
 } from '../actions'
 
 store.dispatch(loadPluginInstrument({constructor: Ariadne, name: 'Ariadne'}))
