@@ -6,6 +6,12 @@ const Input = ({children, label}) =>
     {children}
   </label>
 
+export const CheckBox = ({label, ...props}) =>
+  <Input {...{label}}>
+    <input {...{type: 'checkbox', ...props}} />
+    <div {...{className: 'control-module__Output'}} />
+  </Input>
+
 export const Range = ({
   label,
   max = 1,
