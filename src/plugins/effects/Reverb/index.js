@@ -10,7 +10,6 @@ const reverbBucket = 'buckets/elemental-reverb'
 const containerEls = new WeakMap()
 const outputs = new WeakMap()
 const stores = new WeakMap()
-const virtualAudioGraphs = new WeakMap()
 
 const reverbTypeToUri = {
   'reverb chapel': `${reverbBucket}/chapel.wav`,
@@ -57,6 +56,7 @@ export default class {
     })
 
     store.subscribe(updateAudioGraph(virtualAudioGraph))
+    store.dispatch(x => x)
 
     stores.set(this, store)
     outputs.set(this, output)
@@ -65,7 +65,6 @@ export default class {
       input: ['gain', 'output']
     })
 
-    virtualAudioGraphs.set(this, virtualAudioGraph)
     this.destination = virtualAudioGraph.getAudioNodeById('input')
   }
   connect (destination) {
