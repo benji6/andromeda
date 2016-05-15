@@ -53,7 +53,7 @@
     "react-router": "^2.4.0",
     "redux": "^3.5.2",
     "reselect": "^2.5.1",
-    "st88": "https://github.com/benji6/st88.git",
+    "st88": "benji6/st88.git#v0.0.2",
     "three": "^0.76.1",
     "virtual-audio-graph": "^0.17.4"
   },
