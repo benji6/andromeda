@@ -36,6 +36,7 @@ import {
   REMOVE_EFFECT_FROM_CHANNEL,
   REMOVE_INSTRUMENT_FROM_CHANNEL
 } from '../actions'
+import store from '../store'
 
 const channelsLens = lensProp('channels')
 const effectsLens = lensProp('effects')
@@ -137,7 +138,7 @@ export default (state = initialState, {type, payload}) => {
       const instance = new (findConstructor(
         payload.plugin,
         state.effectPlugins
-      ))({audioContext})
+      ))({audioContext, bpm: store.getState().settings.bpm})
       return overEffectInstances(append({
         instance,
         name: payload.name
@@ -147,7 +148,7 @@ export default (state = initialState, {type, payload}) => {
       const instance = pluginWrapperInstrument(new (findConstructor(
         payload.plugin,
         state.instrumentPlugins
-      ))({audioContext}))
+      ))({audioContext, bpm: store.getState().settings.bpm}))
       connectToAudioCtx(instance)
       return overInstrumentInstances(
         append({instance, name: payload.name}),
