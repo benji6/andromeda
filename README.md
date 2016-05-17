@@ -14,10 +14,12 @@ It currently only supports Chrome
 
 ### Effect plugin API
 
-`EffectPlugin` should be a constructor or factory function which is newed up with an object containing a reference to the `audioContext` instance used by Elemental
+`EffectPlugin` should be a constructor or factory function which is newed up with an object with the following props:
+- `audioContext` - `instanceof AudioContext` reference to the audioContext instance used by Elemental
+- `bpm` - `Number` - current bpm
 
 ```javascript
-new EffectPlugin({audioContext})
+new EffectPlugin({audioContext, bpm})
 ```
 
 `effectPlugin` instances should then expose the following API:
@@ -29,10 +31,12 @@ new EffectPlugin({audioContext})
 
 ### Instrument plugin API
 
-`InstrumentPlugin` should be a constructor or factory function which is newed up with an object containing a reference to the `audioContext` instance used by Elemental
+`InstrumentPlugin` should be a constructor or factory function which is newed up with an object with the following props:
+- `audioContext` - `instanceof AudioContext` reference to the audioContext instance used by Elemental
+- `bpm` - `Number` - current bpm
 
 ```javascript
-new InstrumentPlugin({audioContext})
+new InstrumentPlugin({audioContext, bpm})
 ```
 
 `instrumentPlugin` instances should then expose the following API:
