@@ -1,4 +1,5 @@
-import {combineReducers, createStore} from 'redux'
+import {applyMiddleware, combineReducers, createStore} from 'redux'
+import actionSideEffects from './actionSideEffects'
 import controlPad from './reducers/controlPad'
 import keyboard from './reducers/keyboard'
 import patterns from './reducers/patterns'
@@ -11,4 +12,4 @@ export default createStore(combineReducers({
   patterns,
   plugins,
   settings,
-}))
+}), applyMiddleware(actionSideEffects))
