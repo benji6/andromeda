@@ -1,5 +1,5 @@
 import {forEach} from 'ramda'
-const noop = _ => {}
+import {noop} from './helpers'
 
 export default plugin => {
   const noteStart = plugin.noteStart ? plugin.noteStart.bind(plugin) : noop
@@ -11,5 +11,6 @@ export default plugin => {
     noteStart,
     noteStop: plugin.noteStop ? plugin.noteStop.bind(plugin) : noop,
     render: plugin.render.bind(plugin),
+    setBpm: plugin.setBpm ? plugin.setBpm.bind(plugin) : noop,
   }
 }

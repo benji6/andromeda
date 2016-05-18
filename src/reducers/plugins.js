@@ -1,5 +1,6 @@
 import audioContext from '../audioContext'
 import pluginWrapperInstrument from '../utils/pluginWrapperInstrument'
+import pluginWrapperEffect from '../utils/pluginWrapperEffect'
 import {
   adjust,
   append,
@@ -135,10 +136,10 @@ export default (state = initialState, {type, payload}) => {
       return overChannelInstruments(append(payload.name), payload.channel, state)
     }
     case INSTANTIATE_EFFECT: {
-      const instance = new (findConstructor(
+      const instance = pluginWrapperEffect(new (findConstructor(
         payload.plugin,
         state.effectPlugins
-      ))({audioContext, bpm: store.getState().settings.bpm})
+      ))({audioContext, bpm: store.getState().settings.bpm}))
       return overEffectInstances(append({
         instance,
         name: payload.name
