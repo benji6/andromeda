@@ -4,8 +4,6 @@
 
 Elemental is a pluggable digital audio workstation in development built on open web technologies
 
-It currently only supports Chrome
-
 **[Check it out here](http://elemental.audio/)**
 
 ## Plugin API
