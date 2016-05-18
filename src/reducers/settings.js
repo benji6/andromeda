@@ -1,6 +1,6 @@
 import {assoc} from 'ramda'
 import {
-  UPDATE_BPM,
+  BPM_SET,
   UPDATE_ROOT_NOTE,
   UPDATE_SELECTED_SCALE,
 } from '../actions'
@@ -13,7 +13,7 @@ const initialState = {
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
-    case UPDATE_BPM: return assoc('bpm', payload, state)
+    case BPM_SET: return assoc('bpm', payload, state)
     case UPDATE_ROOT_NOTE: return assoc('rootNote', payload, state)
     case UPDATE_SELECTED_SCALE: return assoc('selectedScale', payload, state)
     default: return state

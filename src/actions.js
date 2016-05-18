@@ -30,7 +30,7 @@ export const [
   [SET_PATTERN_NEXT_LOOP_END_TIME, setPatternNextLoopEndTime],
   [SET_PATTERN_PLAY_START_TIME, setPatternPlayStartTime],
   [SET_PATTERN_PLAYING, setPatternPlaying],
-  [UPDATE_BPM, updateBpm],
+  [BPM_SET, updateBpm],
   [UPDATE_CONTROL_PAD_INSTRUMENT, updateControlPadInstrument],
   [UPDATE_CONTROL_PAD_NO_SCALE, updateControlPadNoScale],
   [UPDATE_CONTROL_PAD_OCTAVE, updateControlPadOctave],
