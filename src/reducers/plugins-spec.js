@@ -99,9 +99,13 @@ test(`${reducerName} reducer - addInstrumentToChannel`, t => {
 })
 
 test(`${reducerName} reducer - instantiateEffect`, t => {
-  const constructor = class {connect () {}}
+  const constructor = class {
+    connect () {}
+    disconnect () {}
+    render () {}
+  }
   t.deepEqual(
-    reducer({
+    dissoc('effectInstances', reducer({
       channels: [{name: 0, effects: [], instruments: []}],
       effectInstances: [],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
@@ -110,10 +114,9 @@ test(`${reducerName} reducer - instantiateEffect`, t => {
     }, instantiateEffect({
       name: 'fake effect name',
       plugin: 'test effect plugin'
-    })),
+    }))),
     {
       channels: [{name: 0, effects: [], instruments: []}],
-      effectInstances: [{instance: new constructor(), name: 'fake effect name'}],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
       instrumentInstances: [],
       instrumentPlugins: []
