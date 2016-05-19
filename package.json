@@ -55,17 +55,17 @@
     "reselect": "^2.5.1",
     "st88": "benji6/st88.git#v0.0.2",
     "three": "^0.76.1",
-    "virtual-audio-graph": "^0.17.4"
+    "virtual-audio-graph": "^0.17.6"
   },
   "devDependencies": {
-    "babel-cli": "^6.8.0",
+    "babel-cli": "^6.9.0",
     "babel-eslint": "^6.0.4",
-    "babel-plugin-ramda": "^1.1.1",
-    "babel-plugin-transform-runtime": "^6.8.0",
-    "babel-preset-es2015": "^6.3.13",
+    "babel-plugin-ramda": "^1.1.3",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-0": "^6.3.13",
-    "babel-runtime": "^6.3.19",
+    "babel-runtime": "^6.9.0",
     "babel": "^6.3.26",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
