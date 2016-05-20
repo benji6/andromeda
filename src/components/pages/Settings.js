@@ -1,5 +1,5 @@
 import capitalize from 'capitalize'
-import {compose, keys, map} from 'ramda'
+import {compose, map} from 'ramda'
 import {connect} from 'react-redux'
 import React from 'react'
 import {updateBpm, updateRootNote, updateSelectedScale} from '../../actions'
@@ -64,7 +64,7 @@ export default connectComponent(({
         label='Scale'
         options={map(
           value => ({text: capitalize.words(value), value}),
-          keys(scales)
+          Object.keys(scales)
         )}
       />
       <div>
