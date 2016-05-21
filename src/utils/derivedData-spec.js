@@ -4,12 +4,13 @@ import {
   effectInstance,
   instrumentInstance,
 } from './derivedData'
+import {noop} from './helpers'
 
 test('derivedData - controllableInstrumentInstanceNames', t => {
   t.deepEqual(controllableInstrumentInstanceNames({
     instrumentInstances: [
       {name: 'name 1', instance: {noteStart () {}}},
-      {name: 'name 2', instance: {}},
+      {name: 'name 2', instance: {noteStart: noop}},
     ]
   }), ['name 1'])
   t.end()
