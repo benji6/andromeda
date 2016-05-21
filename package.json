@@ -47,15 +47,15 @@
     "ramda": "^0.21.0",
     "random-js": "^1.0.8",
     "randomcolor": "^0.4.4",
-    "react": "^15.0.2",
-    "react-dom": "^15.0.2",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
     "react-redux": "^4.4.5",
-    "react-router": "^2.4.0",
+    "react-router": "^2.4.1",
     "redux": "^3.5.2",
     "reselect": "^2.5.1",
     "st88": "benji6/st88.git#v0.0.2",
     "three": "^0.76.1",
-    "virtual-audio-graph": "^0.17.6"
+    "virtual-audio-graph": "^0.17.7"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
