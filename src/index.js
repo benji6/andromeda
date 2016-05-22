@@ -8,7 +8,7 @@ import routes from './routes'
 import './utils/loadPlugins'
 
 render(
-  navigator.serviceWorker
+  (navigator.serviceWorker && window.fetch)
     ? <Provider store={store}>{routes}</Provider>
     : <UpgradeBrowser />,
   document.getElementById('app')
