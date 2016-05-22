@@ -27,6 +27,7 @@ export default ({i, updateOsc, settings}) =>
       max: 24,
       min: -24,
       onInput: e => updateOsc('pitch', Number(e.target.value)),
+      step: 1,
     }} />
     <Range {...{
       defaultValue: settings.detune,
