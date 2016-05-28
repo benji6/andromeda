@@ -1,4 +1,4 @@
-import {difference, isEmpty, map, pluck, prop, tail} from 'ramda'
+import {difference, map, pluck, prop, tail} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {
@@ -56,8 +56,8 @@ export default connectComponent(({
         </div>,
         effects
       )}
-      {!isEmpty(addEffects) && <p className='text-center'>Add effect</p>}
-      {!isEmpty(addEffects) && <div className='text-center'>
+      {Boolean(addEffects.length) && <p className='text-center'>Add effect</p>}
+      {Boolean(addEffects.length) && <div className='text-center'>
         <InputSelect
           defaultValue={selectedAddEffect}
           onChange={e => selectedAddEffect = e.target.value}
@@ -83,8 +83,8 @@ export default connectComponent(({
           sources
         )}
       </div>
-      {!isEmpty(addSources) && <p className='text-center'>Add source</p>}
-      {!isEmpty(addSources) && <div className='text-center'>
+      {Boolean(addSources.length) && <p className='text-center'>Add source</p>}
+      {Boolean(addSources.length) && <div className='text-center'>
         <InputSelect
           defaultValue={selectedAddSource}
           onChange={e => selectedAddSource = e.target.value}
