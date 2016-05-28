@@ -1,4 +1,4 @@
-import {difference, map, pluck, prop, tail} from 'ramda'
+import {difference, map, pluck, prop} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {
@@ -95,7 +95,7 @@ export default connectComponent(({
             channel: channelId,
             name: selectedAddSource
           }))
-          selectedAddSource = tail(addSources)[0]
+          selectedAddSource = addSources[1]
         }}/>
       </div>}
     </div>
