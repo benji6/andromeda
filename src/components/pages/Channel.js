@@ -38,8 +38,8 @@ export default connectComponent(({
   const effects = channels[channelId].effects
   const addSources = difference(pluck('name', instrumentInstances), sources)
   const addEffects = difference(pluck('name', effectInstances), effects)
-  selectedAddSource = addSources[0]
-  selectedAddEffect = addEffects[0]
+  selectedAddSource = head(addSources)
+  selectedAddEffect = head(addEffects)
 
   return <div>
     <h1 className='text-center'>{`Channel ${channelId}`}</h1>
