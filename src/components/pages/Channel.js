@@ -1,4 +1,4 @@
-import {difference, head, isEmpty, map, nth, pluck, prop, tail} from 'ramda'
+import {difference, isEmpty, map, nth, pluck, prop, tail} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {
@@ -38,8 +38,8 @@ export default connectComponent(({
   const effects = prop('effects', nth(channelId, channels))
   const addSources = difference(pluck('name', instrumentInstances), sources)
   const addEffects = difference(pluck('name', effectInstances), effects)
-  selectedAddSource = head(addSources)
-  selectedAddEffect = head(addEffects)
+  selectedAddSource = addSources[0]
+  selectedAddEffect = addEffects[0]
 
   return <div>
     <h1 className='text-center'>{`Channel ${channelId}`}</h1>
@@ -95,7 +95,7 @@ export default connectComponent(({
             channel: channelId,
             name: selectedAddSource
           }))
-          selectedAddSource = head(tail(addSources))
+          selectedAddSource = tail(addSources)[0]
         }}/>
       </div>}
     </div>
