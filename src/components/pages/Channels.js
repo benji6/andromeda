@@ -1,4 +1,4 @@
-import {always, compose, map, pluck} from 'ramda'
+import {map, pluck} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import ButtonPrimary from '../atoms/ButtonPrimary'
@@ -17,11 +17,11 @@ export default connectComponent(({dispatch, channels}) =>
         <ButtonPrimary to={`/channel/${channel}`}>
           {`Channel ${channel}`}
         </ButtonPrimary>
-        <Cross onClick={compose(dispatch, removeChannel, always(channel))}/>
+        <Cross onClick={comp(dispatch, removeChannel, K(channel))}/>
       </div>,
       pluck('name', channels)
     )}
     <div>
-      <Plus onClick={compose(dispatch, addChannel)}>Add new channel</Plus>
+      <Plus onClick={comp(dispatch, addChannel)}>Add new channel</Plus>
     </div>
   </div>)

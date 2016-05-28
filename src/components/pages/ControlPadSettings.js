@@ -1,5 +1,5 @@
 import capitalize from 'capitalize'
-import {compose, map} from 'ramda'
+import {map} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
@@ -36,7 +36,7 @@ export default connectComponent(({
     <h2 className='text-center'>Control Pad Settings</h2>
     <InstrumentSelector
       defaultValue={controlPad.instrument}
-      handleChange={compose(
+      handleChange={comp(
         dispatch,
         updateControlPadInstrument,
         eventValuePath
@@ -50,7 +50,7 @@ export default connectComponent(({
     <RangeSelector
       max='2'
       min='-3'
-      onChange={compose(
+      onChange={comp(
         dispatch,
         updateControlPadOctave,
         Number,
@@ -63,7 +63,7 @@ export default connectComponent(({
     <RangeSelector
       max='3'
       min='1'
-      onChange={compose(
+      onChange={comp(
         dispatch,
         updateControlPadRange,
         Number,
@@ -75,12 +75,12 @@ export default connectComponent(({
     />
     <CheckboxSelector
       checked={controlPad.portamento}
-      onChange={compose(dispatch, updateControlPadPortamento, eventCheckedPath)}
+      onChange={comp(dispatch, updateControlPadPortamento, eventCheckedPath)}
       text='Portamento'
     />
     <CheckboxSelector
       checked={controlPad.noScale}
-      onChange={compose(dispatch, updateControlPadNoScale, eventCheckedPath)}
+      onChange={comp(dispatch, updateControlPadNoScale, eventCheckedPath)}
       text='No Scale'
     />
     <div>
