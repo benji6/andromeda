@@ -17,7 +17,6 @@ import {
   last,
   length,
   lensProp,
-  nth,
   over,
   pluck,
   propEq,
@@ -192,22 +191,22 @@ export default (state = initialState, {type, payload}) => {
         forEach(
           name => instrumentInstance(name, state)
             .connect(effectInstanceDestination(
-              nth(dec(effectIndex), channelEffects),
+              channelEffects[dec(effectIndex)],
               state
             )),
           channelInstruments
         )
       } else if (effectIndex === 0) {
         connectToAudioCtx(disconnect(effectInstance(
-          nth(inc(effectIndex), channelEffects),
+          channelEffects[inc(effectIndex)],
           state
         )))
       } else {
         disconnect(effectInstance(
-          nth(inc(effectIndex), channelEffects),
+          channelEffects[inc(effectIndex)],
           state
         )).connect(effectInstanceDestination(
-          nth(dec(effectIndex), channelEffects),
+          channelEffects[dec(effectIndex)],
           state
         ))
       }

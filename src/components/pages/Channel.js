@@ -1,4 +1,4 @@
-import {difference, isEmpty, map, nth, pluck, prop, tail} from 'ramda'
+import {difference, isEmpty, map, pluck, prop, tail} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {
@@ -34,8 +34,8 @@ export default connectComponent(({
   effectInstances,
   instrumentInstances
 }) => {
-  const sources = prop('instruments', nth(channelId, channels))
-  const effects = prop('effects', nth(channelId, channels))
+  const sources = prop('instruments', channels[channelId])
+  const effects = prop('effects', channels[channelId])
   const addSources = difference(pluck('name', instrumentInstances), sources)
   const addEffects = difference(pluck('name', effectInstances), effects)
   selectedAddSource = addSources[0]
