@@ -1,4 +1,4 @@
-import {curry, isNil} from 'ramda'
+import {curry} from 'ramda'
 import React from 'react'
 import THREE from 'three'
 import {randomMesh} from '../../utils/webGLHelpers'
@@ -33,7 +33,7 @@ const setRendererSize = _ => {
 const renderLoop = _ => {
   if (!renderLoopActive) return
   window.requestAnimationFrame(renderLoop)
-  const controlPadHasNotBeenUsed = isNil(currentXYRatios)
+  const controlPadHasNotBeenUsed = currentXYRatios === null
   const {z} = token.position
   if (controlPadHasNotBeenUsed) return
   if (!controlPadActive) {
