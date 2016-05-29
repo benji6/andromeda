@@ -5,7 +5,6 @@ import {
   adjust,
   append,
   compose,
-  contains,
   curry,
   dec,
   equals,
@@ -83,7 +82,7 @@ const instrumentInstance = curry((a, b) => instance(findNameEquals(a, instrument
 const createChannel = name => ({name, effects: [], instruments: []})
 const lowestUniqueNatural = xs => {
   let i = 0
-  while (contains(i, xs)) i++
+  while (xs.includes(i)) i++
   return i
 }
 const initialState = {
