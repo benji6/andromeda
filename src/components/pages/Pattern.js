@@ -1,5 +1,4 @@
 import {
-  concat,
   curry,
   curryN,
   find,
@@ -194,17 +193,16 @@ export default connectComponent(class extends React.Component {
         (newLoopEndTime - audioContext.currentTime - 0.1) * 1000
       )
 
-      store.dispatch(patternActiveNotesSet({patternId, value: concat(
-        reject(({id}) => {
+      store.dispatch(patternActiveNotesSet({
+        patternId,
+        value: reject(({id}) => {
           for (const {x, y} of steps) {
             if (id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1) return true
           }
-        }, activeNotes),
-        map(({x, y}) => ({
+        }, activeNotes).concat(map(({x, y}) => ({
           id: `pattern-${patternId}-${x}-${y}-${i}`,
           instrumentObj,
-        }), steps)
-      )}))
+        }), steps))}))
 
       const notes = map(({x, y}) => ({
         frequency: pitchToFrequency(pitchFromScaleIndex(
