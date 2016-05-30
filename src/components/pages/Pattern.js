@@ -255,8 +255,8 @@ export default connectComponent(class extends React.Component {
       }} />
       <ButtonPlay {...{
         dispatch,
-        onPlay: ::this.onPlay,
-        onStop: ::this.onStop,
+        onPlay: this.onPlay.bind(this),
+        onStop: this.onStop.bind(this),
         patternId,
         playing,
       }} />
