@@ -9,7 +9,7 @@
 @import 'components/atoms/icon-button';
 @import 'components/atoms/input-label';
 @import 'components/atoms/input-select';
-@import 'components/atoms/play-button';
+@import 'components/atoms/button-play';
 @import 'components/atoms/slider';
 @import 'components/atoms/step';
 @import 'components/atoms/welcome-message';
