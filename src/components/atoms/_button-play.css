@@ -1,4 +1,4 @@
-.play-button {
+.button-play {
   background: none;
   border-bottom: 2rem solid transparent;
   border-left: 3.5rem solid $blue-dusk;
@@ -10,16 +10,16 @@
   margin: 1rem auto;
   width: 0;
 }
-.play-button:hover {
+.button-play:hover {
   border-left-color: $blue-dawn;
 }
 
-.play-button--playing {
+.button-play--playing {
   background: $blue-dusk;
   border: 0;
   height: 4rem;
   width: 4rem;
 }
-.play-button--playing:hover {
+.button-play--playing:hover {
   background: $blue-dawn;
 }

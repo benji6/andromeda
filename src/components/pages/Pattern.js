@@ -24,8 +24,8 @@ import {
   setPatternPlayStartTime,
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
+import ButtonPlay from '../atoms/ButtonPlay'
 import ButtonPrimary from '../atoms/ButtonPrimary'
-import PlayButton from '../atoms/PlayButton'
 import Pattern from '../organisms/Pattern'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
@@ -253,7 +253,7 @@ export default connectComponent(class extends React.Component {
         patternData,
         yLabel: yLabel(selectedScale, yLength, rootNote, octave),
       }} />
-      <PlayButton {...{
+      <ButtonPlay {...{
         dispatch,
         onPlay: ::this.onPlay,
         onStop: ::this.onStop,
