@@ -1,7 +1,6 @@
 import {
   adjust,
   any,
-  append,
   assoc,
   equals,
   lensProp,

@@ -1,5 +1,5 @@
 import capitalize from 'capitalize'
-import {compose, map} from 'ramda'
+import {map} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
@@ -24,7 +24,7 @@ export default connectComponent(({keyboard, dispatch, plugins}) =>
     <h2 className='text-center'>Keyboard Settings</h2>
     <InstrumentSelector
       defaultValue={keyboard.instrument}
-      handleChange={(compose(
+      handleChange={(comp(
         dispatch,
         updateKeyboardInstrument,
         eventValuePath
@@ -39,7 +39,7 @@ export default connectComponent(({keyboard, dispatch, plugins}) =>
       max='1'
       min='0'
       step='0.01'
-      onChange={compose(dispatch, updateKeyboardVolume, Number, eventValuePath)}
+      onChange={comp(dispatch, updateKeyboardVolume, Number, eventValuePath)}
       output={Math.round(keyboard.volume * 100)}
       text='Volume'
       value={keyboard.volume}
@@ -47,7 +47,7 @@ export default connectComponent(({keyboard, dispatch, plugins}) =>
     <RangeSelector
       max='2'
       min='-3'
-      onChange={compose(dispatch, updateKeyboardOctave, Number, eventValuePath)}
+      onChange={comp(dispatch, updateKeyboardOctave, Number, eventValuePath)}
       output={keyboard.octave}
       text='Octave'
       value={keyboard.octave}

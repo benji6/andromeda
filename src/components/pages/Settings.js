@@ -1,5 +1,5 @@
 import capitalize from 'capitalize'
-import {compose, map} from 'ramda'
+import {map} from 'ramda'
 import {connect} from 'react-redux'
 import React from 'react'
 import {updateBpm, updateRootNote, updateSelectedScale} from '../../actions'
@@ -35,7 +35,7 @@ export default connectComponent(({
       <RangeSelector
         max='512'
         min={minBpm}
-        onChange={compose(
+        onChange={comp(
           dispatch,
           updateBpm,
           Number,
@@ -48,7 +48,7 @@ export default connectComponent(({
       <RangeSelector
         max='24'
         min='-36'
-        onChange={compose(
+        onChange={comp(
           dispatch,
           updateRootNote,
           Number,
@@ -60,7 +60,7 @@ export default connectComponent(({
       />
       <Selector
         defaultValue={selectedScale}
-        handleChange={compose(dispatch, updateSelectedScale, eventValuePath)}
+        handleChange={comp(dispatch, updateSelectedScale, eventValuePath)}
         label='Scale'
         options={map(
           value => ({text: capitalize.words(value), value}),

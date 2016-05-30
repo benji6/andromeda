@@ -1,7 +1,3 @@
-import {
-  always,
-  compose,
-} from 'ramda'
 import React from 'react'
 import {connect} from 'react-redux'
 import {
@@ -33,14 +29,14 @@ export default connectComponent(({
     {patterns.length
       ? mapIndexed((_, x) =>
         <div className='text-center padding-0' key={x}>
-          <Cross onClick={compose(dispatch, deletePattern, always(x))} />
+          <Cross onClick={comp(dispatch, deletePattern, K(x))} />
           <ButtonPrimarySmall to={`/controllers/pattern/${x}`}>
             {`Pattern ${x}`}
           </ButtonPrimarySmall>
         </div>, patterns)
       : null}
     <div className='text-center padding-1'>
-      <Plus onClick={compose(dispatch, addNewPattern)}>New pattern</Plus>
+      <Plus onClick={comp(dispatch, addNewPattern)}>New pattern</Plus>
     </div>
     <nav>
       <ButtonPrimary to='/controllers/song/settings'>Options</ButtonPrimary>
