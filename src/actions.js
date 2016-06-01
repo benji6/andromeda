@@ -40,7 +40,6 @@ export const [
   [UPDATE_KEYBOARD_OCTAVE, updateKeyboardOctave],
   [UPDATE_KEYBOARD_VOLUME, updateKeyboardVolume],
   [UPDATE_PATTERN_INSTRUMENT, updatePatternInstrument],
-  [UPDATE_PATTERN_OCTAVE, updatePatternOctave],
   [UPDATE_PATTERN_VOLUME, updatePatternVolume],
   [UPDATE_PATTERN_X_LENGTH, updatePatternXLength],
   [UPDATE_ROOT_NOTE, updateRootNote],

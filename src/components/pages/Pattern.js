@@ -36,14 +36,15 @@ import {instrumentInstance} from '../../utils/derivedData'
 import store from '../../store'
 import scales from '../../constants/scales'
 
+const patternPitchOffset = -12
 let animationFrameRequest
 let timeoutId
 
 const yLabel = curry(
-  (selectedScale, yLength, rootNote, octave, i) => noteNameFromPitch(pitchFromScaleIndex(
+  (selectedScale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
     scales[selectedScale],
     yLength - i - 1
-  ) + rootNote + 12 * octave)
+  ) + rootNote + patternPitchOffset)
 )
 
 const cellClickHandler = curryN(5, (dispatch, patternId, y, x) => {
@@ -53,7 +54,6 @@ const cellClickHandler = curryN(5, (dispatch, patternId, y, x) => {
     activeNotes,
     instrument,
     nextLoopEndTime,
-    octave,
     playing,
     steps,
     volume,
@@ -70,8 +70,8 @@ const cellClickHandler = curryN(5, (dispatch, patternId, y, x) => {
     const note = {
       frequency: pitchToFrequency(pitchFromScaleIndex(
         scales[selectedScale],
-        yLength - 1 - y + scales[selectedScale].length * octave
-      ) + rootNote),
+        yLength - 1 - y + scales[selectedScale].length
+      ) + rootNote + patternPitchOffset),
       gain: volume,
       id,
       startTime: nextLoopEndTime + noteDuration * (x - xLength),
@@ -102,7 +102,6 @@ const connectComponent = connect(({
     activeNotes,
     instrument,
     markerPosition,
-    octave,
     playing,
     playStartTime,
     steps,
@@ -124,7 +123,6 @@ const connectComponent = connect(({
     dispatch,
     instrument,
     markerPosition,
-    octave,
     patternData,
     patternId: Number(patternId),
     playing,
@@ -173,7 +171,6 @@ export default connectComponent(class extends React.Component {
         activeNotes,
         instrument,
         nextLoopEndTime,
-        octave,
         steps,
         volume,
         xLength,
@@ -208,8 +205,8 @@ export default connectComponent(class extends React.Component {
       const notes = map(({x, y}) => ({
         frequency: pitchToFrequency(pitchFromScaleIndex(
           scales[selectedScale],
-          yLength - 1 - y + scales[selectedScale].length * octave
-        ) + rootNote),
+          yLength - 1 - y + scales[selectedScale].length
+        ) + rootNote + patternPitchOffset),
         gain: volume,
         id: `pattern-${patternId}-${x}-${y}-${i}`,
         startTime: currentLoopEndTime + noteDuration * x,
@@ -237,7 +234,6 @@ export default connectComponent(class extends React.Component {
     const {
       dispatch,
       markerPosition,
-      octave,
       patternData,
       patternId,
       playing,
@@ -252,7 +248,7 @@ export default connectComponent(class extends React.Component {
         markerPosition,
         onClick: cellClickHandler(dispatch, patternId),
         patternData,
-        yLabel: yLabel(selectedScale, yLength, rootNote, octave),
+        yLabel: yLabel(selectedScale, yLength, rootNote),
       }} />
       <ButtonPlay {...{
         onPlay: () => {

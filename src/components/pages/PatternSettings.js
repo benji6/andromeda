@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
 import {
   updatePatternInstrument,
-  updatePatternOctave,
   updatePatternVolume,
   updatePatternXLength,
 } from '../../actions'
@@ -21,11 +20,10 @@ const connectComponent = connect(({
   plugins
 }, {params: {patternId}}) => {
   const activePattern = patterns[patternId]
-  const {instrument, octave, xLength, volume} = activePattern
+  const {instrument, xLength, volume} = activePattern
   return {
     dispatch,
     instrument,
-    octave,
     patternId: Number(patternId),
     plugins,
     volume,
@@ -36,7 +34,6 @@ const connectComponent = connect(({
 export default connectComponent(({
   dispatch,
   instrument,
-  octave,
   patternId,
   plugins,
   volume,
@@ -79,18 +76,6 @@ export default connectComponent(({
       output={String(xLength)}
       text='Length'
       value={xLength}
-    />
-    <RangeSelector
-      key='5'
-      max='2'
-      min='-4'
-      onChange={e => dispatch(updatePatternOctave({
-        patternId,
-        value: Number(e.target.value),
-      }))}
-      output={octave}
-      text='Octave'
-      value={octave}
     />
     <div>
       <InputLabel />
