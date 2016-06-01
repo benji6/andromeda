@@ -1,13 +1,9 @@
 import React from 'react'
-import {setPatternPlaying} from '../../actions'
 
-export default ({onPlay, onStop, dispatch, patternId, playing}) =>
+export default ({onPlay, onStop, playing}) =>
 <div className='text-center'>
-  <button
-    className={`button-play${playing ? ' button-play--playing' : ''}`}
-    onClick={_ => {
-      dispatch(setPatternPlaying({patternId, value: !playing}))
-      setTimeout(_ => { if (playing) onStop(); else onPlay() })
-    }}
-  />
+  <button {...{
+    className: `button-play${playing ? ' button-play--playing' : ''}`,
+    onClick: playing ? onStop : onPlay,
+  }} />
 </div>

@@ -21,6 +21,7 @@ import {
   patternCellClick,
   setPatternMarkerPosition,
   setPatternNextLoopEndTime,
+  setPatternPlaying,
   setPatternPlayStartTime,
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
@@ -254,10 +255,14 @@ export default connectComponent(class extends React.Component {
         yLabel: yLabel(selectedScale, yLength, rootNote, octave),
       }} />
       <ButtonPlay {...{
-        dispatch,
-        onPlay: this.onPlay.bind(this),
-        onStop: this.onStop.bind(this),
-        patternId,
+        onPlay: () => {
+          dispatch(setPatternPlaying({patternId, value: true}))
+          setTimeout(this.onPlay.bind(this))
+        },
+        onStop: () => {
+          dispatch(setPatternPlaying({patternId, value: false}))
+          this.onStop()
+        },
         playing,
       }} />
       <nav>
