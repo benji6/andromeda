@@ -5,10 +5,10 @@ import {
   addNewPattern,
   deletePattern,
   patternActiveNotesAppend,
-  patternActiveNotesClear,
   patternActiveNotesReject,
   patternActiveNotesSet,
   patternCellClick,
+  patternPlayingStop,
   setPatternMarkerPosition,
   setPatternNextLoopEndTime,
   setPatternPlaying,
@@ -90,17 +90,6 @@ test(`${reducerName} patternActiveNotesAppend`, t => {
   t.end()
 })
 
-test(`${reducerName} patternActiveNotesClear`, t => {
-  t.deepEqual(reducer([{
-    activeNotes: [{b: 'note'}, {a: 'note'}],
-    instrument: 'Prometheus',
-  }], patternActiveNotesClear(0)), [{
-    activeNotes: [],
-    instrument: 'Prometheus',
-  }])
-  t.end()
-})
-
 test(`${reducerName} patternActiveNotesReject`, t => {
   t.deepEqual(reducer([{
     activeNotes: [13, 14],
@@ -138,6 +127,17 @@ test(`${reducerName} patternCellClick`, t => {
   }], patternCellClick(payload)), [{
     instrument: 'Prometheus',
     steps: []
+  }])
+  t.end()
+})
+
+test(`${reducerName} patternPlayingStop`, t => {
+  t.deepEqual(reducer([{
+    activeNotes: [1, 2, 3],
+    markerPosition: 0.5,
+  }], patternPlayingStop(0)), [{
+    activeNotes: [],
+    markerPosition: 0,
   }])
   t.end()
 })

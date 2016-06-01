@@ -16,9 +16,9 @@ import audioContext from '../../audioContext'
 import {
   patternActiveNotesAppend,
   patternActiveNotesSet,
-  patternActiveNotesClear,
   patternActiveNotesReject,
   patternCellClick,
+  patternPlayingStop,
   setPatternMarkerPosition,
   setPatternNextLoopEndTime,
   setPatternPlaying,
@@ -35,8 +35,8 @@ import {stepExists} from '../../reducers/patterns'
 import {instrumentInstance} from '../../utils/derivedData'
 import store from '../../store'
 import scales from '../../constants/scales'
+import patternPitchOffset from '../../constants/patternPitchOffset'
 
-const patternPitchOffset = -12
 let animationFrameRequest
 let timeoutId
 
@@ -224,10 +224,9 @@ export default connectComponent(class extends React.Component {
   onStop () {
     const {activeNotes, dispatch, patternId} = this.props
     forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
-    dispatch(patternActiveNotesClear(patternId))
+    dispatch(patternPlayingStop(patternId))
     clearTimeout(timeoutId)
     cancelAnimationFrame(animationFrameRequest)
-    dispatch(setPatternMarkerPosition({patternId, value: 0}))
   }
 
   render () {

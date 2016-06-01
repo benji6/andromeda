@@ -12,10 +12,10 @@ import {
   ADD_NEW_PATTERN,
   DELETE_PATTERN,
   PATTERN_ACTIVE_NOTES_APPEND,
-  PATTERN_ACTIVE_NOTES_CLEAR,
   PATTERN_ACTIVE_NOTES_REJECT,
   PATTERN_ACTIVE_NOTES_SET,
   PATTERN_CELL_CLICK,
+  PATTERN_PLAYING_STOP,
   SET_PATTERN_MARKER_POSITION,
   SET_PATTERN_NEXT_LOOP_END_TIME,
   SET_PATTERN_PLAY_START_TIME,
@@ -56,8 +56,6 @@ export default (state = initialState, {type, payload}) => {
         state
       )
     }
-    case PATTERN_ACTIVE_NOTES_CLEAR:
-      return setPatternProp('activeNotes', {patternId: payload, value: []}, state)
     case PATTERN_ACTIVE_NOTES_REJECT: {
       const {patternId, value} = payload
       return adjust(
@@ -80,6 +78,16 @@ export default (state = initialState, {type, payload}) => {
         state
       )
     }
+    case PATTERN_PLAYING_STOP:
+      return setPatternProp(
+        'activeNotes',
+        {patternId: payload, value: []},
+        setPatternProp(
+          'markerPosition',
+          {patternId: payload, value: 0},
+          state
+        )
+      )
     case SET_PATTERN_MARKER_POSITION:
       return setPatternProp('markerPosition', payload, state)
     case SET_PATTERN_NEXT_LOOP_END_TIME:

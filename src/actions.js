@@ -19,10 +19,10 @@ export const [
   [LOAD_PLUGIN_EFFECT, loadPluginEffect],
   [LOAD_PLUGIN_INSTRUMENT, loadPluginInstrument],
   [PATTERN_ACTIVE_NOTES_APPEND, patternActiveNotesAppend],
-  [PATTERN_ACTIVE_NOTES_CLEAR, patternActiveNotesClear],
   [PATTERN_ACTIVE_NOTES_REJECT, patternActiveNotesReject],
   [PATTERN_ACTIVE_NOTES_SET, patternActiveNotesSet],
   [PATTERN_CELL_CLICK, patternCellClick],
+  [PATTERN_PLAYING_STOP, patternPlayingStop],
   [REMOVE_CHANNEL, removeChannel],
   [REMOVE_EFFECT_FROM_CHANNEL, removeEffectFromChannel],
   [REMOVE_INSTRUMENT_FROM_CHANNEL, removeInstrumentFromChannel],
@@ -43,5 +43,5 @@ export const [
   [UPDATE_PATTERN_VOLUME, updatePatternVolume],
   [UPDATE_PATTERN_X_LENGTH, updatePatternXLength],
   [UPDATE_ROOT_NOTE, updateRootNote],
-  [UPDATE_SELECTED_SCALE, updateSelectedScale]
+  [UPDATE_SELECTED_SCALE, updateSelectedScale],
 ] = createActions()
