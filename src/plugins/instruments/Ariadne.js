@@ -90,7 +90,7 @@ export default class {
       masterPan: 0,
       modulatorDetune: 0,
       modulatorOscType: 'sine',
-      modulatorRatio: 0.5,
+      modulatorRatio: 2.5,
       output,
     })
     store.subscribe(updateAudio.bind(this))
