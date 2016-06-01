@@ -21,7 +21,6 @@ import {
   SET_PATTERN_PLAY_START_TIME,
   SET_PATTERN_PLAYING,
   UPDATE_PATTERN_INSTRUMENT,
-  UPDATE_PATTERN_OCTAVE,
   UPDATE_PATTERN_VOLUME,
   UPDATE_PATTERN_X_LENGTH,
 } from '../actions'
@@ -34,7 +33,6 @@ const defaultPattern = () => ({
   instrument: 'Prometheus',
   steps: [],
   markerPosition: 0,
-  octave: -1,
   playing: false,
   playStartTime: null,
   xLength: 8,
@@ -92,8 +90,6 @@ export default (state = initialState, {type, payload}) => {
       return setPatternProp('playing', payload, state)
     case UPDATE_PATTERN_INSTRUMENT:
       return setPatternProp('instrument', payload, state)
-    case UPDATE_PATTERN_OCTAVE:
-      return setPatternProp('octave', payload, state)
     case UPDATE_PATTERN_X_LENGTH:
       return setPatternProp('xLength', payload, state)
     case UPDATE_PATTERN_VOLUME:
