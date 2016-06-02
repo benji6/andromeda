@@ -2,7 +2,6 @@ import {
   curry,
   curryN,
   find,
-  forEach,
   map,
   none,
   range,
@@ -18,10 +17,10 @@ import {
   patternActiveNotesSet,
   patternActiveNotesReject,
   patternCellClick,
+  patternPlayingStart,
   patternPlayingStop,
   setPatternMarkerPosition,
   setPatternNextLoopEndTime,
-  setPatternPlaying,
   setPatternPlayStartTime,
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
@@ -221,16 +220,9 @@ export default connectComponent(class extends React.Component {
     visualLoop(patternId)()
   }
 
-  onStop () {
-    const {activeNotes, dispatch, patternId} = this.props
-    forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
-    dispatch(patternPlayingStop(patternId))
-    clearTimeout(timeoutId)
-    cancelAnimationFrame(animationFrameRequest)
-  }
-
   render () {
     const {
+      activeNotes,
       dispatch,
       markerPosition,
       patternData,
@@ -250,14 +242,16 @@ export default connectComponent(class extends React.Component {
         yLabel: yLabel(selectedScale, yLength, rootNote),
       }} />
       <ButtonPlay {...{
-        onPlay: () => {
-          dispatch(setPatternPlaying({patternId, value: true}))
-          setTimeout(this.onPlay.bind(this))
-        },
-        onStop: () => {
-          dispatch(setPatternPlaying({patternId, value: false}))
-          this.onStop()
-        },
+        onPlay: () => dispatch(patternPlayingStart({
+          callback: this.onPlay.bind(this),
+          patternId,
+        })),
+        onStop: () => dispatch(patternPlayingStop({
+          animationFrameRequest,
+          activeNotes,
+          patternId,
+          timeoutId,
+        })),
         playing,
       }} />
       <nav>

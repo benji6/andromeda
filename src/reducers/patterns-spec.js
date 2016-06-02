@@ -8,10 +8,10 @@ import {
   patternActiveNotesReject,
   patternActiveNotesSet,
   patternCellClick,
+  patternPlayingStart,
   patternPlayingStop,
   setPatternMarkerPosition,
   setPatternNextLoopEndTime,
-  setPatternPlaying,
   setPatternPlayStartTime,
   updatePatternInstrument,
   updatePatternVolume,
@@ -131,13 +131,34 @@ test(`${reducerName} patternCellClick`, t => {
   t.end()
 })
 
+test(`${reducerName} patternPlayingStart`, t => {
+  t.deepEqual(reducer([{
+    instrument: 'Prometheus',
+    playing: false,
+    steps: [],
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  }], patternPlayingStart({patternId: 0})), [{
+    instrument: 'Prometheus',
+    steps: [],
+    playing: true,
+    xLength: 8,
+    yLength: 8,
+    volume: 1 / 3
+  }])
+  t.end()
+})
+
 test(`${reducerName} patternPlayingStop`, t => {
   t.deepEqual(reducer([{
     activeNotes: [1, 2, 3],
     markerPosition: 0.5,
-  }], patternPlayingStop(0)), [{
+    playing: true,
+  }], patternPlayingStop({patternId: 0})), [{
     activeNotes: [],
     markerPosition: 0,
+    playing: false,
   }])
   t.end()
 })
@@ -161,25 +182,6 @@ test(`${reducerName} setPatternNextLoopEndTime`, t => {
     ),
     [{id: 0, nextLoopEndTime: 120}]
   )
-  t.end()
-})
-
-test(`${reducerName} setPatternPlaying`, t => {
-  t.deepEqual(reducer([{
-    instrument: 'Prometheus',
-    playing: false,
-    steps: [],
-    xLength: 8,
-    yLength: 8,
-    volume: 1 / 3
-  }], setPatternPlaying({patternId: 0, value: true})), [{
-    instrument: 'Prometheus',
-    steps: [],
-    playing: true,
-    xLength: 8,
-    yLength: 8,
-    volume: 1 / 3
-  }])
   t.end()
 })
 
