@@ -3,7 +3,9 @@ import {
   any,
   assoc,
   equals,
+  flip,
   lensProp,
+  merge,
   over,
   reject,
   remove
@@ -15,11 +17,11 @@ import {
   PATTERN_ACTIVE_NOTES_REJECT,
   PATTERN_ACTIVE_NOTES_SET,
   PATTERN_CELL_CLICK,
+  PATTERN_PLAYING_START,
   PATTERN_PLAYING_STOP,
   SET_PATTERN_MARKER_POSITION,
   SET_PATTERN_NEXT_LOOP_END_TIME,
   SET_PATTERN_PLAY_START_TIME,
-  SET_PATTERN_PLAYING,
   UPDATE_PATTERN_INSTRUMENT,
   UPDATE_PATTERN_VOLUME,
   UPDATE_PATTERN_X_LENGTH,
@@ -43,6 +45,7 @@ const initialState = [defaultPattern()]
 
 export const stepExists = (x0, y0, steps) => any(({x, y}) => x === x0 && y === y0, steps)
 const setPatternProp = (key, {patternId, value}, state) => adjust(assoc(key, value), patternId, state)
+const mergeIntoPattern = (patternId, obj, state) => adjust(flip(merge)(obj), patternId, state)
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
@@ -79,23 +82,23 @@ export default (state = initialState, {type, payload}) => {
       )
     }
     case PATTERN_PLAYING_STOP:
-      return setPatternProp(
-        'activeNotes',
-        {patternId: payload, value: []},
-        setPatternProp(
-          'markerPosition',
-          {patternId: payload, value: 0},
-          state
-        )
-      )
+      return mergeIntoPattern(payload.patternId, {
+        playing: false,
+        activeNotes: [],
+        markerPosition: 0,
+      }, state)
     case SET_PATTERN_MARKER_POSITION:
       return setPatternProp('markerPosition', payload, state)
     case SET_PATTERN_NEXT_LOOP_END_TIME:
       return setPatternProp('nextLoopEndTime', payload, state)
     case SET_PATTERN_PLAY_START_TIME:
       return setPatternProp('playStartTime', payload, state)
-    case SET_PATTERN_PLAYING:
-      return setPatternProp('playing', payload, state)
+    case PATTERN_PLAYING_START:
+      return setPatternProp(
+        'playing',
+        {patternId: payload.patternId, value: true},
+        state,
+      )
     case UPDATE_PATTERN_INSTRUMENT:
       return setPatternProp('instrument', payload, state)
     case UPDATE_PATTERN_X_LENGTH:
