@@ -24,7 +24,6 @@ export const [
   [REMOVE_INSTRUMENT_FROM_CHANNEL, removeInstrumentFromChannel],
   [SET_PATTERN_MARKER_POSITION, setPatternMarkerPosition],
   [SET_PATTERN_NEXT_LOOP_END_TIME, setPatternNextLoopEndTime],
-  [SET_PATTERN_PLAY_START_TIME, setPatternPlayStartTime],
   [SONG_ACTIVE_NOTES_SET, songActiveNotesSet],
   [SONG_PLAYING_START, songPlayingStart],
   [SONG_PLAYING_STOP, songPlayingStop],
