@@ -1,11 +1,8 @@
 import {
-  curry,
-  curryN,
   find,
   map,
   none,
   range,
-  reject,
   repeat,
 } from 'ramda'
 import React from 'react'
@@ -14,14 +11,11 @@ import {defaultMemoize} from 'reselect'
 import audioContext from '../../audioContext'
 import {
   patternActiveNotesAppend,
-  patternActiveNotesSet,
   patternActiveNotesReject,
   patternCellClick,
   patternPlayingStart,
   patternPlayingStop,
   setPatternMarkerPosition,
-  setPatternNextLoopEndTime,
-  setPatternPlayStartTime,
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
 import ButtonPlay from '../atoms/ButtonPlay'
@@ -37,16 +31,13 @@ import scales from '../../constants/scales'
 import patternPitchOffset from '../../constants/patternPitchOffset'
 
 let animationFrameRequest
-let timeoutId
 
-const yLabel = curry(
-  (selectedScale, yLength, rootNote, i) => noteNameFromPitch(pitchFromScaleIndex(
-    scales[selectedScale],
-    yLength - i - 1
-  ) + rootNote + patternPitchOffset)
-)
+const yLabel = (selectedScale, yLength, rootNote) => i => noteNameFromPitch(pitchFromScaleIndex(
+  scales[selectedScale],
+  yLength - i - 1
+) + rootNote + patternPitchOffset)
 
-const cellClickHandler = curryN(5, (dispatch, patternId, y, x) => {
+const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
   const state = store.getState()
   const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
   const {
@@ -59,7 +50,7 @@ const cellClickHandler = curryN(5, (dispatch, patternId, y, x) => {
     xLength,
     yLength,
   } = patterns[patternId]
-  dispatch(patternCellClick({patternId, x, y}))
+  patternCellClick({patternId, x, y})
   if (!playing) return
   const isAddedNote = none(note => note.x === x && note.y === y, steps)
   if (isAddedNote) {
@@ -86,7 +77,7 @@ const cellClickHandler = curryN(5, (dispatch, patternId, y, x) => {
     store.dispatch(patternActiveNotesReject({patternId, value: x => x.id === id}))
     instrumentObj.noteStop(id)
   }
-})
+}
 
 const emptyPatternData = defaultMemoize((xLength, yLength) =>
   map(range(0), repeat(xLength, yLength)))
@@ -134,7 +125,7 @@ const connectComponent = connect(({
     xLength,
     yLength,
   }
-})
+}, {patternCellClick, patternPlayingStart, patternPlayingStop})
 
 const visualLoop = patternId => _ => {
   const state = store.getState()
@@ -149,6 +140,31 @@ const visualLoop = patternId => _ => {
 }
 
 export default connectComponent(class extends React.Component {
+  constructor (props) {
+    super(props)
+
+    this.onPlay = () => {
+      const {patternId, patternPlayingStart} = this.props
+      const {currentTime} = audioContext
+
+      patternPlayingStart({
+        currentTime,
+        patternId,
+      })
+      setTimeout(visualLoop(patternId))
+    }
+
+    this.onStop = () => {
+      const {activeNotes, patternId, patternPlayingStop} = this.props
+
+      patternPlayingStop({
+        animationFrameRequest,
+        activeNotes,
+        patternId,
+      })
+    }
+  }
+
   componentWillMount () {
     const {patternId, playing} = this.props
     playing && visualLoop(patternId)()
@@ -158,73 +174,10 @@ export default connectComponent(class extends React.Component {
     cancelAnimationFrame(animationFrameRequest)
   }
 
-  onPlay () {
-    const {patternId} = this.props
-    store.dispatch(setPatternPlayStartTime({patternId, value: audioContext.currentTime}))
-    const {playStartTime} = this.props
-    store.dispatch(setPatternNextLoopEndTime({patternId, value: playStartTime}))
-    const audioLoop = (i = 0) => {
-      const state = store.getState()
-      const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
-      const {
-        activeNotes,
-        instrument,
-        nextLoopEndTime,
-        steps,
-        volume,
-        xLength,
-        yLength,
-      } = patterns[patternId]
-      const instrumentObj = instrumentInstance(instrument, plugins)
-      const noteDuration = 60 / bpm
-      const patternDuration = xLength * noteDuration
-      const currentLoopEndTime = nextLoopEndTime
-      const newLoopEndTime = nextLoopEndTime + patternDuration
-      store.dispatch(setPatternNextLoopEndTime({
-        patternId,
-        value: newLoopEndTime,
-      }))
-
-      timeoutId = setTimeout(
-        _ => audioLoop(i + 1),
-        (newLoopEndTime - audioContext.currentTime - 0.1) * 1000
-      )
-
-      store.dispatch(patternActiveNotesSet({
-        patternId,
-        value: reject(({id}) => {
-          for (const {x, y} of steps) {
-            if (id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1) return true
-          }
-        }, activeNotes).concat(map(({x, y}) => ({
-          id: `pattern-${patternId}-${x}-${y}-${i}`,
-          instrumentObj,
-        }), steps))}))
-
-      const notes = map(({x, y}) => ({
-        frequency: pitchToFrequency(pitchFromScaleIndex(
-          scales[selectedScale],
-          yLength - 1 - y + scales[selectedScale].length
-        ) + rootNote + patternPitchOffset),
-        gain: volume,
-        id: `pattern-${patternId}-${x}-${y}-${i}`,
-        startTime: currentLoopEndTime + noteDuration * x,
-        stopTime: currentLoopEndTime + noteDuration * (x + 1),
-      }), steps)
-
-      instrumentObj.notesStart(notes)
-      i++
-    }
-
-    audioLoop()
-    visualLoop(patternId)()
-  }
-
   render () {
     const {
-      activeNotes,
-      dispatch,
       markerPosition,
+      patternCellClick,
       patternData,
       patternId,
       playing,
@@ -237,21 +190,13 @@ export default connectComponent(class extends React.Component {
       <h2 className='text-center'>{`Pattern ${patternId}`}</h2>
       <Pattern {...{
         markerPosition,
-        onClick: cellClickHandler(dispatch, patternId),
+        onClick: cellClickHandler(patternCellClick, patternId),
         patternData,
         yLabel: yLabel(selectedScale, yLength, rootNote),
       }} />
       <ButtonPlay {...{
-        onPlay: () => dispatch(patternPlayingStart({
-          callback: this.onPlay.bind(this),
-          patternId,
-        })),
-        onStop: () => dispatch(patternPlayingStop({
-          animationFrameRequest,
-          activeNotes,
-          patternId,
-          timeoutId,
-        })),
+        onPlay: this.onPlay,
+        onStop: this.onStop,
         playing,
       }} />
       <nav>

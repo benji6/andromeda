@@ -21,7 +21,6 @@ import {
   PATTERN_PLAYING_STOP,
   SET_PATTERN_MARKER_POSITION,
   SET_PATTERN_NEXT_LOOP_END_TIME,
-  SET_PATTERN_PLAY_START_TIME,
   UPDATE_PATTERN_INSTRUMENT,
   UPDATE_PATTERN_VOLUME,
   UPDATE_PATTERN_X_LENGTH,
@@ -91,12 +90,10 @@ export default (state = initialState, {type, payload}) => {
       return setPatternProp('markerPosition', payload, state)
     case SET_PATTERN_NEXT_LOOP_END_TIME:
       return setPatternProp('nextLoopEndTime', payload, state)
-    case SET_PATTERN_PLAY_START_TIME:
-      return setPatternProp('playStartTime', payload, state)
     case PATTERN_PLAYING_START:
-      return setPatternProp(
-        'playing',
-        {patternId: payload.patternId, value: true},
+      return mergeIntoPattern(
+        payload.patternId,
+        {playing: true, playStartTime: payload.currentTime},
         state,
       )
     case UPDATE_PATTERN_INSTRUMENT:
