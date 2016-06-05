@@ -66,7 +66,7 @@ export default store => next => action => {
           const notes = map(({x, y}) => ({
             frequency: pitchToFrequency(pitchFromScaleIndex(
               scales[selectedScale],
-              yLength - 1 - y + scales[selectedScale].length
+              yLength - 1 - y
             ) + rootNote + patternPitchOffset),
             gain: volume,
             id: `pattern-${patternId}-${x}-${y}-${i}`,
