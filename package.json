@@ -55,7 +55,7 @@
     "redux": "^3.5.2",
     "reselect": "^2.5.1",
     "st88": "benji6/st88.git#v0.0.2",
-    "three": "^0.76.1",
+    "three": "^0.77.1",
     "virtual-audio-graph": "^0.17.7"
   },
   "devDependencies": {
@@ -70,7 +70,7 @@
     "babel": "^6.3.26",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
-    "clean-css": "^3.4.13",
+    "clean-css": "^3.4.17",
     "concurrently": "^2.1.0",
     "eslint-plugin-react": "^5.1.1",
     "eslint": "^2.11.1",
