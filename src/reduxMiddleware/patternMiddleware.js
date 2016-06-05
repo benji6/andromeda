@@ -1,18 +1,11 @@
 import {forEach} from 'ramda'
 import {
-  BPM_SET,
   PATTERN_PLAYING_START,
   PATTERN_PLAYING_STOP,
-} from './actions'
+} from '../actions'
 
-export default store => next => action => {
+export default () => next => action => {
   switch (action.type) {
-    case BPM_SET: {
-      const {plugins: {effectInstances, instrumentInstances}} = store.getState()
-      forEach(x => x.instance.setBpm(action.payload), effectInstances)
-      forEach(x => x.instance.setBpm(action.payload), instrumentInstances)
-      break
-    }
     case PATTERN_PLAYING_START:
       setTimeout(action.payload.callback)
       break
