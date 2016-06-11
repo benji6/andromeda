@@ -20,6 +20,7 @@ import scales from '../../constants/scales'
 import patternPitchOffset from '../../constants/patternPitchOffset'
 import {instrumentInstance} from '../../utils/derivedData'
 import {forEachIndexed} from '../../utils/helpers'
+import PatternSvg from '../organisms/PatternSvg'
 
 const connectComponent = connect(({
   activePatternIndex,
@@ -54,12 +55,13 @@ export default connectComponent(({
 }) =>
   <div>
     {patterns.length
-      ? mapIndexed((_, x) =>
-        <div className='text-center padding-0' key={x}>
-          <Cross onClick={comp(dispatch, deletePattern, K(x))} />
-          <ButtonPrimarySmall to={`/controllers/pattern/${x}`}>
-            {`Pattern ${x}`}
+      ? mapIndexed((_, i) =>
+        <div className='Song__Pattern' key={i}>
+          <Cross onClick={comp(dispatch, deletePattern, K(i))} />
+          <ButtonPrimarySmall to={`/controllers/pattern/${i}`}>
+            {`Pattern ${i}`}
           </ButtonPrimarySmall>
+          <PatternSvg {...patterns[i]} to={`/controllers/pattern/${i}`} />
         </div>, patterns)
       : null}
     <div className='text-center padding-1'>

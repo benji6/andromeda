@@ -20,6 +20,8 @@
 @import 'components/organisms/control-module';
 @import 'components/organisms/control-pad';
 @import 'components/organisms/pattern';
+@import 'components/organisms/PatternSvg';
 @import 'components/organisms/spinner';
 @import 'components/organisms/table-center';
 @import 'components/pages/about';
+@import 'components/pages/Song';
