@@ -7,14 +7,14 @@
 .slider__input {
   -webkit-appearance: none;
   appearance: none;
-  background-color: $white;
+  background-color: #fff;
   height: 0.1rem;
   width: 10rem;
 }
 .slider__input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  background: linear-gradient(to bottom, $white 0%, $off-white 55%, $blue-midday 80%);
+  background: linear-gradient(to bottom, #fff 0%, $off-white 55%, $blue-midday 80%);
   border-radius: 0.3rem;
   box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.5);
   height: 0.8rem;

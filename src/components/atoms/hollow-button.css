@@ -1,9 +1,9 @@
 .hollow-button {
-  background: linear-gradient($blue-night, $black, $blue-night);
+  background: linear-gradient($blue-night, #000, $blue-night);
   border-radius: 1rem;
   border: 1px solid $blue-dusk;
   box-shadow: $blue-dusk 0 0 0.5rem 0.1rem;
-  color: $white;
+  color: #fff;
   font-size: $size-4;
   margin: 1rem 0.5rem;
   padding: 0.25rem 1rem;
@@ -11,7 +11,7 @@
   transition-duration: $transition-fast;
 }
 .hollow-button:active {
-  background: linear-gradient($black, $black, $blue-night);
+  background: linear-gradient(#000, #000, $blue-night);
 }
 .hollow-button:hover {
   box-shadow: $blue-dusk 0 0 1rem 0.1rem;

@@ -1,7 +1,7 @@
 .button-secondary {
   background: $green-6;
   border-radius: 1rem;
-  color: $black;
+  color: #000;
   font-size: $size-4;
   margin: 1rem 0.5rem;
   padding: 0.5rem;

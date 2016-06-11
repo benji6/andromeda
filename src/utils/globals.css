@@ -1,6 +1,6 @@
 body {
-  background: $black;
-  color: $white;
+  background: #000;
+  color: #fff;
   font-family: sans-serif;
   margin: 0;
   user-select: none;
