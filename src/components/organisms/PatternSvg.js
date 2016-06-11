@@ -13,7 +13,7 @@ export default ({steps, to}) => createElement(
       steps.map(({x, y}) => createElement(
         'rect',
         {
-          fill: 'blue',
+          className: 'PatternSvg__step',
           height: 5,
           key: `${x}${y}`,
           width: 15,
