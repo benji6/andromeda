@@ -4,7 +4,7 @@
   border: $size-1 solid $blue-dusk;
   box-shadow: $blue-dusk 0 0 $size-3;
   box-sizing: border-box;
-  color: $black;
+  color: #000;
   display: inline-block;
   font-size: $size-5;
   margin: $size-4;

@@ -2,8 +2,8 @@
   background: radial-gradient(
     circle,
     $turquoise-light 0%,
-    $black 17.5%,
-    $black 91.67%,
+    #000 17.5%,
+    #000 91.67%,
     $blue-midnight 100%
   );
   cursor: crosshair;
