@@ -1,6 +1,7 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux'
 import bpmMiddleware from './reduxMiddleware/bpmMiddleware'
 import patternMiddleware from './reduxMiddleware/patternMiddleware'
+import songMiddleware from './reduxMiddleware/songMiddleware'
 import controlPad from './reducers/controlPad'
 import keyboard from './reducers/keyboard'
 import patterns from './reducers/patterns'
@@ -15,4 +16,8 @@ export default createStore(combineReducers({
   plugins,
   settings,
   song,
-}), applyMiddleware(bpmMiddleware, patternMiddleware))
+}), applyMiddleware(
+  bpmMiddleware,
+  patternMiddleware,
+  songMiddleware
+))
