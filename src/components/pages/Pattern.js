@@ -82,7 +82,7 @@ const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
 const emptyPatternData = defaultMemoize((xLength, yLength) =>
   map(range(0), repeat(xLength, yLength)))
 
-const connectComponent = connect(({
+const mapStateToProps = ({
   dispatch,
   patterns,
   plugins,
@@ -125,7 +125,13 @@ const connectComponent = connect(({
     xLength,
     yLength,
   }
-}, {patternCellClick, patternPlayingStart, patternPlayingStop})
+}
+
+const mapDispatchToProps = {
+  patternCellClick,
+  patternPlayingStart,
+  patternPlayingStop,
+}
 
 const visualLoop = patternId => _ => {
   const state = store.getState()
@@ -139,71 +145,73 @@ const visualLoop = patternId => _ => {
   }))
 }
 
-export default connectComponent(class extends React.Component {
-  constructor (props) {
-    super(props)
+export default connect(mapStateToProps, mapDispatchToProps)(
+  class extends React.Component {
+    constructor (props) {
+      super(props)
 
-    this.onPlay = () => {
-      const {patternId, patternPlayingStart} = this.props
-      const {currentTime} = audioContext
+      this.onPlay = () => {
+        const {patternId, patternPlayingStart} = this.props
+        const {currentTime} = audioContext
 
-      patternPlayingStart({
-        currentTime,
-        patternId,
-      })
-      setTimeout(visualLoop(patternId))
+        patternPlayingStart({
+          currentTime,
+          patternId,
+        })
+        setTimeout(visualLoop(patternId))
+      }
+
+      this.onStop = () => {
+        const {activeNotes, patternId, patternPlayingStop} = this.props
+
+        patternPlayingStop({
+          animationFrameRequest,
+          activeNotes,
+          patternId,
+        })
+      }
     }
 
-    this.onStop = () => {
-      const {activeNotes, patternId, patternPlayingStop} = this.props
-
-      patternPlayingStop({
-        animationFrameRequest,
-        activeNotes,
-        patternId,
-      })
+    componentWillMount () {
+      const {patternId, playing} = this.props
+      playing && visualLoop(patternId)()
     }
-  }
 
-  componentWillMount () {
-    const {patternId, playing} = this.props
-    playing && visualLoop(patternId)()
-  }
+    componentWillUnmount () {
+      cancelAnimationFrame(animationFrameRequest)
+    }
 
-  componentWillUnmount () {
-    cancelAnimationFrame(animationFrameRequest)
-  }
-
-  render () {
-    const {
-      markerPosition,
-      patternCellClick,
-      patternData,
-      patternId,
-      playing,
-      rootNote,
-      selectedScale,
-      yLength,
-    } = this.props
-
-    return <div>
-      <h2 className='text-center'>{`Pattern ${patternId}`}</h2>
-      <Pattern {...{
+    render () {
+      const {
         markerPosition,
-        onClick: cellClickHandler(patternCellClick, patternId),
+        patternCellClick,
         patternData,
-        yLabel: yLabel(selectedScale, yLength, rootNote),
-      }} />
-      <ButtonPlay {...{
-        onPlay: this.onPlay,
-        onStop: this.onStop,
+        patternId,
         playing,
-      }} />
-      <nav>
-        <ButtonPrimary to={`/controllers/pattern/${patternId}/settings`}>
-          Options
-        </ButtonPrimary>
-      </nav>
-    </div>
+        rootNote,
+        selectedScale,
+        yLength,
+      } = this.props
+
+      return <div>
+        <h2 className='text-center'>{`Pattern ${patternId}`}</h2>
+        <Pattern {...{
+          markerPosition,
+          onClick: cellClickHandler(patternCellClick, patternId),
+          patternData,
+          yLabel: yLabel(selectedScale, yLength, rootNote),
+        }} />
+        <ButtonPlay {...{
+          onPlay: this.onPlay,
+          onStop: this.onStop,
+          playing,
+        }} />
+        <nav>
+          <ButtonPrimary to={`/controllers/pattern/${patternId}/settings`}>
+            Options
+          </ButtonPrimary>
+        </nav>
+      </div>
+    }
   }
-})
+)
