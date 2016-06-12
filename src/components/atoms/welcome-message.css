@@ -1,8 +1,8 @@
 .welcome-message {
-  color: $blue-midday;
+  color: var(--blue-80);
   padding: 0.5rem 1rem;
   position: fixed;
-  font-size: $size-4;
+  font-size: 0.75rem;
   bottom: -100;
   right: 0;
   opacity: 0;

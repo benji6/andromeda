@@ -1,16 +1,16 @@
 .PatternSvg {
   border-radius: 0.2rem;
-  box-shadow: 0 0 0 0.1rem $blue-midday;
+  box-shadow: 0 0 0 0.1rem var(--blue-80);
   margin-left: 1rem;
   padding: 0.1rem;
 }
 .PatternSvg:hover {
-  background: $gray-1;
-  box-shadow: 0 0 1rem 0.3rem $blue-6;
+  background: var(--gray-10);
+  box-shadow: 0 0 1rem 0.3rem var(--blue-90);
 }
 .PatternSvg__step {
   box-sizing: border-box;
-  fill: $blue-5;
+  fill: var(--blue-50);
   stroke-width: 1;
   stroke: #000;
 }

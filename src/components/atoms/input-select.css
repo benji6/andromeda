@@ -5,5 +5,5 @@
   visibility: hidden;
 }
 .input-select option {
-  background: $gray-7;
+  background: var(--gray-90);
 }

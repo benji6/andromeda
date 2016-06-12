@@ -1,6 +1,6 @@
 .slider {
   display: inline-block;
-  margin: $size-5 0.5rem;
+  margin: 1rem 0.5rem;
   text-align: center;
   width: 12rem;
 }
@@ -14,7 +14,7 @@
 .slider__input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  background: linear-gradient(to bottom, #fff 0%, $off-white 55%, $blue-midday 80%);
+  background: linear-gradient(to bottom, #fff 0%, var(--gray-90) 55%, var(--blue-80) 80%);
   border-radius: 0.3rem;
   box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.5);
   height: 0.8rem;

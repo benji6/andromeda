@@ -1,10 +1,10 @@
 .control-pad {
   background: radial-gradient(
     circle,
-    $turquoise-light 0%,
+    var(--turquoise-light) 0%,
     #000 17.5%,
     #000 91.67%,
-    $blue-midnight 100%
+    var(--blue-10) 100%
   );
   cursor: crosshair;
 }

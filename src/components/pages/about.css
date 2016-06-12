@@ -1,5 +1,5 @@
 .about {
-  color: $blue-6;
+  color: var(--blue-90);
   margin: 1rem;
 }
 @media (min-width: 32rem) {
@@ -11,7 +11,7 @@
   }
 }
 .about__link {
-  color: $green-6;
+  color: var(--green-80);
   font-weight: 900;
   text-decoration: none;
 }

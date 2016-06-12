@@ -5,8 +5,8 @@
   cursor: pointer;
   font-size: 1.5rem;
   font-weight: 900;
-  transition: color $transition-fast;
+  transition: color var(--transition-fast);
 }
-.icon-button--green-hover:hover { color: $green-6; }
-.icon-button--blue-hover:hover { color: $blue-dawn; }
-.icon-button--red-hover:hover { color: $red-6; }
+.icon-button--green-hover:hover { color: var(--green-80); }
+.icon-button--blue-hover:hover { color: var(--blue-70); }
+.icon-button--red-hover:hover { color: var(--red-50); }

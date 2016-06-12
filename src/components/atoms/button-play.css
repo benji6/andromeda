@@ -1,7 +1,7 @@
 .button-play {
   background: none;
   border-bottom: 2rem solid transparent;
-  border-left: 3.5rem solid $blue-dusk;
+  border-left: 3.5rem solid var(--blue-60);
   border-right: none;
   border-top: 2rem solid transparent;
   cursor: pointer;
@@ -11,15 +11,15 @@
   width: 0;
 }
 .button-play:hover {
-  border-left-color: $blue-dawn;
+  border-left-color: var(--blue-70);
 }
 
 .button-play--playing {
-  background: $blue-dusk;
+  background: var(--blue-60);
   border: 0;
   height: 4rem;
   width: 4rem;
 }
 .button-play--playing:hover {
-  background: $blue-dawn;
+  background: var(--blue-70);
 }
