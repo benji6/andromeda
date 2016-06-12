@@ -38,8 +38,7 @@ const yLabel = (selectedScale, yLength, rootNote) => i => noteNameFromPitch(pitc
 ) + rootNote + patternPitchOffset)
 
 const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
-  const state = store.getState()
-  const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
+  const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = store.getState()
   const {
     activeNotes,
     instrument,
@@ -89,7 +88,6 @@ const mapStateToProps = ({
   settings: {bpm, rootNote, selectedScale},
 }, {params: {patternId}}) => {
   const {
-    activeNotes,
     instrument,
     markerPosition,
     playing,
@@ -108,7 +106,6 @@ const mapStateToProps = ({
   )
 
   return {
-    activeNotes,
     bpm,
     dispatch,
     instrument,
@@ -162,11 +159,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       }
 
       this.onStop = () => {
-        const {activeNotes, patternId, patternPlayingStop} = this.props
+        const {patternId, patternPlayingStop} = this.props
 
         patternPlayingStop({
           animationFrameRequest,
-          activeNotes,
           patternId,
         })
       }
