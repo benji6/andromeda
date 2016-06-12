@@ -1,4 +1,5 @@
-@import 'utils/vars';
+@import 'constants/colors';
+@import 'constants/timeAndSpace';
 @import 'utils/globals';
 
 @import 'components/atoms/button-primary--small';

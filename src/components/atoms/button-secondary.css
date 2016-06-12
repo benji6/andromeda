@@ -1,17 +1,17 @@
 .button-secondary {
-  background: $green-6;
+  background: var(--green-80);
   border-radius: 1rem;
   color: #000;
-  font-size: $size-4;
+  font-size: 0.75rem;
   margin: 1rem 0.5rem;
   padding: 0.5rem;
   text-decoration: none;
-  transition-duration: $transition-fast;
+  transition-duration: var(--transition-fast);
 }
 .button-secondary:active {
-  background: $green-2;
+  background: var(--green-20);
 }
 .button-secondary:hover {
-  background: $green-4;
-  transition-duration: $transition-fast;
+  background: var(--green-40);
+  transition-duration: var(--transition-fast);
 }

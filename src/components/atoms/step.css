@@ -1,6 +1,6 @@
 .step {
-  background: $blue-midnight;
-  border: calc($pattern-side-length / 48) solid #000;
+  background: var(--blue-10);
+  border: calc(var(--pattern-side-length) / 48) solid #000;
   box-sizing: border-box;
   cursor: pointer;
   height: 100%;
@@ -8,5 +8,5 @@
   width: 100%;;
 }
 .step--selected {
-  background: $turquoise;
+  background: var(--turquoise);
 }

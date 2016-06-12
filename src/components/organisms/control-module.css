@@ -1,39 +1,39 @@
 $width: 10rem;
 
 .control-module {
-  border: $size-1 solid $blue-6;
-  border-radius: $size-5;
+  border: 0.1rem solid var(--blue-90);
+  border-radius: 1rem;
   display: inline-block;
-  margin: $size-4;
-  padding: $size-4;
+  margin: 0.75rem;
+  padding: 0.75rem;
 }
 .control-module__Input {
   display: table-row;
-  font-size: $size-4;
-  padding: $size-4;
+  font-size: 0.75rem;
+  padding: 0.75rem;
 }
 .control-module__Input__Label {
   display: table-cell;
-  padding: $size-3 $size-3 $size-2 $size-2;
+  padding: 0.5rem 0.5rem 0.25rem 0.25rem;
   text-align: left;
 }
 .control-module__Output {
   display: table-cell;
-  height: $size-4;
-  padding-left: $size-2;
+  height: 0.75rem;
+  padding-left: 0.25rem;
   min-width: 2.25rem;
 }
 .control-module__Range {
   display: table-cell;
-  height: $size-4;
+  height: 0.75rem;
   width: $width;
 }
 .control-module__Select {
   width: $width;
 }
 .control-module__Title {
-  font-size: $size-5;
+  font-size: 1rem;
   font-weight: 600;
   margin: 0;
-  padding-bottom: $size-4;
+  padding-bottom: 0.75rem;
 }
