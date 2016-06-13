@@ -1,37 +1,35 @@
-$width: 10rem;
-
-.control-module {
+.ControlModule {
   border: 0.1rem solid var(--blue-90);
   border-radius: 1rem;
   display: inline-block;
   margin: 0.75rem;
   padding: 0.75rem;
 }
-.control-module__Input {
+.ControlModule__Input {
   display: table-row;
   font-size: 0.75rem;
   padding: 0.75rem;
 }
-.control-module__Input__Label {
+.ControlModule__Input__Label {
   display: table-cell;
   padding: 0.5rem 0.5rem 0.25rem 0.25rem;
   text-align: left;
 }
-.control-module__Output {
+.ControlModule__Output {
   display: table-cell;
   height: 0.75rem;
   padding-left: 0.25rem;
   min-width: 2.25rem;
 }
-.control-module__Range {
+.ControlModule__Range {
   display: table-cell;
   height: 0.75rem;
-  width: $width;
+  width: 10rem;
 }
-.control-module__Select {
-  width: $width;
+.ControlModule__Select {
+  width: 10rem;
 }
-.control-module__Title {
+.ControlModule__Title {
   font-size: 1rem;
   font-weight: 600;
   margin: 0;
