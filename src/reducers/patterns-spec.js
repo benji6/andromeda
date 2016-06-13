@@ -156,7 +156,7 @@ test(`${reducerName} patternPlayingStop`, t => {
     activeNotes: [1, 2, 3],
     markerPosition: 0.5,
     playing: true,
-  }], patternPlayingStop({patternId: 0})), [{
+  }], patternPlayingStop(0)), [{
     activeNotes: [],
     markerPosition: 0,
     playing: false,

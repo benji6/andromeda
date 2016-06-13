@@ -83,12 +83,11 @@ export default store => next => action => {
       break
     }
     case PATTERN_PLAYING_STOP: {
-      const {animationFrameRequest, patternId} = action.payload
+      const patternId = action.payload
       const {activeNotes} = store.getState().patterns[patternId]
       forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
       clearTimeout(timeoutIds[patternId])
       delete timeoutIds[patternId]
-      cancelAnimationFrame(animationFrameRequest)
     }
   }
   next(action)

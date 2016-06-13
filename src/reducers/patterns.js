@@ -81,7 +81,7 @@ export default (state = initialState, {type, payload}) => {
       )
     }
     case PATTERN_PLAYING_STOP:
-      return mergeIntoPattern(payload.patternId, {
+      return mergeIntoPattern(payload, {
         playing: false,
         activeNotes: [],
         markerPosition: 0,
