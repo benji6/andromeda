@@ -161,10 +161,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       this.onStop = () => {
         const {patternId, patternPlayingStop} = this.props
 
-        patternPlayingStop({
-          animationFrameRequest,
-          patternId,
-        })
+        cancelAnimationFrame(animationFrameRequest)
+        patternPlayingStop(patternId)
       }
     }
 
