@@ -1,7 +1,7 @@
 import {createElement} from 'react';
 import {Link} from 'react-router'
 
-export default ({steps, to}) => createElement(
+export default ({steps, to, xLength, yLength}) => createElement(
   'div',
   {className: 'PatternSvg'},
   createElement(
@@ -9,7 +9,7 @@ export default ({steps, to}) => createElement(
     {to},
     createElement(
       'svg',
-      {width: 240, height: 80},
+      {width: 16 * xLength, height: 6 * yLength},
       steps.map(({x, y}) => createElement(
         'rect',
         {
