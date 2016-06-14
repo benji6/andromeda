@@ -25,6 +25,7 @@ export const [
   [PATTERN_CELL_CLICK, patternCellClick],
   [PATTERN_PLAYING_START, patternPlayingStart],
   [PATTERN_PLAYING_STOP, patternPlayingStop],
+  [PATTERNS_ALL_PLAYING_STOP, patternsAllPlayingStop],
   [REMOVE_CHANNEL, removeChannel],
   [REMOVE_EFFECT_FROM_CHANNEL, removeEffectFromChannel],
   [REMOVE_INSTRUMENT_FROM_CHANNEL, removeInstrumentFromChannel],

@@ -6,17 +6,25 @@ import {
 import {
   PATTERN_PLAYING_START,
   PATTERN_PLAYING_STOP,
+  PATTERNS_ALL_PLAYING_STOP,
   patternActiveNotesSet,
   setPatternNextLoopEndTime,
 } from '../actions'
 import audioContext from '../audioContext'
 import {instrumentInstance} from '../utils/derivedData'
+import {forEachIndexed} from '../utils/helpers'
 import pitchToFrequency from '../audioHelpers/pitchToFrequency'
 import pitchFromScaleIndex from '../audioHelpers/pitchFromScaleIndex'
 import scales from '../constants/scales'
 import patternPitchOffset from '../constants/patternPitchOffset'
 
 const timeoutIds = {}
+
+const stopPattern = ({activeNotes}, patternId) => {
+  forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
+  clearTimeout(timeoutIds[patternId])
+  delete timeoutIds[patternId]
+}
 
 export default store => next => action => {
   switch (action.type) {
@@ -84,11 +92,11 @@ export default store => next => action => {
     }
     case PATTERN_PLAYING_STOP: {
       const patternId = action.payload
-      const {activeNotes} = store.getState().patterns[patternId]
-      forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
-      clearTimeout(timeoutIds[patternId])
-      delete timeoutIds[patternId]
+      stopPattern(store.getState().patterns[patternId], patternId)
+      break
     }
+    case PATTERNS_ALL_PLAYING_STOP:
+      forEachIndexed(stopPattern, store.getState().patterns)
   }
   next(action)
 }
