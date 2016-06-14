@@ -8,7 +8,6 @@ import {
 } from '../../actions'
 import ButtonPlay from '../atoms/ButtonPlay'
 import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
-import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import {mapIndexed} from '../../utils/helpers'
 import PatternSvg from '../organisms/PatternSvg'
@@ -61,8 +60,5 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
       onStop: songPlayingStop,
       playing,
     }}/>
-    <nav>
-      <ButtonPrimary to='/controllers/song/settings'>Options</ButtonPrimary>
-    </nav>
   </div>
 )
