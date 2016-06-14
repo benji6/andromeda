@@ -13,7 +13,6 @@ import PatternSettings from './components/pages/PatternSettings'
 import Pattern from './components/pages/Pattern'
 import Settings from './components/pages/Settings'
 import Song from './components/pages/Song'
-import SongSettings from './components/pages/SongSettings'
 
 export default <Router history={hashHistory}>
   <Route path='/' component={App}>
@@ -27,7 +26,6 @@ export default <Router history={hashHistory}>
     <Route path='/controllers/pattern/:patternId' component={Pattern} />
     <Route path='/controllers/pattern/:patternId/settings' component={PatternSettings} />
     <Route path='/controllers/song' component={Song} />
-    <Route path='/controllers/song/settings' component={SongSettings} />
     <Route path='/plugins/effects/:name' component={Effect} />
     <Route path='/plugins/instruments/:name' component={Instrument} />
     <Route path='/settings' component={Settings} />
