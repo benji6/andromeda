@@ -4,6 +4,7 @@ import {
   reject,
 } from 'ramda'
 import {
+  patternsAllPlayingStop,
   SONG_PLAYING_START,
   SONG_PLAYING_STOP,
   songActiveNotesSet,
@@ -19,6 +20,7 @@ import {forEachIndexed} from '../utils/helpers'
 export default store => next => action => {
   switch (action.type) {
     case SONG_PLAYING_START: {
+      store.dispatch(patternsAllPlayingStop())
       const {
         patterns,
         plugins,

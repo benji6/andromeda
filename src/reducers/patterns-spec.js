@@ -10,6 +10,7 @@ import {
   patternCellClick,
   patternPlayingStart,
   patternPlayingStop,
+  patternsAllPlayingStop,
   setPatternMarkerPosition,
   setPatternNextLoopEndTime,
   updatePatternInstrument,
@@ -161,6 +162,33 @@ test(`${reducerName} patternPlayingStop`, t => {
     markerPosition: 0,
     playing: false,
   }])
+  t.end()
+})
+
+test(`${reducerName} patternsAllPlayingStop`, t => {
+  t.deepEqual(reducer([
+    {
+      activeNotes: [1, 2, 3],
+      markerPosition: 0.5,
+      playing: true,
+    },
+    {
+      activeNotes: [1, 2, 3],
+      markerPosition: 0.5,
+      playing: true,
+    },
+], patternsAllPlayingStop()), [
+  {
+    activeNotes: [],
+    markerPosition: 0,
+    playing: false,
+  },
+  {
+    activeNotes: [],
+    markerPosition: 0,
+    playing: false,
+  },
+])
   t.end()
 })
 

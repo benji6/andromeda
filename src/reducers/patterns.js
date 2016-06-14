@@ -5,6 +5,7 @@ import {
   equals,
   flip,
   lensProp,
+  map,
   merge,
   over,
   reject,
@@ -19,6 +20,7 @@ import {
   PATTERN_CELL_CLICK,
   PATTERN_PLAYING_START,
   PATTERN_PLAYING_STOP,
+  PATTERNS_ALL_PLAYING_STOP,
   SET_PATTERN_MARKER_POSITION,
   SET_PATTERN_NEXT_LOOP_END_TIME,
   UPDATE_PATTERN_INSTRUMENT,
@@ -86,6 +88,15 @@ export default (state = initialState, {type, payload}) => {
         activeNotes: [],
         markerPosition: 0,
       }, state)
+    case PATTERNS_ALL_PLAYING_STOP:
+      return map(
+        pattern => merge(pattern, {
+          playing: false,
+          activeNotes: [],
+          markerPosition: 0,
+        }),
+        state
+      )
     case SET_PATTERN_MARKER_POSITION:
       return setPatternProp('markerPosition', payload, state)
     case SET_PATTERN_NEXT_LOOP_END_TIME:
