@@ -7,10 +7,10 @@ import {
 } from '../actions'
 
 export const initialState = {
-  instrument: 'Prometheus',
+  instrument: 'Fate',
   monophonic: false,
   octave: 0,
-  volume: 1 / 3
+  volume: 1 / 4
 }
 
 export default (state = initialState, {type, payload}) => {
