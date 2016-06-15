@@ -3,11 +3,12 @@
   "version": "0.35.0",
   "description": "Make music in your browser!",
   "scripts": {
+    "aws": "aws s3 cp --acl \"public-read\" --content-encoding \"gzip\" --recursive --region eu-west-1 dist s3://elemental.audio",
     "assets": "cp -r src/assets dist",
     "buckets": "cp -r buckets dist",
     "build": "npm run build-local && find dist -type f -exec gzip -9 {} \\; -exec mv {}.gz {} \\;",
     "build-local": "rm -rf dist && mkdir dist && concurrently 'npm run assets' 'npm run html' 'npm run scripts' 'npm run styles'",
-    "deploy": "concurrently 'npm t' 'npm run build' && aws s3 cp --recursive dist s3://elemental.audio --acl \"public-read\" --content-encoding \"gzip\"",
+    "deploy": "concurrently 'npm t' 'npm run build' && npm run aws",
     "html": "html-minifier --collapse-whitespace -o dist/index.html src/index.html",
     "lint": "eslint src",
     "scripts": "browserify -t babelify src/index.js | sed 's/process.env.NODE_ENV/\\x27production\\x27/g' | sed 's/buckets\\/elemental-reverb/https:\\/\\/d1u7tm8146cdbz.cloudfront.net/g' | sed 's/buckets\\/elemental-samples/https:\\/\\/d1la4sg8216bcr.cloudfront.net/g' | uglifyjs -cm --screw-ie8 > dist/index.js",
