@@ -1,0 +1,12 @@
+.ButtonIcon {
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.5rem;
+  font-weight: 900;
+  transition: color var(--transition-fast);
+}
+.ButtonIcon--green-hover:hover { color: var(--green-80); }
+.ButtonIcon--blue-hover:hover { color: var(--blue-70); }
+.ButtonIcon--red-hover:hover { color: var(--red-50); }
