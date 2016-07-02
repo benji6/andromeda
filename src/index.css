@@ -18,7 +18,7 @@
 @import 'components/atoms/y-label';
 @import 'components/molecules/pattern-row';
 @import 'components/molecules/x-labels';
-@import 'components/organisms/control-pad';
+@import 'components/organisms/ControlPad';
 @import 'components/organisms/ControlModule';
 @import 'components/organisms/pattern';
 @import 'components/organisms/PatternSvg';
