@@ -60,13 +60,6 @@ export const rotateZ = a => {
   ]
 }
 
-export const scale = (x, y, z) => [
-  x, 0, 0, 0,
-  0, y, 0, 0,
-  0, 0, z, 0,
-  0, 0, 0, 1,
-]
-
 export const translate = (x, y, z) => [
    1, 0, 0, 0,
    0, 1, 0, 0,
