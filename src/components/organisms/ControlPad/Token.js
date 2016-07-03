@@ -6,7 +6,6 @@ import {
   rotateX,
   rotateY,
   rotateZ,
-  scale,
   translate,
 } from '../../../utils/webGl'
 
@@ -124,7 +123,6 @@ const ratioToMod = ratio => ratio < 0.5
 
 const modToRotationInc = mod => rotationBaseAmount + rotationVelocityComponent * mod
 
-const scaleMatrix = scale(32, 32, 32)
 const zToWMatrix = [
   1, 0, 0, 0,
   0, 1, 0, 0,
@@ -205,7 +203,7 @@ export default class {
         2048
       )
 
-      const matrix = mult(mult(mult(mult(scaleMatrix, rotationMatrix), translationMatrix), projectionMatrix), zToWMatrix)
+      const matrix = mult(mult(mult(rotationMatrix, translationMatrix), projectionMatrix), zToWMatrix)
 
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
       gl.uniformMatrix4fv(matrixLocation, false, matrix)
