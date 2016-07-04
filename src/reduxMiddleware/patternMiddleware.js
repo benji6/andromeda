@@ -8,7 +8,7 @@ import {
   PATTERN_PLAYING_STOP,
   PATTERNS_ALL_PLAYING_STOP,
   patternActiveNotesSet,
-  setPatternNextLoopEndTime,
+  patternNextLoopEndTimeSet,
 } from '../actions'
 import audioContext from '../audioContext'
 import {instrumentInstance} from '../utils/derivedData'
@@ -31,7 +31,7 @@ export default store => next => action => {
     case PATTERN_PLAYING_START: {
       setTimeout(() => {
         const {currentTime, patternId} = action.payload
-        store.dispatch(setPatternNextLoopEndTime({patternId, value: currentTime}))
+        store.dispatch(patternNextLoopEndTimeSet({patternId, value: currentTime}))
         const audioLoop = (i = 0) => {
           const state = store.getState()
           const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
@@ -50,7 +50,7 @@ export default store => next => action => {
           const currentLoopEndTime = nextLoopEndTime
           const newLoopEndTime = nextLoopEndTime + patternDuration
 
-          store.dispatch(setPatternNextLoopEndTime({
+          store.dispatch(patternNextLoopEndTimeSet({
             patternId,
             value: newLoopEndTime,
           }))

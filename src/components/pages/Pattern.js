@@ -15,7 +15,7 @@ import {
   patternCellClick,
   patternPlayingStart,
   patternPlayingStop,
-  setPatternMarkerPosition,
+  patternMarkerPositionSet,
 } from '../../actions'
 import {mapIndexed} from '../../utils/helpers'
 import ButtonPlay from '../atoms/ButtonPlay'
@@ -136,7 +136,7 @@ const visualLoop = patternId => _ => {
   const {settings: {bpm}} = state
   const patternDuration = xLength * 60 / bpm
   animationFrameRequest = requestAnimationFrame(visualLoop(patternId))
-  store.dispatch(setPatternMarkerPosition({
+  store.dispatch(patternMarkerPositionSet({
     patternId,
     value: (audioContext.currentTime - playStartTime) / patternDuration % 1,
   }))
