@@ -4,3 +4,9 @@
   display: flex;
   margin: 1rem;
 }
+
+.Song__AddContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}

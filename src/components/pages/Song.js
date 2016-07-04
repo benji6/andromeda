@@ -1,8 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {
-  addNewPattern,
-  deletePattern,
+  patternBeatAdd,
+  patternSynthAdd,
+  patternDelete,
   songPlayingStart,
   songPlayingStop,
 } from '../../actions'
@@ -27,15 +28,17 @@ const mapStateToProps = ({
 })
 
 const mapDispatchToProps = {
-  addNewPattern,
-  deletePattern,
+  patternBeatAdd,
+  patternSynthAdd,
+  patternDelete,
   songPlayingStart,
   songPlayingStop,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(({
-  addNewPattern,
-  deletePattern,
+  patternBeatAdd,
+  patternSynthAdd,
+  patternDelete,
   patterns,
   playing,
   songPlayingStart,
@@ -45,15 +48,16 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
     {patterns.length
       ? mapIndexed((_, i) =>
         <div className='Song__Pattern' key={i}>
-          <Cross onClick={() => deletePattern(i)} />
+          <Cross onClick={() => patternDelete(i)} />
           <ButtonPrimarySmall to={`/controllers/pattern/${i}`}>
             {`Pattern ${i}`}
           </ButtonPrimarySmall>
           <PatternSvg {...patterns[i]} to={`/controllers/pattern/${i}`} />
         </div>, patterns)
       : null}
-    <div className='text-center padding-1'>
-      <Plus {...{onClick: addNewPattern}}>New pattern</Plus>
+    <div className='Song__AddContainer'>
+      <Plus {...{onClick: patternSynthAdd}}>NEW SYNTH PATTERN</Plus>
+      <Plus {...{onClick: patternBeatAdd, style: {display: 'none'}}}>NEW BEAT PATTERN</Plus>
     </div>
     <ButtonPlay {...{
       onPlay: songPlayingStart,

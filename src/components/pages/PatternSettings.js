@@ -4,9 +4,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
 import {
-  updatePatternInstrument,
-  updatePatternVolume,
-  updatePatternXLength,
+  patternInstrumentSet,
+  patternVolumeSet,
+  patternXLengthSet,
 } from '../../actions'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import RangeSelector from '../molecules/RangeSelector'
@@ -42,7 +42,7 @@ export default connectComponent(({
   <div className='flex-column text-center'>
     <h2 className='text-center'>Pattern {patternId} Settings</h2>
     <InstrumentSelector defaultValue={instrument}
-      handleChange={e => dispatch(updatePatternInstrument({
+      handleChange={e => dispatch(patternInstrumentSet({
         patternId,
         value: e.target.value,
       }))}
@@ -56,7 +56,7 @@ export default connectComponent(({
       key='2'
       max='1'
       min='0'
-      onChange={e => dispatch(updatePatternVolume({
+      onChange={e => dispatch(patternVolumeSet({
         patternId,
         value: Number(e.target.value),
       }))}
@@ -69,7 +69,7 @@ export default connectComponent(({
       key='3'
       max='16'
       min='1'
-      onChange={e => dispatch(updatePatternXLength({
+      onChange={e => dispatch(patternXLengthSet({
         patternId,
         value: Number(e.target.value),
       }))}

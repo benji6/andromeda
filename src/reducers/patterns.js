@@ -12,20 +12,21 @@ import {
   remove
 } from 'ramda'
 import {
-  ADD_NEW_PATTERN,
-  DELETE_PATTERN,
   PATTERN_ACTIVE_NOTES_APPEND,
   PATTERN_ACTIVE_NOTES_REJECT,
   PATTERN_ACTIVE_NOTES_SET,
+  PATTERN_BEAT_ADD,
   PATTERN_CELL_CLICK,
+  PATTERN_DELETE,
   PATTERN_PLAYING_START,
   PATTERN_PLAYING_STOP,
+  PATTERN_SYNTH_ADD,
   PATTERNS_ALL_PLAYING_STOP,
-  SET_PATTERN_MARKER_POSITION,
-  SET_PATTERN_NEXT_LOOP_END_TIME,
-  UPDATE_PATTERN_INSTRUMENT,
-  UPDATE_PATTERN_VOLUME,
-  UPDATE_PATTERN_X_LENGTH,
+  PATTERN_MARKER_POSITION_SET,
+  PATTERN_NEXT_LOOP_END_TIME_SET,
+  PATTERN_INSTRUMENT_SET,
+  PATTERN_VOLUME_SET,
+  PATTERN_X_LENGTH_SET,
 } from '../actions'
 
 const overActiveNotes = over(lensProp('activeNotes'))
@@ -50,8 +51,6 @@ const mergeIntoPattern = (patternId, obj, state) => adjust(flip(merge)(obj), pat
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
-    case ADD_NEW_PATTERN: return append(defaultPattern(), state)
-    case DELETE_PATTERN: return remove(payload, 1, state)
     case PATTERN_ACTIVE_NOTES_APPEND: {
       const {patternId, value} = payload
       return adjust(
@@ -70,6 +69,8 @@ export default (state = initialState, {type, payload}) => {
     }
     case PATTERN_ACTIVE_NOTES_SET:
       return setPatternProp('activeNotes', payload, state)
+    case PATTERN_BEAT_ADD:
+    case PATTERN_SYNTH_ADD: return append(defaultPattern(), state)
     case PATTERN_CELL_CLICK: {
       const {patternId, x, y} = payload
       const xy = {x, y}
@@ -82,6 +83,7 @@ export default (state = initialState, {type, payload}) => {
         state
       )
     }
+    case PATTERN_DELETE: return remove(payload, 1, state)
     case PATTERN_PLAYING_STOP:
       return mergeIntoPattern(payload, {
         playing: false,
@@ -97,9 +99,9 @@ export default (state = initialState, {type, payload}) => {
         }),
         state
       )
-    case SET_PATTERN_MARKER_POSITION:
+    case PATTERN_MARKER_POSITION_SET:
       return setPatternProp('markerPosition', payload, state)
-    case SET_PATTERN_NEXT_LOOP_END_TIME:
+    case PATTERN_NEXT_LOOP_END_TIME_SET:
       return setPatternProp('nextLoopEndTime', payload, state)
     case PATTERN_PLAYING_START:
       return mergeIntoPattern(
@@ -107,11 +109,11 @@ export default (state = initialState, {type, payload}) => {
         {playing: true, playStartTime: payload.currentTime},
         state,
       )
-    case UPDATE_PATTERN_INSTRUMENT:
+    case PATTERN_INSTRUMENT_SET:
       return setPatternProp('instrument', payload, state)
-    case UPDATE_PATTERN_X_LENGTH:
+    case PATTERN_X_LENGTH_SET:
       return setPatternProp('xLength', payload, state)
-    case UPDATE_PATTERN_VOLUME:
+    case PATTERN_VOLUME_SET:
       return setPatternProp('volume', payload, state)
     default: return state
   }
