@@ -24,4 +24,5 @@
 @import 'components/organisms/spinner';
 @import 'components/organisms/table-center';
 @import 'components/pages/about';
+@import 'components/pages/Pattern';
 @import 'components/pages/Song';
