@@ -5,7 +5,7 @@ import {
   range,
   repeat,
 } from 'ramda'
-import React from 'react'
+import React, {createElement} from 'react'
 import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
 import audioContext from '../../audioContext'
@@ -88,6 +88,7 @@ const mapStateToProps = ({
   settings: {bpm, rootNote, selectedScale},
 }, {params: {patternId}}) => {
   const {
+    beatPattern,
     instrument,
     markerPosition,
     playing,
@@ -106,6 +107,7 @@ const mapStateToProps = ({
   )
 
   return {
+    beatPattern,
     bpm,
     dispatch,
     instrument,
@@ -177,6 +179,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
     render () {
       const {
+        beatPattern,
         markerPosition,
         patternCellClick,
         patternData,
@@ -188,7 +191,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       } = this.props
 
       return <div>
-        <h2 className='text-center'>{`Pattern ${patternId}`}</h2>
+        {createElement(
+          'h2',
+          {className: 'Pattern__Title'},
+          `${patternId} - ${beatPattern ? 'Beat' : 'Synth'} Pattern`
+        )}
         <Pattern {...{
           markerPosition,
           onClick: cellClickHandler(patternCellClick, patternId),
