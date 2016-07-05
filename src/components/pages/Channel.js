@@ -7,7 +7,6 @@ import {
   removeEffectFromChannel,
   removeInstrumentFromChannel
 } from '../../actions'
-import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import InputSelect from '../atoms/InputSelect'
@@ -72,9 +71,9 @@ export default connectComponent(({
       <div className='margin-bottom text-center'>
         {map(
           name => <div className='inline-block margin-horizontal-small' key={name}>
-            <ButtonPrimarySmall to={`/plugins/instruments/${name}`}>
+            <ButtonPrimary small to={`/plugins/instruments/${name}`}>
               {name}
-            </ButtonPrimarySmall>
+            </ButtonPrimary>
             <Cross onClick={_ => dispatch(removeInstrumentFromChannel({
               channel: channelId,
               name

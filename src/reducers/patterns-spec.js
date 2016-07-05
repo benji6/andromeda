@@ -27,6 +27,7 @@ const initialState = [{
   markerPosition: 0,
   playing: false,
   playStartTime: null,
+  synthPattern: true,
   xLength: 8,
   yLength: 16,
   volume: 1 / 3
@@ -78,15 +79,28 @@ test(`${reducerName} patternBeatAdd`, t => {
     xLength: 8,
     yLength: 24,
     volume: 1 / 3
-  }], patternBeatAdd()), [{
-    instrument: 'Prometheus',
-    steps: [],
-    playing: false,
-    xLength: 8,
-    yLength: 24,
-    volume: 1 / 3
-  },
-  initialState[0]])
+  }], patternBeatAdd()), [
+    {
+      instrument: 'Prometheus',
+      steps: [],
+      playing: false,
+      xLength: 8,
+      yLength: 24,
+      volume: 1 / 3
+    },
+    {
+      activeNotes: [],
+      beatPattern: true,
+      instrument: 'Prometheus',
+      steps: [],
+      markerPosition: 0,
+      playing: false,
+      playStartTime: null,
+      xLength: 8,
+      yLength: 16,
+      volume: 1 / 3
+    }
+  ])
   t.end()
 })
 
