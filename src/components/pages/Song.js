@@ -8,7 +8,7 @@ import {
   songPlayingStop,
 } from '../../actions'
 import ButtonPlay from '../atoms/ButtonPlay'
-import ButtonPrimarySmall from '../atoms/ButtonPrimarySmall'
+import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import {mapIndexed} from '../../utils/helpers'
 import PatternSvg from '../organisms/PatternSvg'
@@ -45,16 +45,21 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
   songPlayingStop,
 }) =>
   <div>
-    {patterns.length
-      ? mapIndexed((_, i) =>
-        <div className='Song__Pattern' key={i}>
+    {Boolean(patterns.length) && mapIndexed(({beatPattern}, i) =>
+        <div {...{
+          className: 'Song__Pattern',
+          key: i,
+        }}>
           <Cross onClick={() => patternDelete(i)} />
-          <ButtonPrimarySmall to={`/controllers/pattern/${i}`}>
-            {`Pattern ${i}`}
-          </ButtonPrimarySmall>
+          <ButtonPrimary {...{
+            red: beatPattern,
+            small: true,
+            to: `/controllers/pattern/${i}`,
+          }}>
+            {`${i} - ${beatPattern ? 'Beat' : 'Synth'}`}
+          </ButtonPrimary>
           <PatternSvg {...patterns[i]} to={`/controllers/pattern/${i}`} />
-        </div>, patterns)
-      : null}
+        </div>, patterns)}
     <div className='Song__AddContainer'>
       <Plus {...{onClick: patternSynthAdd}}>NEW SYNTH PATTERN</Plus>
       <Plus {...{onClick: patternBeatAdd, style: {display: 'none'}}}>NEW BEAT PATTERN</Plus>

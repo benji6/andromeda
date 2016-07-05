@@ -3,8 +3,7 @@
 @import 'utils/globals';
 
 @import 'components/atoms/button-play';
-@import 'components/atoms/button-primary--small';
-@import 'components/atoms/button-primary';
+@import 'components/atoms/ButtonPrimary';
 @import 'components/atoms/button-secondary';
 @import 'components/atoms/ButtonIcon';
 @import 'components/atoms/checkbox';
