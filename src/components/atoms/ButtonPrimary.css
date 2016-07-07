@@ -4,7 +4,7 @@
   border: 0.1rem solid var(--blue-60);
   box-shadow: var(--blue-60) 0 0 0.5rem;
   box-sizing: border-box;
-  color: #000;
+  color: var(--gray-00);
   display: inline-block;
   font-size: 1rem;
   margin: 0.75rem;
@@ -14,19 +14,19 @@
   text-decoration: none;
   transition-duration: var(--transition-fast);
 }
+.ButtonPrimary:active {
+  background: linear-gradient(var(--blue-60), var(--blue-70));
+}
 .ButtonPrimary:hover {
   box-shadow: var(--blue-60) 0 0 1rem 0.1rem;
   transition-duration: var(--transition-fast);
-}
-.ButtonPrimary:active {
-  background: linear-gradient(var(--blue-60), var(--blue-70));
 }
 
 .ButtonPrimary--small {
   border-radius: 0.25rem;
   border: 1px solid;
   box-shadow: none;
-  color: #000;
+  color: var(--gray-00);
   min-width: 1rem;
   padding: 0.25rem 0.5rem;
 }
@@ -42,5 +42,8 @@
 }
 
 .ButtonPrimary--red {
-  background: linear-gradient(#f00, var(--blue-60));
+  background: linear-gradient(var(--red-70), var(--red-60));
+}
+.ButtonPrimary--red:hover {
+  background: linear-gradient(var(--red-60), var(--red-70));
 }

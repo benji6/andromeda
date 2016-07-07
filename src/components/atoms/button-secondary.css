@@ -1,7 +1,7 @@
 .button-secondary {
   background: var(--green-80);
   border-radius: 1rem;
-  color: #000;
+  color: var(--gray-00);
   font-size: 0.75rem;
   margin: 1rem 0.5rem;
   padding: 0.5rem;

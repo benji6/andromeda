@@ -1,6 +1,6 @@
 .step {
   background: var(--blue-10);
-  border: calc(var(--pattern-side-length) / 48) solid #000;
+  border: calc(var(--pattern-side-length) / 48) solid var(--gray-00);
   box-sizing: border-box;
   cursor: pointer;
   height: 100%;
