@@ -12,5 +12,5 @@
   box-sizing: border-box;
   fill: var(--blue-50);
   stroke-width: 1;
-  stroke: #000;
+  stroke: var(--gray-00);
 }

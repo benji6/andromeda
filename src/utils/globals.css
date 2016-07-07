@@ -1,6 +1,6 @@
 body {
-  background: #000;
-  color: #fff;
+  background: var(--gray-00);
+  color: var(--gray-99);
   font-family: sans-serif;
   margin: 0;
   user-select: none;
