@@ -1,0 +1,8 @@
+.PatternPage {
+  display: flex;
+  flex-direction: column;
+}
+
+.PatternPage__Title {
+  text-align: center;
+}

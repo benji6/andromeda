@@ -2,7 +2,6 @@
   align-content: center;
   flex-wrap: wrap;
   justify-content: center;
-  margin: auto;
   position: relative;
   width: var(--pattern-total-width);
 }

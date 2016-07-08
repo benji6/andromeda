@@ -2,7 +2,7 @@
 @import 'constants/timeAndSpace';
 @import 'utils/globals';
 
-@import 'components/atoms/button-play';
+@import 'components/atoms/ButtonPlay';
 @import 'components/atoms/ButtonPrimary';
 @import 'components/atoms/button-secondary';
 @import 'components/atoms/ButtonIcon';
