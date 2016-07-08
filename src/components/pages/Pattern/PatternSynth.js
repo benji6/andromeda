@@ -8,7 +8,7 @@ import {
 import React, {createElement} from 'react'
 import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
-import audioContext from '../../audioContext'
+import audioContext from '../../../audioContext'
 import {
   patternActiveNotesAppend,
   patternActiveNotesReject,
@@ -16,19 +16,19 @@ import {
   patternPlayingStart,
   patternPlayingStop,
   patternMarkerPositionSet,
-} from '../../actions'
-import {mapIndexed} from '../../utils/helpers'
-import ButtonPlay from '../atoms/ButtonPlay'
-import ButtonPrimary from '../atoms/ButtonPrimary'
-import Pattern from '../organisms/Pattern'
-import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
-import pitchFromScaleIndex from '../../audioHelpers/pitchFromScaleIndex'
-import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
-import {stepExists} from '../../reducers/patterns'
-import {instrumentInstance} from '../../utils/derivedData'
-import store from '../../store'
-import scales from '../../constants/scales'
-import patternPitchOffset from '../../constants/patternPitchOffset'
+} from '../../../actions'
+import {mapIndexed} from '../../../utils/helpers'
+import ButtonPlay from '../../atoms/ButtonPlay'
+import ButtonPrimary from '../../atoms/ButtonPrimary'
+import Pattern from '../../organisms/Pattern'
+import pitchToFrequency from '../../../audioHelpers/pitchToFrequency'
+import pitchFromScaleIndex from '../../../audioHelpers/pitchFromScaleIndex'
+import noteNameFromPitch from '../../../audioHelpers/noteNameFromPitch'
+import {stepExists} from '../../../reducers/patterns'
+import {instrumentInstance} from '../../../utils/derivedData'
+import store from '../../../store'
+import scales from '../../../constants/scales'
+import patternPitchOffset from '../../../constants/patternPitchOffset'
 
 let animationFrameRequest
 
@@ -88,7 +88,6 @@ const mapStateToProps = ({
   settings: {bpm, rootNote, selectedScale},
 }, {params: {patternId}}) => {
   const {
-    beatPattern,
     instrument,
     markerPosition,
     playing,
@@ -107,7 +106,6 @@ const mapStateToProps = ({
   )
 
   return {
-    beatPattern,
     bpm,
     dispatch,
     instrument,
@@ -179,7 +177,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
     render () {
       const {
-        beatPattern,
         markerPosition,
         patternCellClick,
         patternData,
@@ -190,11 +187,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         yLength,
       } = this.props
 
-      return <div>
+      return <div className='PatternPage'>
         {createElement(
           'h2',
-          {className: 'Pattern__Title'},
-          `${patternId} - ${beatPattern ? 'Beat' : 'Synth'} Pattern`
+          {className: 'PatternPage__Title'},
+          'Synth Pattern'
         )}
         <Pattern {...{
           markerPosition,

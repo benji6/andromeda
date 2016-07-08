@@ -44,7 +44,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
   songPlayingStart,
   songPlayingStop,
 }) =>
-  <div>
+  <div className='Song'>
     {Boolean(patterns.length) && mapIndexed(({beatPattern}, i) =>
         <div {...{
           className: 'Song__Pattern',
@@ -58,7 +58,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
           }}>
             {`${i} - ${beatPattern ? 'Beat' : 'Synth'}`}
           </ButtonPrimary>
-          <PatternSvg {...patterns[i]} to={`/controllers/pattern/${i}`} />
+          <PatternSvg {...patterns[i]} red={beatPattern} to={`/controllers/pattern/${i}`} />
         </div>, patterns)}
     <div className='Song__AddContainer'>
       <Plus {...{onClick: patternSynthAdd}}>NEW SYNTH PATTERN</Plus>

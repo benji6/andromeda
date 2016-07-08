@@ -1,9 +1,10 @@
-import {createElement} from 'react';
+import {createElement} from 'react'
 import {Link} from 'react-router'
+import {makeClassName} from '../../utils/helpers'
 
-export default ({steps, to, xLength, yLength}) => createElement(
+export default ({steps, to, xLength, yLength, red}) => createElement(
   'div',
-  {className: 'PatternSvg'},
+  {className: makeClassName(['PatternSvg', [red, 'PatternSvg--red']])},
   createElement(
     Link,
     {to},
@@ -13,7 +14,7 @@ export default ({steps, to, xLength, yLength}) => createElement(
       steps.map(({x, y}) => createElement(
         'rect',
         {
-          className: 'PatternSvg__step',
+          className: makeClassName(['PatternSvg__step', [red, 'PatternSvg__step--red']]),
           height: 5,
           key: `${x}${y}`,
           width: 15,
