@@ -52,7 +52,7 @@ const type4 = amount => {
   })
 }
 
-const type5 = _ => Float32Array.from({length: samples}, (_, i) => {
+const type5 = () => Float32Array.from({length: samples}, (_, i) => {
   const x = i * 2 / samples - 1
   if (x < -0.08905) {
     return (-3 / 4) * (1 - (Math.pow((1 - (Math.abs(x) - 0.032857)), 12)) + (1 / 3) * (Math.abs(x) - 0.032847)) + 0.01

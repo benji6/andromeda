@@ -26,7 +26,7 @@ const turnMicOn = self => getUserMedia(
     mediaStreamSources.set(self, mediaStreamSource)
     mediaStreamSource.connect(outputs.get(self))
   },
-  _ => null // microphone not available
+  () => null // microphone not available
 )
 
 export default class {
@@ -45,7 +45,7 @@ export default class {
           <label>
             turn on&nbsp;
             <input
-              onClick={_ => {
+              onClick={() => {
                 const microphoneOn = !microphoneOns.get(this)
                 microphoneOns.set(this, microphoneOn)
                 if (microphoneOn) turnMicOn(this); else turnMicOff(this)

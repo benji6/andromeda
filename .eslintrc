@@ -119,7 +119,6 @@
     "no-unreachable": 2,
     "no-unused-vars": [2, {
       "args": "after-used",
-      "argsIgnorePattern": "^_",
       "vars": "all",
       "varsIgnorePattern": "React"
     }],
