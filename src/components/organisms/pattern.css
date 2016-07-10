@@ -16,3 +16,6 @@
   top: 0.5rem;
   width: 0;
 }
+.pattern__marker--pink {
+  border-color: var(--pink-50);
+}
