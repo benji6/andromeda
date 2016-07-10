@@ -23,22 +23,22 @@ import ButtonPrimary from '../../atoms/ButtonPrimary'
 import Pattern from '../../organisms/Pattern'
 import pitchToFrequency from '../../../audioHelpers/pitchToFrequency'
 import pitchFromScaleIndex from '../../../audioHelpers/pitchFromScaleIndex'
-import noteNameFromPitch from '../../../audioHelpers/noteNameFromPitch'
 import {stepExists} from '../../../reducers/patterns'
 import {instrumentInstance} from '../../../utils/derivedData'
 import store from '../../../store'
 import scales from '../../../constants/scales'
 import patternPitchOffset from '../../../constants/patternPitchOffset'
+import samples from '../../../constants/samples'
 
 let animationFrameRequest
 
-const yLabel = (selectedScale, yLength, rootNote) => i => noteNameFromPitch(pitchFromScaleIndex(
-  scales[selectedScale],
-  yLength - i - 1
-) + rootNote + patternPitchOffset)
+const yLabel = i => {
+  const sample = samples[i]
+  return sample.slice(0, sample.lastIndexOf('.wav'))
+}
 
 const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
-  const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = store.getState()
+  const {patterns, plugins, settings: {bpm}} = store.getState()
   const {
     activeNotes,
     instrument,
@@ -47,7 +47,6 @@ const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
     steps,
     volume,
     xLength,
-    yLength,
   } = patterns[patternId]
   patternCellClick({patternId, x, y})
   if (!playing) return
@@ -58,9 +57,9 @@ const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
     const id = `pattern-${patternId}-${x}-${y}`
     const note = {
       frequency: pitchToFrequency(pitchFromScaleIndex(
-        scales[selectedScale],
-        yLength - 1 - y
-      ) + rootNote + patternPitchOffset),
+        scales.pentatonic,
+        15 - y
+      ) + patternPitchOffset),
       gain: volume,
       id,
       startTime: nextLoopEndTime + noteDuration * (x - xLength),
@@ -97,7 +96,7 @@ const mapStateToProps = ({
   dispatch,
   patterns,
   plugins,
-  settings: {bpm, rootNote, selectedScale},
+  settings: {bpm},
 }, {params: {patternId}}) => {
   const {
     instrument,
@@ -127,12 +126,9 @@ const mapStateToProps = ({
     playing,
     playStartTime,
     plugins,
-    rootNote,
-    selectedScale,
     steps,
     volume,
     xLength,
-    yLength,
   }
 }
 
@@ -182,9 +178,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         patternData,
         patternId,
         playing,
-        rootNote,
-        selectedScale,
-        yLength,
       } = this.props
 
       return <div className='PatternPage'>
@@ -198,7 +191,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
           onClick: cellClickHandler(patternCellClick, patternId),
           patternData,
           red: true,
-          yLabel: yLabel(selectedScale, yLength, rootNote),
+          yLabel,
         }} />
         <ButtonPlay {...{
           onPlay: this.onPlay,
