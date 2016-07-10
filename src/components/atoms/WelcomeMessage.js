@@ -1,6 +1,6 @@
 import React from 'react'
 
 export default ({children}) => <div {...{
-  className: 'welcome-message fade-out',
+  className: 'WelcomeMessage fade-out',
   children,
 }} />

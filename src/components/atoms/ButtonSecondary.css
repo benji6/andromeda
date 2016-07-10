@@ -1,4 +1,4 @@
-.button-secondary {
+.ButtonSecondary {
   background: var(--green-80);
   border-radius: 1rem;
   color: var(--gray-00);
@@ -8,10 +8,10 @@
   text-decoration: none;
   transition-duration: var(--transition-fast);
 }
-.button-secondary:active {
+.ButtonSecondary:active {
   background: var(--green-20);
 }
-.button-secondary:hover {
+.ButtonSecondary:hover {
   background: var(--green-40);
   transition-duration: var(--transition-fast);
 }

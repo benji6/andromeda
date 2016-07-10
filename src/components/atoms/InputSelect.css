@@ -1,9 +1,9 @@
-.input-select {
+.InputSelect {
   -moz-appearance: none;
 }
-.input-select[disabled] {
+.InputSelect[disabled] {
   visibility: hidden;
 }
-.input-select option {
+.InputSelect option {
   background: var(--gray-90);
 }

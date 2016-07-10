@@ -1,4 +1,4 @@
-.welcome-message {
+.WelcomeMessage {
   color: var(--blue-80);
   padding: 0.5rem 1rem;
   position: fixed;
@@ -6,11 +6,11 @@
   bottom: -100;
   right: 0;
   opacity: 0;
-  animation: welcome-message-animation 6s 1;
+  animation: WelcomeMessage-animation 6s 1;
   animation-delay: 0.1s;
 }
 
-@keyframes welcome-message-animation {
+@keyframes WelcomeMessage-animation {
   0% {
     opacity: 0.25;
     bottom: 0;
