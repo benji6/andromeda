@@ -1,9 +1,8 @@
-import React from 'react'
+import {createElement} from 'react'
 
-module.exports = ({checked, ...props}) =>
-  <input
-    className='Checkbox'
-    defaultChecked={checked}
-    type='Checkbox'
-    {...props}
-  />
+module.exports = ({checked, ...props}) => createElement('input', {
+  ...props,
+  className: 'Checkbox',
+  defaultChecked: checked,
+  type: 'Checkbox',
+})

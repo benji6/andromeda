@@ -4,14 +4,14 @@
   text-align: center;
   width: 12rem;
 }
-.Slider__input {
+.Slider__Input {
   -webkit-appearance: none;
   appearance: none;
   background-color: var(--gray-99);
   height: 0.1rem;
   width: 10rem;
 }
-.Slider__input::-webkit-Slider-thumb {
+.Slider__Input::-webkit-Slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   background: linear-gradient(to bottom, var(--gray-99) 0%, var(--gray-90) 55%, var(--blue-80) 80%);

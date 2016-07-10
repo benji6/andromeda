@@ -1,10 +1,11 @@
+import {createElement} from 'react'
 import {mapIndexed} from '../../utils/helpers'
-import React from 'react'
 
-export default ({options, ...props}) =>
-  <select className='ButtonPrimary InputSelect' {...props}>
-    {mapIndexed(({text, value}, i) =>
-      <option value={value} key={i}>
-        {text}
-      </option>, options)}
-  </select>
+export default ({options, ...props}) => createElement(
+  'select',
+  {...props, className: 'ButtonPrimary InputSelect'},
+  mapIndexed(
+    ({text, value}, i) => createElement('option', {key: i, value}, text),
+    options
+  )
+)

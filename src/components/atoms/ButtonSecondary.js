@@ -1,5 +1,8 @@
-import React from 'react'
+import {createElement} from 'react'
 import {Link} from 'react-router'
 
-export default ({children, ...props}) =>
-  <Link className='ButtonSecondary' {...props}>{children}</Link>
+export default ({children, ...props}) => createElement(
+  Link,
+  {className: 'ButtonSecondary', ...props},
+  children
+)
