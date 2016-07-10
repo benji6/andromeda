@@ -224,6 +224,6 @@ export default class {
 
   handleResize (sideLength) {
     this.sideLength = sideLength
-    this.gl.viewport(0, 0, sideLength, sideLength);
+    this.gl.viewport(0, 0, sideLength, sideLength)
   }
 }
