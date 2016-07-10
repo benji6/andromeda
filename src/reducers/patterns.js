@@ -28,6 +28,7 @@ import {
   PATTERN_VOLUME_SET,
   PATTERN_X_LENGTH_SET,
 } from '../actions'
+import samples from '../constants/samples'
 
 const overActiveNotes = over(lensProp('activeNotes'))
 const overSteps = over(lensProp('steps'))
@@ -42,7 +43,7 @@ export const beatPattern = () => ({
   steps: [],
   volume: 1 / 3,
   xLength: 8,
-  yLength: 16,
+  yLength: samples.length,
 })
 
 export const synthPattern = () => ({
