@@ -1,6 +1,7 @@
-import React from 'react'
+import {createElement} from 'react'
 
-export default _ =>
-  <div className='flex-column text-center'>
-    <h1>Requires the latest version of Chrome to run...</h1>
-  </div>
+export default () => createElement(
+  'h1',
+  {className: 'UpgradeBrowser'},
+  'Browser not supported, please use the latest version of Chrome or Firefox'
+)
