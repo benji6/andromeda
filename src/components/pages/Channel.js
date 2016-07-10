@@ -48,7 +48,7 @@ export default connectComponent(({
           <ButtonPrimary to={`/plugins/effects/${name}`}>
             {name}
           </ButtonPrimary>
-          <Cross onClick={_ => dispatch(removeEffectFromChannel({
+          <Cross onClick={() => dispatch(removeEffectFromChannel({
             channel: channelId,
             name
           }))}/>
@@ -62,7 +62,7 @@ export default connectComponent(({
           onChange={e => selectedAddEffect = e.target.value}
           options={map(text => ({text, value: text}), addEffects)}
         />
-        <Plus onClick={_ => dispatch(addEffectToChannel({
+        <Plus onClick={() => dispatch(addEffectToChannel({
           channel: channelId,
           name: selectedAddEffect
         }))}/>
@@ -74,7 +74,7 @@ export default connectComponent(({
             <ButtonPrimary small to={`/plugins/instruments/${name}`}>
               {name}
             </ButtonPrimary>
-            <Cross onClick={_ => dispatch(removeInstrumentFromChannel({
+            <Cross onClick={() => dispatch(removeInstrumentFromChannel({
               channel: channelId,
               name
             }))}/>
@@ -89,7 +89,7 @@ export default connectComponent(({
           onChange={e => selectedAddSource = e.target.value}
           options={map(text => ({text, value: text}), addSources)}
         />
-        <Plus onClick={_ => {
+        <Plus onClick={() => {
           dispatch(addInstrumentToChannel({
             channel: channelId,
             name: selectedAddSource

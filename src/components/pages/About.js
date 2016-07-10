@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default _ =>
+export default () =>
   <div className='about'>
     <h1 className='about__title'>About</h1>
     <p>Elemental is a pluggable digital audio workstation in development built on open web technologies</p>

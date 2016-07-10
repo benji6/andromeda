@@ -9,7 +9,7 @@ let controlPadActive = false
 
 const validRatio = clamp(0, 1 - Number.EPSILON)
 
-const sideLength = _ => window.innerWidth < window.innerHeight
+const sideLength = () => window.innerWidth < window.innerHeight
   ? window.innerWidth
   : window.innerHeight * 0.8
 
@@ -60,7 +60,7 @@ export default class extends Component {
     controlPadElement.addEventListener('mousedown', inputCallback)
     controlPadElement.addEventListener('mousemove', inputCallback)
 
-    const inputEndCallback = _ => {
+    const inputEndCallback = () => {
       controlPadActive = mouseInputEnabled = false
       inputStopHandler()
       this.token.handleInputEnd()

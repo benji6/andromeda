@@ -81,7 +81,7 @@ const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
 const emptyPatternData = defaultMemoize((xLength, yLength) =>
   map(range(0), repeat(xLength, yLength)))
 
-const visualLoop = patternId => _ => {
+const visualLoop = patternId => () => {
   const state = store.getState()
   const {playStartTime, xLength} = state.patterns[patternId]
   const {settings: {bpm}} = state

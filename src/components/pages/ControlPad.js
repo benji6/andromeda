@@ -50,7 +50,7 @@ export default connectComponent(({
   <div>
     <div className='text-center'>
       <ControlPad {...{
-        inputStopHandler: _ => {
+        inputStopHandler: () => {
           currentlyPlayingPitch = null
           const instance = instrumentInstance(instrument, plugins)
           instance.noteStop(controlPadId)

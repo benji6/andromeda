@@ -97,7 +97,7 @@ test(`${reducerName} patternBeatAdd`, t => {
       playing: false,
       playStartTime: null,
       xLength: 8,
-      yLength: 16,
+      yLength: 15,
       volume: 1 / 3
     }
   ])
