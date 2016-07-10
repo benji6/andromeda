@@ -10,7 +10,7 @@ export default class extends React.Component {
     patternBody.scrollTop = patternBody.clientHeight
   }
   render () {
-    const {markerPosition, onClick, patternData, yLabel} = this.props
+    const {markerPosition, onClick, patternData, red, yLabel} = this.props
     const markerLeft = 100 / (patternData[0].length + 1)
     return <div className='pattern'>
       <div className='pattern__marker' {...{style: {
@@ -19,12 +19,13 @@ export default class extends React.Component {
       <XLabels labels={range(0, patternData[0].length + 1)} />
       <div {...{className: 'pattern__body', ref: 'pattern__body'}}>
         {mapIndexed(
-          (rowData, i) => <PatternRow
-            cells={rowData}
-            key={`pattern-row-${i}`}
-            onClick={onClick(i)}
-            yLabel={yLabel(i)}
-          />,
+          (rowData, i) => <PatternRow {...{
+            cells: rowData,
+            key: `PatternRow-${i}`,
+            onClick: onClick(i),
+            red,
+            yLabel: yLabel(i),
+          }}/>,
           patternData
         )}
       </div>

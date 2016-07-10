@@ -81,6 +81,18 @@ const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
 const emptyPatternData = defaultMemoize((xLength, yLength) =>
   map(range(0), repeat(xLength, yLength)))
 
+const visualLoop = patternId => _ => {
+  const state = store.getState()
+  const {playStartTime, xLength} = state.patterns[patternId]
+  const {settings: {bpm}} = state
+  const patternDuration = xLength * 60 / bpm
+  animationFrameRequest = requestAnimationFrame(visualLoop(patternId))
+  store.dispatch(patternMarkerPositionSet({
+    patternId,
+    value: (audioContext.currentTime - playStartTime) / patternDuration % 1,
+  }))
+}
+
 const mapStateToProps = ({
   dispatch,
   patterns,
@@ -128,18 +140,6 @@ const mapDispatchToProps = {
   patternCellClick,
   patternPlayingStart,
   patternPlayingStop,
-}
-
-const visualLoop = patternId => _ => {
-  const state = store.getState()
-  const {playStartTime, xLength} = state.patterns[patternId]
-  const {settings: {bpm}} = state
-  const patternDuration = xLength * 60 / bpm
-  animationFrameRequest = requestAnimationFrame(visualLoop(patternId))
-  store.dispatch(patternMarkerPositionSet({
-    patternId,
-    value: (audioContext.currentTime - playStartTime) / patternDuration % 1,
-  }))
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
@@ -197,6 +197,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
           markerPosition,
           onClick: cellClickHandler(patternCellClick, patternId),
           patternData,
+          red: true,
           yLabel: yLabel(selectedScale, yLength, rootNote),
         }} />
         <ButtonPlay {...{

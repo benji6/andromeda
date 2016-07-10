@@ -1,4 +1,4 @@
-.step {
+.Step {
   background: var(--blue-10);
   border: calc(var(--pattern-side-length) / 48) solid var(--gray-00);
   box-sizing: border-box;
@@ -7,6 +7,15 @@
   padding: 0;
   width: 100%;;
 }
-.step--selected {
+
+.Step--selected {
   background: var(--turquoise);
+}
+
+.Step--red {
+  background: var(--red-10);
+}
+
+.Step--red--selected {
+  background: var(--red-50);
 }
