@@ -4,6 +4,6 @@ import {Link} from 'react-router'
 export default ({children, ...props}) =>
   <Link {...{
     ...props,
-    activeClassName: 'hollow-button--active',
-    className: 'hollow-button'
+    activeClassName: 'HollowButton--active',
+    className: 'HollowButton'
   }}>{children}</Link>

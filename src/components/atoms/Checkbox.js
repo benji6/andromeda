@@ -2,8 +2,8 @@ import React from 'react'
 
 module.exports = ({checked, ...props}) =>
   <input
-    className='checkbox'
+    className='Checkbox'
     defaultChecked={checked}
-    type='checkbox'
+    type='Checkbox'
     {...props}
   />

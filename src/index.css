@@ -2,17 +2,17 @@
 @import 'constants/timeAndSpace';
 @import 'utils/globals';
 
-@import 'components/atoms/button-secondary';
 @import 'components/atoms/ButtonIcon';
 @import 'components/atoms/ButtonPlay';
 @import 'components/atoms/ButtonPrimary';
-@import 'components/atoms/checkbox';
-@import 'components/atoms/hollow-button';
-@import 'components/atoms/input-label';
-@import 'components/atoms/input-select';
-@import 'components/atoms/slider';
+@import 'components/atoms/ButtonSecondary';
+@import 'components/atoms/Checkbox';
+@import 'components/atoms/HollowButton';
+@import 'components/atoms/InputLabel';
+@import 'components/atoms/InputSelect';
+@import 'components/atoms/Slider';
 @import 'components/atoms/Step';
-@import 'components/atoms/welcome-message';
+@import 'components/atoms/WelcomeMessage';
 @import 'components/atoms/XLabel';
 @import 'components/atoms/YLabel';
 @import 'components/molecules/PatternRow';
