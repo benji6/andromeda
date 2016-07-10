@@ -10,3 +10,7 @@
 .ButtonIcon--green-hover:hover { color: var(--green-80); }
 .ButtonIcon--blue-hover:hover { color: var(--blue-70); }
 .ButtonIcon--red-hover:hover { color: var(--red-50); }
+
+.ButtonIcon__Label {
+  font-size: 1rem;
+}

@@ -1,11 +1,16 @@
-import React from 'react'
+import {createElement} from 'react'
 
-/* eslint-disable */
-export default ({output, ...props}) =>
-  <div className='Slider'>
-    <div>
-      <output>{props.disabled ? <span>&nbsp;</span> : output}</output>
-    </div>
-    <input className='Slider__input' type='range' {...props} />
-  </div>
-/* eslint-enable */
+export default ({output, ...props}) => createElement(
+  'div',
+  {className: 'Slider'},
+  createElement(
+    'div',
+    null,
+    createElement(
+      'output',
+      null,
+      props.disabled ? createElement('span', null, ' ') : output
+    )
+  ),
+  createElement('input', {...props, className: 'Slider__Input', type: 'range'})
+)

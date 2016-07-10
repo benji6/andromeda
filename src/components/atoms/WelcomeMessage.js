@@ -1,6 +1,6 @@
-import React from 'react'
+import {createElement} from 'react'
 
-export default ({children}) => <div {...{
+export default ({children}) => createElement('div', {
   className: 'WelcomeMessage fade-out',
   children,
-}} />
+})
