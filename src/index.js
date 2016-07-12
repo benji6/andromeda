@@ -6,10 +6,14 @@ import UpgradeBrowser from './components/pages/UpgradeBrowser'
 import store from './store'
 import routes from './routes'
 import './utils/loadPlugins'
+import {appInitialize} from './actions'
 
 render(
   navigator.serviceWorker && window.fetch
-    ? createElement(Provider, {store}, routes)
+    ? (
+      store.dispatch(appInitialize()),
+      createElement(Provider, {store}, routes)
+    )
     : createElement(UpgradeBrowser),
   document.getElementById('app')
 )

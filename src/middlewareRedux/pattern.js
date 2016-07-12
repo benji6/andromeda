@@ -37,6 +37,7 @@ export default store => next => action => {
           const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
           const {
             activeNotes,
+            beatPattern,
             instrument,
             nextLoopEndTime,
             steps,
@@ -56,7 +57,7 @@ export default store => next => action => {
           }))
 
           timeoutIds[patternId] = setTimeout(
-            _ => audioLoop(i + 1),
+            () => audioLoop(i + 1),
             (newLoopEndTime - audioContext.currentTime - 0.1) * 1000
           )
 
@@ -81,6 +82,10 @@ export default store => next => action => {
             startTime: currentLoopEndTime + noteDuration * x,
             stopTime: currentLoopEndTime + noteDuration * (x + 1),
           }), steps)
+
+          if (beatPattern) {
+            return
+          }
 
           instrumentObj.notesStart(notes)
           i++
