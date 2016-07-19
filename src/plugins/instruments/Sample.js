@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import samples from '../../constants/samples'
+import sampleNames from '../../constants/sampleNames'
 
 const bucket = 'buckets/elemental-samples/standard-808-drumkit'
 
@@ -25,7 +25,7 @@ const loadSample = function (fileName) {
 
 export default class {
   constructor ({audioContext}) {
-    const selectedSample = head(samples)
+    const selectedSample = head(sampleNames)
 
     loadSample.call(this, selectedSample)
 
@@ -55,7 +55,7 @@ export default class {
             loadSample.call(this, value)
           }}>
             {
-              samples.map((sample, i) => <option key={i} value={sample}>
+              sampleNames.map((sample, i) => <option key={i} value={sample}>
                 {sample}
               </option>)
             }

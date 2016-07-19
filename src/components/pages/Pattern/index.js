@@ -6,11 +6,6 @@ import {
 import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
-import {
-  patternCellClick,
-  patternPlayingStart,
-  patternPlayingStop,
-} from '../../../actions'
 import {mapIndexed} from '../../../utils/helpers'
 import {stepExists} from '../../../reducers/patterns'
 import PatternBeat from './PatternBeat'
@@ -64,13 +59,7 @@ const mapStateToProps = ({
   }
 }
 
-const mapDispatchToProps = {
-  patternCellClick,
-  patternPlayingStart,
-  patternPlayingStop,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(
+export default connect(mapStateToProps)(
   props => props.beatPattern
     ? createElement(PatternBeat, props)
     : createElement(PatternSynth, props)

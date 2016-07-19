@@ -28,12 +28,12 @@ import {instrumentInstance} from '../../../utils/derivedData'
 import store from '../../../store'
 import scales from '../../../constants/scales'
 import patternPitchOffset from '../../../constants/patternPitchOffset'
-import samples from '../../../constants/samples'
+import sampleNames from '../../../constants/sampleNames'
 
 let animationFrameRequest
 
 const yLabel = i => {
-  const sample = samples[i]
+  const sample = sampleNames[i]
   return sample.slice(0, sample.lastIndexOf('.wav'))
 }
 
