@@ -1,7 +1,7 @@
 import {forEach} from 'ramda'
 import {APP_INITIALIZE, sampleFetched} from '../actions'
 import {samples as samplesUri} from '../constants/uris'
-import sampleFilenames from '../constants/samples'
+import sampleNames from '../constants/sampleNames'
 import audioContext from '../audioContext'
 
 export default ({dispatch}) => next => action => {
@@ -11,7 +11,7 @@ export default ({dispatch}) => next => action => {
         .then(response => response.arrayBuffer())
         .then(data => audioContext.decodeAudioData(data))
         .then(buffer => dispatch(sampleFetched([filename, buffer]))),
-      sampleFilenames
+      sampleNames
     )
   }
   next(action)

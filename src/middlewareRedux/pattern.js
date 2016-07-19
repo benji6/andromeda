@@ -17,6 +17,7 @@ import pitchToFrequency from '../audioHelpers/pitchToFrequency'
 import pitchFromScaleIndex from '../audioHelpers/pitchFromScaleIndex'
 import scales from '../constants/scales'
 import patternPitchOffset from '../constants/patternPitchOffset'
+import sampleNames from '../constants/sampleNames'
 
 const timeoutIds = {}
 
@@ -24,6 +25,25 @@ const stopPattern = ({activeNotes}, patternId) => {
   forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
   clearTimeout(timeoutIds[patternId])
   delete timeoutIds[patternId]
+}
+
+const sampleGain = audioContext.createGain()
+sampleGain.gain.value = 0.5
+sampleGain.connect(audioContext.destination)
+
+const playSample = (buffer, startTime) => {
+  const source = audioContext.createBufferSource()
+  const stopTime = startTime + buffer.duration + 0.1
+
+  source.buffer = buffer
+  source.connect(sampleGain)
+  source.start(startTime)
+  source.stop(stopTime)
+
+  window.setTimeout(
+    () => source.disconnect(),
+    (stopTime - audioContext.currentTime) * 1000
+  )
 }
 
 export default store => next => action => {
@@ -34,7 +54,12 @@ export default store => next => action => {
         store.dispatch(patternNextLoopEndTimeSet({patternId, value: currentTime}))
         const audioLoop = (i = 0) => {
           const state = store.getState()
-          const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = state
+          const {
+            patterns,
+            plugins,
+            samples,
+            settings: {bpm, rootNote, selectedScale}
+          } = state
           const {
             activeNotes,
             beatPattern,
@@ -72,22 +97,28 @@ export default store => next => action => {
               instrumentObj,
             }), steps))}))
 
-          const notes = map(({x, y}) => ({
-            frequency: pitchToFrequency(pitchFromScaleIndex(
-              scales[selectedScale],
-              yLength - 1 - y
-            ) + rootNote + patternPitchOffset),
-            gain: volume,
-            id: `pattern-${patternId}-${x}-${y}-${i}`,
-            startTime: currentLoopEndTime + noteDuration * x,
-            stopTime: currentLoopEndTime + noteDuration * (x + 1),
-          }), steps)
-
           if (beatPattern) {
+            forEach(
+              ({x, y}) => playSample(
+                samples[sampleNames[y]],
+                currentLoopEndTime + noteDuration * x
+              ),
+              steps
+            )
             return
+          } else {
+            const notes = map(({x, y}) => ({
+              frequency: pitchToFrequency(pitchFromScaleIndex(
+                scales[selectedScale],
+                yLength - 1 - y
+              ) + rootNote + patternPitchOffset),
+              gain: volume,
+              id: `pattern-${patternId}-${x}-${y}-${i}`,
+              startTime: currentLoopEndTime + noteDuration * x,
+              stopTime: currentLoopEndTime + noteDuration * (x + 1),
+            }), steps)
+            instrumentObj.notesStart(notes)
           }
-
-          instrumentObj.notesStart(notes)
           i++
         }
 
