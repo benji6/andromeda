@@ -18,7 +18,7 @@ export default class extends React.Component {
         className: makeClassName(['pattern__marker', [red, 'pattern__marker--pink']]),
         style: {
           transform: `translateX(${markerLeft + (100 - markerLeft - 0.9) * markerPosition - 0.3}vw)`,
-        }
+        },
       }}/>
       <XLabels labels={range(0, patternData[0].length + 1)} />
       <div {...{className: 'pattern__body', ref: 'pattern__body'}}>

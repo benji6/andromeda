@@ -28,7 +28,7 @@ const updateAudioGraph = virtualAudioGraph => ({
   7: ['biquadFilter', 6, {frequency: lowCut, type: 'highpass'}],
   8: ['gain', 7, {gain: feedback}],
   9: ['gain', 'output', {gain: dryLevel}],
-  input: ['gain', [8, 9], {gain: 1}, 'input']
+  input: ['gain', [8, 9], {gain: 1}, 'input'],
 })
 
 export default class {

@@ -32,7 +32,7 @@ const initialState = [{
   synthPattern: true,
   xLength: 8,
   yLength: 16,
-  volume: 1 / 3
+  volume: 1 / 3,
 }]
 
 test(`${reducerName} returns initial state`, t => {
@@ -80,7 +80,7 @@ test(`${reducerName} patternBeatAdd`, t => {
     playing: false,
     xLength: 8,
     yLength: 24,
-    volume: 1 / 3
+    volume: 1 / 3,
   }], patternBeatAdd()), [
     {
       instrument: 'Prometheus',
@@ -88,7 +88,7 @@ test(`${reducerName} patternBeatAdd`, t => {
       playing: false,
       xLength: 8,
       yLength: 24,
-      volume: 1 / 3
+      volume: 1 / 3,
     },
     {
       activeNotes: [],
@@ -100,8 +100,8 @@ test(`${reducerName} patternBeatAdd`, t => {
       playStartTime: null,
       xLength: 8,
       yLength: 15,
-      volume: 1 / 3
-    }
+      volume: 1 / 3,
+    },
   ])
   t.end()
 })
@@ -114,7 +114,7 @@ test(`${reducerName} patternBeatPlayingStart`, t => {
     steps: [],
     xLength: 8,
     yLength: 8,
-    volume: 1 / 3
+    volume: 1 / 3,
   }], patternBeatPlayingStart({patternId: 0, currentTime: 150})), [{
     instrument: 'Prometheus',
     steps: [],
@@ -122,7 +122,7 @@ test(`${reducerName} patternBeatPlayingStart`, t => {
     playStartTime: 150,
     xLength: 8,
     yLength: 8,
-    volume: 1 / 3
+    volume: 1 / 3,
   }])
   t.end()
 })
@@ -144,17 +144,17 @@ test(`${reducerName} patternCellClick`, t => {
   const payload = {patternId: 0, x: 1, y: 2}
   t.deepEqual(reducer([{
     instrument: 'Prometheus',
-    steps: []
+    steps: [],
   }], patternCellClick(payload)), [{
     instrument: 'Prometheus',
-    steps: [{x: 1, y: 2}]
+    steps: [{x: 1, y: 2}],
   }])
   t.deepEqual(reducer([{
     instrument: 'Prometheus',
-    steps: [{x: 1, y: 2}]
+    steps: [{x: 1, y: 2}],
   }], patternCellClick(payload)), [{
     instrument: 'Prometheus',
-    steps: []
+    steps: [],
   }])
   t.end()
 })
@@ -162,22 +162,22 @@ test(`${reducerName} patternCellClick`, t => {
 test(`${reducerName} patternDelete`, t => {
   t.deepEqual(reducer([{
     instrument: 'instrument 0',
-    steps: []
+    steps: [],
   },
   {
     instrument: 'instrument 1',
-    steps: []
+    steps: [],
   },
   {
     instrument: 'instrument 2',
-    steps: []
+    steps: [],
   }], patternDelete(1)), [{
     instrument: 'instrument 0',
-    steps: []
+    steps: [],
   },
   {
     instrument: 'instrument 2',
-    steps: []
+    steps: [],
   }])
   t.end()
 })
@@ -190,7 +190,7 @@ test(`${reducerName} patternSynthPlayingStart`, t => {
     steps: [],
     xLength: 8,
     yLength: 8,
-    volume: 1 / 3
+    volume: 1 / 3,
   }], patternSynthPlayingStart({patternId: 0, currentTime: 150})), [{
     instrument: 'Prometheus',
     steps: [],
@@ -198,7 +198,7 @@ test(`${reducerName} patternSynthPlayingStart`, t => {
     playStartTime: 150,
     xLength: 8,
     yLength: 8,
-    volume: 1 / 3
+    volume: 1 / 3,
   }])
   t.end()
 })
@@ -223,14 +223,14 @@ test(`${reducerName} patternSynthAdd`, t => {
     playing: false,
     xLength: 8,
     yLength: 24,
-    volume: 1 / 3
+    volume: 1 / 3,
   }], patternSynthAdd()), [{
     instrument: 'Prometheus',
     steps: [],
     playing: false,
     xLength: 8,
     yLength: 24,
-    volume: 1 / 3
+    volume: 1 / 3,
   },
   initialState[0]])
   t.end()

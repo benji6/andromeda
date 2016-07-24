@@ -8,5 +8,5 @@ export default ({onClick, red, selected}) => createElement('button', {
     [selected, 'Step--selected'],
     [red && selected, 'Step--red--selected'],
   ]),
-  onClick
+  onClick,
 })

@@ -5,7 +5,7 @@ import {
   addEffectToChannel,
   addInstrumentToChannel,
   removeEffectFromChannel,
-  removeInstrumentFromChannel
+  removeInstrumentFromChannel,
 } from '../../actions'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
@@ -17,13 +17,13 @@ let selectedAddSource = null
 
 const connectComponent = connect(({
   dispatch,
-  plugins: {channels, effectInstances, instrumentInstances}
+  plugins: {channels, effectInstances, instrumentInstances},
 }, {params}) => ({
   channelId: Number(params.channelId),
   channels,
   dispatch,
   effectInstances,
-  instrumentInstances
+  instrumentInstances,
 }))
 
 export default connectComponent(({
@@ -31,7 +31,7 @@ export default connectComponent(({
   channels,
   dispatch,
   effectInstances,
-  instrumentInstances
+  instrumentInstances,
 }) => {
   const sources = channels[channelId].instruments
   const effects = channels[channelId].effects
@@ -50,7 +50,7 @@ export default connectComponent(({
           </ButtonPrimary>
           <Cross onClick={() => dispatch(removeEffectFromChannel({
             channel: channelId,
-            name
+            name,
           }))}/>
         </div>,
         effects
@@ -64,7 +64,7 @@ export default connectComponent(({
         />
         <Plus onClick={() => dispatch(addEffectToChannel({
           channel: channelId,
-          name: selectedAddEffect
+          name: selectedAddEffect,
         }))}/>
       </div>}
       <h2 className='text-center'>Sources</h2>
@@ -76,7 +76,7 @@ export default connectComponent(({
             </ButtonPrimary>
             <Cross onClick={() => dispatch(removeInstrumentFromChannel({
               channel: channelId,
-              name
+              name,
             }))}/>
           </div>,
           sources
@@ -92,7 +92,7 @@ export default connectComponent(({
         <Plus onClick={() => {
           dispatch(addInstrumentToChannel({
             channel: channelId,
-            name: selectedAddSource
+            name: selectedAddSource,
           }))
           selectedAddSource = addSources[1]
         }}/>

@@ -45,7 +45,7 @@ const oscBank = ({
 
 const notesToGraph = function (notes) {
   return notes.reduce((acc, {
-    frequency, gain, id, startTime, stopTime
+    frequency, gain, id, startTime, stopTime,
   }) => ({
     ...acc,
     [id]: [oscBank, 'output', {
@@ -84,7 +84,7 @@ export default class {
 
     const virtualAudioGraph = createVirtualAudioGraph({
       audioContext,
-      output
+      output,
     })
 
     virtualAudioGraphs.set(this, virtualAudioGraph)
@@ -100,7 +100,7 @@ export default class {
       ...notes.get(this).filter(note => note.hasOwnProperty('stopTime')
         ? note.stopTime > audioContexts.get(this).currentTime
         : true),
-      note
+      note,
     ]
     notes.set(this, newNotes)
     updateAudio.call(this)

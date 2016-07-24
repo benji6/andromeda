@@ -14,7 +14,7 @@ const computeNoteParams = pitch => {
     frequency: pitchToFrequency(pitch + 12 * octave),
     id: computeId(pitch),
     instrument,
-    gain: volume
+    gain: volume,
   }
 }
 

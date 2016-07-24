@@ -68,7 +68,7 @@ export default store => next => action => {
             patterns,
             plugins,
             samples,
-            settings: {bpm}
+            settings: {bpm},
           } = state
           const {
             activeNotes,
@@ -131,7 +131,7 @@ export default store => next => action => {
           const {
             patterns,
             plugins,
-            settings: {bpm, rootNote, selectedScale}
+            settings: {bpm, rootNote, selectedScale},
           } = state
           const {
             activeNotes,

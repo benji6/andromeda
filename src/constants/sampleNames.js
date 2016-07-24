@@ -13,5 +13,5 @@ export default [
   'open_hh.wav',
   'rimshot.wav',
   'snare.wav',
-  'tom1.wav'
+  'tom1.wav',
 ]

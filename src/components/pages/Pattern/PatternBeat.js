@@ -111,7 +111,7 @@ const mapStateToProps = ({
 
   const patternData = mapIndexed(
     (x, rowIndex) => map(colIndex => ({
-      selected: stepExists(colIndex, rowIndex, steps)
+      selected: stepExists(colIndex, rowIndex, steps),
     }), x),
     emptyPatternData(xLength, yLength)
   )

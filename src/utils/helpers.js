@@ -5,7 +5,7 @@ import {
   join,
   map,
   path,
-  reduce
+  reduce,
 } from 'ramda'
 
 export const eventCheckedPath = path(['currentTarget', 'checked'])

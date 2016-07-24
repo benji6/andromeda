@@ -17,7 +17,7 @@ const connectComponent = connect(({
   activePatternIndex,
   dispatch,
   patterns,
-  plugins
+  plugins,
 }, {params: {patternId}}) => {
   const activePattern = patterns[patternId]
   const {instrument, xLength, volume} = activePattern

@@ -28,7 +28,7 @@ import {
   LOAD_PLUGIN_INSTRUMENT,
   REMOVE_CHANNEL,
   REMOVE_EFFECT_FROM_CHANNEL,
-  REMOVE_INSTRUMENT_FROM_CHANNEL
+  REMOVE_INSTRUMENT_FROM_CHANNEL,
 } from '../actions'
 import store from '../store'
 
@@ -85,7 +85,7 @@ const initialState = {
   effectInstances: [],
   effectPlugins: [],
   instrumentInstances: [],
-  instrumentPlugins: []
+  instrumentPlugins: [],
 }
 
 const connectToAudioCtx = x => (x.connect(destination(audioContext)), x)
@@ -135,7 +135,7 @@ export default (state = initialState, {type, payload}) => {
       ))({audioContext, bpm: store.getState().settings.bpm}))
       return overEffectInstances(append({
         instance,
-        name: payload.name
+        name: payload.name,
       }), state)
     }
     case INSTANTIATE_INSTRUMENT: {

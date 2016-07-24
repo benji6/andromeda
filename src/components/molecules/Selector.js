@@ -9,7 +9,7 @@ export default ({
   disabled,
   handleChange,
   label,
-  options
+  options,
 }) =>
   <div>
     <label className='selector'>

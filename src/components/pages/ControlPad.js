@@ -65,7 +65,7 @@ export default connectComponent(({
           instance.noteStart({
             frequency: pitchToFrequency(currentlyPlayingPitch + 12 * octave + rootNote),
             gain: (1 - yRatio) / 2,
-            id: controlPadId
+            id: controlPadId,
           })
         },
         inputModifyHandler: ({xRatio, yRatio}) => {
@@ -87,7 +87,7 @@ export default connectComponent(({
           const note = {
             frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
             gain: (1 - yRatio) / 2,
-            id: controlPadId
+            id: controlPadId,
           }
           isNewNote
             ? instance.noteStart(note)
