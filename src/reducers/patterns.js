@@ -16,17 +16,19 @@ import {
   PATTERN_ACTIVE_NOTES_REJECT,
   PATTERN_ACTIVE_NOTES_SET,
   PATTERN_BEAT_ADD,
+  PATTERN_BEAT_PLAYING_START,
+  PATTERN_BEAT_PLAYING_STOP,
   PATTERN_CELL_CLICK,
   PATTERN_DELETE,
-  PATTERN_PLAYING_START,
-  PATTERN_PLAYING_STOP,
-  PATTERN_SYNTH_ADD,
-  PATTERNS_ALL_PLAYING_STOP,
+  PATTERN_INSTRUMENT_SET,
   PATTERN_MARKER_POSITION_SET,
   PATTERN_NEXT_LOOP_END_TIME_SET,
-  PATTERN_INSTRUMENT_SET,
+  PATTERN_SYNTH_ADD,
+  PATTERN_SYNTH_PLAYING_START,
+  PATTERN_SYNTH_PLAYING_STOP,
   PATTERN_VOLUME_SET,
   PATTERN_X_LENGTH_SET,
+  PATTERNS_ALL_PLAYING_STOP,
 } from '../actions'
 import sampleNames from '../constants/sampleNames'
 
@@ -105,13 +107,15 @@ export default (state = initialState, {type, payload}) => {
       return setPatternProp('markerPosition', payload, state)
     case PATTERN_NEXT_LOOP_END_TIME_SET:
       return setPatternProp('nextLoopEndTime', payload, state)
-    case PATTERN_PLAYING_START:
+    case PATTERN_BEAT_PLAYING_START:
+    case PATTERN_SYNTH_PLAYING_START:
       return mergeIntoPattern(
         payload.patternId,
         {playing: true, playStartTime: payload.currentTime},
         state,
       )
-    case PATTERN_PLAYING_STOP:
+    case PATTERN_BEAT_PLAYING_STOP:
+    case PATTERN_SYNTH_PLAYING_STOP:
       return mergeIntoPattern(payload, {
         playing: false,
         activeNotes: [],

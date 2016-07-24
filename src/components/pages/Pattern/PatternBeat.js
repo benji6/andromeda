@@ -12,9 +12,9 @@ import audioContext from '../../../audioContext'
 import {
   patternActiveNotesAppend,
   patternActiveNotesReject,
+  patternBeatPlayingStart,
+  patternBeatPlayingStop,
   patternCellClick,
-  patternPlayingStart,
-  patternPlayingStop,
   patternMarkerPositionSet,
 } from '../../../actions'
 import {mapIndexed} from '../../../utils/helpers'
@@ -134,8 +134,8 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = {
   patternCellClick,
-  patternPlayingStart,
-  patternPlayingStop,
+  patternBeatPlayingStart,
+  patternBeatPlayingStop,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
@@ -144,10 +144,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       super(props)
 
       this.onPlay = () => {
-        const {patternId, patternPlayingStart} = this.props
+        const {patternId, patternBeatPlayingStart} = this.props
         const {currentTime} = audioContext
 
-        patternPlayingStart({
+        patternBeatPlayingStart({
           currentTime,
           patternId,
         })
@@ -155,10 +155,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       }
 
       this.onStop = () => {
-        const {patternId, patternPlayingStop} = this.props
+        const {patternId, patternBeatPlayingStop} = this.props
 
         cancelAnimationFrame(animationFrameRequest)
-        patternPlayingStop(patternId)
+        patternBeatPlayingStop(patternId)
       }
     }
 

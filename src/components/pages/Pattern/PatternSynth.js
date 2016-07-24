@@ -13,9 +13,9 @@ import {
   patternActiveNotesAppend,
   patternActiveNotesReject,
   patternCellClick,
-  patternPlayingStart,
-  patternPlayingStop,
   patternMarkerPositionSet,
+  patternSynthPlayingStart,
+  patternSynthPlayingStop,
 } from '../../../actions'
 import {mapIndexed} from '../../../utils/helpers'
 import ButtonPlay from '../../atoms/ButtonPlay'
@@ -138,8 +138,8 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = {
   patternCellClick,
-  patternPlayingStart,
-  patternPlayingStop,
+  patternSynthPlayingStart,
+  patternSynthPlayingStop,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
@@ -148,10 +148,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       super(props)
 
       this.onPlay = () => {
-        const {patternId, patternPlayingStart} = this.props
+        const {patternId, patternSynthPlayingStart} = this.props
         const {currentTime} = audioContext
 
-        patternPlayingStart({
+        patternSynthPlayingStart({
           currentTime,
           patternId,
         })
@@ -159,10 +159,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       }
 
       this.onStop = () => {
-        const {patternId, patternPlayingStop} = this.props
+        const {patternId, patternSynthPlayingStop} = this.props
 
         cancelAnimationFrame(animationFrameRequest)
-        patternPlayingStop(patternId)
+        patternSynthPlayingStop(patternId)
       }
     }
 
