@@ -7,7 +7,7 @@ import {addChannel, removeChannel} from '../../actions'
 
 const connectComponent = connect(({dispatch, plugins: {channels}}) => ({
   dispatch,
-  channels
+  channels,
 }))
 
 export default connectComponent(({dispatch, channels}) =>

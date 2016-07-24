@@ -9,7 +9,7 @@ import {
   merge,
   over,
   reject,
-  remove
+  remove,
 } from 'ramda'
 import {
   PATTERN_ACTIVE_NOTES_APPEND,

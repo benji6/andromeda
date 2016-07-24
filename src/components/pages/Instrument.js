@@ -7,13 +7,13 @@ import ButtonPrimary from '../atoms/ButtonPrimary'
 const connectComponent = connect(({plugins}, {history, params}) => ({
   history,
   params,
-  plugins
+  plugins,
 }))
 
 export default connectComponent(({
   history,
   params,
-  plugins
+  plugins,
 }) => <div>
   <PluginMount instance={instrumentInstance(params.name, plugins)}/>
   <div className='margin-bottom' />

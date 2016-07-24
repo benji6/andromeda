@@ -3,14 +3,14 @@ import {
   KEYBOARD_MONOPHONIC_SET,
   UPDATE_KEYBOARD_INSTRUMENT,
   UPDATE_KEYBOARD_OCTAVE,
-  UPDATE_KEYBOARD_VOLUME
+  UPDATE_KEYBOARD_VOLUME,
 } from '../actions'
 
 export const initialState = {
   instrument: 'Fate',
   monophonic: false,
   octave: 0,
-  volume: 1 / 4
+  volume: 1 / 4,
 }
 
 export default (state = initialState, {type, payload}) => {

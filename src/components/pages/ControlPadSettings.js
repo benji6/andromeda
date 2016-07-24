@@ -20,17 +20,17 @@ import InstrumentSelector from '../molecules/InstrumentSelector'
 const connectComponent = connect(({
   controlPad,
   dispatch,
-  plugins
+  plugins,
 }) => ({
   controlPad,
   dispatch,
-  plugins
+  plugins,
 }))
 
 export default connectComponent(({
   controlPad,
   dispatch,
-  plugins
+  plugins,
 }) =>
   <div className='flex-column text-center'>
     <h2 className='text-center'>Control Pad Settings</h2>
@@ -44,7 +44,7 @@ export default connectComponent(({
       label='Instrument'
       options={map(instrument => ({
         text: capitalize.words(instrument),
-        value: instrument
+        value: instrument,
       }), controllableInstrumentInstanceNames(plugins))}
     />
     <RangeSelector

@@ -42,7 +42,7 @@ export default class {
         {detune: 13, gain: 0.5, name: 2, pan: 0.4, pitch: 7, type: 'triangle'},
         {detune: -7, gain: 0.8, name: 3, pan: 0.1, pitch: -12, type: 'sawtooth'},
         {detune: 10, gain: 0.2, name: 4, pan: -0.4, pitch: 12, type: 'square'},
-      ]
+      ],
     })
 
     store.subscribe(updateAudio.bind(this))
@@ -63,7 +63,7 @@ export default class {
       ...notes.get(this).filter(note => note.hasOwnProperty('stopTime')
         ? note.stopTime > audioContexts.get(this).currentTime
         : true),
-      note
+      note,
     ]
     notes.set(this, newNotes)
     updateAudio.call(this, stores.get(this).getState())

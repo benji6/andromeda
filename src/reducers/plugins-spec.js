@@ -11,7 +11,7 @@ import {
   loadPluginInstrument,
   removeChannel,
   removeEffectFromChannel,
-  removeInstrumentFromChannel
+  removeInstrumentFromChannel,
 } from '../actions'
 
 const reducerName = 'plugins'
@@ -22,7 +22,7 @@ test(`${reducerName} reducer returns initial state`, t => {
     effectInstances: [],
     effectPlugins: [],
     instrumentInstances: [],
-    instrumentPlugins: []
+    instrumentPlugins: [],
   })
   t.end()
 })
@@ -34,17 +34,17 @@ test(`${reducerName} reducer - addChanel`, t => {
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }, addChannel()),
     {
       channels: [
         {name: 0, effects: [], instruments: []},
-        {name: 1, effects: [], instruments: []}
+        {name: 1, effects: [], instruments: []},
       ],
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }
   )
   t.end()
@@ -59,14 +59,14 @@ test(`${reducerName} reducer - addEffectToChannel`, t => {
       effectInstances: [{instance, name: 'test effect'}],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }, addEffectToChannel({channel: 0, name: 'test effect'})),
     {
       channels: [{name: 0, effects: ['test effect'], instruments: []}],
       effectInstances: [{instance, name: 'test effect'}],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }
   )
   t.end()
@@ -81,18 +81,18 @@ test(`${reducerName} reducer - addInstrumentToChannel`, t => {
       effectInstances: [{instance, name: 'test effect plugin'}],
       effectPlugins: [],
       instrumentInstances: [{name: 'fake instance name', instance}],
-      instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
+      instrumentPlugins: [{constructor, name: 'test instrument plugin'}],
     }, addInstrumentToChannel({channel: 0, name: 'fake instance name'})),
     {
       channels: [{
         name: 0,
         effects: ['test effect plugin'],
-        instruments: ['fake instance name']
+        instruments: ['fake instance name'],
       }],
       effectInstances: [{instance, name: 'test effect plugin'}],
       effectPlugins: [],
       instrumentInstances: [{name: 'fake instance name', instance}],
-      instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
+      instrumentPlugins: [{constructor, name: 'test instrument plugin'}],
     }
   )
   t.end()
@@ -110,16 +110,16 @@ test(`${reducerName} reducer - instantiateEffect`, t => {
       effectInstances: [],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }, instantiateEffect({
       name: 'fake effect name',
-      plugin: 'test effect plugin'
+      plugin: 'test effect plugin',
     }))),
     {
       channels: [{name: 0, effects: [], instruments: []}],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }
   )
   t.end()
@@ -137,13 +137,13 @@ test(`${reducerName} reducer - instantiateInstrument`, t => {
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
-      instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
+      instrumentPlugins: [{constructor, name: 'test instrument plugin'}],
     }, instantiateInstrument({name: 'fake instance name', plugin: 'test instrument plugin'}))),
     {
       channels: [],
       effectInstances: [],
       effectPlugins: [],
-      instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
+      instrumentPlugins: [{constructor, name: 'test instrument plugin'}],
     }
   )
   t.end()
@@ -156,14 +156,14 @@ test(`${reducerName} reducer - loadPluginEffect`, t => {
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }, loadPluginEffect('test effect')),
     {
       channels: [],
       effectInstances: [],
       effectPlugins: ['test effect'],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }
   )
   t.end()
@@ -176,14 +176,14 @@ test(`${reducerName} reducer - loadPluginInstrument`, t => {
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }, loadPluginInstrument('test instrument')),
     {
       channels: [],
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
-      instrumentPlugins: ['test instrument']
+      instrumentPlugins: ['test instrument'],
     }
   )
   t.end()
@@ -194,19 +194,19 @@ test(`${reducerName} reducer - removeChannel`, t => {
     reducer({
       channels: [
         {name: 0, effects: [], instruments: []},
-        {name: 1, effects: [], instruments: []}
+        {name: 1, effects: [], instruments: []},
       ],
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }, removeChannel(0)),
     {
       channels: [{name: 1, effects: [], instruments: []}],
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }
   )
   t.end()
@@ -220,19 +220,19 @@ test(`${reducerName} reducer - removeEffectFromChannel`, t => {
       channels: [{
         effects: ['fake instance name'],
         instruments: [],
-        name: 0
+        name: 0,
       }],
       effectInstances: [{instance, name: 'fake instance name'}],
       effectPlugins: [{constructor, name: 'test plugin'}],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }, removeEffectFromChannel({channel: 0, name: 'fake instance name'})),
     {
       channels: [{name: 0, effects: [], instruments: []}],
       effectInstances: [{instance, name: 'fake instance name'}],
       effectPlugins: [{constructor, name: 'test plugin'}],
       instrumentInstances: [],
-      instrumentPlugins: []
+      instrumentPlugins: [],
     }
   )
   t.end()
@@ -246,19 +246,19 @@ test(`${reducerName} reducer - removeInstrumentFromChannel`, t => {
       channels: [{
         name: 0,
         effects: ['test effect plugin'],
-        instruments: ['fake instance name']
+        instruments: ['fake instance name'],
       }],
       effectInstances: [{instance, name: 'test effect plugin'}],
       effectPlugins: [],
       instrumentInstances: [{name: 'fake instance name', instance}],
-      instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
+      instrumentPlugins: [{constructor, name: 'test instrument plugin'}],
     }, removeInstrumentFromChannel({channel: 0, name: 'fake instance name'})),
     {
       channels: [{name: 0, effects: ['test effect plugin'], instruments: []}],
       effectInstances: [{instance, name: 'test effect plugin'}],
       effectPlugins: [],
       instrumentInstances: [{name: 'fake instance name', instance}],
-      instrumentPlugins: [{constructor, name: 'test instrument plugin'}]
+      instrumentPlugins: [{constructor, name: 'test instrument plugin'}],
     }
   )
   t.end()

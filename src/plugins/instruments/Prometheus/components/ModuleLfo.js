@@ -6,7 +6,7 @@ export default ({lfo: {gain, frequency, type}, updateLfo}) =>
   <ControlModule {...{title: 'LFO'}}>
     <SelectOscType {...{
       defaultValue: type,
-      onChange: e => updateLfo('type', e.target.value)
+      onChange: e => updateLfo('type', e.target.value),
     }} />
     <Range {...{
       defaultValue: frequency,

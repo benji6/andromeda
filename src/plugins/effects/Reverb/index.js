@@ -37,7 +37,7 @@ const updateAudioGraph = virtualAudioGraph => ({
     3: ['gain', 2, {gain: wetLevel}],
     4: ['gain', 3, {gain: 0.5}],
     5: ['convolver', 4, {buffer}, 'input'],
-    input: ['gain', [0, 5]]
+    input: ['gain', [0, 5]],
   }))
   reverbTypeToBufferPromise[reverbType] = bufferPromise
 }
@@ -62,7 +62,7 @@ export default class {
     outputs.set(this, output)
 
     virtualAudioGraph.update({
-      input: ['gain', 'output']
+      input: ['gain', 'output'],
     })
 
     this.destination = virtualAudioGraph.getAudioNodeById('input')

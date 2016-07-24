@@ -9,7 +9,7 @@ import {
   keyboardMonophonicSet,
   updateKeyboardInstrument,
   updateKeyboardOctave,
-  updateKeyboardVolume
+  updateKeyboardVolume,
 } from '../../actions'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import InputLabel from '../atoms/InputLabel'

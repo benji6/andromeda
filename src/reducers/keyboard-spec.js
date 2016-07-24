@@ -4,7 +4,7 @@ import {
   keyboardMonophonicSet,
   updateKeyboardInstrument,
   updateKeyboardOctave,
-  updateKeyboardVolume
+  updateKeyboardVolume,
 } from '../actions'
 
 const reducerName = 'keyboard'
