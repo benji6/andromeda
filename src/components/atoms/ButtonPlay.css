@@ -8,6 +8,8 @@
   padding: 0;
   height: 0;
   margin: 1rem auto;
+  transition: var(--transition-fast) background-color,
+    var(--transition-fast) border-color;
   width: 0;
 }
 .ButtonPlay:hover {
