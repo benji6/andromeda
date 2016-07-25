@@ -1,22 +1,23 @@
 import test from 'tape'
 import reducer from './settings'
-import {updateBpm, updateRootNote, updateSelectedScale} from '../actions'
+import {bpmSet, updateRootNote, updateSelectedScale} from '../actions'
 
 const reducerName = 'settings reducer'
 
 test(`${reducerName} returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), {
     bpm: 140,
+    noteDuration: 0.42857142857142855,
     rootNote: 0,
     selectedScale: 'pentatonic',
   })
   t.end()
 })
 
-test(`${reducerName} updateBpm`, t => {
-  t.deepEqual(reducer({bpm: 140}, updateBpm(180)), {
-    bpm: 180,
-  })
+test(`${reducerName} bpmSet`, t => {
+  t.deepEqual(
+    reducer({bpm: 140, noteDuration: 0.42857142857142855}, bpmSet(120)),
+    {bpm: 120, noteDuration: 0.5})
   t.end()
 })
 

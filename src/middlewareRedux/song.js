@@ -24,10 +24,9 @@ export default store => next => action => {
       const {
         patterns,
         plugins,
-        settings: {bpm, rootNote, selectedScale},
+        settings: {noteDuration, rootNote, selectedScale},
         song: {activeNotes},
       } = store.getState()
-      const noteDuration = 60 / bpm
 
       let newActiveNotes = []
 

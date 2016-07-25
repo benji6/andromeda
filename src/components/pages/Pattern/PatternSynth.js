@@ -38,7 +38,7 @@ const yLabel = (selectedScale, yLength, rootNote) => i => noteNameFromPitch(pitc
 ) + rootNote + patternPitchOffset)
 
 const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
-  const {patterns, plugins, settings: {bpm, rootNote, selectedScale}} = store.getState()
+  const {patterns, plugins, settings: {noteDuration, rootNote, selectedScale}} = store.getState()
   const {
     activeNotes,
     instrument,
@@ -54,7 +54,6 @@ const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
   const isAddedNote = none(note => note.x === x && note.y === y, steps)
   if (isAddedNote) {
     const instrumentObj = instrumentInstance(instrument, plugins)
-    const noteDuration = 60 / bpm
     const id = `pattern-${patternId}-${x}-${y}`
     const note = {
       frequency: pitchToFrequency(pitchFromScaleIndex(
@@ -84,8 +83,8 @@ const emptyPatternData = defaultMemoize((xLength, yLength) =>
 const visualLoop = patternId => () => {
   const state = store.getState()
   const {playStartTime, xLength} = state.patterns[patternId]
-  const {settings: {bpm}} = state
-  const patternDuration = xLength * 60 / bpm
+  const {settings: {noteDuration}} = state
+  const patternDuration = xLength * noteDuration
   animationFrameRequest = requestAnimationFrame(visualLoop(patternId))
   store.dispatch(patternMarkerPositionSet({
     patternId,

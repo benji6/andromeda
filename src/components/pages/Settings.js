@@ -2,7 +2,7 @@ import capitalize from 'capitalize'
 import {map} from 'ramda'
 import {connect} from 'react-redux'
 import React from 'react'
-import {updateBpm, updateRootNote, updateSelectedScale} from '../../actions'
+import {bpmSet, updateRootNote, updateSelectedScale} from '../../actions'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
@@ -37,7 +37,7 @@ export default connectComponent(({
         min={minBpm}
         onChange={comp(
           dispatch,
-          updateBpm,
+          bpmSet,
           Number,
           eventValuePath
         )}

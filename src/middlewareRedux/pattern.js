@@ -58,27 +58,21 @@ export default store => next => action => {
     case PATTERN_BEAT_PLAYING_START: {
       setTimeout(() => {
         const {currentTime, patternId} = action.payload
-        store.dispatch(patternNextLoopEndTimeSet({
-          patternId,
-          value: currentTime,
-        }))
+
+        store.dispatch(patternNextLoopEndTimeSet({patternId, value: currentTime}))
+
         const audioLoop = (i = 0) => {
-          const state = store.getState()
           const {
             patterns,
-            plugins,
             samples,
-            settings: {bpm},
-          } = state
+            settings: {noteDuration},
+          } = store.getState()
           const {
             activeNotes,
-            instrument,
             nextLoopEndTime,
             steps,
             xLength,
           } = patterns[patternId]
-          const instrumentObj = instrumentInstance(instrument, plugins)
-          const noteDuration = 60 / bpm
           const patternDuration = xLength * noteDuration
           const currentLoopEndTime = nextLoopEndTime
           const newLoopEndTime = nextLoopEndTime + patternDuration
@@ -101,7 +95,6 @@ export default store => next => action => {
               }
             }, activeNotes).concat(map(({x, y}) => ({
               id: `pattern-${patternId}-${x}-${y}-${i}`,
-              instrumentObj,
             }), steps))}))
 
           forEach(
@@ -127,12 +120,11 @@ export default store => next => action => {
         const {currentTime, patternId} = action.payload
         store.dispatch(patternNextLoopEndTimeSet({patternId, value: currentTime}))
         const audioLoop = (i = 0) => {
-          const state = store.getState()
           const {
             patterns,
             plugins,
-            settings: {bpm, rootNote, selectedScale},
-          } = state
+            settings: {noteDuration, rootNote, selectedScale},
+          } = store.getState()
           const {
             activeNotes,
             instrument,
@@ -143,7 +135,6 @@ export default store => next => action => {
             yLength,
           } = patterns[patternId]
           const instrumentObj = instrumentInstance(instrument, plugins)
-          const noteDuration = 60 / bpm
           const patternDuration = xLength * noteDuration
           const currentLoopEndTime = nextLoopEndTime
           const newLoopEndTime = nextLoopEndTime + patternDuration
