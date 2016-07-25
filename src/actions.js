@@ -12,7 +12,7 @@ export const [
   [ADD_EFFECT, addEffect],
   [ADD_INSTRUMENT_TO_CHANNEL, addInstrumentToChannel],
   [APP_INITIALIZE, appInitialize],
-  [BPM_SET, updateBpm],
+  [BPM_SET, bpmSet],
   [INSTANTIATE_EFFECT, instantiateEffect],
   [INSTANTIATE_INSTRUMENT, instantiateInstrument],
   [KEYBOARD_MONOPHONIC_SET, keyboardMonophonicSet],
