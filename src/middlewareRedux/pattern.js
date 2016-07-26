@@ -1,6 +1,8 @@
 import {
   forEach,
+  lensProp,
   map,
+  over,
   reject,
 } from 'ramda'
 import {
@@ -21,12 +23,8 @@ import scales from '../constants/scales'
 import patternPitchOffset from '../constants/patternPitchOffset'
 import sampleNames from '../constants/sampleNames'
 
+let sourceNodes = {}
 const timeoutIds = {}
-
-const stopBeatPattern = ({activeNotes}, patternId) => {
-  clearTimeout(timeoutIds[patternId])
-  delete timeoutIds[patternId]
-}
 
 const stopSynthPattern = ({activeNotes}, patternId) => {
   forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
@@ -38,17 +36,29 @@ const sampleGain = audioContext.createGain()
 sampleGain.gain.value = 0.5
 sampleGain.connect(audioContext.destination)
 
-const playSample = (buffer, startTime) => {
+const playSample = (buffer, startTime, patternId) => {
   const source = audioContext.createBufferSource()
   const stopTime = startTime + buffer.duration + 0.1
+  const overPatternId = over(lensProp(patternId))
 
   source.buffer = buffer
   source.connect(sampleGain)
   source.start(startTime)
   source.stop(stopTime)
 
+  sourceNodes = overPatternId(
+    sources => sources ? sources.add(source) : new Set([source]),
+    sourceNodes
+  )
+
   window.setTimeout(
-    () => source.disconnect(),
+    () => {
+      source.disconnect()
+      sourceNodes = overPatternId(
+        sources => (sources.delete(source), sources),
+        sourceNodes
+      )
+    },
     (stopTime - audioContext.currentTime) * 1000
   )
 }
@@ -68,7 +78,6 @@ export default store => next => action => {
             settings: {noteDuration},
           } = store.getState()
           const {
-            activeNotes,
             nextLoopEndTime,
             steps,
             xLength,
@@ -77,30 +86,18 @@ export default store => next => action => {
           const currentLoopEndTime = nextLoopEndTime
           const newLoopEndTime = nextLoopEndTime + patternDuration
 
-          store.dispatch(patternNextLoopEndTimeSet({
-            patternId,
-            value: newLoopEndTime,
-          }))
+          store.dispatch(patternNextLoopEndTimeSet({patternId, value: newLoopEndTime}))
 
           timeoutIds[patternId] = setTimeout(
             () => audioLoop(i + 1),
             (newLoopEndTime - audioContext.currentTime - 0.1) * 1000
           )
 
-          store.dispatch(patternActiveNotesSet({
-            patternId,
-            value: reject(({id}) => {
-              for (const {x, y} of steps) {
-                if (id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1) return true
-              }
-            }, activeNotes).concat(map(({x, y}) => ({
-              id: `pattern-${patternId}-${x}-${y}-${i}`,
-            }), steps))}))
-
           forEach(
             ({x, y}) => playSample(
               samples[sampleNames[y]],
-              currentLoopEndTime + noteDuration * x
+              currentLoopEndTime + noteDuration * x,
+              patternId
             ),
             steps
           )
@@ -112,7 +109,16 @@ export default store => next => action => {
     }
     case PATTERN_BEAT_PLAYING_STOP: {
       const patternId = action.payload
-      stopBeatPattern(store.getState().patterns[patternId], patternId)
+      forEach(key => {
+        const sources = sourceNodes[key]
+        forEach(sourceNode => {
+          sourceNode.stop()
+          sourceNode.disconnect()
+        }, sources)
+        sources.clear()
+      }, Object.keys(sourceNodes))
+      clearTimeout(timeoutIds[patternId])
+      delete timeoutIds[patternId]
       break
     }
     case PATTERN_SYNTH_PLAYING_START: {
