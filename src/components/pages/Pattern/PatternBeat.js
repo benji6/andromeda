@@ -10,11 +10,9 @@ import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
 import audioContext from '../../../audioContext'
 import {
-  patternActiveNotesAppend,
-  patternActiveNotesReject,
   patternBeatPlayingStart,
   patternBeatPlayingStop,
-  patternCellClick,
+  patternSynthCellClick,
   patternMarkerPositionSet,
 } from '../../../actions'
 import {mapIndexed} from '../../../utils/helpers'
@@ -37,7 +35,7 @@ const yLabel = i => {
   return sample.slice(0, sample.lastIndexOf('.wav'))
 }
 
-const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
+const cellClickHandler = (patternSynthCellClick, patternId) => y => x => () => {
   const {patterns, plugins, settings: {noteDuration}} = store.getState()
   const {
     activeNotes,
@@ -48,7 +46,7 @@ const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
     volume,
     xLength,
   } = patterns[patternId]
-  patternCellClick({patternId, x, y})
+  patternSynthCellClick({patternId, x, y})
   if (!playing) return
   const isAddedNote = none(note => note.x === x && note.y === y, steps)
   if (isAddedNote) {
@@ -64,14 +62,12 @@ const cellClickHandler = (patternCellClick, patternId) => y => x => () => {
       startTime: nextLoopEndTime + noteDuration * (x - xLength),
       stopTime: nextLoopEndTime + noteDuration * (x - xLength + 1),
     }
-    store.dispatch(patternActiveNotesAppend({patternId, value: {id, instrumentObj}}))
     instrumentObj.noteStart(note)
   } else {
     const {id, instrumentObj} = find(
       ({id}) => id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1,
       activeNotes
     )
-    store.dispatch(patternActiveNotesReject({patternId, value: x => x.id === id}))
     instrumentObj.noteStop(id)
   }
 }
@@ -132,7 +128,7 @@ const mapStateToProps = ({
 }
 
 const mapDispatchToProps = {
-  patternCellClick,
+  patternSynthCellClick,
   patternBeatPlayingStart,
   patternBeatPlayingStop,
 }
@@ -173,7 +169,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     render () {
       const {
         markerPosition,
-        patternCellClick,
+        patternSynthCellClick,
         patternData,
         patternId,
         playing,
@@ -187,7 +183,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         )}
         <Pattern {...{
           markerPosition,
-          onClick: cellClickHandler(patternCellClick, patternId),
+          onClick: cellClickHandler(patternSynthCellClick, patternId),
           patternData,
           red: true,
           yLabel,
