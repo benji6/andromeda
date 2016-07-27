@@ -1,13 +1,16 @@
 import {
+  find,
   forEach,
   lensProp,
   map,
+  none,
   over,
   reject,
 } from 'ramda'
 import {
   PATTERN_BEAT_PLAYING_START,
   PATTERN_BEAT_PLAYING_STOP,
+  PATTERN_SYNTH_CELL_CLICK,
   PATTERN_SYNTH_PLAYING_START,
   PATTERN_SYNTH_PLAYING_STOP,
   patternActiveNotesSet,
@@ -119,6 +122,44 @@ export default store => next => action => {
       }, Object.keys(sourceNodes))
       clearTimeout(timeoutIds[patternId])
       delete timeoutIds[patternId]
+      break
+    }
+    case PATTERN_SYNTH_CELL_CLICK: {
+      const {patternId, x, y} = action.payload
+      const {patterns, plugins, settings: {noteDuration, rootNote, selectedScale}} = store.getState()
+      const {
+        activeNotes,
+        instrument,
+        nextLoopEndTime,
+        playing,
+        steps,
+        volume,
+        xLength,
+        yLength,
+      } = patterns[patternId]
+      if (!playing) break
+      const isAddedNote = none(note => note.x === x && note.y === y, steps)
+      if (isAddedNote) {
+        const instrumentObj = instrumentInstance(instrument, plugins)
+        const id = `pattern-${patternId}-${x}-${y}`
+        const note = {
+          frequency: pitchToFrequency(pitchFromScaleIndex(
+            scales[selectedScale],
+            yLength - 1 - y
+          ) + rootNote + patternPitchOffset),
+          gain: volume,
+          id,
+          startTime: nextLoopEndTime + noteDuration * (x - xLength),
+          stopTime: nextLoopEndTime + noteDuration * (x - xLength + 1),
+        }
+        instrumentObj.noteStart(note)
+      } else {
+        const {id, instrumentObj} = find(
+          ({id}) => id.includes(`pattern-${patternId}-${x}-${y}`),
+          activeNotes
+        )
+        instrumentObj.noteStop(id)
+      }
       break
     }
     case PATTERN_SYNTH_PLAYING_START: {

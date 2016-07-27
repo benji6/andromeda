@@ -2,13 +2,10 @@ import 'web-audio-test-api'
 import test from 'tape'
 import reducer from './patterns'
 import {
-  patternActiveNotesAppend,
-  patternActiveNotesReject,
   patternActiveNotesSet,
   patternBeatAdd,
   patternBeatPlayingStart,
   patternBeatPlayingStop,
-  patternCellClick,
   patternDelete,
   patternInstrumentSet,
   patternMarkerPositionSet,
@@ -37,28 +34,6 @@ const initialState = [{
 
 test(`${reducerName} returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), initialState)
-  t.end()
-})
-
-test(`${reducerName} patternActiveNotesAppend`, t => {
-  t.deepEqual(reducer([{
-    activeNotes: [{b: 'note'}],
-    instrument: 'Prometheus',
-  }], patternActiveNotesAppend({patternId: 0, value: {a: 'note'}})), [{
-    activeNotes: [{b: 'note'}, {a: 'note'}],
-    instrument: 'Prometheus',
-  }])
-  t.end()
-})
-
-test(`${reducerName} patternActiveNotesReject`, t => {
-  t.deepEqual(reducer([{
-    activeNotes: [13, 14],
-    instrument: 'Prometheus',
-  }], patternActiveNotesReject({patternId: 0, value: x => x === 13})), [{
-    activeNotes: [14],
-    instrument: 'Prometheus',
-  }])
   t.end()
 })
 
@@ -136,25 +111,6 @@ test(`${reducerName} patternBeatPlayingStop`, t => {
     activeNotes: [],
     markerPosition: 0,
     playing: false,
-  }])
-  t.end()
-})
-
-test(`${reducerName} patternCellClick`, t => {
-  const payload = {patternId: 0, x: 1, y: 2}
-  t.deepEqual(reducer([{
-    instrument: 'Prometheus',
-    steps: [],
-  }], patternCellClick(payload)), [{
-    instrument: 'Prometheus',
-    steps: [{x: 1, y: 2}],
-  }])
-  t.deepEqual(reducer([{
-    instrument: 'Prometheus',
-    steps: [{x: 1, y: 2}],
-  }], patternCellClick(payload)), [{
-    instrument: 'Prometheus',
-    steps: [],
   }])
   t.end()
 })
