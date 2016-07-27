@@ -1,7 +1,5 @@
 import {
-  find,
   map,
-  none,
   range,
   repeat,
 } from 'ramda'
@@ -12,20 +10,15 @@ import audioContext from '../../../audioContext'
 import {
   patternBeatPlayingStart,
   patternBeatPlayingStop,
-  patternSynthCellClick,
+  patternBeatCellClick,
   patternMarkerPositionSet,
 } from '../../../actions'
 import {mapIndexed} from '../../../utils/helpers'
 import ButtonPlay from '../../atoms/ButtonPlay'
 import ButtonPrimary from '../../atoms/ButtonPrimary'
 import Pattern from '../../organisms/Pattern'
-import pitchToFrequency from '../../../audioHelpers/pitchToFrequency'
-import pitchFromScaleIndex from '../../../audioHelpers/pitchFromScaleIndex'
 import {stepExists} from '../../../reducers/patterns'
-import {instrumentInstance} from '../../../utils/derivedData'
 import store from '../../../store'
-import scales from '../../../constants/scales'
-import patternPitchOffset from '../../../constants/patternPitchOffset'
 import sampleNames from '../../../constants/sampleNames'
 
 let animationFrameRequest
@@ -33,43 +26,6 @@ let animationFrameRequest
 const yLabel = i => {
   const sample = sampleNames[i]
   return sample.slice(0, sample.lastIndexOf('.wav'))
-}
-
-const cellClickHandler = (patternSynthCellClick, patternId) => y => x => () => {
-  const {patterns, plugins, settings: {noteDuration}} = store.getState()
-  const {
-    activeNotes,
-    instrument,
-    nextLoopEndTime,
-    playing,
-    steps,
-    volume,
-    xLength,
-  } = patterns[patternId]
-  patternSynthCellClick({patternId, x, y})
-  if (!playing) return
-  const isAddedNote = none(note => note.x === x && note.y === y, steps)
-  if (isAddedNote) {
-    const instrumentObj = instrumentInstance(instrument, plugins)
-    const id = `pattern-${patternId}-${x}-${y}`
-    const note = {
-      frequency: pitchToFrequency(pitchFromScaleIndex(
-        scales.pentatonic,
-        15 - y
-      ) + patternPitchOffset),
-      gain: volume,
-      id,
-      startTime: nextLoopEndTime + noteDuration * (x - xLength),
-      stopTime: nextLoopEndTime + noteDuration * (x - xLength + 1),
-    }
-    instrumentObj.noteStart(note)
-  } else {
-    const {id, instrumentObj} = find(
-      ({id}) => id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1,
-      activeNotes
-    )
-    instrumentObj.noteStop(id)
-  }
 }
 
 const emptyPatternData = defaultMemoize((xLength, yLength) =>
@@ -128,7 +84,7 @@ const mapStateToProps = ({
 }
 
 const mapDispatchToProps = {
-  patternSynthCellClick,
+  patternBeatCellClick,
   patternBeatPlayingStart,
   patternBeatPlayingStop,
 }
@@ -169,7 +125,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
     render () {
       const {
         markerPosition,
-        patternSynthCellClick,
+        patternBeatCellClick,
         patternData,
         patternId,
         playing,
@@ -183,7 +139,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         )}
         <Pattern {...{
           markerPosition,
-          onClick: cellClickHandler(patternSynthCellClick, patternId),
+          onClick: y => x => () => patternBeatCellClick({patternId, x, y}),
           patternData,
           red: true,
           yLabel,

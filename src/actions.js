@@ -20,6 +20,7 @@ export const [
   [LOAD_PLUGIN_INSTRUMENT, loadPluginInstrument],
   [PATTERN_ACTIVE_NOTES_SET, patternActiveNotesSet],
   [PATTERN_BEAT_ADD, patternBeatAdd],
+  [PATTERN_BEAT_CELL_CLICK, patternBeatCellClick],
   [PATTERN_BEAT_PLAYING_START, patternBeatPlayingStart],
   [PATTERN_BEAT_PLAYING_STOP, patternBeatPlayingStop],
   [PATTERN_DELETE, patternDelete],
