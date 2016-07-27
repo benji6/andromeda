@@ -15,6 +15,7 @@ import {
 import {
   PATTERN_ACTIVE_NOTES_SET,
   PATTERN_BEAT_ADD,
+  PATTERN_BEAT_CELL_CLICK,
   PATTERN_BEAT_PLAYING_START,
   PATTERN_BEAT_PLAYING_STOP,
   PATTERN_DELETE,
@@ -73,6 +74,18 @@ export default (state = initialState, {type, payload}) => {
     case PATTERN_ACTIVE_NOTES_SET:
       return setPatternProp('activeNotes', payload, state)
     case PATTERN_BEAT_ADD: return append(beatPattern(), state)
+    case PATTERN_BEAT_CELL_CLICK: {
+      const {patternId, x, y} = payload
+      const xy = {x, y}
+      const {steps} = state[patternId]
+      return adjust(
+        overSteps(stepExists(x, y, steps)
+          ? reject(equals(xy))
+          : append(xy)),
+        patternId,
+        state
+      )
+    }
     case PATTERN_SYNTH_CELL_CLICK: {
       const {patternId, x, y} = payload
       const xy = {x, y}

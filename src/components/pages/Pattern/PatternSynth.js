@@ -148,11 +148,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         )}
         <Pattern {...{
           markerPosition,
-          onClick: y => x => () => patternSynthCellClick({
-            patternId,
-            x,
-            y,
-          }),
+          onClick: y => x => () => patternSynthCellClick({patternId, x, y}),
           patternData,
           yLabel: yLabel(selectedScale, yLength, rootNote),
         }} />
