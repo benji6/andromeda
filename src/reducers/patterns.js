@@ -65,7 +65,7 @@ export const synthPattern = () => ({
   yLength: 16,
 })
 
-const initialState = [synthPattern()]
+const initialState = [beatPattern(), synthPattern()]
 
 export const stepExists = (x0, y0, steps) => any(({x, y}) => x === x0 && y === y0, steps)
 const setPatternProp = (key, {patternId, value}, state) => adjust(assoc(key, value), patternId, state)

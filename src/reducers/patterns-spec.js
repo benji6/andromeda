@@ -19,21 +19,37 @@ import {
 } from '../actions'
 
 const reducerName = 'patterns reducer'
-const initialState = [{
-  activeNotes: [],
-  instrument: 'Prometheus',
-  steps: [],
-  markerPosition: 0,
-  playing: false,
-  playStartTime: null,
-  synthPattern: true,
-  xLength: 8,
-  yLength: 16,
-  volume: 1 / 3,
-}]
 
 test(`${reducerName} returns initial state`, t => {
-  t.deepEqual(reducer(undefined, {}), initialState)
+  t.deepEqual(
+    reducer(undefined, {}),
+    [
+      {
+        activeNotes: [],
+        beatPattern: true,
+        instrument: 'Prometheus',
+        markerPosition: 0,
+        playStartTime: null,
+        playing: false,
+        steps: [],
+        volume: 0.3333333333333333,
+        xLength: 8,
+        yLength: 15,
+      },
+      {
+        activeNotes: [],
+        instrument: 'Prometheus',
+        steps: [],
+        markerPosition: 0,
+        playing: false,
+        playStartTime: null,
+        synthPattern: true,
+        xLength: 8,
+        yLength: 16,
+        volume: 1 / 3,
+      },
+    ]
+  )
   t.end()
 })
 
@@ -173,22 +189,41 @@ test(`${reducerName} patternSynthPlayingStop`, t => {
 })
 
 test(`${reducerName} patternSynthAdd`, t => {
-  t.deepEqual(reducer([{
-    instrument: 'Prometheus',
-    steps: [],
-    playing: false,
-    xLength: 8,
-    yLength: 24,
-    volume: 1 / 3,
-  }], patternSynthAdd()), [{
-    instrument: 'Prometheus',
-    steps: [],
-    playing: false,
-    xLength: 8,
-    yLength: 24,
-    volume: 1 / 3,
-  },
-  initialState[0]])
+  t.deepEqual(
+    reducer(
+      [{
+        instrument: 'Prometheus',
+        steps: [],
+        playing: false,
+        xLength: 8,
+        yLength: 24,
+        volume: 1 / 3,
+      }],
+      patternSynthAdd()
+    ),
+    [
+      {
+        instrument: 'Prometheus',
+        steps: [],
+        playing: false,
+        xLength: 8,
+        yLength: 24,
+        volume: 1 / 3,
+      },
+      {
+        activeNotes: [],
+        instrument: 'Prometheus',
+        steps: [],
+        markerPosition: 0,
+        playing: false,
+        playStartTime: null,
+        synthPattern: true,
+        xLength: 8,
+        yLength: 16,
+        volume: 1 / 3,
+      },
+    ]
+  )
   t.end()
 })
 
