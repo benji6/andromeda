@@ -9,13 +9,14 @@ import {
   SONG_PLAYING_STOP,
   songActiveNotesSet,
 } from '../actions'
-import audioContext from '../audioContext'
-import {instrumentInstance} from '../utils/derivedData'
-import pitchToFrequency from '../audioHelpers/pitchToFrequency'
-import pitchFromScaleIndex from '../audioHelpers/pitchFromScaleIndex'
-import scales from '../constants/scales'
-import patternPitchOffset from '../constants/patternPitchOffset'
+import {cellId} from '../reducers/patterns'
 import {forEachIndexed} from '../utils/helpers'
+import {instrumentInstance} from '../utils/derivedData'
+import audioContext from '../audioContext'
+import patternPitchOffset from '../constants/patternPitchOffset'
+import pitchFromScaleIndex from '../audioHelpers/pitchFromScaleIndex'
+import pitchToFrequency from '../audioHelpers/pitchToFrequency'
+import scales from '../constants/scales'
 
 export default store => next => action => {
   switch (action.type) {
@@ -37,7 +38,7 @@ export default store => next => action => {
 
           newActiveNotes = newActiveNotes.concat(reject(({id}) => {
               for (const {x, y} of steps) {
-                if (id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1) {
+                if (id.indexOf(cellId(patternId, x, y)) !== -1) {
                   return true
                 }
               }

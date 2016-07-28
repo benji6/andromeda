@@ -34,6 +34,8 @@ import sampleNames from '../constants/sampleNames'
 import {instrumentInstance} from '../utils/derivedData'
 import store from '../store'
 
+export const cellId = (patternId, x, y) => `pattern-${patternId}-${x}-${y}`
+
 const overActiveNotes = over(lensProp('activeNotes'))
 const overSteps = over(lensProp('steps'))
 
@@ -90,22 +92,17 @@ export default (state = initialState, {type, payload}) => {
       const {patternId, x, y} = payload
       const xy = {x, y}
       const {instrument, steps} = state[patternId]
-      const id = `pattern-${patternId}-${x}-${y}`
+      const id = cellId(patternId, x, y)
       const instrumentObj = instrumentInstance(instrument, store.getState().plugins)
       const isAddedNote = none(note => note.x === x && note.y === y, steps)
 
       return adjust(
-        overSteps(stepExists(x, y, steps)
-          ? reject(equals(xy))
-          : append(xy)),
+        comp(
+          overSteps(stepExists(x, y, steps) ? reject(equals(xy)) : append(xy)),
+          overActiveNotes(isAddedNote ? append({id, instrumentObj}) : reject(x => x.id === id))
+        ),
         patternId,
-        adjust(
-          overActiveNotes(isAddedNote
-            ? append({id, instrumentObj})
-            : reject(x => x.id === id)),
-          patternId,
-          state
-        )
+        state
       )
     }
     case PATTERN_DELETE: return remove(payload, 1, state)

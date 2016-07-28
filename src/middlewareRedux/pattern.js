@@ -8,6 +8,7 @@ import {
   reject,
 } from 'ramda'
 import {
+  PATTERN_BEAT_CELL_CLICK,
   PATTERN_BEAT_PLAYING_START,
   PATTERN_BEAT_PLAYING_STOP,
   PATTERN_SYNTH_CELL_CLICK,
@@ -17,15 +18,22 @@ import {
   patternNextLoopEndTimeSet,
   PATTERNS_ALL_PLAYING_STOP,
 } from '../actions'
-import audioContext from '../audioContext'
-import {instrumentInstance} from '../utils/derivedData'
+import {cellId} from '../reducers/patterns'
 import {forEachIndexed} from '../utils/helpers'
-import pitchToFrequency from '../audioHelpers/pitchToFrequency'
-import pitchFromScaleIndex from '../audioHelpers/pitchFromScaleIndex'
-import scales from '../constants/scales'
+import {instrumentInstance} from '../utils/derivedData'
+import audioContext from '../audioContext'
 import patternPitchOffset from '../constants/patternPitchOffset'
+import pitchFromScaleIndex from '../audioHelpers/pitchFromScaleIndex'
+import pitchToFrequency from '../audioHelpers/pitchToFrequency'
 import sampleNames from '../constants/sampleNames'
+import scales from '../constants/scales'
 
+// schema:
+// {
+//   [patternId]: new Set([
+//     {id, sourceNode},
+//   ]),
+// }
 let sourceNodes = {}
 const timeoutIds = {}
 
@@ -39,26 +47,28 @@ const sampleGain = audioContext.createGain()
 sampleGain.gain.value = 0.5
 sampleGain.connect(audioContext.destination)
 
-const playSample = (buffer, startTime, patternId) => {
-  const source = audioContext.createBufferSource()
+const playSample = (id, buffer, startTime, patternId) => {
+  const sourceNode = audioContext.createBufferSource()
   const stopTime = startTime + buffer.duration + 0.1
   const overPatternId = over(lensProp(patternId))
 
-  source.buffer = buffer
-  source.connect(sampleGain)
-  source.start(startTime)
-  source.stop(stopTime)
+  sourceNode.buffer = buffer
+  sourceNode.connect(sampleGain)
+  sourceNode.start(startTime)
+  sourceNode.stop(stopTime)
+
+  const data = {id, sourceNode}
 
   sourceNodes = overPatternId(
-    sources => sources ? sources.add(source) : new Set([source]),
+    sources => sources ? sources.add(data) : new Set([data]),
     sourceNodes
   )
 
   window.setTimeout(
     () => {
-      source.disconnect()
+      sourceNode.disconnect()
       sourceNodes = overPatternId(
-        sources => (sources.delete(source), sources),
+        sources => (sources.delete(data), sources),
         sourceNodes
       )
     },
@@ -68,6 +78,40 @@ const playSample = (buffer, startTime, patternId) => {
 
 export default store => next => action => {
   switch (action.type) {
+    case PATTERN_BEAT_CELL_CLICK: {
+      const {patternId, x, y} = action.payload
+      const {
+        patterns,
+        samples,
+        settings: {noteDuration},
+      } = store.getState()
+      const {
+        nextLoopEndTime,
+        playing,
+        xLength,
+        steps,
+      } = patterns[patternId]
+      if (!playing) break
+      const patternDuration = xLength * noteDuration
+      const isAddedNote = none(note => note.x === x && note.y === y, steps)
+      const id = cellId(patternId, x, y)
+      if (isAddedNote) {
+        playSample(
+          id,
+          samples[sampleNames[y]],
+          nextLoopEndTime - patternDuration + noteDuration * x,
+          patternId
+        )
+      } else {
+        const set = sourceNodes[patternId]
+        const entry = find(a => a.id === id, [...set])
+        const {sourceNode} = entry
+        set.delete(entry)
+        sourceNode.stop()
+        sourceNode.disconnect()
+      }
+      break
+    }
     case PATTERN_BEAT_PLAYING_START: {
       setTimeout(() => {
         const {currentTime, patternId} = action.payload
@@ -98,6 +142,7 @@ export default store => next => action => {
 
           forEach(
             ({x, y}) => playSample(
+              cellId(patternId, x, y),
               samples[sampleNames[y]],
               currentLoopEndTime + noteDuration * x,
               patternId
@@ -114,7 +159,7 @@ export default store => next => action => {
       const patternId = action.payload
       forEach(key => {
         const sources = sourceNodes[key]
-        forEach(sourceNode => {
+        forEach(({sourceNode}) => {
           sourceNode.stop()
           sourceNode.disconnect()
         }, sources)
@@ -141,7 +186,7 @@ export default store => next => action => {
       const isAddedNote = none(note => note.x === x && note.y === y, steps)
       if (isAddedNote) {
         const instrumentObj = instrumentInstance(instrument, plugins)
-        const id = `pattern-${patternId}-${x}-${y}`
+        const id = cellId(patternId, x, y)
         const note = {
           frequency: pitchToFrequency(pitchFromScaleIndex(
             scales[selectedScale],
@@ -155,7 +200,7 @@ export default store => next => action => {
         instrumentObj.noteStart(note)
       } else {
         const {id, instrumentObj} = find(
-          ({id}) => id.includes(`pattern-${patternId}-${x}-${y}`),
+          ({id}) => id.includes(cellId(patternId, x, y)),
           activeNotes
         )
         instrumentObj.noteStop(id)
@@ -200,7 +245,7 @@ export default store => next => action => {
             patternId,
             value: reject(({id}) => {
               for (const {x, y} of steps) {
-                if (id.indexOf(`pattern-${patternId}-${x}-${y}`) !== -1) return true
+                if (id.includes(cellId(patternId, x, y))) return true
               }
             }, activeNotes).concat(map(({x, y}) => ({
               id: `pattern-${patternId}-${x}-${y}-${i}`,
