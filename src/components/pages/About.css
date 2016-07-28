@@ -1,21 +1,28 @@
-.about {
+.About {
   color: var(--blue-90);
   margin: 1rem;
 }
+
 @media (min-width: 32rem) {
-  .about {
+  .About {
     margin-left: auto;
     margin-right: auto;
     max-width: 32rem;
     text-align: justify;
   }
 }
-.about__link {
+
+.About__Link {
   color: var(--green-80);
   font-weight: 900;
   text-decoration: none;
+  transition: color var(--transition-fast);
 }
-.about__title {
+.About__Link:hover {
+  color: var(--green-90);
+}
+
+.About__Title {
   font-weight: 500;
   text-align: center;
 }
