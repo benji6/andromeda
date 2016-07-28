@@ -2,6 +2,9 @@ import {createElement} from 'react'
 import {Link} from 'react-router'
 import {makeClassName} from '../../utils/helpers'
 
+const cellHeight = 6
+const cellWidth = 16
+
 export default ({steps, to, xLength, yLength, red}) => createElement(
   'div',
   {className: makeClassName(['PatternSvg', [red, 'PatternSvg--red']])},
@@ -10,16 +13,16 @@ export default ({steps, to, xLength, yLength, red}) => createElement(
     {to},
     createElement(
       'svg',
-      {width: 16 * xLength, height: 6 * yLength},
+      {width: xLength * cellWidth, height: yLength * cellHeight},
       steps.map(({x, y}) => createElement(
         'rect',
         {
           className: makeClassName(['PatternSvg__step', [red, 'PatternSvg__step--red']]),
-          height: 5,
+          height: cellHeight,
           key: `${x}${y}`,
-          width: 15,
-          x: x * 15,
-          y: y * 5,
+          width: cellWidth,
+          x: x * cellWidth,
+          y: y * cellHeight,
         }
       ))
     )

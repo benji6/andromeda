@@ -2,14 +2,15 @@
   border-radius: 0.2rem;
   box-shadow: 0 0 0 0.1rem var(--blue-80);
   margin-left: 1rem;
-  padding: 0.1rem;
-}
-.PatternSvg--red {
-  box-shadow: 0 0 0 0.1rem var(--red-80);
+  padding: 0.25rem;
 }
 .PatternSvg:hover {
   background: var(--gray-10);
   box-shadow: 0 0 1rem 0.3rem var(--blue-90);
+}
+
+.PatternSvg--red {
+  box-shadow: 0 0 0 0.1rem var(--red-80);
 }
 .PatternSvg--red:hover {
   box-shadow: 0 0 1rem 0.3rem var(--red-90);

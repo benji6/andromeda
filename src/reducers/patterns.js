@@ -2,6 +2,7 @@ import {
   adjust,
   any,
   assoc,
+  concat,
   equals,
   flip,
   lensProp,
@@ -40,7 +41,6 @@ const overActiveNotes = over(lensProp('activeNotes'))
 const overSteps = over(lensProp('steps'))
 
 export const beatPattern = () => ({
-  activeNotes: [],
   beatPattern: true,
   instrument: 'Prometheus',
   markerPosition: 0,
@@ -65,7 +65,23 @@ export const synthPattern = () => ({
   yLength: 16,
 })
 
-const initialState = [beatPattern(), synthPattern()]
+const initialState = [
+  overSteps(concat([
+    {x: 0, y: 0},
+    {x: 1, y: 0},
+    {x: 2, y: 0},
+    {x: 3, y: 0},
+    {x: 4, y: 0},
+    {x: 5, y: 0},
+    {x: 6, y: 0},
+    {x: 7, y: 0},
+    {x: 0, y: 8},
+    {x: 4, y: 8},
+    {x: 2, y: 13},
+    {x: 6, y: 13},
+  ]), beatPattern()),
+  synthPattern(),
+]
 
 export const stepExists = (x0, y0, steps) => any(({x, y}) => x === x0 && y === y0, steps)
 const setPatternProp = (key, {patternId, value}, state) => adjust(assoc(key, value), patternId, state)
