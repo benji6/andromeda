@@ -60,10 +60,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
           </ButtonPrimary>
           <PatternSvg {...patterns[i]} red={beatPattern} to={`/controllers/pattern/${i}`} />
         </div>, patterns)}
-    <div className='Song__AddContainer'>
-      <Plus {...{onClick: patternSynthAdd}}>NEW SYNTH PATTERN</Plus>
-      <Plus {...{onClick: patternBeatAdd, style: {display: 'none'}}}>NEW BEAT PATTERN</Plus>
-    </div>
+    <Plus {...{onClick: patternSynthAdd}}>NEW SYNTH PATTERN</Plus>
+    <Plus {...{onClick: patternBeatAdd}}>NEW BEAT PATTERN</Plus>
     <ButtonPlay {...{
       onPlay: songPlayingStart,
       onStop: songPlayingStop,
