@@ -105,10 +105,13 @@ export default store => next => action => {
       } else {
         const set = sourceNodes[patternId]
         const entry = find(a => a.id === id, [...set])
-        const {sourceNode} = entry
-        set.delete(entry)
-        sourceNode.stop()
-        sourceNode.disconnect()
+
+        if (entry) {
+          const {sourceNode} = entry
+          set.delete(entry)
+          sourceNode.stop()
+          sourceNode.disconnect()
+        }
       }
       break
     }
