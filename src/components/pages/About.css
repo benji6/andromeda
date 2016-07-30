@@ -1,6 +1,7 @@
 .About {
   color: var(--blue-90);
   margin: 1rem;
+  text-align: justify;
 }
 
 @media (min-width: 32rem) {

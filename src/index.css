@@ -20,6 +20,7 @@
 @import 'components/molecules/XLabels';
 @import 'components/organisms/ControlModule';
 @import 'components/organisms/ControlPad';
+@import 'components/organisms/Navigation';
 @import 'components/organisms/pattern';
 @import 'components/organisms/PatternSvg';
 @import 'components/organisms/spinner';

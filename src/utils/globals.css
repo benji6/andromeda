@@ -7,12 +7,6 @@ body {
   -webkit-user-select: none;
 }
 
-nav {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
 .display-table { display: table }
 .inline-block { display: inline-block; }
 .margin-bottom { margin-bottom: 2rem; }
