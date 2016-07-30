@@ -1,11 +1,10 @@
-import React from 'react'
+import {createElement} from 'react'
 import HollowButton from '../atoms/HollowButton'
 
-export default () =>
-  <nav className='navigation'>
-    <HollowButton to='/controllers/control-pad'>Pad</HollowButton>
-    <HollowButton to='/controllers/song'>Song</HollowButton>
-    <HollowButton to='/channels'>FX</HollowButton>
-    <HollowButton to='/settings'>Settings</HollowButton>
-    <HollowButton to='/about'>?</HollowButton>
-  </nav>
+export default () => createElement('nav', {className: 'Navigation'},
+  createElement(HollowButton, {to: '/controllers/control-pad'}, 'Pad'),
+  createElement(HollowButton, {to: '/controllers/song'}, 'Song'),
+  createElement(HollowButton, {to: '/channels'}, 'FX'),
+  createElement(HollowButton, {to: '/settings'}, 'Settings'),
+  createElement(HollowButton, {to: '/about'}, '?'),
+)

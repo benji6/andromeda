@@ -149,11 +149,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(
           onStop: this.onStop,
           playing,
         }} />
-        <nav>
-          <ButtonPrimary to={`/controllers/pattern/${patternId}/settings`}>
-            Options
-          </ButtonPrimary>
-        </nav>
+        <ButtonPrimary to={`/controllers/pattern/${patternId}/settings`}>
+          Options
+        </ButtonPrimary>
       </div>
     }
   }

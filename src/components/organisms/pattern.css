@@ -3,7 +3,7 @@
   flex-wrap: wrap;
   justify-content: center;
   position: relative;
-  width: var(--pattern-total-width);
+  width: 100vw;
 }
 .pattern__body {
   height: 52vh;
