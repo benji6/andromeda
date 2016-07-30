@@ -10,6 +10,7 @@
 @import 'components/atoms/HollowButton';
 @import 'components/atoms/InputLabel';
 @import 'components/atoms/InputSelect';
+@import 'components/atoms/LinkExternal';
 @import 'components/atoms/Slider';
 @import 'components/atoms/Step';
 @import 'components/atoms/WelcomeMessage';
