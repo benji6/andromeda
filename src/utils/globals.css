@@ -17,8 +17,6 @@ nav {
 .inline-block { display: inline-block; }
 .margin-bottom { margin-bottom: 2rem; }
 .margin-horizontal-small { margin-left: 0.5rem; margin-right: 0.5rem; }
-.padding-0 { padding: 0.5rem; }
-.padding-1 { padding: 1rem; }
 
 .flex-column {
   display: flex;

@@ -25,6 +25,7 @@
 @import 'components/organisms/spinner';
 @import 'components/organisms/table-center';
 @import 'components/pages/About';
+@import 'components/pages/ControlPadPage';
 @import 'components/pages/Pattern';
 @import 'components/pages/Song';
 @import 'components/pages/UpgradeBrowser';
