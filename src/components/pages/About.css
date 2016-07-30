@@ -12,16 +12,6 @@
   }
 }
 
-.About__Link {
-  color: var(--green-80);
-  font-weight: 900;
-  text-decoration: none;
-  transition: color var(--transition-fast);
-}
-.About__Link:hover {
-  color: var(--green-90);
-}
-
 .About__Title {
   font-weight: 500;
   text-align: center;
