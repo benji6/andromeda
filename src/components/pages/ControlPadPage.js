@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {instrumentInstance} from '../../utils/derivedData'
 import ControlPad from '../organisms/ControlPad'
@@ -47,15 +47,15 @@ export default connectComponent(({
   range,
   rootNote,
 }) =>
-  <div>
-    <div className='text-center'>
-      <ControlPad {...{
-        inputStopHandler: () => {
+  createElement('div', {className: 'ControlPadPage'},
+    createElement('div', null,
+      createElement(ControlPad, {
+        inputStopHandler () {
           currentlyPlayingPitch = null
           const instance = instrumentInstance(instrument, plugins)
           instance.noteStop(controlPadId)
         },
-        inputStartHandler: ({xRatio, yRatio}) => {
+        inputStartHandler ({xRatio, yRatio}) {
           const instance = instrumentInstance(instrument, plugins)
 
           currentlyPlayingPitch = noScale
@@ -68,7 +68,7 @@ export default connectComponent(({
             id: controlPadId,
           })
         },
-        inputModifyHandler: ({xRatio, yRatio}) => {
+        inputModifyHandler ({xRatio, yRatio}) {
           const pitch = noScale
             ? 12 * range * xRatio
             : calculatePitch(range * xRatio)
@@ -93,9 +93,11 @@ export default connectComponent(({
             ? instance.noteStart(note)
             : instance.noteModify(note)
         },
-      }}/>
-    </div>
-    <nav>
-      <ButtonPrimary to='/controllers/control-pad/settings'>Options</ButtonPrimary>
-    </nav>
-  </div>)
+      })
+    ),
+    createElement(
+      ButtonPrimary,
+      {to: '/controllers/control-pad/settings'},
+      'Options'
+    )
+  ))
