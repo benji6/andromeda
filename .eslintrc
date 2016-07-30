@@ -16,8 +16,7 @@
     "K": false,
     "last": false,
     "pred": false,
-    "succ": false,
-    "THREE": false
+    "succ": false
   },
   "parser": "babel-eslint",
   "plugins": [
