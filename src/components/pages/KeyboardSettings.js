@@ -7,9 +7,9 @@ import {eventValuePath} from '../../utils/helpers'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import {
   keyboardMonophonicSet,
-  updateKeyboardInstrument,
-  updateKeyboardOctave,
-  updateKeyboardVolume,
+  keyboardInstrumentSet,
+  keyboardOctaveSet,
+  keyboardVolumeSet,
 } from '../../actions'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import InputLabel from '../atoms/InputLabel'
@@ -26,7 +26,7 @@ export default connectComponent(({keyboard, dispatch, plugins}) =>
       defaultValue={keyboard.instrument}
       handleChange={(comp(
         dispatch,
-        updateKeyboardInstrument,
+        keyboardInstrumentSet,
         eventValuePath
       ))}
       label='Instrument'
@@ -39,7 +39,7 @@ export default connectComponent(({keyboard, dispatch, plugins}) =>
       max='1'
       min='0'
       step='0.01'
-      onChange={comp(dispatch, updateKeyboardVolume, Number, eventValuePath)}
+      onChange={comp(dispatch, keyboardVolumeSet, Number, eventValuePath)}
       output={Math.round(keyboard.volume * 100)}
       text='Volume'
       value={keyboard.volume}
@@ -47,7 +47,7 @@ export default connectComponent(({keyboard, dispatch, plugins}) =>
     <RangeSelector
       max='2'
       min='-3'
-      onChange={comp(dispatch, updateKeyboardOctave, Number, eventValuePath)}
+      onChange={comp(dispatch, keyboardOctaveSet, Number, eventValuePath)}
       output={keyboard.octave}
       text='Octave'
       value={keyboard.octave}

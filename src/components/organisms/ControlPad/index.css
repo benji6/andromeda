@@ -1,4 +1,9 @@
 .ControlPad {
+  cursor: crosshair;
+  position: relative;
+}
+
+.ControlPad__Canvas {
   background: radial-gradient(
     circle,
     var(--turquoise-light) 0%,
@@ -6,5 +11,35 @@
     var(--gray-00) 91.67%,
     var(--blue-10) 100%
   );
-  cursor: crosshair;
+}
+
+.ControlPad__Message {
+  align-items: center;
+  animation-direction: alternate;
+  animation-duration: var(--transition-slow);
+  animation-iteration-count: infinite;
+  animation-name: pulse;
+  animation-timing-function: ease-out;
+  bottom: 0;
+  color: var(--blue-90);
+  display: flex;
+  font-size: 1.25rem;
+  font-weight: bold;
+  justify-content: center;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  text-shadow: var(--blue-10) 0.1rem 0.1rem;
+  top: 0;
+  transition: opacity 1s;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 1;
+  }
 }

@@ -2,9 +2,9 @@ import test from 'tape'
 import reducer, {initialState} from './keyboard'
 import {
   keyboardMonophonicSet,
-  updateKeyboardInstrument,
-  updateKeyboardOctave,
-  updateKeyboardVolume,
+  keyboardInstrumentSet,
+  keyboardOctaveSet,
+  keyboardVolumeSet,
 } from '../actions'
 
 const reducerName = 'keyboard'
@@ -27,26 +27,26 @@ test(`${reducerName} reducer keyboardMonophonicSet`, t => {
   t.end()
 })
 
-test(`${reducerName} reducer updateKeyboardInstrument`, t => {
-  t.deepEqual(reducer(undefined, updateKeyboardInstrument('piano')),
+test(`${reducerName} reducer keyboardInstrumentSet`, t => {
+  t.deepEqual(reducer(undefined, keyboardInstrumentSet('piano')),
               {...initialState, instrument: 'piano'})
-  t.deepEqual(reducer(undefined, updateKeyboardInstrument('tuba')),
+  t.deepEqual(reducer(undefined, keyboardInstrumentSet('tuba')),
               {...initialState, instrument: 'tuba'})
   t.end()
 })
 
-test(`${reducerName} reducer updateKeyboardOctave`, t => {
-  t.deepEqual(reducer(undefined, updateKeyboardOctave(1)),
+test(`${reducerName} reducer keyboardOctaveSet`, t => {
+  t.deepEqual(reducer(undefined, keyboardOctaveSet(1)),
               {...initialState, octave: 1})
-  t.deepEqual(reducer(undefined, updateKeyboardOctave(-1)),
+  t.deepEqual(reducer(undefined, keyboardOctaveSet(-1)),
               {...initialState, octave: -1})
   t.end()
 })
 
-test(`${reducerName} reducer updateKeyboardVolume`, t => {
-  t.deepEqual(reducer(undefined, updateKeyboardVolume(0.5)),
+test(`${reducerName} reducer keyboardVolumeSet`, t => {
+  t.deepEqual(reducer(undefined, keyboardVolumeSet(0.5)),
               {...initialState, volume: 0.5})
-  t.deepEqual(reducer(undefined, updateKeyboardVolume(0.6)),
+  t.deepEqual(reducer(undefined, keyboardVolumeSet(0.6)),
               {...initialState, volume: 0.6})
   t.end()
 })

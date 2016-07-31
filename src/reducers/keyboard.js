@@ -1,9 +1,9 @@
 import {assoc} from 'ramda'
 import {
   KEYBOARD_MONOPHONIC_SET,
-  UPDATE_KEYBOARD_INSTRUMENT,
-  UPDATE_KEYBOARD_OCTAVE,
-  UPDATE_KEYBOARD_VOLUME,
+  KEYBOARD_INSTRUMENT_SET,
+  KEYBOARD_OCTAVE_SET,
+  KEYBOARD_VOLUME_SET,
 } from '../actions'
 
 export const initialState = {
@@ -15,10 +15,10 @@ export const initialState = {
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
+    case KEYBOARD_INSTRUMENT_SET: return {...state, instrument: payload}
     case KEYBOARD_MONOPHONIC_SET: return assoc('monophonic', payload, state)
-    case UPDATE_KEYBOARD_INSTRUMENT: return {...state, instrument: payload}
-    case UPDATE_KEYBOARD_OCTAVE: return {...state, octave: payload}
-    case UPDATE_KEYBOARD_VOLUME: return {...state, volume: payload}
+    case KEYBOARD_OCTAVE_SET: return {...state, octave: payload}
+    case KEYBOARD_VOLUME_SET: return {...state, volume: payload}
     default: return state
   }
 }
