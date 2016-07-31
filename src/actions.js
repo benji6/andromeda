@@ -27,7 +27,6 @@ export const [
   [PATTERN_SYNTH_PLAYING_STOP, patternSynthPlayingStop],
   [PATTERN_VOLUME_SET, patternVolumeSet],
   [PATTERN_X_LENGTH_SET, patternXLengthSet],
-  [PATTERNS_ALL_PLAYING_STOP, patternsAllPlayingStop],
   [REMOVE_CHANNEL, removeChannel],
   [REMOVE_EFFECT_FROM_CHANNEL, removeEffectFromChannel],
   [REMOVE_INSTRUMENT_FROM_CHANNEL, removeInstrumentFromChannel],

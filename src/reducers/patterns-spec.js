@@ -10,12 +10,12 @@ import {
   patternInstrumentSet,
   patternMarkerPositionSet,
   patternNextLoopEndTimeSet,
-  patternsAllPlayingStop,
   patternSynthAdd,
   patternSynthPlayingStart,
   patternSynthPlayingStop,
   patternVolumeSet,
   patternXLengthSet,
+  songPlayingStart,
 } from '../actions'
 
 const reducerName = 'patterns reducer'
@@ -238,33 +238,6 @@ test(`${reducerName} patternSynthAdd`, t => {
   t.end()
 })
 
-test(`${reducerName} patternsAllPlayingStop`, t => {
-  t.deepEqual(reducer([
-    {
-      activeNotes: [1, 2, 3],
-      markerPosition: 0.5,
-      playing: true,
-    },
-    {
-      activeNotes: [1, 2, 3],
-      markerPosition: 0.5,
-      playing: true,
-    },
-], patternsAllPlayingStop()), [
-  {
-    activeNotes: [],
-    markerPosition: 0,
-    playing: false,
-  },
-  {
-    activeNotes: [],
-    markerPosition: 0,
-    playing: false,
-  },
-])
-  t.end()
-})
-
 test(`${reducerName} patternMarkerPositionSet`, t => {
   t.deepEqual(
     reducer(
@@ -317,5 +290,32 @@ test(`${reducerName} patternVolumeSet`, t => {
     ),
     [{volume: 12}]
   )
+  t.end()
+})
+
+test(`${reducerName} songPlayingStart`, t => {
+  t.deepEqual(reducer([
+    {
+      activeNotes: [1, 2, 3],
+      markerPosition: 0.5,
+      playing: true,
+    },
+    {
+      activeNotes: [1, 2, 3],
+      markerPosition: 0.5,
+      playing: true,
+    },
+  ], songPlayingStart()), [
+    {
+      activeNotes: [],
+      markerPosition: 0,
+      playing: false,
+    },
+    {
+      activeNotes: [],
+      markerPosition: 0,
+      playing: false,
+    },
+  ])
   t.end()
 })
