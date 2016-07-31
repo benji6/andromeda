@@ -26,7 +26,6 @@ test(`${reducerName} returns initial state`, t => {
     [
       {
         beatPattern: true,
-        instrument: 'Prometheus',
         markerPosition: 0,
         playStartTime: null,
         playing: false,
@@ -44,7 +43,7 @@ test(`${reducerName} returns initial state`, t => {
           {x: 2, y: 13},
           {x: 6, y: 13},
         ],
-        volume: 0.3333333333333333,
+        volume: 0.5,
         xLength: 8,
         yLength: 15,
       },
@@ -95,14 +94,13 @@ test(`${reducerName} patternBeatAdd`, t => {
     },
     {
       beatPattern: true,
-      instrument: 'Prometheus',
       steps: [],
       markerPosition: 0,
       playing: false,
       playStartTime: null,
       xLength: 8,
       yLength: 15,
-      volume: 1 / 3,
+      volume: 0.5,
     },
   ])
   t.end()

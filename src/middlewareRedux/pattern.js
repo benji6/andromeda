@@ -47,7 +47,8 @@ const sampleGain = audioContext.createGain()
 sampleGain.gain.value = 0.5
 sampleGain.connect(audioContext.destination)
 
-const playSample = (id, buffer, startTime, patternId) => {
+const playSample = (id, buffer, startTime, patternId, gain) => {
+  sampleGain.gain.value = gain
   const sourceNode = audioContext.createBufferSource()
   const stopTime = startTime + buffer.duration + 0.1
   const overPatternId = over(lensProp(patternId))
@@ -131,6 +132,7 @@ export default store => next => action => {
             nextLoopEndTime,
             steps,
             xLength,
+            volume,
           } = patterns[patternId]
           const patternDuration = xLength * noteDuration
           const currentLoopEndTime = nextLoopEndTime
@@ -148,7 +150,8 @@ export default store => next => action => {
               cellId(patternId, x, y),
               samples[sampleNames[y]],
               currentLoopEndTime + noteDuration * x,
-              patternId
+              patternId,
+              volume
             ),
             steps
           )

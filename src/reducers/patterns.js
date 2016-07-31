@@ -42,12 +42,11 @@ const overSteps = over(lensProp('steps'))
 
 export const beatPattern = () => ({
   beatPattern: true,
-  instrument: 'Prometheus',
   markerPosition: 0,
   playing: false,
   playStartTime: null,
   steps: [],
-  volume: 1 / 3,
+  volume: 0.5,
   xLength: 8,
   yLength: sampleNames.length,
 })
