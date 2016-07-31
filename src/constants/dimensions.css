@@ -1,5 +1,3 @@
 :root {
-  --transition-fast: 0.2s;
-
   --pattern-side-length: 100vw / 12 * 11 / 9;
 }

@@ -5,11 +5,11 @@ import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
 import {eventValuePath, eventCheckedPath} from '../../utils/helpers'
 import {
-  updateControlPadInstrument,
-  updateControlPadNoScale,
-  updateControlPadOctave,
-  updateControlPadPortamento,
-  updateControlPadRange,
+  controlPadInstrumentSet,
+  controlPadNoScaleSet,
+  controlPadOctaveSet,
+  controlPadPortamentoSet,
+  controlPadRangeSet,
 } from '../../actions'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import InputLabel from '../atoms/InputLabel'
@@ -38,7 +38,7 @@ export default connectComponent(({
       defaultValue={controlPad.instrument}
       handleChange={comp(
         dispatch,
-        updateControlPadInstrument,
+        controlPadInstrumentSet,
         eventValuePath
       )}
       label='Instrument'
@@ -52,7 +52,7 @@ export default connectComponent(({
       min='-3'
       onChange={comp(
         dispatch,
-        updateControlPadOctave,
+        controlPadOctaveSet,
         Number,
         eventValuePath
       )}
@@ -65,7 +65,7 @@ export default connectComponent(({
       min='1'
       onChange={comp(
         dispatch,
-        updateControlPadRange,
+        controlPadRangeSet,
         Number,
         eventValuePath
       )}
@@ -75,12 +75,12 @@ export default connectComponent(({
     />
     <CheckboxSelector
       checked={controlPad.portamento}
-      onChange={comp(dispatch, updateControlPadPortamento, eventCheckedPath)}
+      onChange={comp(dispatch, controlPadPortamentoSet, eventCheckedPath)}
       text='Portamento'
     />
     <CheckboxSelector
       checked={controlPad.noScale}
-      onChange={comp(dispatch, updateControlPadNoScale, eventCheckedPath)}
+      onChange={comp(dispatch, controlPadNoScaleSet, eventCheckedPath)}
       text='No Scale'
     />
     <div>

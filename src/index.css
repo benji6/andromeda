@@ -1,5 +1,6 @@
 @import 'constants/colors';
-@import 'constants/timeAndSpace';
+@import 'constants/dimensions';
+@import 'constants/timings';
 @import 'utils/globals';
 
 @import 'components/atoms/ButtonIcon';

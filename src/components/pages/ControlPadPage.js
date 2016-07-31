@@ -1,5 +1,6 @@
 import {createElement} from 'react'
 import {connect} from 'react-redux'
+import {controlPadTouched} from '../../actions'
 import {instrumentInstance} from '../../utils/derivedData'
 import ControlPad from '../organisms/ControlPad'
 import ButtonPrimary from '../atoms/ButtonPrimary'
@@ -18,13 +19,14 @@ const calculatePitch = ratio => {
   return scale[(i % length + length) % length] + 12 * Math.floor(i / length)
 }
 
-const connectComponent = connect(({
+const mapStateToProps = ({
   controlPad: {
     instrument,
     noScale,
     octave,
     portamento,
     range,
+    touched,
   },
   plugins,
   settings: {rootNote},
@@ -36,9 +38,13 @@ const connectComponent = connect(({
   portamento,
   range,
   rootNote,
-}))
+  touched,
+})
 
-export default connectComponent(({
+const mapDispatchToProps = {controlPadTouched}
+
+export default connect(mapStateToProps, mapDispatchToProps)(({
+  controlPadTouched,
   instrument,
   noScale,
   octave,
@@ -46,10 +52,12 @@ export default connectComponent(({
   portamento,
   range,
   rootNote,
+  touched,
 }) =>
   createElement('div', {className: 'ControlPadPage'},
     createElement('div', null,
       createElement(ControlPad, {
+        controlPadTouched,
         inputStopHandler () {
           currentlyPlayingPitch = null
           const instance = instrumentInstance(instrument, plugins)
@@ -93,6 +101,7 @@ export default connectComponent(({
             ? instance.noteStart(note)
             : instance.noteModify(note)
         },
+        touched,
       })
     ),
     createElement(

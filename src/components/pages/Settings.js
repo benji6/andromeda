@@ -2,7 +2,7 @@ import capitalize from 'capitalize'
 import {map} from 'ramda'
 import {connect} from 'react-redux'
 import React from 'react'
-import {bpmSet, updateRootNote, updateSelectedScale} from '../../actions'
+import {bpmSet, rootNoteSet, selectedScaleSet} from '../../actions'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
@@ -50,7 +50,7 @@ export default connectComponent(({
         min='-36'
         onChange={comp(
           dispatch,
-          updateRootNote,
+          rootNoteSet,
           Number,
           eventValuePath
         )}
@@ -60,7 +60,7 @@ export default connectComponent(({
       />
       <Selector
         defaultValue={selectedScale}
-        handleChange={comp(dispatch, updateSelectedScale, eventValuePath)}
+        handleChange={comp(dispatch, selectedScaleSet, eventValuePath)}
         label='Scale'
         options={map(
           value => ({text: capitalize.words(value), value}),
