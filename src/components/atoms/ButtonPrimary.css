@@ -12,14 +12,13 @@
   padding: 0.75rem 1rem;
   text-align: center;
   text-decoration: none;
-  transition-duration: var(--transition-fast);
+  transition: background var(--transition-fast);
 }
 .ButtonPrimary:active {
   background: linear-gradient(var(--blue-60), var(--blue-70));
 }
 .ButtonPrimary:hover {
   box-shadow: var(--blue-60) 0 0 1rem 0.1rem;
-  transition-duration: var(--transition-fast);
 }
 
 .ButtonPrimary--small {
@@ -33,12 +32,10 @@
 .ButtonPrimary--small:active {
   background: linear-gradient(var(--blue-20), var(--blue-70));
   border-color: var(--blue-20);
-  transition-duration: 0s;
 }
 .ButtonPrimary--small:hover {
   background: linear-gradient(var(--blue-60), var(--blue-70));
   box-shadow: none;
-  transition-duration: var(--transition-fast);
 }
 
 .ButtonPrimary--red {
