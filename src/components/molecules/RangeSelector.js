@@ -1,9 +1,9 @@
-import React from 'react'
+import {createElement} from 'react'
 import Slider from '../atoms/Slider'
 import InputLabel from '../atoms/InputLabel'
 
 export default ({text, ...props}) =>
-  <label className='selector'>
-    <InputLabel>{text}</InputLabel>
-    <Slider type='range' {...props} />
-  </label>
+  createElement('label', null,
+    createElement(InputLabel, null, text),
+    createElement(Slider, {type: 'range', ...props})
+  )
