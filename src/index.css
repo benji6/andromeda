@@ -28,5 +28,6 @@
 @import 'components/pages/About';
 @import 'components/pages/ControlPadPage';
 @import 'components/pages/Pattern';
+@import 'components/pages/PatternSettings';
 @import 'components/pages/Song';
 @import 'components/pages/UpgradeBrowser';
