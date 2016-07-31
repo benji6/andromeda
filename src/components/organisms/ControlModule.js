@@ -12,6 +12,7 @@ export const CheckBox = ({label, ...props}) =>
       createElement('div', {className: 'ControlModule__Output'})
     )
   )
+
 export const Range = ({
   label,
   max = 1,
@@ -36,10 +37,10 @@ export const Range = ({
 export const Select = ({label, ...props}) =>
   createElement(Input, {label},
     createElement('select', {className: 'ControlModule__Select', ...props})
-)
+  )
 
 export default ({children, title, ...props}) =>
   createElement('div', {className: 'ControlModule', ...props},
-  title && createElement('h3', {className: 'ControlModule__Title'}, title),
-  createElement('div', {className: 'display-table'}, children)
-)
+    title && createElement('h3', {className: 'ControlModule__Title'}, title),
+    createElement('div', {className: 'display-table'}, children)
+  )
