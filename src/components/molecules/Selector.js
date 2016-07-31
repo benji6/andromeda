@@ -1,5 +1,5 @@
 import capitalize from 'capitalize'
-import React from 'react'
+import {createElement} from 'react'
 import InputLabel from '../atoms/InputLabel'
 import InputSelect from '../atoms/InputSelect'
 
@@ -11,15 +11,13 @@ export default ({
   label,
   options,
 }) =>
-  <div>
-    <label className='selector'>
-      <InputLabel>{capitalize(label)}</InputLabel>
-      <InputSelect
-        defaultValue={defaultValue}
-        disabled={disabled}
-        onChange={handleChange}
-        options={options}
-      />
-    </label>
-    {children}
-  </div>
+  createElement('div', null,
+    createElement('label', null,
+      createElement(InputLabel, null, capitalize(label)),
+      createElement(
+        InputSelect,
+        {defaultValue, disabled, onChange: handleChange, options}
+      )
+    ),
+    children
+  )

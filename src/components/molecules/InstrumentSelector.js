@@ -1,10 +1,11 @@
-import React from 'react'
+import {createElement} from 'react'
 import Selector from './Selector'
 import ButtonSecondary from '../atoms/ButtonSecondary'
 
-export default x =>
-  <Selector {...{...x}}>
-    <ButtonSecondary to={`/plugins/instruments/${x.defaultValue}`}>
-      edit
-    </ButtonSecondary>
-  </Selector>
+export default props => createElement(Selector, props,
+  createElement(
+    ButtonSecondary,
+    {to: `/plugins/instruments/${props.defaultValue}`},
+    'edit'
+  )
+)
