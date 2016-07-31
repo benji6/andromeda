@@ -144,7 +144,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         {createElement(
           'h2',
           {className: 'PatternPage__Title'},
-          'Synth Pattern'
+          `Pattern ${patternId} - Synth`
         )}
         <Pattern {...{
           markerPosition,

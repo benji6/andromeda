@@ -135,7 +135,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         {createElement(
           'h2',
           {className: 'PatternPage__Title'},
-          'Beat Pattern'
+          `Pattern ${patternId} - Beat`
         )}
         <Pattern {...{
           markerPosition,
