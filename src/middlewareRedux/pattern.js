@@ -91,6 +91,7 @@ export default store => next => action => {
         playing,
         xLength,
         steps,
+        volume,
       } = patterns[patternId]
       if (!playing) break
       const patternDuration = xLength * noteDuration
@@ -101,7 +102,8 @@ export default store => next => action => {
           id,
           samples[sampleNames[y]],
           nextLoopEndTime - patternDuration + noteDuration * x,
-          patternId
+          patternId,
+          volume
         )
       } else {
         const set = sourceNodes[patternId]
