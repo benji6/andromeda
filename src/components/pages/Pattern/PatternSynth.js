@@ -3,7 +3,7 @@ import {
   range,
   repeat,
 } from 'ramda'
-import React, {createElement} from 'react'
+import {createElement, Component} from 'react'
 import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
 import audioContext from '../../../audioContext'
@@ -96,7 +96,7 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(
-  class extends React.Component {
+  class extends Component {
     constructor (props) {
       super(props)
 
@@ -140,27 +140,29 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         yLength,
       } = this.props
 
-      return <div className='PatternPage'>
-        {createElement(
+      return createElement('div', {className: 'PatternPage'},
+        createElement(
           'h2',
           {className: 'PatternPage__Title'},
           `Pattern ${patternId} - Synth`
-        )}
-        <Pattern {...{
+        ),
+        createElement(Pattern, {
           markerPosition,
           onClick: y => x => () => patternSynthCellClick({patternId, x, y}),
           patternData,
           yLabel: yLabel(selectedScale, yLength, rootNote),
-        }} />
-        <ButtonPlay {...{
+        }),
+        createElement(ButtonPlay, {
           onPlay: this.onPlay,
           onStop: this.onStop,
           playing,
-        }} />
-        <ButtonPrimary to={`/controllers/pattern/${patternId}/settings`}>
-          Options
-        </ButtonPrimary>
-      </div>
+        }),
+        createElement(
+          ButtonPrimary,
+          {to: `/controllers/pattern/${patternId}/settings`},
+          'Options'
+        )
+      )
     }
   }
 )
