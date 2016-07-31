@@ -16,7 +16,7 @@ import {
   PATTERN_SYNTH_PLAYING_STOP,
   patternActiveNotesSet,
   patternNextLoopEndTimeSet,
-  PATTERNS_ALL_PLAYING_STOP,
+  SONG_PLAYING_START,
 } from '../actions'
 import {cellId} from '../reducers/patterns'
 import {forEachIndexed} from '../utils/helpers'
@@ -278,7 +278,7 @@ export default store => next => action => {
       stopSynthPattern(store.getState().patterns[patternId], patternId)
       break
     }
-    case PATTERNS_ALL_PLAYING_STOP:
+    case SONG_PLAYING_START:
       forEachIndexed(stopSynthPattern, store.getState().patterns)
   }
   next(action)

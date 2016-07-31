@@ -29,7 +29,7 @@ import {
   PATTERN_SYNTH_PLAYING_STOP,
   PATTERN_VOLUME_SET,
   PATTERN_X_LENGTH_SET,
-  PATTERNS_ALL_PLAYING_STOP,
+  SONG_PLAYING_START,
 } from '../actions'
 import sampleNames from '../constants/sampleNames'
 import {instrumentInstance} from '../utils/derivedData'
@@ -147,7 +147,7 @@ export default (state = initialState, {type, payload}) => {
       return setPatternProp('volume', payload, state)
     case PATTERN_X_LENGTH_SET:
       return setPatternProp('xLength', payload, state)
-    case PATTERNS_ALL_PLAYING_STOP:
+    case SONG_PLAYING_START:
       return map(
         pattern => merge(pattern, {
           playing: false,
