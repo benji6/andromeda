@@ -13,15 +13,21 @@ import RangeSelector from '../molecules/RangeSelector'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import InputLabel from '../atoms/InputLabel'
 
-const connectComponent = connect(({
+const mapDispatchToProps = {
+  patternInstrumentSet,
+  patternVolumeSet,
+  patternXLengthSet,
+}
+
+const mapStateToProps = ({
   activePatternIndex,
   dispatch,
   patterns,
   plugins,
 }, {params: {patternId}}) => {
-  const activePattern = patterns[patternId]
-  const {instrument, xLength, volume} = activePattern
+  const {beatPattern, instrument, xLength, volume} = patterns[patternId]
   return {
+    beatPattern,
     dispatch,
     instrument,
     patternId: Number(patternId),
@@ -29,24 +35,27 @@ const connectComponent = connect(({
     volume,
     xLength,
   }
-})
+}
 
-export default connectComponent(({
-  dispatch,
+export default connect(mapStateToProps, mapDispatchToProps)(({
+  beatPattern,
   instrument,
   patternId,
+  patternInstrumentSet,
+  patternVolumeSet,
+  patternXLengthSet,
   plugins,
   volume,
   xLength,
 }) =>
   createElement('div', {className: 'PatternSettings'},
     createElement('h2', null, `Pattern ${patternId} Settings`),
-    createElement(InstrumentSelector, {
+    !beatPattern && createElement(InstrumentSelector, {
       defaultValue: instrument,
-      handleChange: e => dispatch(patternInstrumentSet({
+      handleChange: e => patternInstrumentSet({
         patternId,
         value: e.target.value,
-      })),
+      }),
       label: 'Instrument',
       options: map(
         instr => ({text: capitalize.words(instr), value: instr}),
@@ -56,10 +65,10 @@ export default connectComponent(({
     createElement(RangeSelector, {
       max: 1,
       min: 0,
-      onChange: e => dispatch(patternVolumeSet({
+      onChange: e => patternVolumeSet({
         patternId,
         value: Number(e.target.value),
-      })),
+      }),
       output: Math.round(volume * 100),
       step: 0.01,
       text: 'Volume',
@@ -68,10 +77,10 @@ export default connectComponent(({
     createElement(RangeSelector, {
       max: '16',
       min: '1',
-      onChange: e => dispatch(patternXLengthSet({
+      onChange: e => patternXLengthSet({
         patternId,
         value: Number(e.target.value),
-      })),
+      }),
       output: String(xLength),
       text: 'Length',
       value: xLength,
