@@ -1,4 +1,3 @@
-import React from 'react'
 import ReactDOM from 'react-dom'
 import {createStore, connect} from 'st88'
 import createVirtualAudioGraph from 'virtual-audio-graph'
