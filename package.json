@@ -46,7 +46,7 @@
   "dependencies": {
     "capitalize": "^1.0.0",
     "lava-lib": "benji6/lava-lib.git#v0.0.8",
-    "ramda": "^0.21.0",
+    "ramda": "^0.22.0",
     "random-js": "^1.0.8",
     "react-dom": "^15.2.1",
     "react-redux": "^4.4.5",
@@ -74,7 +74,7 @@
     "concurrently": "^2.2.0",
     "cssnano": "^3.7.1",
     "eslint": "^3.0.1",
-    "eslint-plugin-react": "^5.2.2",
+    "eslint-plugin-react": "^6.0.0",
     "faucet": "0.0.1",
     "glslify": "^5.1.0",
     "html-minifier": "^3.0.1",
