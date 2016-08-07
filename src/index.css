@@ -30,6 +30,8 @@
 @import 'components/pages/About';
 @import 'components/pages/Channels';
 @import 'components/pages/ControlPadPage';
+@import 'components/pages/ControlPadSettings';
+@import 'components/pages/KeyboardSettings';
 @import 'components/pages/Pattern';
 @import 'components/pages/PatternSettings';
 @import 'components/pages/Settings';

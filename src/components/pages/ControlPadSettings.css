@@ -1,7 +1,7 @@
-.Settings {
+.ControlPadSettings {
   align-items: center;
   animation-duration: var(--transition-medium);
-  animation-name: slide-in-left;
+  animation-name: fade-in;
   display: flex;
   flex-direction: column;
 }

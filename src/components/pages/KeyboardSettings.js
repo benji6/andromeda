@@ -20,8 +20,8 @@ const connectComponent = connect(({keyboard, dispatch, plugins}) =>
   ({keyboard, dispatch, plugins}))
 
 export default connectComponent(({keyboard, dispatch, plugins}) =>
-  <div className='flex-column text-center'>
-    <h2 className='text-center'>Keyboard Settings</h2>
+  <div className='KeyboardSettings'>
+    <h2>Keyboard Settings</h2>
     <InstrumentSelector
       defaultValue={keyboard.instrument}
       handleChange={(comp(
