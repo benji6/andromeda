@@ -2,6 +2,7 @@
 @import 'constants/dimensions';
 @import 'constants/timings';
 @import 'utils/globals';
+@import 'utils/keyframes';
 
 @import 'components/atoms/ButtonIcon';
 @import 'components/atoms/ButtonPlay';
@@ -27,8 +28,10 @@
 @import 'components/organisms/spinner';
 @import 'components/organisms/table-center';
 @import 'components/pages/About';
+@import 'components/pages/Channels';
 @import 'components/pages/ControlPadPage';
 @import 'components/pages/Pattern';
 @import 'components/pages/PatternSettings';
+@import 'components/pages/Settings';
 @import 'components/pages/Song';
 @import 'components/pages/UpgradeBrowser';
