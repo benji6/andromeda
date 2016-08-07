@@ -1,27 +1,27 @@
 import {map, pluck} from 'ramda'
-import React from 'react'
+import {createElement} from 'react'
 import {connect} from 'react-redux'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import {addChannel, removeChannel} from '../../actions'
 
-const connectComponent = connect(({dispatch, plugins: {channels}}) => ({
+const mapStateToProps = ({dispatch, plugins: {channels}}) => ({
   dispatch,
   channels,
-}))
+})
 
-export default connectComponent(({dispatch, channels}) =>
-  <div className='flex-column text-center'>
-    {map(
-      channel => <div key={channel}>
-        <ButtonPrimary to={`/channel/${channel}`}>
-          {`Channel ${channel}`}
-        </ButtonPrimary>
-        <Cross onClick={comp(dispatch, removeChannel, K(channel))}/>
-      </div>,
+export default connect(mapStateToProps)(({dispatch, channels}) =>
+  createElement('div', {className: 'Channels'},
+    map(
+      channel => createElement('div', {key: channel},
+        createElement(ButtonPrimary, {to: `/channel/${channel}`},
+          `Channel ${channel}`
+        ),
+        createElement(Cross, {onClick: comp(dispatch, removeChannel, K(channel))})
+      ),
       pluck('name', channels)
-    )}
-    <div>
-      <Plus onClick={comp(dispatch, addChannel)}>Add new channel</Plus>
-    </div>
-  </div>)
+    ),
+    createElement('div', null,
+      createElement(Plus, {onClick: comp(dispatch, addChannel)}, 'Add new channel')
+    )
+  ))

@@ -1,7 +1,7 @@
 import capitalize from 'capitalize'
 import {map} from 'ramda'
+import {createElement} from 'react'
 import {connect} from 'react-redux'
-import React from 'react'
 import {bpmSet, rootNoteSet, selectedScaleSet} from '../../actions'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import RangeSelector from '../molecules/RangeSelector'
@@ -30,45 +30,37 @@ export default connectComponent(({
   rootNote,
   selectedScale,
 }) =>
-  <div className='settings-view'>
-    <div className='flex-column text-center'>
-      <RangeSelector
-        max='512'
-        min={minBpm}
-        onChange={comp(
-          dispatch,
-          bpmSet,
-          Number,
-          eventValuePath
-        )}
-        output={bpm}
-        text='BPM'
-        value={bpm}
-      />
-      <RangeSelector
-        max='24'
-        min='-36'
-        onChange={comp(
-          dispatch,
-          rootNoteSet,
-          Number,
-          eventValuePath
-        )}
-        output={noteNameFromPitch(rootNote)}
-        text='Root Note'
-        value={rootNote}
-      />
-      <Selector
-        defaultValue={selectedScale}
-        handleChange={comp(dispatch, selectedScaleSet, eventValuePath)}
-        label='Scale'
-        options={map(
-          value => ({text: capitalize.words(value), value}),
-          Object.keys(scales)
-        )}
-      />
-      <div>
-        <ButtonPrimary to='/controllers/keyboard/settings'>Keyboard Settings</ButtonPrimary>
-      </div>
-    </div>
-  </div>)
+  createElement('div', {className: 'Settings'},
+    createElement(RangeSelector, {
+      max: 512,
+      min: minBpm,
+      onChange: comp(dispatch, bpmSet, Number, eventValuePath),
+      output: bpm,
+      text: 'BPM',
+      value: bpm,
+    }),
+    createElement(RangeSelector, {
+      max: 24,
+      min: -36,
+      onChange: comp(dispatch, rootNoteSet, Number, eventValuePath),
+      output: noteNameFromPitch(rootNote),
+      text: 'Root Note',
+      value: rootNote,
+    }),
+    createElement(Selector, {
+      defaultValue: selectedScale,
+      handleChange: comp(dispatch, selectedScaleSet, eventValuePath),
+      label: 'Scale',
+      options: map(
+        value => ({text: capitalize.words(value), value}),
+        Object.keys(scales)
+      ),
+    }),
+    createElement('div', null,
+      createElement(
+        ButtonPrimary,
+        {to: '/controllers/keyboard/settings'},
+        'Keyboard Settings'
+      )
+    )
+  ))

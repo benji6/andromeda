@@ -1,5 +1,7 @@
 .Song {
   align-items: center;
+  animation-duration: var(--transition-medium);
+  animation-name: page-slide-in-left;
   display: flex;
   flex-direction: column;
 }
