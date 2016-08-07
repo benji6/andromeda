@@ -14,7 +14,7 @@
 }
 
 .spinner_el:before {
-  animation: spinner_elFadeDelay 1.2s infinite ease-in-out both;
+  animation: spinner-el-fade-delay 1.2s infinite ease-in-out both;
   background-color: var(--green-80);
   content: '';
   display: block;
@@ -46,7 +46,7 @@
 .spinner_el11:before { animation-delay: -0.2s; }
 .spinner_el12:before { animation-delay: -0.1s; }
 
-@keyframes spinner_elFadeDelay {
+@keyframes spinner-el-fade-delay {
   0%, 39%, 100% { opacity: 0; }
   40% { opacity: 1; }
 }
