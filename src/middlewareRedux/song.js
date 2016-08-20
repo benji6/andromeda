@@ -17,9 +17,11 @@ import pitchFromScaleIndex from '../audioHelpers/pitchFromScaleIndex'
 import pitchToFrequency from '../audioHelpers/pitchToFrequency'
 import scales from '../constants/scales'
 import {
+  playSample,
   stopBeatPattern,
   stopSynthPattern,
 } from './pattern'
+import sampleNames from '../constants/sampleNames'
 
 export default store => next => action => {
   switch (action.type) {
@@ -27,9 +29,11 @@ export default store => next => action => {
       const {
         patterns,
         plugins,
+        samples,
         settings: {noteDuration, rootNote, selectedScale},
         song,
       } = store.getState()
+      const {currentTime} = audioContext
 
       let newActiveNotes = []
 
@@ -44,9 +48,19 @@ export default store => next => action => {
         }, patternId) => {
           if (beatPattern) {
             stopBeatPattern(patternId)
+            const {steps, volume} = patterns[patternId]
+            forEach(
+              ({x, y}) => playSample(
+                cellId(patternId, x, y),
+                samples[sampleNames[y]],
+                currentTime + noteDuration * x,
+                patternId,
+                volume
+              ),
+              steps
+            )
           } else {
             stopSynthPattern(patternId)
-            const {currentTime} = audioContext
             const instrumentObj = instrumentInstance(instrument, plugins)
 
             newActiveNotes = newActiveNotes.concat(reject(({id}) => {
@@ -81,9 +95,14 @@ export default store => next => action => {
       break
     }
     case SONG_PLAYING_STOP:
+      const {patterns, song} = store.getState()
+      forEachIndexed(
+        ({beatPattern}, patternId) => beatPattern && stopBeatPattern(patternId),
+        patterns
+      )
       forEach(
         ({id, instrumentObj}) => instrumentObj.noteStop(id),
-        store.getState().song.activeNotes
+        song.activeNotes
       )
   }
   next(action)

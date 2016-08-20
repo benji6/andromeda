@@ -60,7 +60,7 @@ const sampleGain = audioContext.createGain()
 sampleGain.gain.value = 0.5
 sampleGain.connect(audioContext.destination)
 
-const playSample = (id, buffer, startTime, patternId, gain) => {
+export const playSample = (id, buffer, startTime, patternId, gain) => {
   sampleGain.gain.value = gain
   const sourceNode = audioContext.createBufferSource()
   const stopTime = startTime + buffer.duration + 0.1
