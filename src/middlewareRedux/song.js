@@ -16,6 +16,10 @@ import patternPitchOffset from '../constants/patternPitchOffset'
 import pitchFromScaleIndex from '../audioHelpers/pitchFromScaleIndex'
 import pitchToFrequency from '../audioHelpers/pitchToFrequency'
 import scales from '../constants/scales'
+import {
+  stopBeatPattern,
+  stopSynthPattern,
+} from './pattern'
 
 export default store => next => action => {
   switch (action.type) {
@@ -24,39 +28,51 @@ export default store => next => action => {
         patterns,
         plugins,
         settings: {noteDuration, rootNote, selectedScale},
-        song: {activeNotes},
+        song,
       } = store.getState()
 
       let newActiveNotes = []
 
       forEachIndexed(
-        ({instrument, steps, volume, xLength, yLength}, patternId) => {
-          const {currentTime} = audioContext
-          const instrumentObj = instrumentInstance(instrument, plugins)
+        ({
+          beatPattern,
+          instrument,
+          steps,
+          volume,
+          xLength,
+          yLength,
+        }, patternId) => {
+          if (beatPattern) {
+            stopBeatPattern(patternId)
+          } else {
+            stopSynthPattern(patternId)
+            const {currentTime} = audioContext
+            const instrumentObj = instrumentInstance(instrument, plugins)
 
-          newActiveNotes = newActiveNotes.concat(reject(({id}) => {
-              for (const {x, y} of steps) {
-                if (id.indexOf(cellId(patternId, x, y)) !== -1) {
-                  return true
+            newActiveNotes = newActiveNotes.concat(reject(({id}) => {
+                for (const {x, y} of steps) {
+                  if (id.indexOf(cellId(patternId, x, y)) !== -1) {
+                    return true
+                  }
                 }
-              }
-            }, activeNotes).concat(map(({x, y}) => ({
+              }, song.activeNotes).concat(map(({x, y}) => ({
+                id: `song-${patternId}-${x}-${y}`,
+                instrumentObj,
+              }), steps)))
+
+            const notes = map(({x, y}) => ({
+              frequency: pitchToFrequency(pitchFromScaleIndex(
+                scales[selectedScale],
+                yLength - 1 - y
+              ) + rootNote + patternPitchOffset),
+              gain: volume,
               id: `song-${patternId}-${x}-${y}`,
-              instrumentObj,
-            }), steps)))
+              startTime: currentTime + noteDuration * x,
+              stopTime: currentTime + noteDuration * (x + 1),
+            }), steps)
 
-          const notes = map(({x, y}) => ({
-            frequency: pitchToFrequency(pitchFromScaleIndex(
-              scales[selectedScale],
-              yLength - 1 - y
-            ) + rootNote + patternPitchOffset),
-            gain: volume,
-            id: `song-${patternId}-${x}-${y}`,
-            startTime: currentTime + noteDuration * x,
-            stopTime: currentTime + noteDuration * (x + 1),
-          }), steps)
-
-          instrumentObj.notesStart(notes)
+            instrumentObj.notesStart(notes)
+          }
         },
         patterns
       )

@@ -16,10 +16,8 @@ import {
   PATTERN_SYNTH_PLAYING_STOP,
   patternActiveNotesSet,
   patternNextLoopEndTimeSet,
-  SONG_PLAYING_START,
 } from '../actions'
 import {cellId} from '../reducers/patterns'
-import {forEachIndexed} from '../utils/helpers'
 import {instrumentInstance} from '../utils/derivedData'
 import audioContext from '../audioContext'
 import patternPitchOffset from '../constants/patternPitchOffset'
@@ -27,6 +25,7 @@ import pitchFromScaleIndex from '../audioHelpers/pitchFromScaleIndex'
 import pitchToFrequency from '../audioHelpers/pitchToFrequency'
 import sampleNames from '../constants/sampleNames'
 import scales from '../constants/scales'
+import store from '../store'
 
 // schema:
 // {
@@ -37,7 +36,21 @@ import scales from '../constants/scales'
 let sourceNodes = {}
 const timeoutIds = {}
 
-const stopSynthPattern = ({activeNotes}, patternId) => {
+export const stopBeatPattern = patternId => {
+  forEach(key => {
+    const sources = sourceNodes[key]
+    forEach(({sourceNode}) => {
+      sourceNode.stop()
+      sourceNode.disconnect()
+    }, sources)
+    sources.clear()
+  }, Object.keys(sourceNodes))
+  clearTimeout(timeoutIds[patternId])
+  delete timeoutIds[patternId]
+}
+
+export const stopSynthPattern = patternId => {
+  const {activeNotes} = store.getState().patterns[patternId]
   forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
   clearTimeout(timeoutIds[patternId])
   delete timeoutIds[patternId]
@@ -163,20 +176,9 @@ export default store => next => action => {
       })
       break
     }
-    case PATTERN_BEAT_PLAYING_STOP: {
-      const patternId = action.payload
-      forEach(key => {
-        const sources = sourceNodes[key]
-        forEach(({sourceNode}) => {
-          sourceNode.stop()
-          sourceNode.disconnect()
-        }, sources)
-        sources.clear()
-      }, Object.keys(sourceNodes))
-      clearTimeout(timeoutIds[patternId])
-      delete timeoutIds[patternId]
+    case PATTERN_BEAT_PLAYING_STOP:
+      stopBeatPattern(action.payload)
       break
-    }
     case PATTERN_SYNTH_CELL_CLICK: {
       const {patternId, x, y} = action.payload
       const {patterns, plugins, settings: {noteDuration, rootNote, selectedScale}} = store.getState()
@@ -279,12 +281,9 @@ export default store => next => action => {
       break
     }
     case PATTERN_SYNTH_PLAYING_STOP: {
-      const patternId = action.payload
-      stopSynthPattern(store.getState().patterns[patternId], patternId)
+      stopSynthPattern(action.payload)
       break
     }
-    case SONG_PLAYING_START:
-      forEachIndexed(stopSynthPattern, store.getState().patterns)
   }
   next(action)
 }
