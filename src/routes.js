@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import {hashHistory, IndexRoute, Router, Route} from 'react-router'
 import App from './components/templates/App'
 import About from './components/pages/About'
@@ -14,21 +14,21 @@ import Pattern from './components/pages/Pattern'
 import Settings from './components/pages/Settings'
 import Song from './components/pages/Song'
 
-export default <Router history={hashHistory}>
-  <Route path='/' component={App}>
-    <IndexRoute component={ControlPadPage} />
-    <Route path='/about' component={About} />
-    <Route path='/channel/:channelId' component={Channel} />
-    <Route path='/channels' component={Channels} />
-    <Route path='/controllers/control-pad' component={ControlPadPage} />
-    <Route path='/controllers/control-pad/settings' component={ControlPadSettings} />
-    <Route path='/controllers/keyboard/settings' component={KeyboardSettings} />
-    <Route path='/controllers/pattern/:patternId' component={Pattern} />
-    <Route path='/controllers/pattern/:patternId/settings' component={PatternSettings} />
-    <Route path='/controllers/song' component={Song} />
-    <Route path='/plugins/effects/:name' component={Effect} />
-    <Route path='/plugins/instruments/:name' component={Instrument} />
-    <Route path='/settings' component={Settings} />
-    <Route path='/*' component={ControlPadPage} />
-  </Route>
-</Router>
+export default createElement(Router, {history: hashHistory},
+  createElement(Route, {component: App, path: '/'},
+    createElement(IndexRoute, {component: ControlPadPage}),
+    createElement(Route, {path: '/about', component: About}),
+    createElement(Route, {path: '/channel/:channelId', component: Channel}),
+    createElement(Route, {path: '/channels', component: Channels}),
+    createElement(Route, {path: '/controllers/control-pad', component: ControlPadPage}),
+    createElement(Route, {path: '/controllers/control-pad/settings', component: ControlPadSettings}),
+    createElement(Route, {path: '/controllers/keyboard/settings', component: KeyboardSettings}),
+    createElement(Route, {path: '/controllers/pattern/:patternId', component: Pattern}),
+    createElement(Route, {path: '/controllers/pattern/:patternId/settings', component: PatternSettings}),
+    createElement(Route, {path: '/controllers/song', component: Song}),
+    createElement(Route, {path: '/plugins/effects/:name', component: Effect}),
+    createElement(Route, {path: '/plugins/instruments/:name', component: Instrument}),
+    createElement(Route, {path: '/settings', component: Settings}),
+    createElement(Route, {path: '/*', component: ControlPadPage})
+  )
+)
