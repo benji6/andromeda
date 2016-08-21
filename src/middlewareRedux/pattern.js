@@ -37,14 +37,14 @@ let sourceNodes = {}
 const timeoutIds = {}
 
 export const stopBeatPattern = patternId => {
-  forEach(key => {
-    const sources = sourceNodes[key]
+  const sources = sourceNodes[patternId]
+  if (sources) {
     forEach(({sourceNode}) => {
       sourceNode.stop()
       sourceNode.disconnect()
     }, sources)
     sources.clear()
-  }, Object.keys(sourceNodes))
+  }
   clearTimeout(timeoutIds[patternId])
   delete timeoutIds[patternId]
 }
