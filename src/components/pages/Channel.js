@@ -1,5 +1,5 @@
 import {difference, map, pluck} from 'ramda'
-import React from 'react'
+import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {
   addEffectToChannel,
@@ -40,62 +40,62 @@ export default connectComponent(({
   selectedAddSource = head(addSources)
   selectedAddEffect = head(addEffects)
 
-  return <div>
-    <h1 className='text-center'>{`Channel ${channelId}`}</h1>
-      <h2 className='text-center'>Effects</h2>
-      {mapIndexed(
-        (name, i) => <div key={i} className='text-center'>
-          <ButtonPrimary to={`/plugins/effects/${name}`}>
-            {name}
-          </ButtonPrimary>
-          <Cross onClick={() => dispatch(removeEffectFromChannel({
+  return createElement('div', {className: 'Channel'},
+    createElement('h1', null, `Channel ${channelId}`),
+    createElement('h2', null, 'Effects'),
+    mapIndexed(
+      (name, i) => createElement('div', {key: i},
+        createElement(ButtonPrimary, {to: `/plugins/effects/${name}`}, name),
+        createElement(Cross, {onClick: () => dispatch(removeEffectFromChannel({
+          channel: channelId,
+          name,
+        }))})
+      ),
+      effects
+    ),
+    Boolean(addEffects.length) && createElement('p', null, 'Add effect'),
+    Boolean(addEffects.length) && createElement('div', null,
+      createElement(InputSelect, {
+        defaultValue: selectedAddEffect,
+        onChange: e => selectedAddEffect = e.target.value,
+        options: map(text => ({text, value: text}), addEffects),
+      }),
+      createElement(Plus, {onClick: () => dispatch(addEffectToChannel({
+        channel: channelId,
+        name: selectedAddEffect,
+      }))})
+    ),
+    createElement('h2', null, 'Sources'),
+    createElement('div', {className: 'Channel__Sources'},
+      map(
+        name => createElement('div', {key: name},
+          createElement(
+            ButtonPrimary,
+            {small: true, to: `/plugins/instruments/${name}`},
+            name
+          ),
+          createElement(Cross, {onClick: () => dispatch(removeInstrumentFromChannel({
             channel: channelId,
             name,
-          }))}/>
-        </div>,
-        effects
-      )}
-      {Boolean(addEffects.length) && <p className='text-center'>Add effect</p>}
-      {Boolean(addEffects.length) && <div className='text-center'>
-        <InputSelect
-          defaultValue={selectedAddEffect}
-          onChange={e => selectedAddEffect = e.target.value}
-          options={map(text => ({text, value: text}), addEffects)}
-        />
-        <Plus onClick={() => dispatch(addEffectToChannel({
+          }))})
+        ),
+        sources
+      )
+    ),
+    Boolean(addSources.length) && createElement('p', null, 'Add source'),
+    Boolean(addSources.length) && createElement('div', null,
+      createElement(InputSelect, {
+        defaultValue: selectedAddSource,
+        onChange: e => selectedAddSource = e.target.value,
+        options: map(text => ({text, value: text}), addSources),
+      }),
+      createElement(Plus, {onClick: () => {
+        dispatch(addInstrumentToChannel({
           channel: channelId,
-          name: selectedAddEffect,
-        }))}/>
-      </div>}
-      <h2 className='text-center'>Sources</h2>
-      <div className='margin-bottom text-center'>
-        {map(
-          name => <div className='inline-block margin-horizontal-small' key={name}>
-            <ButtonPrimary small to={`/plugins/instruments/${name}`}>
-              {name}
-            </ButtonPrimary>
-            <Cross onClick={() => dispatch(removeInstrumentFromChannel({
-              channel: channelId,
-              name,
-            }))}/>
-          </div>,
-          sources
-        )}
-      </div>
-      {Boolean(addSources.length) && <p className='text-center'>Add source</p>}
-      {Boolean(addSources.length) && <div className='text-center'>
-        <InputSelect
-          defaultValue={selectedAddSource}
-          onChange={e => selectedAddSource = e.target.value}
-          options={map(text => ({text, value: text}), addSources)}
-        />
-        <Plus onClick={() => {
-          dispatch(addInstrumentToChannel({
-            channel: channelId,
-            name: selectedAddSource,
-          }))
-          selectedAddSource = addSources[1]
-        }}/>
-      </div>}
-    </div>
+          name: selectedAddSource,
+        }))
+        selectedAddSource = addSources[1]
+      }})
+    )
+  )
 })

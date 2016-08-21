@@ -28,6 +28,7 @@
 @import 'components/organisms/spinner';
 @import 'components/organisms/table-center';
 @import 'components/pages/About';
+@import 'components/pages/Channel';
 @import 'components/pages/Channels';
 @import 'components/pages/ControlPadPage';
 @import 'components/pages/ControlPadSettings';

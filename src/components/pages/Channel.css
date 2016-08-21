@@ -1,0 +1,9 @@
+.Channel {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.Channel__Sources {
+  display: flex;
+}
