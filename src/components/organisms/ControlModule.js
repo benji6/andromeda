@@ -8,9 +8,7 @@ const Input = ({children, label}) =>
 
 export const CheckBox = ({label, ...props}) =>
   createElement(Input, {label},
-    createElement('input', {type: 'checkbox', ...props},
-      createElement('div', {className: 'ControlModule__Output'})
-    )
+    createElement('input', {type: 'checkbox', ...props})
   )
 
 export const Range = ({
