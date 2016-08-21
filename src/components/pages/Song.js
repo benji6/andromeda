@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {
   patternBeatAdd,
@@ -44,28 +44,27 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
   songPlayingStart,
   songPlayingStop,
 }) =>
-  <div className='Song'>
-    {Boolean(patterns.length) && mapIndexed(({beatPattern}, i) =>
-        <div {...{
-          className: 'Song__Pattern',
-          key: i,
-        }}>
-          <Cross onClick={() => patternDelete(i)} />
-          <ButtonPrimary {...{
-            red: beatPattern,
-            small: true,
-            to: `/controllers/pattern/${i}`,
-          }}>
-            {`${i} - ${beatPattern ? 'Beat' : 'Synth'}`}
-          </ButtonPrimary>
-          <PatternSvg {...patterns[i]} red={beatPattern} to={`/controllers/pattern/${i}`} />
-        </div>, patterns)}
-    <Plus {...{onClick: patternSynthAdd}}>NEW SYNTH PATTERN</Plus>
-    <Plus {...{onClick: patternBeatAdd}}>NEW BEAT PATTERN</Plus>
-    <ButtonPlay {...{
+  createElement('div', {className: 'Song'},
+    Boolean(patterns.length) && mapIndexed(({beatPattern}, i) =>
+      createElement('div', {className: 'Song__Pattern', key: i},
+        createElement(Cross, {onClick: () => patternDelete(i)}),
+        createElement(ButtonPrimary, {
+          red: beatPattern,
+          small: true,
+          to: `/controllers/pattern/${i}`,
+        }, `${i} - ${beatPattern ? 'Beat' : 'Synth'}`),
+        createElement(PatternSvg, {
+          ...patterns[i],
+          red: beatPattern,
+          to: `/controllers/pattern/${i}`,
+        })
+      ), patterns),
+    createElement(Plus, {onClick: patternSynthAdd}, 'NEW SYNTH PATTERN'),
+    createElement(Plus, {onClick: patternBeatAdd}, 'NEW BEAT PATTERN'),
+    createElement(ButtonPlay, {
       onPlay: songPlayingStart,
       onStop: songPlayingStop,
       playing,
-    }}/>
-  </div>
+    })
+  )
 )
