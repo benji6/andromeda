@@ -5,30 +5,40 @@
   margin: 0.75rem;
   padding: 0.75rem;
 }
+
+.ControlModule__Container{
+  display: table;
+}
+
 .ControlModule__Input {
   display: table-row;
   font-size: 0.75rem;
   padding: 0.75rem;
 }
+
 .ControlModule__Input__Label {
   display: table-cell;
   padding: 0.5rem 0.5rem 0.25rem 0.25rem;
   text-align: left;
 }
+
 .ControlModule__Output {
   display: table-cell;
   height: 0.75rem;
   padding-left: 0.25rem;
   min-width: 2.25rem;
 }
+
 .ControlModule__Range {
   display: table-cell;
   height: 0.75rem;
   width: 10rem;
 }
+
 .ControlModule__Select {
   width: 10rem;
 }
+
 .ControlModule__Title {
   font-size: 1rem;
   font-weight: 600;
