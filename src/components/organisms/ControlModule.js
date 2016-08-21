@@ -40,5 +40,5 @@ export const Select = ({label, ...props}) =>
 export default ({children, title, ...props}) =>
   createElement('div', {className: 'ControlModule', ...props},
     title && createElement('h3', {className: 'ControlModule__Title'}, title),
-    createElement('div', {className: 'display-table'}, children)
+    createElement('div', {className: 'ControlModule__Container'}, children)
   )

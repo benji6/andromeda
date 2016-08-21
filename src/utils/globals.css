@@ -6,17 +6,3 @@ body {
   user-select: none;
   -webkit-user-select: none;
 }
-
-.display-table { display: table }
-.inline-block { display: inline-block; }
-.margin-bottom { margin-bottom: 2rem; }
-.margin-horizontal-small { margin-left: 0.5rem; margin-right: 0.5rem; }
-
-.flex-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.text-center {
-  text-align: center;
-}
