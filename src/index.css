@@ -33,6 +33,7 @@
 @import 'components/pages/ControlPadPage';
 @import 'components/pages/ControlPadSettings';
 @import 'components/pages/Effect';
+@import 'components/pages/Instrument';
 @import 'components/pages/KeyboardSettings';
 @import 'components/pages/Pattern';
 @import 'components/pages/PatternSettings';
