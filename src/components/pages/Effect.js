@@ -1,23 +1,20 @@
-import React from 'react'
+import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {effectInstance} from '../../utils/derivedData'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import PluginMount from '../atoms/PluginMount'
 
-const connectComponent = connect(({plugins}, {history, params}) => ({
+const mapStateToProps = ({plugins}, {history, params}) => ({
   history,
   params,
   plugins,
-}))
+})
 
-export default connectComponent(({
+export default connect(mapStateToProps)(({
   history,
   params,
   plugins,
-}) => <div>
-  <PluginMount instance={effectInstance(params.name, plugins)}/>
-  <div className='margin-bottom' />
-  <div className='text-center'>
-    <ButtonPrimary onClick={history.goBack}>OK</ButtonPrimary>
-  </div>
-</div>)
+}) => createElement('div', {className: 'Effect'},
+  createElement(PluginMount, {instance: effectInstance(params.name, plugins)}),
+  createElement(ButtonPrimary, {onClick: history.goBack}, 'OK')
+))
