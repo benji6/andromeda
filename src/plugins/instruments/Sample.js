@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import ReactDOM from 'react-dom'
 import sampleNames from '../../constants/sampleNames'
 
@@ -10,11 +10,9 @@ const microphoneOns = new WeakMap()
 const outputs = new WeakMap()
 const selectedSamples = new WeakMap()
 
-const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
-  <label>
-    {children}
-  </label>
-</div>
+const ControlContainer = ({children}) => createElement('div', {style: {padding: '1rem'}},
+  createElement('label', null, children)
+)
 
 const loadSample = function (fileName) {
   window.fetch(`${bucket}/${fileName}`)
@@ -46,22 +44,23 @@ export default class {
   }
   render (containerEl) {
     ReactDOM.render(
-      <div style={{textAlign: 'center'}}>
-        <h2>Sample</h2>
-        <ControlContainer>
-          File&nbsp;
-          <select defaultValue={selectedSamples.get(this)} onChange={({target: {value}}) => {
-            selectedSamples.set(this, value)
-            loadSample.call(this, value)
-          }}>
+      createElement('div', {style: {textAlign: 'center'}},
+        createElement('h2', null, 'Sample'),
+        createElement(ControlContainer, null,
+          'File ',
+          createElement(
+            'select',
             {
-              sampleNames.map((sample, i) => <option key={i} value={sample}>
-                {sample}
-              </option>)
-            }
-          </select>
-        </ControlContainer>
-      </div>,
+              defaultValue: selectedSamples.get(this),
+              onChange: ({target: {value}}) => {
+                selectedSamples.set(this, value)
+                loadSample.call(this, value)
+              },
+            },
+            sampleNames.map((sample, i) => createElement('option', {key: i, value: sample}, sample))
+          )
+        )
+      ),
       containerEl
     )
   }
