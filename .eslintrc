@@ -19,9 +19,6 @@
     "succ": false
   },
   "parser": "babel-eslint",
-  "plugins": [
-    "react"
-  ],
   "rules": {
     "array-bracket-spacing": [2, "never"],
     "arrow-parens": [2, "as-needed"],
@@ -119,8 +116,7 @@
     "no-unreachable": 2,
     "no-unused-vars": [2, {
       "args": "after-used",
-      "vars": "all",
-      "varsIgnorePattern": "React"
+      "vars": "all"
     }],
     "no-use-before-define": 2,
     "no-useless-call": 2,
@@ -145,10 +141,6 @@
     "prefer-spread": 2,
     "quote-props": [2, "as-needed"],
     "quotes": [2, "single"],
-    "react/jsx-no-duplicate-props": 2,
-    "react/jsx-no-undef": 2,
-    "react/jsx-uses-react": 2,
-    "react/jsx-uses-vars": 2,
     "require-yield": 2,
     "semi": [2, "never"],
     "semi-spacing": 2,
