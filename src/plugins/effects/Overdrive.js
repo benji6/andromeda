@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import ReactDOM from 'react-dom'
 
 const amounts = new WeakMap()
@@ -74,11 +74,9 @@ const type6 = amount => {
 
 const typeFns = {type1, type2, type3, type4, type5, type6}
 
-const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
-  <label>
-    {children}
-  </label>
-</div>
+const ControlContainer = ({children}) => createElement('div', {style: {padding: '1rem'}},
+  createElement('label', {children})
+)
 
 export default class {
   constructor ({audioContext}) {
@@ -109,60 +107,60 @@ export default class {
   }
   render (containerEl) {
     ReactDOM.render(
-      <div style={{textAlign: 'center'}}>
-        <h2>Overdrive</h2>
-        <ControlContainer>
-          Type&nbsp;
-          <select defaultValue={types.get(this)} onChange={({target: {value}}) => {
+      createElement('div', {style: {textAlign: 'center'}},
+        createElement('h2', null, 'Overdrive'),
+        createElement(ControlContainer, null,
+          'Type ',
+          createElement('select', {defaultValue: types.get(this), onChange: ({target: {value}}) => {
             types.set(this, value)
             waveshapers.get(this).curve = typeFns[value](amounts.get(this))
-          }}>
-            <option value='type1'>type 1</option>
-            <option value='type2'>type 2</option>
-            <option value='type3'>type 3</option>
-            <option value='type4'>type 4</option>
-            <option value='type5'>type 5</option>
-            <option value='type6'>type 6</option>
-          </select>
-        </ControlContainer>
-        <ControlContainer>
-          Input&nbsp;
-          <input
-            defaultValue={inputGainNodes.get(this).gain.value}
-            max='20'
-            min='0'
-            onInput={e => inputGainNodes.get(this).gain.value = Number(e.target.value)}
-            step='0.1'
-            type='range'
-          />
-        </ControlContainer>
-        <ControlContainer>
-          Amount&nbsp;
-          <input
-            defaultValue={amounts.get(this)}
-            max='1'
-            min='0'
-            onInput={e => {
+          }},
+            createElement('option', {value: 'type1'}, 'type 1'),
+            createElement('option', {value: 'type2'}, 'type 2'),
+            createElement('option', {value: 'type3'}, 'type 3'),
+            createElement('option', {value: 'type4'}, 'type 4'),
+            createElement('option', {value: 'type5'}, 'type 5'),
+            createElement('option', {value: 'type6'}, 'type 6')
+          )
+        ),
+        createElement(ControlContainer, null,
+          'Input ',
+          createElement('input', {
+            defaultValue: inputGainNodes.get(this).gain.value,
+            max: 20,
+            min: 0,
+            onInput: e => inputGainNodes.get(this).gain.value = Number(e.target.value),
+            step: 0.1,
+            type: 'range',
+          })
+        ),
+        createElement(ControlContainer, null,
+          'Amount ',
+          createElement('input', {
+            defaultValue: amounts.get(this),
+            max: 1,
+            min: 0,
+            onInput: e => {
               const val = Number(e.target.value)
               amounts.set(this, val)
               waveshapers.get(this).curve = typeFns[types.get(this)](val)
-            }}
-            step='0.05'
-            type='range'
-            />
-        </ControlContainer>
-        <ControlContainer>
-          Output&nbsp;
-          <input
-            defaultValue={outputGainNodes.get(this).gain.value}
-            max='3'
-            min='0'
-            onInput={e => outputGainNodes.get(this).gain.value = Number(e.target.value)}
-            step='0.05'
-            type='range'
-          />
-        </ControlContainer>
-      </div>,
+            },
+            step: 0.05,
+            type: 'range',
+          })
+        ),
+        createElement(ControlContainer, null,
+          'Output ',
+          createElement('input', {
+            defaultValue: outputGainNodes.get(this).gain.value,
+            max: 3,
+            min: 0,
+            onInput: e => outputGainNodes.get(this).gain.value = Number(e.target.value),
+            step: 0.05,
+            type: 'range',
+          })
+        )
+      ),
       containerEl
     )
   }
