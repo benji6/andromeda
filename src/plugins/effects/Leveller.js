@@ -17,7 +17,7 @@ export default class {
     const store = createStore({
       attack: 0,
       gain: 1,
-      knee: 40,
+      knee: 30,
       pan: 0,
       ratio: 12,
       release: 0.25,
@@ -102,25 +102,26 @@ export default class {
             createElement(Range, {
               defaultValue: knee,
               label: 'Knee',
-              max: 99.99,
+              max: 40,
               onInput: e => setProp('knee', Number(e.target.value)),
             }),
             createElement(Range, {
               defaultValue: ratio,
               label: 'Ratio',
-              max: 99.99,
+              max: 20,
+              min: 1,
               onInput: e => setProp('ratio', Number(e.target.value)),
             }),
             createElement(Range, {
               defaultValue: attack,
               label: 'Attack',
-              max: 3,
+              max: 1,
               onInput: e => setProp('attack', Number(e.target.value)),
             }),
             createElement(Range, {
               defaultValue: release,
               label: 'Release',
-              max: 3,
+              max: 1,
               onInput: e => setProp('release', Number(e.target.value)),
             }),
           )
