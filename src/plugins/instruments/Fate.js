@@ -1,5 +1,5 @@
 import {map, merge, range, zipObj} from 'ramda'
-import React from 'react'
+import {createElement} from 'react'
 import ReactDOM from 'react-dom'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 
@@ -64,11 +64,9 @@ const updateAudio = function () {
   virtualAudioGraphs.get(this).update(notesToGraph.call(this, notes.get(this)))
 }
 
-const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
-  <label>
-    {children}
-  </label>
-</div>
+const ControlContainer = ({children}) => createElement('div', {style: {padding: '1rem'}},
+  createElement('label', {children})
+)
 
 export default class {
   constructor ({audioContext}) {
@@ -122,64 +120,64 @@ export default class {
   }
   render (containerEl) {
     ReactDOM.render(
-      <div style={{textAlign: 'center'}}>
-        <h2>Fate</h2>
-        <ControlContainer>
-          Gain&nbsp;
-          <input
-            defaultValue={masterGains.get(this)}
-            max='1.25'
-            min='0'
-            onInput={e => {
+      createElement('div', {style: {textAlign: 'center'}},
+        createElement('h2', null, 'Fate'),
+        createElement(ControlContainer, null,
+          'Gain ',
+          createElement('input', {
+            defaultValue: masterGains.get(this),
+            max: 1.25,
+            min: 0,
+            onInput: e => {
               masterGains.set(this, Number(e.target.value))
               updateAudio.call(this)
-            }}
-            step='0.01'
-            type='range'
-          />
-        </ControlContainer>
-        <ControlContainer>
-          Osc type&nbsp;
-          <select
-            defaultValue={oscTypes.get(this)}
-            onChange={e => {
+            },
+            step: 0.01,
+            type: 'range',
+          })
+        ),
+        createElement(ControlContainer, null,
+          'Type ',
+          createElement('select', {
+            defaultValue: oscTypes.get(this),
+            onChange: e => {
               oscTypes.set(this, e.target.value)
               updateAudio.call(this)
-            }}
-          >
-            <option value='random'>Random</option>
-            <option value='sawtooth'>Sawtooth</option>
-            <option value='sine'>Sine</option>
-            <option value='square'>Square</option>
-            <option value='triangle'>Triangle</option>
-          </select>
-        </ControlContainer>
-        <ControlContainer>
-          Detune&nbsp;
-          <input
-            defaultValue={detunes.get(this)}
-            max='50'
-            min='0'
-            onInput={e => {
+            },
+          },
+            createElement('option', {value: 'random'}, 'Random'),
+            createElement('option', {value: 'sawtooth'}, 'Sawtooth'),
+            createElement('option', {value: 'sine'}, 'Sine'),
+            createElement('option', {value: 'square'}, 'Square'),
+            createElement('option', {value: 'triangle'}, 'Triangle')
+          )
+        ),
+        createElement(ControlContainer, null,
+          'Detune ',
+          createElement('input', {
+            defaultValue: detunes.get(this),
+            max: 50,
+            min: 0,
+            onInput: e => {
               detunes.set(this, Number(e.target.value))
               updateAudio.call(this)
-            }}
-            type='range'
-          />
-        </ControlContainer>
-        <ControlContainer>
-          totalOscillators&nbsp;
-          <input
-            defaultValue={oscTotals.get(this)}
-            max='50'
-            min='1'
-            onInput={e => {
+            },
+            type: 'range',
+          })
+        ),
+        createElement(ControlContainer, null,
+          'Oscillators ',
+          createElement('input', {
+            defaultValue: oscTotals.get(this),
+            max: 50,
+            min: 1,
+            onInput: e => {
               oscTotals.set(this, Number(e.target.value))
-            }}
-            type='range'
-          />
-        </ControlContainer>
-      </div>,
+            },
+            type: 'range',
+          })
+        )
+      ),
       containerEl
     )
   }
