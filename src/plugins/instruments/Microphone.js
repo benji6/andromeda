@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import ReactDOM from 'react-dom'
 
 const getUserMedia = (
@@ -13,9 +13,10 @@ const mediaStreamSources = new WeakMap()
 const microphoneOns = new WeakMap()
 const outputs = new WeakMap()
 
-const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
-  {children}
-</div>
+const ControlContainer = ({children}) => createElement('div', {
+  children,
+  style: {padding: '1rem'},
+})
 
 const turnMicOff = self => mediaStreamSources.get(self).disconnect()
 const turnMicOn = self => getUserMedia(
@@ -39,36 +40,35 @@ export default class {
   disconnect (destination) { outputs.get(this).disconnect(destination) }
   render (containerEl) {
     ReactDOM.render(
-      <div style={{textAlign: 'center'}}>
-        <h2>Microphone</h2>
-        <ControlContainer>
-          <label>
-            turn on&nbsp;
-            <input
-              onClick={() => {
+      createElement('div', {style: {textAlign: 'center'}},
+        createElement('h2', null, 'Microphone'),
+        createElement(ControlContainer, null,
+          createElement('label', null, 'Turn on',
+            createElement('input', {
+              onClick: () => {
                 const microphoneOn = !microphoneOns.get(this)
                 microphoneOns.set(this, microphoneOn)
                 if (microphoneOn) turnMicOn(this); else turnMicOff(this)
-              }}
-              type='checkbox'
-              defaultChecked={microphoneOns.get(this)}
-            />
-          </label>
-        </ControlContainer>
-        <ControlContainer>
-          <label>
-            Volume&nbsp;
-            <input
-              defaultValue={outputs.get(this).gain.value}
-              max='3'
-              min='0'
-              onInput={e => outputs.get(this).gain.value = Number(e.target.value)}
-              step='0.05'
-              type='range'
-            />
-          </label>
-        </ControlContainer>
-      </div>,
+              },
+              type: 'checkbox',
+              defaultChecked: microphoneOns.get(this),
+            })
+          )
+        ),
+        createElement(ControlContainer, null,
+          createElement('label', null,
+            'Volume ',
+            createElement('input', {
+              defaultValue: outputs.get(this).gain.value,
+              max: 3,
+              min: 0,
+              onInput: e => outputs.get(this).gain.value = Number(e.target.value),
+              step: 0.05,
+              type: 'range',
+            })
+          )
+        )
+      ),
       containerEl
     )
   }
