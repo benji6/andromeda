@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import ReactDOM from 'react-dom'
 import {createStore, connect} from 'st88'
 import createVirtualAudioGraph from 'virtual-audio-graph'
@@ -76,57 +76,57 @@ export default class {
       pingPong,
       wetLevel,
     }) =>
-      <div style={{textAlign: 'center'}}>
-        <h2>Delay</h2>
-        <ControlModule>
-          <CheckBox {...{
+      createElement('div', {style: {textAlign: 'center'}},
+        createElement('h2', null, 'Delay'),
+        createElement(ControlModule, null,
+          createElement(CheckBox, {
             defaultChecked: pingPong,
             label: 'Ping pong',
             onChange: e => setProp('pingPong', e.target.checked),
-          }} />
-          <Range {...{
+          }),
+          createElement(Range, {
             defaultValue: dryLevel,
             label: 'Dry level',
             max: '1.5',
             onInput: setPropFromRangeEvent('dryLevel'),
-          }} />
-          <Range {...{
+          }),
+          createElement(Range, {
             defaultValue: wetLevel,
             label: 'Wet level',
             max: '1.5',
             onInput: setPropFromRangeEvent('wetLevel'),
-          }} />
-          <Range {...{
+          }),
+          createElement(Range, {
             defaultValue: feedback,
             label: 'Feedback',
             max: '1.2',
             onInput: setPropFromRangeEvent('feedback'),
-          }} />
-          <Range {...{
+          }),
+          createElement(Range, {
             defaultValue: delayTime,
             label: 'Delay time',
             max: maxDelayTime,
             min: 0.01,
             onInput: setPropFromRangeEvent('delayTime'),
-          }} />
-          <Range {...{
+          }),
+          createElement(Range, {
             defaultValue: Math.log(lowCut),
             displayValue: lowCut.toFixed(2),
             label: 'Low cutoff',
             max: Math.log(20000),
             min: Math.log(20),
             onInput: e => setProp('lowCut', Math.exp(Number(e.target.value))),
-          }} />
-          <Range {...{
+          }),
+          createElement(Range, {
             defaultValue: Math.log(highCut),
             displayValue: highCut.toFixed(2),
             label: 'High cutoff',
             max: Math.log(20000),
             min: Math.log(20),
             onInput: e => setProp('highCut', Math.exp(Number(e.target.value))),
-          }} />
-        </ControlModule>
-      </div>),
+          }),
+        )
+      )),
       containerEl
     )
   }
