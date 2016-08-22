@@ -1,8 +1,8 @@
-import {assoc} from 'ramda'
-import React from 'react'
+import {createElement} from 'react'
 import ReactDOM from 'react-dom'
+import {createStore, connect} from 'st88'
+import ControlModule, {Range, Select} from '../../components/organisms/ControlModule'
 import createVirtualAudioGraph from 'virtual-audio-graph'
-import {createStore} from 'st88'
 
 const audioContexts = new WeakMap()
 const notes = new WeakMap()
@@ -74,12 +74,6 @@ const updateAudio = function (state) {
   virtualAudioGraphs.get(this).update(notesToGraph(state, notes.get(this)))
 }
 
-const ControlContainer = ({children}) => <div style={{padding: '1rem'}}>
-  <label>
-    {children}
-  </label>
-</div>
-
 export default class {
   constructor ({audioContext}) {
     const output = audioContext.createGain()
@@ -137,91 +131,84 @@ export default class {
   }
   render (containerEl) {
     const store = stores.get(this)
-    const state = store.getState()
-    ReactDOM.render(
-      <div style={{textAlign: 'center'}}>
-        <h2>Ariadne</h2>
-        <ControlContainer>
-          Gain&nbsp;
-          <input
-            defaultValue={state.masterGain}
-            max='1.25'
-            min='0'
-            onInput={e => store.dispatch(assoc('masterGain', Number(e.target.value)))}
-            step='0.01'
-            type='range'
-          />
-        </ControlContainer>
-        <ControlContainer>
-          Pan&nbsp;
-          <input
-            defaultValue={state.masterPan}
-            max='1'
-            min='-1'
-            onInput={e => store.dispatch(assoc('masterPan', Number(e.target.value)))}
-            step='0.01'
-            type='range'
-          />
-        </ControlContainer>
-        <ControlContainer>
-          Carrier wave&nbsp;
-          <select
-            defaultValue={state.carrierOscType}
-            onChange={e => store.dispatch(assoc('carrierOscType', e.target.value))}
-          >
-            <option value='sawtooth'>Sawtooth</option>
-            <option value='sine'>Sine</option>
-            <option value='square'>Square</option>
-            <option value='triangle'>Triangle</option>
-          </select>
-        </ControlContainer>
-        <ControlContainer>
-          Modulator wave&nbsp;
-          <select
-            defaultValue={state.modulatorOscType}
-            onChange={e => store.dispatch(assoc('modulatorOscType', e.target.value))}
-          >
-            <option value='sawtooth'>Sawtooth</option>
-            <option value='sine'>Sine</option>
-            <option value='square'>Square</option>
-            <option value='triangle'>Triangle</option>
-          </select>
-        </ControlContainer>
-        <ControlContainer>
-          Carrier detune&nbsp;
-          <input
-            defaultValue={state.carrierDetune}
-            max='32'
-            min='-32'
-            onInput={e => store.dispatch(assoc('carrierDetune', Number(e.target.value)))}
-            step='0.1'
-            type='range'
-          />
-        </ControlContainer>
-        <ControlContainer>
-          Modulator freq&nbsp;
-          <input
-            defaultValue={state.modulatorRatio}
-            max='8'
-            min='0.1'
-            onInput={e => store.dispatch(assoc('modulatorRatio', Number(e.target.value)))}
-            step='0.1'
-            type='range'
-          />
-        </ControlContainer>
-        <ControlContainer>
-          Modulator detune&nbsp;
-          <input
-            defaultValue={state.modulatorDetune}
-            max='128'
-            min='-128'
-            onInput={e => store.dispatch(assoc('modulatorDetune', Number(e.target.value)))}
-            step='0.1'
-            type='range'
-          />
-        </ControlContainer>
-      </div>,
-      containerEl
-    )
+    const setPropFromRangeEvent = key => e => store.dispatch(state => ({
+      ...state,
+      [key]: Number(e.target.value),
+    }))
+    const setPropFromSelectEvent = key => e => store.dispatch(state => ({
+      ...state,
+      [key]: e.target.value,
+    }))
+
+    ReactDOM.render(connect(store)(({
+      carrierDetune,
+      carrierOscType,
+      masterGain,
+      masterPan,
+      modulatorDetune,
+      modulatorOscType,
+      modulatorRatio,
+    }) => createElement('div', {style: {textAlign: 'center'}},
+      createElement('h2', null, 'Ariadne'),
+      createElement(ControlModule, null,
+        createElement(Range, {
+          defaultValue: masterGain,
+          label: 'Gain',
+          max: 1.25,
+          onInput: setPropFromRangeEvent('masterGain'),
+        }),
+        createElement(Range, {
+          defaultValue: masterPan,
+          label: 'Pan',
+          min: -1,
+          onInput: setPropFromRangeEvent('masterPan'),
+        }),
+        createElement(
+          Select,
+          {
+            defaultValue: carrierOscType,
+            label: 'Carrier wave',
+            onInput: setPropFromSelectEvent('carrierOscType'),
+          },
+          createElement('option', {value: 'sawtooth'}, 'Sawtooth'),
+          createElement('option', {value: 'sine'}, 'Sine'),
+          createElement('option', {value: 'square'}, 'Square'),
+          createElement('option', {value: 'triangle'}, 'Triangle')
+        ),
+        createElement(
+          Select,
+          {
+            defaultValue: modulatorOscType,
+            label: 'Modulator wave',
+            onInput: setPropFromSelectEvent('modulatorOscType'),
+          },
+          createElement('option', {value: 'sawtooth'}, 'Sawtooth'),
+          createElement('option', {value: 'sine'}, 'Sine'),
+          createElement('option', {value: 'square'}, 'Square'),
+          createElement('option', {value: 'triangle'}, 'Triangle')
+        ),
+        createElement(Range, {
+          defaultValue: carrierDetune,
+          label: 'Carrier detune',
+          max: 32,
+          min: -32,
+          onInput: setPropFromRangeEvent('carrierDetune'),
+        }),
+        createElement(Range, {
+          defaultValue: modulatorRatio,
+          label: 'Modulator freq',
+          max: 8,
+          min: 0.1,
+          onInput: setPropFromRangeEvent('modulatorRatio'),
+        }),
+        createElement(Range, {
+          defaultValue: modulatorDetune,
+          label: 'Modulator detune',
+          max: 128,
+          min: -128,
+          onInput: setPropFromRangeEvent('modulatorDetune'),
+        })
+      )
+    )), containerEl)
   }
 }
