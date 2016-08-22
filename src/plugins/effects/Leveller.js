@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import ReactDOM from 'react-dom'
 import {createStore, connect} from 'st88'
 import ControlModule, {Range} from '../../components/organisms/ControlModule'
@@ -20,7 +20,6 @@ export default class {
       knee: 40,
       pan: 0,
       ratio: 12,
-      reduction: -20,
       release: 0.25,
       threshold: -50,
     })
@@ -31,7 +30,6 @@ export default class {
       knee,
       pan,
       ratio,
-      reduction,
       release,
       threshold,
     }) => {
@@ -40,7 +38,6 @@ export default class {
       dynamicsCompressorNode.attack.value = attack
       dynamicsCompressorNode.knee.value = knee
       dynamicsCompressorNode.ratio.value = ratio
-      dynamicsCompressorNode.reduction.value = reduction
       dynamicsCompressorNode.release.value = release
       dynamicsCompressorNode.threshold.value = threshold
 
@@ -73,69 +70,61 @@ export default class {
         knee,
         pan,
         ratio,
-        reduction,
         release,
         threshold,
       }) =>
-        <div style={{textAlign: 'center'}}>
-          <h2>Leveller</h2>
-          <div>
-            <ControlModule title='Output'>
-              <Range {...{
+        createElement('div', {style: {textAlign: 'center'}},
+          createElement('h2', null, 'Leveller'),
+          createElement('div', null,
+            createElement(ControlModule, {title: 'Output'},
+              createElement(Range, {
                 defaultValue: gain,
                 label: 'Gain',
                 max: 2,
                 onInput: e => setProp('gain', Number(e.target.value)),
-              }}/>
-              <Range {...{
+              }),
+              createElement(Range, {
                 defaultValue: pan,
                 label: 'Pan',
                 min: -1,
                 onInput: e => setProp('pan', Number(e.target.value)),
-              }}/>
-            </ControlModule>
-          </div>
-          <ControlModule title='Compressor'>
-            <Range {...{
+              }),
+            )
+          ),
+          createElement(ControlModule, {title: 'Compressor'},
+            createElement(Range, {
               defaultValue: threshold,
               label: 'Threshold',
               max: 0,
               min: -99.99,
               onInput: e => setProp('threshold', Number(e.target.value)),
-            }}/>
-            <Range {...{
+            }),
+            createElement(Range, {
               defaultValue: knee,
               label: 'Knee',
               max: 99.99,
               onInput: e => setProp('knee', Number(e.target.value)),
-            }}/>
-            <Range {...{
+            }),
+            createElement(Range, {
               defaultValue: ratio,
               label: 'Ratio',
               max: 99.99,
               onInput: e => setProp('ratio', Number(e.target.value)),
-            }}/>
-            <Range {...{
-              defaultValue: reduction,
-              label: 'Reduction',
-              max: 0,
-              min: -99.99,
-              onInput: e => setProp('reduction', Number(e.target.value)),
-            }}/>
-            <Range {...{
+            }),
+            createElement(Range, {
               defaultValue: attack,
               label: 'Attack',
               max: 3,
               onInput: e => setProp('attack', Number(e.target.value)),
-            }}/>
-            <Range {...{
+            }),
+            createElement(Range, {
               defaultValue: release,
               label: 'Release',
               max: 3,
               onInput: e => setProp('release', Number(e.target.value)),
-            }}/>
-          </ControlModule>
-        </div>),
+            }),
+          )
+        )),
       containerEl
     )
   }
