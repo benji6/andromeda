@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import ModuleFilter from './ModuleFilter'
 import ModuleLfo from './ModuleLfo'
 import ModuleMaster from './ModuleMaster'
@@ -18,23 +18,23 @@ export default ({
   updateMaster,
   updateOsc,
 }) =>
-  <div {...{style: {color: blue, textAlign: 'center'}}}>
-    <h2 {...{style: {fontSize: size6, margin: size5}}}>PROMETHEUS</h2>
-    <ModuleMaster {...{master, updateMaster}} />
-    <div>
-      <ModuleFilter {...{
+  createElement('div', {style: {color: blue, textAlign: 'center'}},
+    createElement('h2', {style: {fontSize: size6, margin: size5}}, 'PROMETHEUS'),
+    createElement(ModuleMaster, {master, updateMaster}),
+    createElement('div', null,
+      createElement(ModuleFilter, {
         frequency: filter.frequency,
         gain: filter.gain,
         Q: filter.Q,
         type: filter.type,
         updateFilter,
-      }}/>
-      <ModuleLfo {...{lfo, updateLfo}} />
-    </div>
-    {oscillators.map((settings, i) => <ModuleOsc {...{
+      }),
+      createElement(ModuleLfo, {lfo, updateLfo})
+    ),
+    oscillators.map((settings, i) => createElement(ModuleOsc, {
       i,
       key: i,
       settings,
       updateOsc: updateOsc(i),
-    }} />)}
-  </div>
+    }))
+  )

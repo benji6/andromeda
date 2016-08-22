@@ -1,4 +1,4 @@
-import React from 'react'
+import {createElement} from 'react'
 import ControlModule, {Range, Select} from '../../../../components/organisms/ControlModule'
 import capitalize from 'capitalize'
 
@@ -17,48 +17,45 @@ const typesToParams = {
   peaking: paramsAll,
 }
 
-const ControlFrequency = ({frequency, updateFilter}) => <Range {...{
+const ControlFrequency = ({frequency, updateFilter}) => createElement(Range, {
   defaultValue: Math.log(frequency),
   displayValue: Math.round(frequency),
   label: 'Frequency',
   max: Math.log(20000),
   min: Math.log(20),
   onInput: e => updateFilter('frequency', Math.exp(Number(e.target.value))),
-}} />
+})
 
-const ControlGain = ({gain, updateFilter}) => <Range {...{
+const ControlGain = ({gain, updateFilter}) => createElement(Range, {
   defaultValue: gain,
   label: 'Gain',
   max: 20,
   min: -20,
   onInput: e => updateFilter('gain', Number(e.target.value)),
-}} />
+})
 
-const ControlQ = ({Q, updateFilter}) => <Range {...{
+const ControlQ = ({Q, updateFilter}) => createElement(Range, {
   defaultValue: Q,
   label: 'Q',
   max: 24,
   onInput: e => updateFilter('Q', Number(e.target.value)),
-}} />
+})
 
 export default ({frequency, gain, Q, type, updateFilter}) =>
-  <ControlModule {...{title: 'Filter'}}>
-    <Select {...{
+  createElement(ControlModule, {title: 'Filter'},
+    createElement(Select, {
       defaultValue: type,
       onChange: e => updateFilter('type', e.target.value),
       label: 'Type',
-    }}
-    >
-      {Object.keys(typesToParams).map(type => <option {...{
+    },
+      Object.keys(typesToParams).map(type => createElement('option', {
         key: type,
         value: type,
-      }}>{capitalize(type)}</option>)}
-    </Select>
-    {
-      typesToParams[type].map(param => param === 'frequency'
-        ? <ControlFrequency {...{frequency, key: param, updateFilter}} />
-        : param === 'gain'
-          ? <ControlGain {...{gain, key: param, updateFilter}} />
-          : <ControlQ {...{key: param, Q, updateFilter}} />)
-    }
-  </ControlModule>
+      }, capitalize(type)))
+    ),
+    typesToParams[type].map(param => param === 'frequency'
+      ? createElement(ControlFrequency, {frequency, key: param, updateFilter})
+      : param === 'gain'
+        ? createElement(ControlGain, {gain, key: param, updateFilter})
+        : createElement(ControlQ, {key: param, Q, updateFilter}))
+  )

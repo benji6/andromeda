@@ -1,13 +1,13 @@
-import React from 'react'
+import {createElement} from 'react'
 import {Select} from '../../../../components/organisms/ControlModule'
 
-export default ({defaultValue, onChange}) => <Select {...{
+export default ({defaultValue, onChange}) => createElement(Select, {
   defaultValue,
   onChange,
   label: 'Type',
-}}>
-  <option value='sawtooth'>Sawtooth</option>
-  <option value='sine'>Sine</option>
-  <option value='square'>Square</option>
-  <option value='triangle'>Triangle</option>
-</Select>
+},
+  createElement('option', {value: 'sawtooth'}, 'Sawtooth'),
+  createElement('option', {value: 'sine'}, 'Sine'),
+  createElement('option', {value: 'square'}, 'Square'),
+  createElement('option', {value: 'triangle'}, 'Triangle')
+)
