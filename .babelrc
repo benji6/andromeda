@@ -6,7 +6,6 @@
   ],
   "presets": [
     "es2015",
-    "es2016",
     "lava-lib",
     "react",
     "stage-2"

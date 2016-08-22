@@ -1,1 +1,1 @@
-export default pitch => 440 * 2 ** (pitch / 12)
+export default pitch => 440 * Math.pow(2, pitch / 12)

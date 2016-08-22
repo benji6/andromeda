@@ -118,8 +118,8 @@ const makePerspective = (fov, aspect, near, far) => {
 }
 
 const ratioToMod = ratio => ratio < 0.5
-  ? -(ratio - 0.5) ** 2
-  : (ratio - 0.5) ** 2
+  ? -Math.pow(ratio - 0.5, 2)
+  : Math.pow(ratio - 0.5, 2)
 
 const modToRotationInc = mod => rotationBaseAmount + rotationVelocityComponent * mod
 
