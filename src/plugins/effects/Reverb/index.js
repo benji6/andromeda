@@ -1,8 +1,7 @@
-import audioContext from '../../../audioContext'
-import createVirtualAudioGraph from 'virtual-audio-graph'
-import React from 'react'
 import ReactDOM from 'react-dom'
 import {createStore, connect} from 'st88'
+import createVirtualAudioGraph from 'virtual-audio-graph'
+import audioContext from '../../../audioContext'
 import ReverbComponent from './ReverbComponent'
 
 const reverbBucket = 'buckets/elemental-reverb'
