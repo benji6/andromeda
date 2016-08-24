@@ -2,6 +2,7 @@
   "plugins": [
     "glslify",
     "ramda",
+    "transform-react-router-optimize",
     "transform-runtime"
   ],
   "presets": [
