@@ -1,6 +1,6 @@
 {
   "name": "elemental",
-  "version": "0.37.1",
+  "version": "0.37.2",
   "description": "Make music in your browser!",
   "scripts": {
     "aws": "aws s3 cp --acl \"public-read\" --content-encoding \"gzip\" --recursive --region eu-west-1 dist s3://elemental.audio",
