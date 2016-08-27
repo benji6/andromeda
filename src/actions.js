@@ -21,6 +21,7 @@ export const [
   [KEYBOARD_VOLUME_SET, keyboardVolumeSet],
   [LOAD_PLUGIN_EFFECT, loadPluginEffect],
   [LOAD_PLUGIN_INSTRUMENT, loadPluginInstrument],
+  [NAV_LAST_DIRECTION_SET, navLastDirectionSet],
   [PATTERN_ACTIVE_NOTES_SET, patternActiveNotesSet],
   [PATTERN_BEAT_ADD, patternBeatAdd],
   [PATTERN_BEAT_CELL_CLICK, patternBeatCellClick],

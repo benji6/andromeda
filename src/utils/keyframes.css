@@ -33,3 +33,12 @@
     transform: translateX(0);
   }
 }
+
+@keyframes slide-in-right {
+  0% {
+    transform: translateX(100vw);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

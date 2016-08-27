@@ -4,14 +4,23 @@ import {connect} from 'react-redux'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import {addChannel, removeChannel} from '../../actions'
+import {makeClassName} from '../../utils/helpers'
 
-const mapStateToProps = ({dispatch, plugins: {channels}}) => ({
-  dispatch,
+const mapStateToProps = ({
+  nav: {lastDirection},
+  plugins: {channels},
+}) => ({
   channels,
+  lastDirection,
 })
 
-export default connect(mapStateToProps)(({dispatch, channels}) =>
-  createElement('div', {className: 'Channels'},
+export default connect(mapStateToProps)(({dispatch, channels, lastDirection}) =>
+  createElement('div', {
+    className: makeClassName(
+      'Channels',
+      lastDirection === 'left' ? 'slide-in-left' : 'slide-in-right'
+    ),
+  },
     map(
       channel => createElement('div', {key: channel},
         createElement(ButtonPrimary, {to: `/channel/${channel}`},

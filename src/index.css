@@ -1,8 +1,8 @@
 @import 'constants/colors';
 @import 'constants/dimensions';
 @import 'constants/timings';
-@import 'utils/globals';
 @import 'utils/keyframes';
+@import 'utils/globals';
 
 @import 'components/atoms/ButtonIcon';
 @import 'components/atoms/ButtonPlay';

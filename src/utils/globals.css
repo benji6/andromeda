@@ -3,6 +3,17 @@ body {
   color: var(--gray-99);
   font-family: sans-serif;
   margin: 0;
+  overflow-x: hidden;
   user-select: none;
   -webkit-user-select: none;
+}
+
+.slide-in-left {
+  animation-duration: var(--transition-medium);
+  animation-name: slide-in-left;
+}
+
+.slide-in-right {
+  animation-duration: var(--transition-medium);
+  animation-name: slide-in-right;
 }

@@ -1,8 +1,17 @@
 import {createElement} from 'react'
+import {connect} from 'react-redux'
 import LinkExternal from '../atoms/LinkExternal'
+import {makeClassName} from '../../utils/helpers'
 
-export default () =>
-  createElement('div', {className: 'About'},
+const mapStateToProps = ({nav: {lastDirection}}) => ({lastDirection})
+
+export default connect(mapStateToProps)(({lastDirection}) =>
+  createElement('div', {
+    className: makeClassName(
+      'About',
+      lastDirection === 'left' ? 'slide-in-left' : 'slide-in-right'
+    ),
+  },
     createElement('h1', {className: 'About__Title'}, 'About'),
     createElement('p', null, 'Elemental is a pluggable digital audio workstation in development built on open web technologies'),
     createElement('p', null,
@@ -24,4 +33,4 @@ export default () =>
     createElement('p', null,
       'Contributions, issues, feedback and suggestions are all very welcome!'
     )
-  )
+  ))

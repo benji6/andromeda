@@ -1,5 +1,9 @@
+import {findIndex} from 'ramda'
 import {createElement} from 'react'
 import {hashHistory, IndexRoute, Router, Route} from 'react-router'
+import store from './store'
+import {navLastDirectionSet} from './actions'
+import nav from './constants/nav'
 import App from './components/templates/App'
 import About from './components/pages/About'
 import Channel from './components/pages/Channel'
@@ -15,7 +19,23 @@ import Settings from './components/pages/Settings'
 import Song from './components/pages/Song'
 
 export default createElement(Router, {history: hashHistory},
-  createElement(Route, {component: App, path: '/'},
+  createElement(Route, {
+    component: App,
+    path: '/',
+    onChange: (prevState, nextState) => {
+      const {lastDirection} = store.getState().nav
+      const prevIndex = findIndex(([pathname]) => pathname === prevState.location.pathname, nav)
+      const nextIndex = findIndex(([pathname]) => pathname === nextState.location.pathname, nav)
+
+      if (nextIndex === prevIndex) return
+
+      const direction = nextIndex > prevIndex ? 'right' : 'left'
+
+      if (direction !== lastDirection) {
+        store.dispatch(navLastDirectionSet(direction))
+      }
+    },
+  },
     createElement(IndexRoute, {component: ControlPadPage}),
     createElement(Route, {path: '/about', component: About}),
     createElement(Route, {path: '/channel/:channelId', component: Channel}),
