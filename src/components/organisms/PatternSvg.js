@@ -7,7 +7,7 @@ const cellWidth = 16
 
 export default ({steps, to, xLength, yLength, red}) => createElement(
   'div',
-  {className: makeClassName('PatternSvg', [red, 'PatternSvg--red'])},
+  {className: makeClassName('PatternSvg', red && 'PatternSvg--red')},
   createElement(
     Link,
     {to},
@@ -17,7 +17,7 @@ export default ({steps, to, xLength, yLength, red}) => createElement(
       steps.map(({x, y}) => createElement(
         'rect',
         {
-          className: makeClassName('PatternSvg__step', [red, 'PatternSvg__step--red']),
+          className: makeClassName('PatternSvg__step', red && 'PatternSvg__step--red'),
           height: cellHeight,
           key: `${x}${y}`,
           width: cellWidth,

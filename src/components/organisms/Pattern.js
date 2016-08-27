@@ -15,7 +15,7 @@ export default class extends Component {
     const markerLeft = 100 / (patternData[0].length + 1)
     return createElement('div', {className: 'pattern'},
       createElement('div', {
-        className: makeClassName('pattern__marker', [red, 'pattern__marker--pink']),
+        className: makeClassName('pattern__marker', red && 'pattern__marker--pink'),
         style: {
           transform: `translateX(${markerLeft + (100 - markerLeft - 0.9) * markerPosition - 0.3}vw)`,
         },
