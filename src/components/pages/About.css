@@ -1,6 +1,4 @@
 .About {
-  animation-duration: var(--transition-medium);
-  animation-name: slide-in-left;
   color: var(--blue-90);
   margin: 1rem;
   text-align: justify;

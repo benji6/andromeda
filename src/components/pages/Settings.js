@@ -9,28 +9,35 @@ import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
 import {eventValuePath} from '../../utils/helpers'
 import scales from '../../constants/scales'
+import {makeClassName} from '../../utils/helpers'
 
 const minBpm = 32
 
-const connectComponent = connect(({
-  dispatch,
+const mapStateToProps = ({
+  nav: {lastDirection},
   microphone,
   settings: {bpm, rootNote, selectedScale},
 }) => ({
   bpm,
-  dispatch,
+  lastDirection,
   microphone,
   rootNote,
   selectedScale,
-}))
+})
 
-export default connectComponent(({
+export default connect(mapStateToProps)(({
   bpm,
   dispatch,
+  lastDirection,
   rootNote,
   selectedScale,
 }) =>
-  createElement('div', {className: 'Settings'},
+  createElement('div', {
+    className: makeClassName(
+      'Settings',
+      lastDirection === 'left' ? 'slide-in-left' : 'slide-in-right'
+    ),
+  },
     createElement(RangeSelector, {
       max: 512,
       min: minBpm,

@@ -12,17 +12,16 @@ import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import {mapIndexed} from '../../utils/helpers'
 import PatternSvg from '../organisms/PatternSvg'
+import {makeClassName} from '../../utils/helpers'
 
 const mapStateToProps = ({
-  activePatternIndex,
-  dispatch,
   instrument,
+  nav: {lastDirection},
   patterns,
   song: {playing},
 }) => ({
-  activePatternIndex,
-  dispatch,
   instrument,
+  lastDirection,
   patterns,
   playing,
 })
@@ -36,6 +35,7 @@ const mapDispatchToProps = {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(({
+  lastDirection,
   patternBeatAdd,
   patternSynthAdd,
   patternDelete,
@@ -44,7 +44,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
   songPlayingStart,
   songPlayingStop,
 }) =>
-  createElement('div', {className: 'Song'},
+  createElement('div', {
+    className: makeClassName(
+      'Song',
+      lastDirection === 'left' ? 'slide-in-left' : 'slide-in-right'
+    ),
+  },
     Boolean(patterns.length) && mapIndexed(({beatPattern}, i) =>
       createElement('div', {className: 'Song__Pattern', key: i},
         createElement(Cross, {onClick: () => patternDelete(i)}),

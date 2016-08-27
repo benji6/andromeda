@@ -7,6 +7,7 @@ import ButtonPrimary from '../atoms/ButtonPrimary'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import scales from '../../constants/scales'
 import store from '../../store'
+import {makeClassName} from '../../utils/helpers'
 
 const controlPadId = 'controlPad'
 
@@ -28,10 +29,12 @@ const mapStateToProps = ({
     range,
     touched,
   },
+  nav: {lastDirection},
   plugins,
   settings: {rootNote},
 }) => ({
   instrument,
+  lastDirection,
   noScale,
   octave,
   plugins,
@@ -46,6 +49,7 @@ const mapDispatchToProps = {controlPadTouched}
 export default connect(mapStateToProps, mapDispatchToProps)(({
   controlPadTouched,
   instrument,
+  lastDirection,
   noScale,
   octave,
   plugins,
@@ -54,7 +58,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
   rootNote,
   touched,
 }) =>
-  createElement('div', {className: 'ControlPadPage'},
+  createElement('div', {
+    className: makeClassName(
+      'ControlPadPage',
+      lastDirection === 'left' ? 'slide-in-left' : 'slide-in-right'
+    ),
+  },
     createElement('div', null,
       createElement(ControlPad, {
         controlPadTouched,
