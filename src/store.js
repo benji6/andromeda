@@ -1,3 +1,4 @@
+import {compose} from 'ramda'
 import {applyMiddleware, combineReducers, createStore} from 'redux'
 import middleWareBpm from './middlewareRedux/bpm'
 import middlewarePattern from './middlewareRedux/pattern'
@@ -21,9 +22,12 @@ export default createStore(combineReducers({
   samples,
   settings,
   song,
-}), applyMiddleware(
-  middleWareBpm,
-  middlewarePattern,
-  middlewareSamples,
-  middlewareSong,
+}), compose(
+    applyMiddleware(
+    middleWareBpm,
+    middlewarePattern,
+    middlewareSamples,
+    middlewareSong,
+  ),
+  window.devToolsExtension ? window.devToolsExtension() : a => a
 ))
