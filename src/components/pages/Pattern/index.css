@@ -1,4 +1,4 @@
-.PatternPage {
+.Pattern {
   animation-duration: var(--transition-medium);
   animation-name: expand;
   display: flex;
@@ -6,6 +6,31 @@
   align-items: center;
 }
 
-.PatternPage__Title {
+.Pattern_Body {
+  height: 52vh;
+  overflow: auto;
+}
+
+.Pattern__Container {
+  align-content: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  width: 100vw;
+}
+
+.Pattern__Marker {
+  border-left: 0.2rem solid var(--green-50);
+  height: calc(100% - 0.5rem - 0.1rem);
+  position: absolute;
+  top: 0.5rem;
+  width: 0;
+}
+
+.Pattern__Marker--pink {
+  border-color: var(--pink-50);
+}
+
+.Pattern__Title {
   text-align: center;
 }
