@@ -10,6 +10,7 @@ import nav from './reducers/nav'
 import patterns from './reducers/patterns'
 import plugins from './reducers/plugins'
 import samples from './reducers/samples'
+import screen from './reducers/screen'
 import settings from './reducers/settings'
 import song from './reducers/song'
 
@@ -20,6 +21,7 @@ export default createStore(combineReducers({
   patterns,
   plugins,
   samples,
+  screen,
   settings,
   song,
 }), compose(

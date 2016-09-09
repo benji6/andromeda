@@ -6,7 +6,19 @@ import UpgradeBrowser from './components/pages/UpgradeBrowser'
 import store from './store'
 import Router from './Router'
 import './utils/loadPlugins'
-import {appInitialize} from './actions'
+import {
+  appInitialize,
+  screenResize,
+} from './actions'
+
+const resizeHandler = () => requestAnimationFrame(() => store.dispatch(screenResize({
+  sideLength: innerWidth < innerHeight ? innerWidth : innerHeight * 0.8,
+  width: innerWidth,
+})))
+
+resizeHandler()
+
+addEventListener('resize', resizeHandler)
 
 render(
   navigator.serviceWorker && window.fetch
