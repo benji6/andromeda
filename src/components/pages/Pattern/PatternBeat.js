@@ -129,6 +129,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         patternData,
         patternId,
         playing,
+        sideLength,
+        width,
       } = this.props
 
       return createElement('div', {className: 'Pattern'},
@@ -142,6 +144,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
           onClick: y => x => () => patternBeatCellClick({patternId, x, y}),
           patternData,
           red: true,
+          sideLength,
+          width,
           yLabel,
         }),
         createElement(ButtonPlay, {
