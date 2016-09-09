@@ -3,8 +3,10 @@ import {connect} from 'react-redux'
 import PatternBeat from './PatternBeat'
 import PatternSynth from './PatternSynth'
 
-const mapStateToProps = ({patterns}, {params: {patternId}}) => ({
+const mapStateToProps = ({patterns, screen: {sideLength, width}}, {params: {patternId}}) => ({
   beatPattern: patterns[patternId].beatPattern,
+  sideLength,
+  width,
 })
 
 export default connect(mapStateToProps)(

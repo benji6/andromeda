@@ -1,8 +1,9 @@
 import {range} from 'ramda'
 import {Component, createElement} from 'react'
-import {makeClassName, mapIndexed} from '../../../utils/helpers'
+import {mapIndexed} from '../../../utils/helpers'
 import XLabels from '../../molecules/XLabels'
 import PatternRow from '../../molecules/PatternRow'
+import Marker from './Marker'
 
 export default class extends Component {
   componentDidMount () {
@@ -10,16 +11,27 @@ export default class extends Component {
     patternBody.scrollTop = patternBody.clientHeight
   }
   render () {
-    const {markerPosition, onClick, patternData, red, yLabel} = this.props
-    const markerLeft = 100 / (patternData[0].length + 1)
+    const {
+      markerPosition,
+      onClick,
+      patternData,
+      red,
+      sideLength,
+      width,
+      yLabel,
+    } = this.props
+    const xLength = patternData[0].length + 1
+    const markerLeft = 1 / xLength
+    const scrollBarWidthFactor = 0.02
+
     return createElement('div', {className: 'Pattern__Container'},
-      createElement('div', {
-        className: makeClassName('Pattern__Marker', red && 'Pattern__Marker--pink'),
-        style: {
-          transform: `translateX(${markerLeft + (100 - markerLeft - 0.9) * markerPosition - 0.3}vw)`,
-        },
+      createElement(Marker, {
+        height: sideLength * 0.69,
+        markerPosition: markerPosition * (1 - markerLeft - scrollBarWidthFactor) + markerLeft,
+        red,
+        width,
       }),
-      createElement(XLabels, {labels: range(0, patternData[0].length + 1)}),
+      createElement(XLabels, {labels: range(0, xLength)}),
       createElement('div', {className: 'Pattern_Body', ref: 'Pattern_Body'},
         mapIndexed(
           (rowData, i) => createElement(PatternRow, {

@@ -137,6 +137,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         playing,
         rootNote,
         selectedScale,
+        sideLength,
+        width,
         yLength,
       } = this.props
 
@@ -150,6 +152,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(
           markerPosition,
           onClick: y => x => () => patternSynthCellClick({patternId, x, y}),
           patternData,
+          sideLength,
+          width,
           yLabel: yLabel(selectedScale, yLength, rootNote),
         }),
         createElement(ButtonPlay, {
