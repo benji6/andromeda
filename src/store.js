@@ -1,4 +1,4 @@
-import {compose} from 'ramda'
+import {compose, identity} from 'ramda'
 import {applyMiddleware, combineReducers, createStore} from 'redux'
 import middleWareBpm from './middlewareRedux/bpm'
 import middlewarePattern from './middlewareRedux/pattern'
@@ -31,5 +31,7 @@ export default createStore(combineReducers({
     middlewareSamples,
     middlewareSong,
   ),
-  window.devToolsExtension ? window.devToolsExtension() : a => a
+  typeof window !== 'undefined' && window.devToolsExtension
+    ? window.devToolsExtension()
+    : identity
 ))
