@@ -16,7 +16,7 @@ import {
 import {mapIndexed} from '../../../utils/helpers'
 import ButtonPlay from '../../atoms/ButtonPlay'
 import ButtonPrimary from '../../atoms/ButtonPrimary'
-import Pattern from '../../organisms/Pattern'
+import Pattern from './Pattern'
 import pitchFromScaleIndex from '../../../audioHelpers/pitchFromScaleIndex'
 import noteNameFromPitch from '../../../audioHelpers/noteNameFromPitch'
 import {stepExists} from '../../../reducers/patterns'
@@ -140,10 +140,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         yLength,
       } = this.props
 
-      return createElement('div', {className: 'PatternPage'},
+      return createElement('div', {className: 'Pattern'},
         createElement(
           'h2',
-          {className: 'PatternPage__Title'},
+          {className: 'Pattern__Title'},
           `Pattern ${patternId} - Synth`
         ),
         createElement(Pattern, {
