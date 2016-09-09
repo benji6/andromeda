@@ -48,6 +48,7 @@ export const [
   [REMOVE_INSTRUMENT_FROM_CHANNEL, removeInstrumentFromChannel],
   [ROOT_NOTE_SET, rootNoteSet],
   [SAMPLE_FETCHED, sampleFetched],
+  [SCREEN_RESIZE, screenResize],
   [SELECTED_SCALE_SET, selectedScaleSet],
   [SONG_ACTIVE_NOTES_SET, songActiveNotesSet],
   [SONG_PLAYING_START, songPlayingStart],
