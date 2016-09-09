@@ -46,6 +46,13 @@ const visualLoop = patternId => () => {
   }))
 }
 
+const patternData = defaultMemoize((xLength, yLength, steps) => mapIndexed(
+  (x, rowIndex) => map(colIndex => ({
+    selected: stepExists(colIndex, rowIndex, steps),
+  }), x),
+  emptyPatternData(xLength, yLength)
+))
+
 const mapStateToProps = ({
   dispatch,
   patterns,
@@ -63,19 +70,12 @@ const mapStateToProps = ({
     yLength,
   } = patterns[patternId]
 
-  const patternData = mapIndexed(
-    (x, rowIndex) => map(colIndex => ({
-      selected: stepExists(colIndex, rowIndex, steps),
-    }), x),
-    emptyPatternData(xLength, yLength)
-  )
-
   return {
     bpm,
     dispatch,
     instrument,
     markerPosition,
-    patternData,
+    patternData: patternData(xLength, yLength, steps),
     patternId: Number(patternId),
     playing,
     playStartTime,
