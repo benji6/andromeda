@@ -129,7 +129,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         patternData,
         patternId,
         playing,
-        sideLength,
+        height,
         width,
       } = this.props
 
@@ -140,11 +140,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(
           `Pattern ${patternId} - Beat`
         ),
         createElement(Pattern, {
+          height,
           markerPosition,
           onClick: y => x => () => patternBeatCellClick({patternId, x, y}),
           patternData,
           red: true,
-          sideLength,
           width,
           yLabel,
         }),

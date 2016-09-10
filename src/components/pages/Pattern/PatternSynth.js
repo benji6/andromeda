@@ -130,6 +130,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
     render () {
       const {
+        height,
         markerPosition,
         patternData,
         patternId,
@@ -137,7 +138,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         playing,
         rootNote,
         selectedScale,
-        sideLength,
         width,
         yLength,
       } = this.props
@@ -149,10 +149,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(
           `Pattern ${patternId} - Synth`
         ),
         createElement(Pattern, {
+          height,
           markerPosition,
           onClick: y => x => () => patternSynthCellClick({patternId, x, y}),
           patternData,
-          sideLength,
           width,
           yLabel: yLabel(selectedScale, yLength, rootNote),
         }),
