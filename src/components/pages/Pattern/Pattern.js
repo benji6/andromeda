@@ -12,11 +12,11 @@ export default class extends Component {
   }
   render () {
     const {
+      height,
       markerPosition,
       onClick,
       patternData,
       red,
-      sideLength,
       width,
       yLabel,
     } = this.props
@@ -26,7 +26,7 @@ export default class extends Component {
 
     return createElement('div', {className: 'Pattern__Container'},
       createElement(Marker, {
-        height: sideLength * 0.69,
+        height,
         markerPosition: markerPosition * (1 - markerLeft - scrollBarWidthFactor) + markerLeft,
         red,
         width,

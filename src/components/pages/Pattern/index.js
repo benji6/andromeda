@@ -3,9 +3,9 @@ import {connect} from 'react-redux'
 import PatternBeat from './PatternBeat'
 import PatternSynth from './PatternSynth'
 
-const mapStateToProps = ({patterns, screen: {sideLength, width}}, {params: {patternId}}) => ({
+const mapStateToProps = ({patterns, screen: {height, width}}, {params: {patternId}}) => ({
   beatPattern: patterns[patternId].beatPattern,
-  sideLength,
+  height: height * 0.8 * 0.69,
   width,
 })
 

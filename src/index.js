@@ -12,6 +12,7 @@ import {
 } from './actions'
 
 const resizeHandler = () => requestAnimationFrame(() => store.dispatch(screenResize({
+  height: innerHeight,
   sideLength: innerWidth < innerHeight ? innerWidth : innerHeight * 0.8,
   width: innerWidth,
 })))
