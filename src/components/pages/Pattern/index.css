@@ -6,11 +6,6 @@
   align-items: center;
 }
 
-.Pattern_Body {
-  height: 52vh;
-  overflow: auto;
-}
-
 .Pattern__Container {
   align-content: center;
   flex-wrap: wrap;

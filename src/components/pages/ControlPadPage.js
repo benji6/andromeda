@@ -7,7 +7,7 @@ import ButtonPrimary from '../atoms/ButtonPrimary'
 import pitchToFrequency from '../../audioHelpers/pitchToFrequency'
 import scales from '../../constants/scales'
 import store from '../../store'
-import {makeClassName} from '../../utils/helpers'
+import {makeClassName} from '../../utils/dom'
 
 const controlPadId = 'controlPad'
 

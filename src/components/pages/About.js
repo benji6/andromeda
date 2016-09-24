@@ -1,7 +1,7 @@
 import {createElement} from 'react'
 import {connect} from 'react-redux'
 import LinkExternal from '../atoms/LinkExternal'
-import {makeClassName} from '../../utils/helpers'
+import {makeClassName} from '../../utils/dom'
 
 const mapStateToProps = ({nav: {lastDirection}}) => ({lastDirection})
 

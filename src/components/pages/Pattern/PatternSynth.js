@@ -7,6 +7,8 @@ import {createElement, Component} from 'react'
 import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
 import audioContext from '../../../audioContext'
+import Marker from './Marker'
+import Steps from './Steps'
 import {
   patternSynthCellClick,
   patternMarkerPositionSet,
@@ -16,7 +18,6 @@ import {
 import {mapIndexed} from '../../../utils/helpers'
 import ButtonPlay from '../../atoms/ButtonPlay'
 import ButtonPrimary from '../../atoms/ButtonPrimary'
-import Pattern from './Pattern'
 import pitchFromScaleIndex from '../../../audioHelpers/pitchFromScaleIndex'
 import noteNameFromPitch from '../../../audioHelpers/noteNameFromPitch'
 import {stepExists} from '../../../reducers/patterns'
@@ -142,20 +143,30 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         yLength,
       } = this.props
 
+      const xLength = patternData[0].length + 1
+      const markerLeft = 1 / xLength
+      const scrollBarWidthFactor = 0.02
+
       return createElement('div', {className: 'Pattern'},
         createElement(
           'h2',
           {className: 'Pattern__Title'},
           `Pattern ${patternId} - Synth`
         ),
-        createElement(Pattern, {
-          height,
-          markerPosition,
-          onClick: y => x => () => patternSynthCellClick({patternId, x, y}),
-          patternData,
-          width,
-          yLabel: yLabel(selectedScale, yLength, rootNote),
-        }),
+        createElement('div', {className: 'Pattern__Container'},
+          createElement(Steps, {
+            height,
+            onClick: (x, y) => patternSynthCellClick({patternId, x, y}),
+            patternData,
+            width,
+            yLabel: yLabel(selectedScale, yLength, rootNote),
+          }),
+          createElement(Marker, {
+            height,
+            markerPosition: markerPosition * (1 - markerLeft - scrollBarWidthFactor) + markerLeft,
+            width,
+          }),
+        ),
         createElement(ButtonPlay, {
           onPlay: this.onPlay,
           onStop: this.onStop,

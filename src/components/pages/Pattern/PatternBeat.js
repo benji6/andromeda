@@ -7,6 +7,8 @@ import {createElement, Component} from 'react'
 import {connect} from 'react-redux'
 import {defaultMemoize} from 'reselect'
 import audioContext from '../../../audioContext'
+import Marker from './Marker'
+import Steps from './Steps'
 import {
   patternBeatPlayingStart,
   patternBeatPlayingStop,
@@ -16,7 +18,6 @@ import {
 import {mapIndexed} from '../../../utils/helpers'
 import ButtonPlay from '../../atoms/ButtonPlay'
 import ButtonPrimary from '../../atoms/ButtonPrimary'
-import Pattern from './Pattern'
 import {stepExists} from '../../../reducers/patterns'
 import store from '../../../store'
 import sampleNames from '../../../constants/sampleNames'
@@ -133,21 +134,32 @@ export default connect(mapStateToProps, mapDispatchToProps)(
         width,
       } = this.props
 
+      const xLength = patternData[0].length + 1
+      const markerLeft = 1 / xLength
+      const scrollBarWidthFactor = 0.02
+
       return createElement('div', {className: 'Pattern'},
         createElement(
           'h2',
           {className: 'Pattern__Title'},
           `Pattern ${patternId} - Beat`
         ),
-        createElement(Pattern, {
-          height,
-          markerPosition,
-          onClick: y => x => () => patternBeatCellClick({patternId, x, y}),
-          patternData,
-          red: true,
-          width,
-          yLabel,
-        }),
+        createElement('div', {className: 'Pattern__Container'},
+          createElement(Steps, {
+            height,
+            onClick: (x, y) => patternBeatCellClick({patternId, x, y}),
+            patternData,
+            red: true,
+            width,
+            yLabel,
+          }),
+          createElement(Marker, {
+            height,
+            markerPosition: markerPosition * (1 - markerLeft - scrollBarWidthFactor) + markerLeft,
+            red: true,
+            width,
+          }),
+        ),
         createElement(ButtonPlay, {
           onPlay: this.onPlay,
           onStop: this.onStop,

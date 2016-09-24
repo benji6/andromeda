@@ -14,12 +14,7 @@
 @import 'components/atoms/InputSelect';
 @import 'components/atoms/LinkExternal';
 @import 'components/atoms/Slider';
-@import 'components/atoms/Step';
 @import 'components/atoms/WelcomeMessage';
-@import 'components/atoms/XLabel';
-@import 'components/atoms/YLabel';
-@import 'components/molecules/PatternRow';
-@import 'components/molecules/XLabels';
 @import 'components/organisms/ControlModule';
 @import 'components/organisms/ControlPad';
 @import 'components/organisms/Navigation';
