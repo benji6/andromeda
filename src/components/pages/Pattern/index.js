@@ -5,7 +5,7 @@ import PatternSynth from './PatternSynth'
 
 const mapStateToProps = ({patterns, screen: {height, width}}, {params: {patternId}}) => ({
   beatPattern: patterns[patternId].beatPattern,
-  height: height * 0.8 * 0.69,
+  height: height * 0.69,
   width,
 })
 

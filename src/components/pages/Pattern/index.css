@@ -14,13 +14,15 @@
   width: 100vw;
 }
 
+.Pattern__Controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .Pattern__Marker {
   left: 0;
   pointer-events: none;
   position: absolute;
   top: 0;
-}
-
-.Pattern__Title {
-  text-align: center;
 }

@@ -5,10 +5,11 @@
   border-right: none;
   border-top: 2rem solid transparent;
   cursor: pointer;
+  outline: 0;
   padding: 0;
   height: 0;
   margin: 1rem auto;
-  width: 0;
+  width: 4rem;
 }
 .ButtonPlay:hover {
   border-left-color: var(--blue-70);
