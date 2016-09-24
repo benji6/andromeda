@@ -139,11 +139,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(
       const scrollBarWidthFactor = 0.02
 
       return createElement('div', {className: 'Pattern'},
-        createElement(
-          'h2',
-          {className: 'Pattern__Title'},
-          `Pattern ${patternId} - Beat`
-        ),
         createElement('div', {className: 'Pattern__Container'},
           createElement(Steps, {
             height,
@@ -160,15 +155,18 @@ export default connect(mapStateToProps, mapDispatchToProps)(
             width,
           }),
         ),
-        createElement(ButtonPlay, {
-          onPlay: this.onPlay,
-          onStop: this.onStop,
-          playing,
-        }),
-        createElement(
-          ButtonPrimary,
-          {to: `/controllers/pattern/${patternId}/settings`},
-          'Options'
+        createElement('div', {className: 'Pattern__Controls'},
+          createElement('div'),
+          createElement(ButtonPlay, {
+            onPlay: this.onPlay,
+            onStop: this.onStop,
+            playing,
+          }),
+          createElement(
+            ButtonPrimary,
+            {to: `/controllers/pattern/${patternId}/settings`},
+            `Pattern ${patternId} Options`
+          )
         )
       )
     }
