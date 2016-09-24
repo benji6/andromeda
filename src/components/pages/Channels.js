@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import {addChannel, removeChannel} from '../../actions'
-import {makeClassName} from '../../utils/helpers'
+import {makeClassName} from '../../utils/dom'
 
 const mapStateToProps = ({
   nav: {lastDirection},

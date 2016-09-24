@@ -3,7 +3,7 @@ import {map} from 'ramda'
 import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
-import {eventValuePath} from '../../utils/helpers'
+import {eventValuePath} from '../../utils/dom'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 import {
   keyboardMonophonicSet,

@@ -1,30 +1,15 @@
-import {clamp} from 'ramda'
 import {Component, createElement} from 'react'
 import Token from './Token'
+import {eventRatiosAndCoords} from '../../../utils/dom'
 
 let currentXYRatios = null
 let controlPadElement = null
 let mouseInputEnabled = false
 let controlPadActive = false
 
-const validRatio = clamp(0, 1 - Number.EPSILON)
-
 const sideLength = () => window.innerWidth < window.innerHeight
   ? window.innerWidth
   : window.innerHeight * 0.8
-
-const ratiosAndCoords = e => {
-  const {top, right, bottom, left} = e.target.getBoundingClientRect()
-  const [width, height] = [right - left, bottom - top]
-  const {clientX, clientY} = e.changedTouches && e.changedTouches[0] || e
-  const [x, y] = [clientX - left, clientY - top]
-  return {
-    x,
-    xRatio: validRatio(x / width),
-    y,
-    yRatio: validRatio(y / height),
-  }
-}
 
 export default class extends Component {
   constructor () {
@@ -49,7 +34,7 @@ export default class extends Component {
       mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled
       if (e instanceof window.MouseEvent && !mouseInputEnabled) return
       this.props.touched || this.props.controlPadTouched()
-      currentXYRatios = ratiosAndCoords(e)
+      currentXYRatios = eventRatiosAndCoords(e)
       this.token.handleInput(currentXYRatios)
       if (controlPadActive) return inputModifyHandler(currentXYRatios)
       controlPadActive = true

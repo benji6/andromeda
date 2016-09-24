@@ -12,7 +12,7 @@ import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import {mapIndexed} from '../../utils/helpers'
 import PatternSvg from '../organisms/PatternSvg'
-import {makeClassName} from '../../utils/helpers'
+import {makeClassName} from '../../utils/dom'
 
 const mapStateToProps = ({
   instrument,

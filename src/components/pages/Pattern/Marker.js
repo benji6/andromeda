@@ -8,10 +8,10 @@ export default class extends Component {
     const x = markerPosition * width
 
     ctx.clearRect(0, 0, width, height)
-    ctx.strokeWidth = 2
+    ctx.lineWidth = 2
     ctx.strokeStyle = red ? pink50 : green50
     ctx.beginPath()
-    ctx.moveTo(x, 24)
+    ctx.moveTo(x, 14)
     ctx.lineTo(x, clientHeight)
     ctx.stroke()
   }

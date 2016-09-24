@@ -7,9 +7,8 @@ import ButtonPrimary from '../atoms/ButtonPrimary'
 import RangeSelector from '../molecules/RangeSelector'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
-import {eventValuePath} from '../../utils/helpers'
 import scales from '../../constants/scales'
-import {makeClassName} from '../../utils/helpers'
+import {makeClassName, eventValuePath} from '../../utils/dom'
 
 const minBpm = 32
 

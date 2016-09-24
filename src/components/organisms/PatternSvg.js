@@ -1,6 +1,6 @@
 import {createElement} from 'react'
 import {Link} from 'react-router'
-import {makeClassName} from '../../utils/helpers'
+import {makeClassName} from '../../utils/dom'
 
 const cellHeight = 6
 const cellWidth = 16

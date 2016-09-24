@@ -3,7 +3,7 @@ import {map} from 'ramda'
 import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
-import {eventValuePath, eventCheckedPath} from '../../utils/helpers'
+import {eventValuePath, eventCheckedPath} from '../../utils/dom'
 import {
   controlPadInstrumentSet,
   controlPadNoScaleSet,
