@@ -31,6 +31,7 @@ const mapStateToProps = ({
   },
   nav: {lastDirection},
   plugins,
+  screen: {sideLength},
   settings: {rootNote},
 }) => ({
   instrument,
@@ -41,6 +42,7 @@ const mapStateToProps = ({
   portamento,
   range,
   rootNote,
+  sideLength,
   touched,
 })
 
@@ -56,6 +58,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
   portamento,
   range,
   rootNote,
+  sideLength,
   touched,
 }) =>
   createElement('div', {
@@ -110,6 +113,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
             ? instance.noteStart(note)
             : instance.noteModify(note)
         },
+        sideLength,
         touched,
       })
     ),
