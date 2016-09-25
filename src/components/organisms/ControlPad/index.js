@@ -7,25 +7,11 @@ let controlPadElement = null
 let mouseInputEnabled = false
 let controlPadActive = false
 
-const sideLength = () => window.innerWidth < window.innerHeight
-  ? window.innerWidth
-  : window.innerHeight * 0.8
-
 export default class extends Component {
-  constructor () {
-    super()
-    this.state = {sideLength: sideLength()}
-    this.resizeHandler = () => {
-      const l = sideLength()
-      this.setState({sideLength: l})
-      this.token.handleResize(l)
-    }
-  }
-
   componentDidMount () {
     this.token = new Token({
       gl: this.refs.controlPad.getContext('webgl'),
-      sideLength: this.state.sideLength,
+      sideLength: this.props.sideLength,
     })
     const {inputStopHandler, inputStartHandler, inputModifyHandler} = this.props
     controlPadElement = this.refs.controlPad
@@ -56,15 +42,14 @@ export default class extends Component {
     controlPadElement.addEventListener('mouseup', inputEndCallback)
 
     controlPadElement.oncontextmenu = e => e.preventDefault()
-
-    window.addEventListener('resize', this.resizeHandler)
   }
 
-  componentWillUnmount () {
-    window.removeEventListener('resize', this.resizeHandler)
+  componentDidUpdate () {
+    this.token.handleResize(this.props.sideLength)
   }
 
   render () {
+    const {sideLength} = this.props
     return createElement('div', {className: 'ControlPad'},
        !this.props.touched && createElement(
         'div',
@@ -75,9 +60,9 @@ export default class extends Component {
       ),
       createElement('canvas', {
         className: 'ControlPad__Canvas',
-        height: this.state.sideLength,
+        height: sideLength,
         ref: 'controlPad',
-        width: this.state.sideLength,
+        width: sideLength,
       })
     )
   }
