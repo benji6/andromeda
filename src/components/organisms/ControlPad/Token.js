@@ -123,13 +123,6 @@ const ratioToMod = ratio => ratio < 0.5
 
 const modToRotationInc = mod => rotationBaseAmount + rotationVelocityComponent * mod
 
-const zToWMatrix = [
-  1, 0, 0, 0,
-  0, 1, 0, 0,
-  0, 0, 1, 0.75,
-  0, 0, 0, 1,
-]
-
 export default class {
   constructor ({gl, sideLength}) {
     const program = gl.createProgram()
@@ -141,7 +134,7 @@ export default class {
     this.sideLength = sideLength
     this.z = zMin
 
-    ;forEach(shader => gl.attachShader(program, shader), [
+    forEach(shader => gl.attachShader(program, shader), [
       compileShader(gl, glslify('./vertexShader.glsl'), gl.VERTEX_SHADER),
       compileShader(gl, glslify('./fragmentShader.glsl'), gl.FRAGMENT_SHADER),
     ])
@@ -203,7 +196,7 @@ export default class {
         2048
       )
 
-      const matrix = mult(mult(mult(rotationMatrix, translationMatrix), projectionMatrix), zToWMatrix)
+      const matrix = mult(mult(rotationMatrix, translationMatrix), projectionMatrix)
 
       gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
       gl.uniformMatrix4fv(matrixLocation, false, matrix)
