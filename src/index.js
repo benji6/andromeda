@@ -1,6 +1,7 @@
 import {createElement} from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
+import screenfull from 'screenfull'
 import './keyboard'
 import UpgradeBrowser from './components/pages/UpgradeBrowser'
 import store from './store'
@@ -29,4 +30,9 @@ render(
     )
     : createElement(UpgradeBrowser),
   document.getElementById('app')
+)
+
+document.body.addEventListener(
+  'touchstart',
+  () => screenfull.enabled && screenfull.request(document.body)
 )
