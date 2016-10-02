@@ -11,8 +11,8 @@ const typesToParams = {
   bandpass: paramsFrequencyQ,
   highpass: paramsFrequencyQ,
   highshelf: paramsFrequencyGain,
-  lowshelf: paramsFrequencyGain,
   lowpass: paramsFrequencyQ,
+  lowshelf: paramsFrequencyGain,
   notch: paramsFrequencyQ,
   peaking: paramsAll,
 }
@@ -45,8 +45,8 @@ export default ({frequency, gain, Q, type, updateFilter}) =>
   createElement(ControlModule, {title: 'Filter'},
     createElement(Select, {
       defaultValue: type,
-      onChange: e => updateFilter('type', e.target.value),
       label: 'Type',
+      onChange: e => updateFilter('type', e.target.value),
     },
       Object.keys(typesToParams).map(type => createElement('option', {
         key: type,

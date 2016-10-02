@@ -70,24 +70,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
     createElement('div', null,
       createElement(ControlPad, {
         controlPadTouched,
-        inputStopHandler () {
-          currentlyPlayingPitch = null
-          const instance = instrumentInstance(instrument, plugins)
-          instance.noteStop(controlPadId)
-        },
-        inputStartHandler ({xRatio, yRatio}) {
-          const instance = instrumentInstance(instrument, plugins)
-
-          currentlyPlayingPitch = noScale
-            ? 12 * range * xRatio
-            : calculatePitch(range * xRatio)
-
-          instance.noteStart({
-            frequency: pitchToFrequency(currentlyPlayingPitch + 12 * octave + rootNote),
-            gain: (1 - yRatio) / 2,
-            id: controlPadId,
-          })
-        },
         inputModifyHandler ({xRatio, yRatio}) {
           const pitch = noScale
             ? 12 * range * xRatio
@@ -112,6 +94,24 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
           isNewNote
             ? instance.noteStart(note)
             : instance.noteModify(note)
+        },
+        inputStartHandler ({xRatio, yRatio}) {
+          const instance = instrumentInstance(instrument, plugins)
+
+          currentlyPlayingPitch = noScale
+            ? 12 * range * xRatio
+            : calculatePitch(range * xRatio)
+
+          instance.noteStart({
+            frequency: pitchToFrequency(currentlyPlayingPitch + 12 * octave + rootNote),
+            gain: (1 - yRatio) / 2,
+            id: controlPadId,
+          })
+        },
+        inputStopHandler () {
+          currentlyPlayingPitch = null
+          const instance = instrumentInstance(instrument, plugins)
+          instance.noteStop(controlPadId)
         },
         sideLength,
         touched,

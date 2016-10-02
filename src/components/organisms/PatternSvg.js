@@ -13,7 +13,7 @@ export default ({steps, to, xLength, yLength, red}) => createElement(
     {to},
     createElement(
       'svg',
-      {width: xLength * cellWidth, height: yLength * cellHeight},
+      {height: yLength * cellHeight, width: xLength * cellWidth},
       steps.map(({x, y}) => createElement(
         'rect',
         {

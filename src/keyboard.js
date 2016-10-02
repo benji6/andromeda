@@ -12,9 +12,9 @@ const computeNoteParams = pitch => {
   const {keyboard: {instrument, octave, volume}} = store.getState()
   return {
     frequency: pitchToFrequency(pitch + 12 * octave),
+    gain: volume,
     id: computeId(pitch),
     instrument,
-    gain: volume,
   }
 }
 

@@ -38,8 +38,8 @@ const oscBank = ({
     map(osc, range(0, totalOscillators))
   )
   return merge(oscillators, {
-    masterGain: ['gain', 'output', {gain: masterGain}],
     0: ['gain', 'masterGain', {gain}],
+    masterGain: ['gain', 'output', {gain: masterGain}],
   })
 }
 
@@ -50,8 +50,8 @@ const notesToGraph = function (notes) {
     ...acc,
     [id]: [oscBank, 'output', {
       detune: detunes.get(this),
-      gain,
       frequency,
+      gain,
       masterGain: masterGains.get(this),
       oscTotal: oscTotals.get(this),
       oscType: oscTypes.get(this),

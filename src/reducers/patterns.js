@@ -137,9 +137,9 @@ export default (state = initialState, {type, payload}) => {
     case PATTERN_BEAT_PLAYING_STOP:
     case PATTERN_SYNTH_PLAYING_STOP:
       return mergeIntoPattern(payload, {
-        playing: false,
         activeNotes: [],
         markerPosition: 0,
+        playing: false,
       }, state)
     case PATTERN_SYNTH_ADD: return append(synthPattern(), state)
     case PATTERN_VOLUME_SET:
@@ -149,9 +149,9 @@ export default (state = initialState, {type, payload}) => {
     case SONG_PLAYING_START:
       return map(
         pattern => merge(pattern, {
-          playing: false,
           activeNotes: [],
           markerPosition: 0,
+          playing: false,
         }),
         state
       )

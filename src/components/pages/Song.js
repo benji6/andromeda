@@ -28,8 +28,8 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = {
   patternBeatAdd,
-  patternSynthAdd,
   patternDelete,
+  patternSynthAdd,
   songPlayingStart,
   songPlayingStop,
 }

@@ -23,8 +23,6 @@ const oscBank = ({
   startTime,
   stopTime,
 }) => ({
-  masterGain: ['gain', ['output'], {gain: masterGain}],
-  masterPan: ['stereoPanner', ['masterGain'], {pan: masterPan}],
   0: ['gain', ['masterPan'], {gain}],
   1: ['oscillator', 0, {
     detune: carrierDetune,
@@ -33,14 +31,16 @@ const oscBank = ({
     stopTime,
     type: carrierOscType,
   }],
-  2: ['gain', {key: 1, destination: 'frequency'}, {gain: 1024}],
+  2: ['gain', {destination: 'frequency', key: 1}, {gain: 1024}],
   3: ['oscillator', 2, {
     detune: modulatorDetune,
     frequency: frequency * modulatorRatio,
-    type: modulatorOscType,
     startTime,
     stopTime,
+    type: modulatorOscType,
   }],
+  masterGain: ['gain', ['output'], {gain: masterGain}],
+  masterPan: ['stereoPanner', ['masterGain'], {pan: masterPan}],
 })
 
 const notesToGraph = ({
@@ -58,13 +58,13 @@ const notesToGraph = ({
   [id]: [oscBank, 'output', {
     carrierDetune,
     carrierOscType,
+    frequency,
+    gain,
     masterGain,
     masterPan,
     modulatorDetune,
     modulatorOscType,
     modulatorRatio,
-    frequency,
-    gain,
     startTime,
     stopTime,
   }],

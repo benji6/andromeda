@@ -27,8 +27,8 @@ test(`${reducerName} returns initial state`, t => {
       {
         beatPattern: true,
         markerPosition: 0,
-        playStartTime: null,
         playing: false,
+        playStartTime: null,
         steps: [
           {x: 0, y: 0},
           {x: 1, y: 0},
@@ -50,14 +50,14 @@ test(`${reducerName} returns initial state`, t => {
       {
         activeNotes: [],
         instrument: 'Prometheus',
-        steps: [],
         markerPosition: 0,
         playing: false,
         playStartTime: null,
+        steps: [],
         synthPattern: true,
+        volume: 1 / 3,
         xLength: 8,
         yLength: 16,
-        volume: 1 / 3,
       },
     ]
   )
@@ -78,29 +78,29 @@ test(`${reducerName} patternActiveNotesSet`, t => {
 test(`${reducerName} patternBeatAdd`, t => {
   t.deepEqual(reducer([{
     instrument: 'Prometheus',
-    steps: [],
     playing: false,
+    steps: [],
+    volume: 1 / 3,
     xLength: 8,
     yLength: 24,
-    volume: 1 / 3,
   }], patternBeatAdd()), [
     {
       instrument: 'Prometheus',
-      steps: [],
       playing: false,
+      steps: [],
+      volume: 1 / 3,
       xLength: 8,
       yLength: 24,
-      volume: 1 / 3,
     },
     {
       beatPattern: true,
-      steps: [],
       markerPosition: 0,
       playing: false,
       playStartTime: null,
+      steps: [],
+      volume: 0.5,
       xLength: 8,
       yLength: 15,
-      volume: 0.5,
     },
   ])
   t.end()
@@ -112,17 +112,17 @@ test(`${reducerName} patternBeatPlayingStart`, t => {
     playing: false,
     playStartTime: 100,
     steps: [],
+    volume: 1 / 3,
     xLength: 8,
     yLength: 8,
-    volume: 1 / 3,
-  }], patternBeatPlayingStart({patternId: 0, currentTime: 150})), [{
+  }], patternBeatPlayingStart({currentTime: 150, patternId: 0})), [{
     instrument: 'Prometheus',
-    steps: [],
     playing: true,
     playStartTime: 150,
+    steps: [],
+    volume: 1 / 3,
     xLength: 8,
     yLength: 8,
-    volume: 1 / 3,
   }])
   t.end()
 })
@@ -169,17 +169,17 @@ test(`${reducerName} patternSynthPlayingStart`, t => {
     playing: false,
     playStartTime: 100,
     steps: [],
+    volume: 1 / 3,
     xLength: 8,
     yLength: 8,
-    volume: 1 / 3,
-  }], patternSynthPlayingStart({patternId: 0, currentTime: 150})), [{
+  }], patternSynthPlayingStart({currentTime: 150, patternId: 0})), [{
     instrument: 'Prometheus',
-    steps: [],
     playing: true,
     playStartTime: 150,
+    steps: [],
+    volume: 1 / 3,
     xLength: 8,
     yLength: 8,
-    volume: 1 / 3,
   }])
   t.end()
 })
@@ -202,34 +202,34 @@ test(`${reducerName} patternSynthAdd`, t => {
     reducer(
       [{
         instrument: 'Prometheus',
-        steps: [],
         playing: false,
+        steps: [],
+        volume: 1 / 3,
         xLength: 8,
         yLength: 24,
-        volume: 1 / 3,
       }],
       patternSynthAdd()
     ),
     [
       {
         instrument: 'Prometheus',
-        steps: [],
         playing: false,
+        steps: [],
+        volume: 1 / 3,
         xLength: 8,
         yLength: 24,
-        volume: 1 / 3,
       },
       {
         activeNotes: [],
         instrument: 'Prometheus',
-        steps: [],
         markerPosition: 0,
         playing: false,
         playStartTime: null,
+        steps: [],
         synthPattern: true,
+        volume: 1 / 3,
         xLength: 8,
         yLength: 16,
-        volume: 1 / 3,
       },
     ]
   )
