@@ -1,12 +1,12 @@
 {
   "plugins": [
+    "transform-object-rest-spread",
     "glslify",
     "ramda",
     "transform-react-router-optimize"
   ],
   "presets": [
-    "es2015",
-    "lava-lib",
-    "stage-2"
+    "latest",
+    "lava-lib"
   ]
 }
