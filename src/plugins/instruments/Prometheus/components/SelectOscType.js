@@ -3,8 +3,8 @@ import {Select} from '../../../../components/organisms/ControlModule'
 
 export default ({defaultValue, onChange}) => createElement(Select, {
   defaultValue,
-  onChange,
   label: 'Type',
+  onChange,
 },
   createElement('option', {value: 'sawtooth'}, 'Sawtooth'),
   createElement('option', {value: 'sine'}, 'Sine'),

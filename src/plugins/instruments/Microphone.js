@@ -45,13 +45,13 @@ export default class {
         createElement(ControlContainer, null,
           createElement('label', null, 'Turn on',
             createElement('input', {
+              defaultChecked: microphoneOns.get(this),
               onClick: () => {
                 const microphoneOn = !microphoneOns.get(this)
                 microphoneOns.set(this, microphoneOn)
                 if (microphoneOn) turnMicOn(this); else turnMicOff(this)
               },
               type: 'checkbox',
-              defaultChecked: microphoneOns.get(this),
             })
           )
         ),

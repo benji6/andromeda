@@ -16,7 +16,7 @@ import InputLabel from '../atoms/InputLabel'
 import CheckboxSelector from '../molecules/CheckboxSelector'
 import RangeSelector from '../molecules/RangeSelector'
 
-const mapStateToProps = ({keyboard, dispatch, plugins}) => ({keyboard, dispatch, plugins})
+const mapStateToProps = ({keyboard, plugins}) => ({keyboard, plugins})
 
 export default connect(mapStateToProps)(({keyboard, dispatch, plugins}) =>
   createElement('div', {className: 'KeyboardSettings'},

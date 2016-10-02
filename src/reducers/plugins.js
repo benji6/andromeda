@@ -74,14 +74,14 @@ const effectInstance = curry((a, b) => instance(findNameEquals(a, effectInstance
 const effectInstanceDestination = compV(destination, effectInstance)
 const instrumentInstance = curry((a, b) => instance(findNameEquals(a, instrumentInstances(b))))
 
-const createChannel = name => ({name, effects: [], instruments: []})
+const createChannel = name => ({effects: [], instruments: [], name})
 const lowestUniqueNatural = xs => {
   let i = 0
   while (xs.includes(i)) i++
   return i
 }
 const initialState = {
-  channels: [{name: 0, effects: [], instruments: []}],
+  channels: [{effects: [], instruments: [], name: 0}],
   effectInstances: [],
   effectPlugins: [],
   instrumentInstances: [],

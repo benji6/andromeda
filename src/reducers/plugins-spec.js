@@ -18,7 +18,7 @@ const reducerName = 'plugins'
 
 test(`${reducerName} reducer returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), {
-    channels: [{name: 0, effects: [], instruments: []}],
+    channels: [{effects: [], instruments: [], name: 0}],
     effectInstances: [],
     effectPlugins: [],
     instrumentInstances: [],
@@ -30,7 +30,7 @@ test(`${reducerName} reducer returns initial state`, t => {
 test(`${reducerName} reducer - addChanel`, t => {
   t.deepEqual(
     reducer({
-      channels: [{name: 1, effects: [], instruments: []}],
+      channels: [{effects: [], instruments: [], name: 1}],
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
@@ -38,8 +38,8 @@ test(`${reducerName} reducer - addChanel`, t => {
     }, addChannel()),
     {
       channels: [
-        {name: 0, effects: [], instruments: []},
-        {name: 1, effects: [], instruments: []},
+        {effects: [], instruments: [], name: 0},
+        {effects: [], instruments: [], name: 1},
       ],
       effectInstances: [],
       effectPlugins: [],
@@ -55,14 +55,14 @@ test(`${reducerName} reducer - addEffectToChannel`, t => {
   const instance = new constructor()
   t.deepEqual(
     reducer({
-      channels: [{name: 0, effects: [], instruments: []}],
+      channels: [{effects: [], instruments: [], name: 0}],
       effectInstances: [{instance, name: 'test effect'}],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
       instrumentInstances: [],
       instrumentPlugins: [],
     }, addEffectToChannel({channel: 0, name: 'test effect'})),
     {
-      channels: [{name: 0, effects: ['test effect'], instruments: []}],
+      channels: [{effects: ['test effect'], instruments: [], name: 0}],
       effectInstances: [{instance, name: 'test effect'}],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
       instrumentInstances: [],
@@ -77,21 +77,21 @@ test(`${reducerName} reducer - addInstrumentToChannel`, t => {
   const instance = new constructor()
   t.deepEqual(
     reducer({
-      channels: [{name: 0, effects: ['test effect plugin'], instruments: []}],
+      channels: [{effects: ['test effect plugin'], instruments: [], name: 0}],
       effectInstances: [{instance, name: 'test effect plugin'}],
       effectPlugins: [],
-      instrumentInstances: [{name: 'fake instance name', instance}],
+      instrumentInstances: [{instance, name: 'fake instance name'}],
       instrumentPlugins: [{constructor, name: 'test instrument plugin'}],
     }, addInstrumentToChannel({channel: 0, name: 'fake instance name'})),
     {
       channels: [{
-        name: 0,
         effects: ['test effect plugin'],
         instruments: ['fake instance name'],
+        name: 0,
       }],
       effectInstances: [{instance, name: 'test effect plugin'}],
       effectPlugins: [],
-      instrumentInstances: [{name: 'fake instance name', instance}],
+      instrumentInstances: [{instance, name: 'fake instance name'}],
       instrumentPlugins: [{constructor, name: 'test instrument plugin'}],
     }
   )
@@ -106,7 +106,7 @@ test(`${reducerName} reducer - instantiateEffect`, t => {
   }
   t.deepEqual(
     dissoc('effectInstances', reducer({
-      channels: [{name: 0, effects: [], instruments: []}],
+      channels: [{effects: [], instruments: [], name: 0}],
       effectInstances: [],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
       instrumentInstances: [],
@@ -116,7 +116,7 @@ test(`${reducerName} reducer - instantiateEffect`, t => {
       plugin: 'test effect plugin',
     }))),
     {
-      channels: [{name: 0, effects: [], instruments: []}],
+      channels: [{effects: [], instruments: [], name: 0}],
       effectPlugins: [{constructor, name: 'test effect plugin'}],
       instrumentInstances: [],
       instrumentPlugins: [],
@@ -193,8 +193,8 @@ test(`${reducerName} reducer - removeChannel`, t => {
   t.deepEqual(
     reducer({
       channels: [
-        {name: 0, effects: [], instruments: []},
-        {name: 1, effects: [], instruments: []},
+        {effects: [], instruments: [], name: 0},
+        {effects: [], instruments: [], name: 1},
       ],
       effectInstances: [],
       effectPlugins: [],
@@ -202,7 +202,7 @@ test(`${reducerName} reducer - removeChannel`, t => {
       instrumentPlugins: [],
     }, removeChannel(0)),
     {
-      channels: [{name: 1, effects: [], instruments: []}],
+      channels: [{effects: [], instruments: [], name: 1}],
       effectInstances: [],
       effectPlugins: [],
       instrumentInstances: [],
@@ -228,7 +228,7 @@ test(`${reducerName} reducer - removeEffectFromChannel`, t => {
       instrumentPlugins: [],
     }, removeEffectFromChannel({channel: 0, name: 'fake instance name'})),
     {
-      channels: [{name: 0, effects: [], instruments: []}],
+      channels: [{effects: [], instruments: [], name: 0}],
       effectInstances: [{instance, name: 'fake instance name'}],
       effectPlugins: [{constructor, name: 'test plugin'}],
       instrumentInstances: [],
@@ -244,20 +244,20 @@ test(`${reducerName} reducer - removeInstrumentFromChannel`, t => {
   t.deepEqual(
     reducer({
       channels: [{
-        name: 0,
         effects: ['test effect plugin'],
         instruments: ['fake instance name'],
+        name: 0,
       }],
       effectInstances: [{instance, name: 'test effect plugin'}],
       effectPlugins: [],
-      instrumentInstances: [{name: 'fake instance name', instance}],
+      instrumentInstances: [{instance, name: 'fake instance name'}],
       instrumentPlugins: [{constructor, name: 'test instrument plugin'}],
     }, removeInstrumentFromChannel({channel: 0, name: 'fake instance name'})),
     {
-      channels: [{name: 0, effects: ['test effect plugin'], instruments: []}],
+      channels: [{effects: ['test effect plugin'], instruments: [], name: 0}],
       effectInstances: [{instance, name: 'test effect plugin'}],
       effectPlugins: [],
-      instrumentInstances: [{name: 'fake instance name', instance}],
+      instrumentInstances: [{instance, name: 'fake instance name'}],
       instrumentPlugins: [{constructor, name: 'test instrument plugin'}],
     }
   )

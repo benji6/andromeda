@@ -31,8 +31,8 @@ export default ({filter, lfo, master, oscillators}, notes) =>
     }, oscillators)
     return acc
   }, {
-    lfo: [lfoNode, {key: 'filter', destination: 'frequency'}, lfo],
+    filter: ['biquadFilter', 'masterPan', filter],
+    lfo: [lfoNode, {destination: 'frequency', key: 'filter'}, lfo],
     masterGain: ['gain', 'output', {gain: master.gain}],
     masterPan: ['stereoPanner', 'masterGain', {pan: master.pan}],
-    filter: ['biquadFilter', 'masterPan', filter],
   })
