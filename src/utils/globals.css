@@ -3,6 +3,7 @@ body {
   color: var(--gray-99);
   font-family: sans-serif;
   margin: 0;
+  min-height: 100vh;
   overflow-x: hidden;
   user-select: none;
   -webkit-user-select: none;
