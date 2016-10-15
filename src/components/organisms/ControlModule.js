@@ -16,7 +16,7 @@ export const Range = ({
   max = 1,
   min = 0,
   step = (max - min) / 1000,
-  ...props,
+  ...props
 }) =>
   createElement(Input, {label},
     createElement('input', {
