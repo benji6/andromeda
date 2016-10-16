@@ -1,9 +1,9 @@
 attribute vec4 a_position;
-attribute vec4 a_color;
+attribute float a_color;
 
 uniform mat4 u_matrix;
 
-varying vec4 v_color;
+varying float v_color;
 
 mat4 zToW = mat4(
   1., 0., 0., 0.,

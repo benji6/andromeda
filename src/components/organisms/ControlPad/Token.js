@@ -66,41 +66,12 @@ const colors = new Uint8Array([
   255, 70, 50,
   255, 70, 50,
   255, 70, 50,
-
   90, 70, 255,
   90, 70, 255,
   90, 70, 255,
   90, 70, 255,
   90, 70, 255,
   90, 70, 255,
-
-  255, 0, 120,
-  255, 0, 120,
-  255, 0, 120,
-  255, 0, 120,
-  255, 0, 120,
-  255, 0, 120,
-
-  35, 255, 200,
-  35, 255, 200,
-  35, 255, 200,
-  35, 255, 200,
-  35, 255, 200,
-  35, 255, 200,
-
-  30, 70, 255,
-  30, 70, 255,
-  30, 70, 255,
-  30, 70, 255,
-  30, 70, 255,
-  30, 70, 255,
-
-  95, 0, 255,
-  95, 0, 255,
-  95, 0, 255,
-  95, 0, 255,
-  95, 0, 255,
-  95, 0, 255,
 ])
 
 const makePerspective = (fov, aspect, near, far) => {
@@ -144,6 +115,7 @@ export default class {
       gl.enable(gl.CULL_FACE)
       gl.enable(gl.DEPTH_TEST)
 
+      const uTimeLocation = gl.getUniformLocation(program, 'u_time')
       const colorLocation = gl.getAttribLocation(program, 'a_color')
       const positionLocation = gl.getAttribLocation(program, 'a_position')
       const matrixLocation = gl.getUniformLocation(program, 'u_matrix')
@@ -155,7 +127,7 @@ export default class {
 
       gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer())
       gl.enableVertexAttribArray(colorLocation)
-      gl.vertexAttribPointer(colorLocation, 3, gl.UNSIGNED_BYTE, true, 0, 0)
+      gl.vertexAttribPointer(colorLocation, 1, gl.UNSIGNED_BYTE, true, 0, 0)
       gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW)
 
       const render = () => {
@@ -198,6 +170,8 @@ export default class {
 
         const matrix = mult(mult(rotationMatrix, translationMatrix), projectionMatrix)
 
+        // TODO this will overflow
+        gl.uniform1f(uTimeLocation, performance.now() / 1000)
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
         gl.uniformMatrix4fv(matrixLocation, false, matrix)
         gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3)
