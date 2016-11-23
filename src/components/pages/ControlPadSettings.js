@@ -1,5 +1,5 @@
 import capitalize from 'capitalize'
-import {map} from 'ramda'
+import {compose, map} from 'ramda'
 import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
@@ -36,7 +36,7 @@ export default connect(mapStateToProps)(({
     createElement('h2', null, 'Control Pad Settings'),
     createElement(InstrumentSelector, {
       defaultValue: controlPad.instrument,
-      handleChange: comp(dispatch, controlPadInstrumentSet, eventValuePath),
+      handleChange: compose(dispatch, controlPadInstrumentSet, eventValuePath),
       label: 'Instrument',
       options: map(instrument => ({
         text: capitalize.words(instrument),
@@ -46,7 +46,7 @@ export default connect(mapStateToProps)(({
     createElement(RangeSelector, {
       max: 2,
       min: -3,
-      onChange: comp(dispatch, controlPadOctaveSet, Number, eventValuePath),
+      onChange: compose(dispatch, controlPadOctaveSet, Number, eventValuePath),
       output: controlPad.octave,
       text: 'Octave',
       value: controlPad.octave,
@@ -54,19 +54,19 @@ export default connect(mapStateToProps)(({
     createElement(RangeSelector, {
       max: 3,
       min: 1,
-      onChange: comp(dispatch, controlPadRangeSet, Number, eventValuePath),
+      onChange: compose(dispatch, controlPadRangeSet, Number, eventValuePath),
       output: controlPad.range,
       text: 'Range',
       value: controlPad.range,
     }),
     createElement(CheckboxSelector, {
       checked: controlPad.portamento,
-      onChange: comp(dispatch, controlPadPortamentoSet, eventCheckedPath),
+      onChange: compose(dispatch, controlPadPortamentoSet, eventCheckedPath),
       text: 'Portamento',
     }),
     createElement(CheckboxSelector, {
       checked: controlPad.noScale,
-      onChange: comp(dispatch, controlPadNoScaleSet, eventCheckedPath),
+      onChange: compose(dispatch, controlPadNoScaleSet, eventCheckedPath),
       text: 'No Scale',
     }),
     createElement('div', null,

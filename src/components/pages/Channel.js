@@ -37,8 +37,8 @@ export default connectComponent(({
   const effects = channels[channelId].effects
   const addSources = difference(pluck('name', instrumentInstances), sources)
   const addEffects = difference(pluck('name', effectInstances), effects)
-  selectedAddSource = head(addSources)
-  selectedAddEffect = head(addEffects)
+  selectedAddSource = addSources[0]
+  selectedAddEffect = addEffects[0]
 
   return createElement('div', {className: 'Channel'},
     createElement('h1', null, `Channel ${channelId}`),

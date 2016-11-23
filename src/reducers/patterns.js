@@ -1,7 +1,9 @@
 import {
   adjust,
   any,
+  append,
   assoc,
+  compose,
   concat,
   equals,
   flip,
@@ -112,7 +114,7 @@ export default (state = initialState, {type, payload}) => {
       const isAddedNote = none(note => note.x === x && note.y === y, steps)
 
       return adjust(
-        comp(
+        compose(
           overSteps(stepExists(x, y, steps) ? reject(equals(xy)) : append(xy)),
           overActiveNotes(isAddedNote ? append({id, instrumentObj}) : reject(x => x.id === id))
         ),

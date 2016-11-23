@@ -5,7 +5,6 @@
     "transform-react-router-optimize"
   ],
   "presets": [
-    "latest",
-    "lava-lib"
+    "latest"
   ]
 }

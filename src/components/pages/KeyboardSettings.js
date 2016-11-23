@@ -1,5 +1,5 @@
 import capitalize from 'capitalize'
-import {map} from 'ramda'
+import {compose, map} from 'ramda'
 import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
@@ -23,7 +23,7 @@ export default connect(mapStateToProps)(({keyboard, dispatch, plugins}) =>
     createElement('h2', null, 'Keyboard Settings'),
     createElement(InstrumentSelector, {
       defaultValue: keyboard.instrument,
-      handleChange: comp(
+      handleChange: compose(
         dispatch,
         keyboardInstrumentSet,
         eventValuePath
@@ -37,7 +37,7 @@ export default connect(mapStateToProps)(({keyboard, dispatch, plugins}) =>
     createElement(RangeSelector, {
       max: 1,
       min: 0,
-      onChange: comp(dispatch, keyboardVolumeSet, Number, eventValuePath),
+      onChange: compose(dispatch, keyboardVolumeSet, Number, eventValuePath),
       output: Math.round(keyboard.volume * 100),
       step: 0.01,
       text: 'Volume',
@@ -46,7 +46,7 @@ export default connect(mapStateToProps)(({keyboard, dispatch, plugins}) =>
     createElement(RangeSelector, {
       max: 2,
       min: -3,
-      onChange: comp(dispatch, keyboardOctaveSet, Number, eventValuePath),
+      onChange: compose(dispatch, keyboardOctaveSet, Number, eventValuePath),
       output: keyboard.octave,
       text: 'Octave',
       value: keyboard.octave,

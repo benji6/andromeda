@@ -1,4 +1,5 @@
 import {
+  compose,
   filter,
   find,
   map,
@@ -13,7 +14,7 @@ export const instrumentInstance = (name, plugins) => find(
   x => name === x.name,
   plugins.instrumentInstances
 ).instance
-export const controllableInstrumentInstanceNames = comp(
+export const controllableInstrumentInstanceNames = compose(
   map(x => x.name),
   filter(x => x.instance.noteStart !== noop),
   x => x.instrumentInstances

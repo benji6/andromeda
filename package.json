@@ -45,7 +45,6 @@
   "homepage": "https://github.com/benji6/elemental",
   "dependencies": {
     "capitalize": "^1.0.0",
-    "lava-lib": "benji6/lava-lib.git#v0.0.8",
     "ramda": "^0.22.0",
     "random-js": "^1.0.8",
     "react": "^15.2.1",

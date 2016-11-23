@@ -1,4 +1,4 @@
-import {map, pluck} from 'ramda'
+import {compose, map, pluck} from 'ramda'
 import {createElement} from 'react'
 import {connect} from 'react-redux'
 import ButtonPrimary from '../atoms/ButtonPrimary'
@@ -26,11 +26,11 @@ export default connect(mapStateToProps)(({dispatch, channels, lastDirection}) =>
         createElement(ButtonPrimary, {to: `/channel/${channel}`},
           `Channel ${channel}`
         ),
-        createElement(Cross, {onClick: comp(dispatch, removeChannel, K(channel))})
+        createElement(Cross, {onClick: () => dispatch(removeChannel(channel))})
       ),
       pluck('name', channels)
     ),
     createElement('div', null,
-      createElement(Plus, {onClick: comp(dispatch, addChannel)}, 'Add new channel')
+      createElement(Plus, {onClick: compose(dispatch, addChannel)}, 'Add new channel')
     )
   ))
