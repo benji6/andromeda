@@ -1,14 +1,4 @@
 {
   "extends": "benji6",
-  "globals": {
-    "append": false,
-    "comp": false,
-    "compV": false,
-    "head": false,
-    "K": false,
-    "last": false,
-    "pred": false,
-    "succ": false
-  },
   "parser": "babel-eslint"
 }

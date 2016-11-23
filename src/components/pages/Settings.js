@@ -1,5 +1,5 @@
 import capitalize from 'capitalize'
-import {map} from 'ramda'
+import {compose, map} from 'ramda'
 import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {bpmSet, rootNoteSet, selectedScaleSet} from '../../actions'
@@ -40,7 +40,7 @@ export default connect(mapStateToProps)(({
     createElement(RangeSelector, {
       max: 512,
       min: minBpm,
-      onChange: comp(dispatch, bpmSet, Number, eventValuePath),
+      onChange: compose(dispatch, bpmSet, Number, eventValuePath),
       output: bpm,
       text: 'BPM',
       value: bpm,
@@ -48,14 +48,14 @@ export default connect(mapStateToProps)(({
     createElement(RangeSelector, {
       max: 24,
       min: -36,
-      onChange: comp(dispatch, rootNoteSet, Number, eventValuePath),
+      onChange: compose(dispatch, rootNoteSet, Number, eventValuePath),
       output: noteNameFromPitch(rootNote),
       text: 'Root Note',
       value: rootNote,
     }),
     createElement(Selector, {
       defaultValue: selectedScale,
-      handleChange: comp(dispatch, selectedScaleSet, eventValuePath),
+      handleChange: compose(dispatch, selectedScaleSet, eventValuePath),
       label: 'Scale',
       options: map(
         value => ({text: capitalize.words(value), value}),

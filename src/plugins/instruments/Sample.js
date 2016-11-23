@@ -23,7 +23,7 @@ const loadSample = function (fileName) {
 
 export default class {
   constructor ({audioContext}) {
-    const selectedSample = head(sampleNames)
+    const selectedSample = sampleNames[0]
 
     loadSample.call(this, selectedSample)
 

@@ -3,12 +3,15 @@ import pluginWrapperInstrument from '../utils/pluginWrapperInstrument'
 import pluginWrapperEffect from '../utils/pluginWrapperEffect'
 import {
   adjust,
+  append,
+  compose,
   curry,
   equals,
   find,
   findIndex,
   flip,
   forEach,
+  last,
   length,
   lensProp,
   over,
@@ -56,9 +59,9 @@ const overInstrumentInstances = over(instrumentInstancesLens)
 const overInstrumentPlugins = over(lensProp('instrumentPlugins'))
 const overInstruments = over(instrumentsLens)
 
-const nameEquals = x => comp(equals(x), name)
-const findNameEquals = curry((x, y) => comp(find, nameEquals)(x)(y))
-const findConstructor = compV(viewConstructor, findNameEquals)
+const nameEquals = x => compose(equals(x), name)
+const findNameEquals = curry((x, y) => compose(find, nameEquals)(x)(y))
+const findConstructor = compose(viewConstructor, findNameEquals)
 const sortByName = sortBy(name)
 
 const overChannelEffects = curry((f, channelId, state) => overChannels(
@@ -71,7 +74,7 @@ const overChannelInstruments = curry((f, channelId, state) => overChannels(
 ))
 const channel = curry((a, b) => findNameEquals(a, viewChannels(b)))
 const effectInstance = curry((a, b) => instance(findNameEquals(a, effectInstances(b))))
-const effectInstanceDestination = compV(destination, effectInstance)
+const effectInstanceDestination = compose(destination, effectInstance)
 const instrumentInstance = curry((a, b) => instance(findNameEquals(a, instrumentInstances(b))))
 
 const createChannel = name => ({effects: [], instruments: [], name})
@@ -93,7 +96,7 @@ const disconnect = x => (x.disconnect(), x)
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
-    case ADD_CHANNEL: return overChannels(comp(
+    case ADD_CHANNEL: return overChannels(compose(
       sortByName,
       append(createChannel(lowestUniqueNatural(pluck(
         'name',
@@ -158,11 +161,11 @@ export default (state = initialState, {type, payload}) => {
         payload,
         viewChannels(state)
       )
-      forEach(comp(
+      forEach(compose(
         disconnect,
         x => effectInstance(x, state)
       ), effects(channel))
-      forEach(comp(
+      forEach(compose(
         connectToAudioCtx,
         disconnect,
         flip(instrumentInstance)(state)
@@ -181,26 +184,26 @@ export default (state = initialState, {type, payload}) => {
           name => connectToAudioCtx(instrumentInstance(name, state)),
           channelInstruments
         )
-      } else if (effectIndex === pred(length(channelEffects))) {
+      } else if (effectIndex === length(channelEffects) - 1) {
         forEach(
           name => instrumentInstance(name, state)
             .connect(effectInstanceDestination(
-              channelEffects[pred(effectIndex)],
+              channelEffects[effectIndex - 1],
               state
             )),
           channelInstruments
         )
       } else if (effectIndex === 0) {
         connectToAudioCtx(disconnect(effectInstance(
-          channelEffects[succ(effectIndex)],
+          channelEffects[effectIndex + 1],
           state
         )))
       } else {
         disconnect(effectInstance(
-          channelEffects[succ(effectIndex)],
+          channelEffects[effectIndex + 1],
           state
         )).connect(effectInstanceDestination(
-          channelEffects[pred(effectIndex)],
+          channelEffects[effectIndex - 1],
           state
         ))
       }
