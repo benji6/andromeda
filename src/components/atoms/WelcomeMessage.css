@@ -8,6 +8,7 @@
   opacity: 0;
   animation: WelcomeMessage-animation 6s 1;
   animation-delay: 0.1s;
+  animation-fill-mode: forwards;
 }
 
 @keyframes WelcomeMessage-animation {
@@ -26,5 +27,6 @@
   }
   100% {
     bottom: 0;
+    display: none;
   }
 }
