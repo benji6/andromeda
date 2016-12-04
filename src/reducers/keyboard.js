@@ -10,7 +10,7 @@ export const initialState = {
   instrument: 'Fate',
   monophonic: false,
   octave: 0,
-  volume: 1 / 4,
+  volume: 0.2,
 }
 
 export default (state = initialState, {type, payload}) => {

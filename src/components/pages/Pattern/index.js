@@ -2,9 +2,10 @@ import {createElement} from 'react'
 import {connect} from 'react-redux'
 import PatternBeat from './PatternBeat'
 import PatternSynth from './PatternSynth'
+import {findById} from '../../../utils/helpers'
 
 const mapStateToProps = ({patterns, screen: {height, width}}, {params: {patternId}}) => ({
-  beatPattern: patterns[patternId].beatPattern,
+  beatPattern: findById(Number(patternId), patterns).beatPattern,
   height: height * 0.69,
   width,
 })

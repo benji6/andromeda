@@ -15,7 +15,7 @@ import {
   patternBeatCellClick,
   patternMarkerPositionSet,
 } from '../../../actions'
-import {mapIndexed} from '../../../utils/helpers'
+import {findById, mapIndexed} from '../../../utils/helpers'
 import ButtonPlay from '../../atoms/ButtonPlay'
 import ButtonPrimary from '../../atoms/ButtonPrimary'
 import {stepExists} from '../../../reducers/patterns'
@@ -34,7 +34,7 @@ const emptyPatternData = defaultMemoize((xLength, yLength) =>
 
 const visualLoop = patternId => () => {
   const state = store.getState()
-  const {playStartTime, xLength} = state.patterns[patternId]
+  const {playStartTime, xLength} = findById(patternId, state.patterns)
   const {settings: {noteDuration}} = state
   const patternDuration = xLength * noteDuration
   animationFrameRequest = requestAnimationFrame(visualLoop(patternId))
@@ -66,7 +66,7 @@ const mapStateToProps = ({
     volume,
     xLength,
     yLength,
-  } = patterns[patternId]
+  } = findById(Number(patternId), patterns)
 
   return {
     bpm,

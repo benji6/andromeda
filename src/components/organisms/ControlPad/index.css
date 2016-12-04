@@ -6,10 +6,10 @@
 .ControlPad__Canvas {
   background: radial-gradient(
     circle,
-    var(--turquoise-light) 0%,
+    var(--blue-60) 0%,
     var(--gray-00) 17.5%,
     var(--gray-00) 91.67%,
-    var(--blue-10) 100%
+    var(--blue-20) 100%
   );
 }
 

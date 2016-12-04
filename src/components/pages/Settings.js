@@ -4,7 +4,7 @@ import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {bpmSet, rootNoteSet, selectedScaleSet} from '../../actions'
 import ButtonPrimary from '../atoms/ButtonPrimary'
-import RangeSelector from '../molecules/RangeSelector'
+import RangeLabelled from '../molecules/RangeLabelled'
 import noteNameFromPitch from '../../audioHelpers/noteNameFromPitch'
 import Selector from '../molecules/Selector'
 import scales from '../../constants/scales'
@@ -37,22 +37,20 @@ export default connect(mapStateToProps)(({
       lastDirection === 'left' ? 'slide-in-left' : 'slide-in-right'
     ),
   },
-    createElement(RangeSelector, {
+    createElement(RangeLabelled, {
       max: 512,
       min: minBpm,
       onChange: compose(dispatch, bpmSet, Number, eventValuePath),
       output: bpm,
-      text: 'BPM',
       value: bpm,
-    }),
-    createElement(RangeSelector, {
+    }, 'BPM'),
+    createElement(RangeLabelled, {
       max: 24,
       min: -36,
       onChange: compose(dispatch, rootNoteSet, Number, eventValuePath),
       output: noteNameFromPitch(rootNote),
-      text: 'Root Note',
       value: rootNote,
-    }),
+    }, 'Root Note'),
     createElement(Selector, {
       defaultValue: selectedScale,
       handleChange: compose(dispatch, selectedScaleSet, eventValuePath),

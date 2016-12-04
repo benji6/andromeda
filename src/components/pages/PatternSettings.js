@@ -3,20 +3,19 @@ import {map} from 'ramda'
 import {createElement} from 'react'
 import {connect} from 'react-redux'
 import {controllableInstrumentInstanceNames} from '../../utils/derivedData'
+import {findById} from '../../utils/helpers'
 import {
   patternInstrumentSet,
   patternVolumeSet,
-  patternXLengthSet,
 } from '../../actions'
 import InstrumentSelector from '../molecules/InstrumentSelector'
-import RangeSelector from '../molecules/RangeSelector'
+import RangeLabelled from '../molecules/RangeLabelled'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import InputLabel from '../atoms/InputLabel'
 
 const mapDispatchToProps = {
   patternInstrumentSet,
   patternVolumeSet,
-  patternXLengthSet,
 }
 
 const mapStateToProps = ({
@@ -25,7 +24,7 @@ const mapStateToProps = ({
   patterns,
   plugins,
 }, {params: {patternId}}) => {
-  const {beatPattern, instrument, xLength, volume} = patterns[patternId]
+  const {beatPattern, instrument, volume} = findById(Number(patternId), patterns)
   return {
     beatPattern,
     dispatch,
@@ -33,7 +32,6 @@ const mapStateToProps = ({
     patternId: Number(patternId),
     plugins,
     volume,
-    xLength,
   }
 }
 
@@ -43,10 +41,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
   patternId,
   patternInstrumentSet,
   patternVolumeSet,
-  patternXLengthSet,
   plugins,
   volume,
-  xLength,
 }) =>
   createElement('div', {className: 'PatternSettings'},
     createElement('h2', null, `Pattern ${patternId} Settings`),
@@ -62,7 +58,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
         controllableInstrumentInstanceNames(plugins)
       ),
     }),
-    createElement(RangeSelector, {
+    createElement(RangeLabelled, {
       max: 1,
       min: 0,
       onChange: e => patternVolumeSet({
@@ -71,20 +67,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
       }),
       output: Math.round(volume * 100),
       step: 0.01,
-      text: 'Volume',
       value: volume,
-    }),
-    createElement(RangeSelector, {
-      max: '16',
-      min: '1',
-      onChange: e => patternXLengthSet({
-        patternId,
-        value: Number(e.target.value),
-      }),
-      output: String(xLength),
-      text: 'Length',
-      value: xLength,
-    }),
+    }, 'Volume'),
     createElement('div', null,
       createElement(InputLabel),
       createElement(

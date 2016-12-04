@@ -1,17 +1,19 @@
-.Slider {
+.RangeLabelled__Container {
   display: inline-block;
   margin: 1rem 0.5rem;
   text-align: center;
   width: 12rem;
 }
-.Slider__Input {
+
+.RangeLabelled__Input {
   -webkit-appearance: none;
   appearance: none;
   background-color: var(--gray-99);
   height: 0.1rem;
   width: 10rem;
 }
-.Slider__Input::-webkit-Slider-thumb {
+
+.RangeLabelled__Input::-webkit-Slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   background: linear-gradient(to bottom, var(--gray-99) 0%, var(--gray-90) 55%, var(--blue-80) 80%);

@@ -1,11 +1,13 @@
 import {
   find,
+  filter,
   forEach,
   lensProp,
   map,
   none,
   over,
   reject,
+  without,
 } from 'ramda'
 import {
   PATTERN_BEAT_CELL_CLICK,
@@ -19,6 +21,7 @@ import {
 } from '../actions'
 import {cellId} from '../reducers/patterns'
 import {instrumentInstance} from '../utils/derivedData'
+import {findById} from '../utils/helpers'
 import audioContext from '../audioContext'
 import patternPitchOffset from '../constants/patternPitchOffset'
 import pitchFromScaleIndex from '../audioHelpers/pitchFromScaleIndex'
@@ -29,28 +32,37 @@ import store from '../store'
 
 // schema:
 // {
-//   [patternId]: new Set([
+//   [patternId]: [
 //     {id, sourceNode},
-//   ]),
+//   ],
 // }
 let sourceNodes = {}
 const timeoutIds = {}
 
+const stopBeatNote = ({sourceNode}) => {
+  sourceNode.stop()
+  sourceNode.disconnect()
+}
+
+export const stopBeatNotesWhere = (f, patternId) => {
+  const sources = sourceNodes[patternId]
+  const notes = filter(({id}) => f(id), sources)
+  forEach(stopBeatNote, notes)
+  sourceNodes[patternId] = without(notes, sources)
+}
+
 export const stopBeatPattern = patternId => {
   const sources = sourceNodes[patternId]
   if (sources) {
-    forEach(({sourceNode}) => {
-      sourceNode.stop()
-      sourceNode.disconnect()
-    }, sources)
-    sources.clear()
+    forEach(stopBeatNote, sources)
+    sourceNodes[patternId] = []
   }
   clearTimeout(timeoutIds[patternId])
   delete timeoutIds[patternId]
 }
 
 export const stopSynthPattern = patternId => {
-  const {activeNotes} = store.getState().patterns[patternId]
+  const {activeNotes} = findById(patternId, store.getState().patterns)
   forEach(({id, instrumentObj}) => instrumentObj.noteStop(id), activeNotes)
   clearTimeout(timeoutIds[patternId])
   delete timeoutIds[patternId]
@@ -74,7 +86,7 @@ export const playSample = (id, buffer, startTime, patternId, gain) => {
   const data = {id, sourceNode}
 
   sourceNodes = overPatternId(
-    sources => sources ? sources.add(data) : new Set([data]),
+    sources => sources ? (sources.push(data), sources) : [data],
     sourceNodes
   )
 
@@ -82,7 +94,7 @@ export const playSample = (id, buffer, startTime, patternId, gain) => {
     () => {
       sourceNode.disconnect()
       sourceNodes = overPatternId(
-        sources => (sources.delete(data), sources),
+        sources => without([data], sources),
         sourceNodes
       )
     },
@@ -105,7 +117,7 @@ export default store => next => action => {
         xLength,
         steps,
         volume,
-      } = patterns[patternId]
+      } = findById(patternId, patterns)
       if (!playing) break
       const patternDuration = xLength * noteDuration
       const isAddedNote = none(note => note.x === x && note.y === y, steps)
@@ -119,12 +131,12 @@ export default store => next => action => {
           volume
         )
       } else {
-        const set = sourceNodes[patternId]
-        const entry = find(a => a.id === id, [...set])
+        const sources = sourceNodes[patternId]
+        const entry = find(a => a.id === id, sources)
 
         if (entry) {
           const {sourceNode} = entry
-          set.delete(entry)
+          sourceNodes[patternId] = without([entry], sources)
           sourceNode.stop()
           sourceNode.disconnect()
         }
@@ -148,7 +160,7 @@ export default store => next => action => {
             steps,
             xLength,
             volume,
-          } = patterns[patternId]
+          } = findById(patternId, patterns)
           const patternDuration = xLength * noteDuration
           const currentLoopEndTime = nextLoopEndTime
           const newLoopEndTime = nextLoopEndTime + patternDuration
@@ -191,7 +203,7 @@ export default store => next => action => {
         volume,
         xLength,
         yLength,
-      } = patterns[patternId]
+      } = findById(patternId, patterns)
       if (!playing) break
       const isAddedNote = none(note => note.x === x && note.y === y, steps)
       if (isAddedNote) {
@@ -235,7 +247,7 @@ export default store => next => action => {
             volume,
             xLength,
             yLength,
-          } = patterns[patternId]
+          } = findById(patternId, patterns)
           const instrumentObj = instrumentInstance(instrument, plugins)
           const patternDuration = xLength * noteDuration
           const currentLoopEndTime = nextLoopEndTime

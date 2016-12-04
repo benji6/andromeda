@@ -8,13 +8,13 @@
 @import 'components/atoms/ButtonPlay';
 @import 'components/atoms/ButtonPrimary';
 @import 'components/atoms/ButtonSecondary';
-@import 'components/atoms/Checkbox';
 @import 'components/atoms/HollowButton';
 @import 'components/atoms/InputLabel';
 @import 'components/atoms/InputSelect';
 @import 'components/atoms/LinkExternal';
-@import 'components/atoms/Slider';
 @import 'components/atoms/WelcomeMessage';
+@import 'components/molecules/CheckboxLabelled';
+@import 'components/molecules/RangeLabelled';
 @import 'components/organisms/ControlModule';
 @import 'components/organisms/ControlPad';
 @import 'components/organisms/Navigation';
