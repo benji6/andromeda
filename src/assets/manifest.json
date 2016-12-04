@@ -7,7 +7,7 @@
       "density": 4.0
     }
   ],
-  "display": "fullscreen",
+  "display": "minimal-ui",
   "lang": "en",
   "name": "Elemental",
   "orientation": "portrait",
