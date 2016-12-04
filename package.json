@@ -77,7 +77,7 @@
     "live-server": "^1.0.0",
     "nodemon": "^1.9.2",
     "postcss-cli": "^2.5.2",
-    "postcss-import": "^8.1.2",
+    "postcss-import": "^9.0.0",
     "tape": "^4.6.0",
     "uglify-js": "^2.7.0",
     "watchify": "^3.5.0",
