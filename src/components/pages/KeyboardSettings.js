@@ -13,8 +13,8 @@ import {
 } from '../../actions'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import InputLabel from '../atoms/InputLabel'
-import CheckboxSelector from '../molecules/CheckboxSelector'
-import RangeSelector from '../molecules/RangeSelector'
+import CheckboxLabelled from '../molecules/CheckboxLabelled'
+import RangeLabelled from '../molecules/RangeLabelled'
 
 const mapStateToProps = ({keyboard, plugins}) => ({keyboard, plugins})
 
@@ -34,28 +34,25 @@ export default connect(mapStateToProps)(({keyboard, dispatch, plugins}) =>
         controllableInstrumentInstanceNames(plugins)
       ),
     }),
-    createElement(RangeSelector, {
+    createElement(RangeLabelled, {
       max: 1,
       min: 0,
       onChange: compose(dispatch, keyboardVolumeSet, Number, eventValuePath),
       output: Math.round(keyboard.volume * 100),
       step: 0.01,
-      text: 'Volume',
       value: keyboard.volume,
-    }),
-    createElement(RangeSelector, {
+    }, 'Volume'),
+    createElement(RangeLabelled, {
       max: 2,
       min: -3,
       onChange: compose(dispatch, keyboardOctaveSet, Number, eventValuePath),
       output: keyboard.octave,
-      text: 'Octave',
       value: keyboard.octave,
-    }),
-    createElement(CheckboxSelector, {
+    }, 'Octave'),
+    createElement(CheckboxLabelled, {
       checked: keyboard.monophonic,
       onChange: e => dispatch(keyboardMonophonicSet(e.target.checked)),
-      text: 'Monophonic',
-    }),
+    }, 'Monophonic'),
     createElement('div', null,
       createElement(InputLabel),
       createElement(ButtonPrimary, {to: '/settings'}, 'OK')

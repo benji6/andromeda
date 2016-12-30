@@ -51,7 +51,7 @@ export default class extends Component {
   render () {
     const {sideLength} = this.props
     return createElement('div', {className: 'ControlPad'},
-       !this.props.touched && createElement(
+      !this.props.touched && createElement(
         'div',
         {
           className: 'ControlPad__Message',

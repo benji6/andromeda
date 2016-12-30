@@ -1,6 +1,6 @@
 import 'web-audio-test-api'
 import test from 'tape'
-import reducer from './patterns'
+import reducer, {initialState} from './patterns'
 import {
   patternActiveNotesSet,
   patternBeatAdd,
@@ -14,7 +14,6 @@ import {
   patternSynthPlayingStart,
   patternSynthPlayingStop,
   patternVolumeSet,
-  patternXLengthSet,
   songPlayingStart,
 } from '../actions'
 
@@ -23,43 +22,7 @@ const reducerName = 'patterns reducer'
 test(`${reducerName} returns initial state`, t => {
   t.deepEqual(
     reducer(undefined, {}),
-    [
-      {
-        beatPattern: true,
-        markerPosition: 0,
-        playing: false,
-        playStartTime: null,
-        steps: [
-          {x: 0, y: 0},
-          {x: 1, y: 0},
-          {x: 2, y: 0},
-          {x: 3, y: 0},
-          {x: 4, y: 0},
-          {x: 5, y: 0},
-          {x: 6, y: 0},
-          {x: 7, y: 0},
-          {x: 0, y: 8},
-          {x: 4, y: 8},
-          {x: 2, y: 13},
-          {x: 6, y: 13},
-        ],
-        volume: 0.5,
-        xLength: 8,
-        yLength: 15,
-      },
-      {
-        activeNotes: [],
-        instrument: 'Prometheus',
-        markerPosition: 0,
-        playing: false,
-        playStartTime: null,
-        steps: [],
-        synthPattern: true,
-        volume: 1 / 3,
-        xLength: 8,
-        yLength: 16,
-      },
-    ]
+    initialState
   )
   t.end()
 })
@@ -67,9 +30,11 @@ test(`${reducerName} returns initial state`, t => {
 test(`${reducerName} patternActiveNotesSet`, t => {
   t.deepEqual(reducer([{
     activeNotes: [13, 14],
+    id: 0,
     instrument: 'Prometheus',
   }], patternActiveNotesSet({patternId: 0, value: [1, 2]})), [{
     activeNotes: [1, 2],
+    id: 0,
     instrument: 'Prometheus',
   }])
   t.end()
@@ -77,6 +42,7 @@ test(`${reducerName} patternActiveNotesSet`, t => {
 
 test(`${reducerName} patternBeatAdd`, t => {
   t.deepEqual(reducer([{
+    id: 0,
     instrument: 'Prometheus',
     playing: false,
     steps: [],
@@ -85,6 +51,7 @@ test(`${reducerName} patternBeatAdd`, t => {
     yLength: 24,
   }], patternBeatAdd()), [
     {
+      id: 0,
       instrument: 'Prometheus',
       playing: false,
       steps: [],
@@ -94,6 +61,7 @@ test(`${reducerName} patternBeatAdd`, t => {
     },
     {
       beatPattern: true,
+      id: 1,
       markerPosition: 0,
       playing: false,
       playStartTime: null,
@@ -108,6 +76,7 @@ test(`${reducerName} patternBeatAdd`, t => {
 
 test(`${reducerName} patternBeatPlayingStart`, t => {
   t.deepEqual(reducer([{
+    id: 0,
     instrument: 'Prometheus',
     playing: false,
     playStartTime: 100,
@@ -116,6 +85,7 @@ test(`${reducerName} patternBeatPlayingStart`, t => {
     xLength: 8,
     yLength: 8,
   }], patternBeatPlayingStart({currentTime: 150, patternId: 0})), [{
+    id: 0,
     instrument: 'Prometheus',
     playing: true,
     playStartTime: 150,
@@ -130,10 +100,12 @@ test(`${reducerName} patternBeatPlayingStart`, t => {
 test(`${reducerName} patternBeatPlayingStop`, t => {
   t.deepEqual(reducer([{
     activeNotes: [1, 2, 3],
+    id: 0,
     markerPosition: 0.5,
     playing: true,
   }], patternBeatPlayingStop(0)), [{
     activeNotes: [],
+    id: 0,
     markerPosition: 0,
     playing: false,
   }])
@@ -142,21 +114,26 @@ test(`${reducerName} patternBeatPlayingStop`, t => {
 
 test(`${reducerName} patternDelete`, t => {
   t.deepEqual(reducer([{
+    id: 2,
     instrument: 'instrument 0',
     steps: [],
   },
   {
+    id: 4,
     instrument: 'instrument 1',
     steps: [],
   },
   {
+    id: 6,
     instrument: 'instrument 2',
     steps: [],
-  }], patternDelete(1)), [{
+  }], patternDelete(4)), [{
+    id: 2,
     instrument: 'instrument 0',
     steps: [],
   },
   {
+    id: 6,
     instrument: 'instrument 2',
     steps: [],
   }])
@@ -165,6 +142,7 @@ test(`${reducerName} patternDelete`, t => {
 
 test(`${reducerName} patternSynthPlayingStart`, t => {
   t.deepEqual(reducer([{
+    id: 0,
     instrument: 'Prometheus',
     playing: false,
     playStartTime: 100,
@@ -173,6 +151,7 @@ test(`${reducerName} patternSynthPlayingStart`, t => {
     xLength: 8,
     yLength: 8,
   }], patternSynthPlayingStart({currentTime: 150, patternId: 0})), [{
+    id: 0,
     instrument: 'Prometheus',
     playing: true,
     playStartTime: 150,
@@ -187,10 +166,12 @@ test(`${reducerName} patternSynthPlayingStart`, t => {
 test(`${reducerName} patternSynthPlayingStop`, t => {
   t.deepEqual(reducer([{
     activeNotes: [1, 2, 3],
+    id: 0,
     markerPosition: 0.5,
     playing: true,
   }], patternSynthPlayingStop(0)), [{
     activeNotes: [],
+    id: 0,
     markerPosition: 0,
     playing: false,
   }])
@@ -201,6 +182,7 @@ test(`${reducerName} patternSynthAdd`, t => {
   t.deepEqual(
     reducer(
       [{
+        id: 0,
         instrument: 'Prometheus',
         playing: false,
         steps: [],
@@ -212,6 +194,7 @@ test(`${reducerName} patternSynthAdd`, t => {
     ),
     [
       {
+        id: 0,
         instrument: 'Prometheus',
         playing: false,
         steps: [],
@@ -221,6 +204,7 @@ test(`${reducerName} patternSynthAdd`, t => {
       },
       {
         activeNotes: [],
+        id: 1,
         instrument: 'Prometheus',
         markerPosition: 0,
         playing: false,
@@ -261,21 +245,10 @@ test(`${reducerName} patternNextLoopEndTimeSet`, t => {
 test(`${reducerName} patternInstrumentSet`, t => {
   t.deepEqual(
     reducer(
-      [{instrument: 'old instrument'}],
+      [{id: 0, instrument: 'old instrument'}],
       patternInstrumentSet({patternId: 0, value: 'new instrument'})
     ),
-    [{instrument: 'new instrument'}]
-  )
-  t.end()
-})
-
-test(`${reducerName} patternXLengthSet`, t => {
-  t.deepEqual(
-    reducer(
-      [{xLength: 7}],
-      patternXLengthSet({patternId: 0, value: 12})
-    ),
-    [{xLength: 12}]
+    [{id: 0, instrument: 'new instrument'}]
   )
   t.end()
 })
@@ -283,10 +256,10 @@ test(`${reducerName} patternXLengthSet`, t => {
 test(`${reducerName} patternVolumeSet`, t => {
   t.deepEqual(
     reducer(
-      [{volume: 7}],
+      [{id: 0, volume: 7}],
       patternVolumeSet({patternId: 0, value: 12})
     ),
-    [{volume: 12}]
+    [{id: 0, volume: 12}]
   )
   t.end()
 })

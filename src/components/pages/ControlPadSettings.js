@@ -13,8 +13,8 @@ import {
 } from '../../actions'
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import InputLabel from '../atoms/InputLabel'
-import CheckboxSelector from '../molecules/CheckboxSelector'
-import RangeSelector from '../molecules/RangeSelector'
+import CheckboxLabelled from '../molecules/CheckboxLabelled'
+import RangeLabelled from '../molecules/RangeLabelled'
 import InstrumentSelector from '../molecules/InstrumentSelector'
 
 const mapStateToProps = ({
@@ -43,32 +43,28 @@ export default connect(mapStateToProps)(({
         value: instrument,
       }), controllableInstrumentInstanceNames(plugins)),
     }),
-    createElement(RangeSelector, {
+    createElement(RangeLabelled, {
       max: 2,
       min: -3,
       onChange: compose(dispatch, controlPadOctaveSet, Number, eventValuePath),
       output: controlPad.octave,
-      text: 'Octave',
       value: controlPad.octave,
-    }),
-    createElement(RangeSelector, {
+    }, 'Octave'),
+    createElement(RangeLabelled, {
       max: 3,
       min: 1,
       onChange: compose(dispatch, controlPadRangeSet, Number, eventValuePath),
       output: controlPad.range,
-      text: 'Range',
       value: controlPad.range,
-    }),
-    createElement(CheckboxSelector, {
+    }, 'Range'),
+    createElement(CheckboxLabelled, {
       checked: controlPad.portamento,
       onChange: compose(dispatch, controlPadPortamentoSet, eventCheckedPath),
-      text: 'Portamento',
-    }),
-    createElement(CheckboxSelector, {
+    }, 'Portamento'),
+    createElement(CheckboxLabelled, {
       checked: controlPad.noScale,
       onChange: compose(dispatch, controlPadNoScaleSet, eventCheckedPath),
-      text: 'No Scale',
-    }),
+    }, 'No Scale'),
     createElement('div', null,
       createElement(InputLabel),
       createElement(ButtonPrimary, {to: '/controllers/control-pad'}, 'OK')

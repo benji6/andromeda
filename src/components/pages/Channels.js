@@ -31,6 +31,6 @@ export default connect(mapStateToProps)(({dispatch, channels, lastDirection}) =>
       pluck('name', channels)
     ),
     createElement('div', null,
-      createElement(Plus, {onClick: compose(dispatch, addChannel)}, 'Add new channel')
+      createElement(Plus, {onClick: compose(dispatch, addChannel)}, 'ADD NEW CHANNEL')
     )
   ))
