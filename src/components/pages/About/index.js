@@ -13,7 +13,7 @@ export default connect(mapStateToProps)(({lastDirection}) =>
     ),
   },
     createElement('h1', {className: 'About__Title'}, 'About'),
-    createElement('p', null, 'Andromeda is a pluggable digital audio workstation under active development'),
+    createElement('p', null, 'Andromeda is a pluggable digital audio workstation built on open web technologies'),
     createElement('p', null,
       'All the code is open source and hosted on ',
       createElement(

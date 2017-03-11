@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/benji6/andromeda.svg)](https://travis-ci.org/benji6/andromeda)
 
-Andromeda is a pluggable digital audio workstation in development built on open web technologies
+Andromeda is a pluggable digital audio workstation built on open web technologies
 
 **[Check it out here](http://elemental.audio/)**
 
