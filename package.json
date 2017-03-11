@@ -1,6 +1,6 @@
 {
   "name": "andromeda",
-  "version": "0.44.0",
+  "version": "0.45.0",
   "description": "Make music in your browser!",
   "scripts": {
     "aws": "aws s3 cp --acl \"public-read\" --content-encoding \"gzip\" --recursive --region eu-west-1 dist s3://elemental.audio",
