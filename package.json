@@ -1,5 +1,5 @@
 {
-  "name": "elemental",
+  "name": "andromeda",
   "version": "0.44.0",
   "description": "Make music in your browser!",
   "scripts": {
@@ -27,10 +27,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/benji6/elemental.git"
+    "url": "https://github.com/benji6/andromeda.git"
   },
   "keywords": [
-    "elemental",
+    "andromeda",
     "music",
     "synth",
     "web",
@@ -40,9 +40,9 @@
   "author": "Ben Hall",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/benji6/elemental/issues"
+    "url": "https://github.com/benji6/andromeda/issues"
   },
-  "homepage": "https://github.com/benji6/elemental",
+  "homepage": "https://github.com/benji6/andromeda",
   "dependencies": {
     "capitalize": "^1.0.0",
     "ramda": "^0.22.0",
