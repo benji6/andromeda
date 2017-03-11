@@ -64,15 +64,15 @@ export default store => next => action => {
             const instrumentObj = instrumentInstance(instrument, plugins)
 
             newActiveNotes = newActiveNotes.concat(reject(({id}) => {
-                for (const {x, y} of steps) {
-                  if (id.indexOf(cellId(patternId, x, y)) !== -1) {
-                    return true
-                  }
+              for (const {x, y} of steps) {
+                if (id.indexOf(cellId(patternId, x, y)) !== -1) {
+                  return true
                 }
-              }, song.activeNotes).concat(map(({x, y}) => ({
-                id: `song-${patternId}-${x}-${y}`,
-                instrumentObj,
-              }), steps)))
+              }
+            }, song.activeNotes).concat(map(({x, y}) => ({
+              id: `song-${patternId}-${x}-${y}`,
+              instrumentObj,
+            }), steps)))
 
             const notes = map(({x, y}) => ({
               frequency: pitchToFrequency(pitchFromScaleIndex(

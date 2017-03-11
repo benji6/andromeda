@@ -71,7 +71,7 @@
     "concurrently": "^3.0.0",
     "cssnano": "^3.7.1",
     "eslint": "^3.0.1",
-    "eslint-config-benji6": "benji6/eslint-config-benji6.git#v0.3.0",
+    "eslint-config-benji6": "^1.0.0",
     "faucet": "0.0.1",
     "html-minifier": "^3.0.1",
     "live-server": "^1.0.0",

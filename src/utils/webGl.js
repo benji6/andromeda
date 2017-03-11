@@ -53,16 +53,16 @@ export const rotateZ = a => {
   const s = Math.sin(a)
 
   return [
-     c, s, 0, 0,
+    c, s, 0, 0,
     -s, c, 0, 0,
-     0, 0, 1, 0,
-     0, 0, 0, 1,
+    0, 0, 1, 0,
+    0, 0, 0, 1,
   ]
 }
 
 export const translate = (x, y, z) => [
-   1, 0, 0, 0,
-   0, 1, 0, 0,
-   0, 0, 1, 0,
-   x, y, z, 1,
+  1, 0, 0, 0,
+  0, 1, 0, 0,
+  0, 0, 1, 0,
+  x, y, z, 1,
 ]
