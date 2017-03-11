@@ -3,7 +3,7 @@
   "version": "0.45.1",
   "description": "Make music in your browser!",
   "scripts": {
-    "aws": "aws s3 cp --acl \"public-read\" --content-encoding \"gzip\" --recursive --region eu-west-1 dist s3://elemental.audio",
+    "aws": "aws s3 cp --acl \"public-read\" --content-encoding \"gzip\" --recursive --region eu-west-2 dist s3://andromeda.audio",
     "assets": "cp -r src/assets dist",
     "buckets": "cp -r buckets dist",
     "build": "npm run build-local && find dist -type f -exec gzip -9 {} \\; -exec mv {}.gz {} \\;",
