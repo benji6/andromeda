@@ -12,13 +12,11 @@ const ButtonPrimary = ({children, onClick, small, to}) => {
     : createElement('a', {className, href: '#', onClick}, children)
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  ButtonPrimary.propTypes = {
-    children: PropTypes.string,
-    onClick: PropTypes.func,
-    small: PropTypes.bool,
-    to: PropTypes.string,
-  }
+ButtonPrimary.propTypes = {
+  children: PropTypes.string,
+  onClick: PropTypes.func,
+  small: PropTypes.bool,
+  to: PropTypes.string,
 }
 
 export default ButtonPrimary

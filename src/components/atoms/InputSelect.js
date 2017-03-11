@@ -16,13 +16,11 @@ const InputSelect = ({
   options
 ))
 
-if (process.env.NODE_ENV !== 'production') {
-  InputSelect.propTypes = {
-    disabled: PropTypes.bool,
-    onChange: PropTypes.func.isRequired,
-    options: PropTypes.array.isRequired,
-    value: PropTypes.string.isRequired,
-  }
+InputSelect.propTypes = {
+  disabled: PropTypes.bool,
+  onChange: PropTypes.func.isRequired,
+  options: PropTypes.array.isRequired,
+  value: PropTypes.string.isRequired,
 }
 
 export default InputSelect
