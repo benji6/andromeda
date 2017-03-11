@@ -1,9 +1,9 @@
 {
   "icons": [
     {
-      "src": "assets/icon.png",
-      "sizes": "192x192",
-      "type": "image/png",
+      "src": "assets/icon.svg+xml",
+      "sizes": "any",
+      "type": "image/svg",
       "density": 4.0
     }
   ],
