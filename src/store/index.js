@@ -22,10 +22,7 @@ export const rehydratePromise = new Promise((resolve, reject) => persistStore(st
   whitelist: [
     'controlPad',
     'keyboard',
-    'patternsBeat',
-    'patternsSynth',
     'settings',
-    'song',
   ],
 }, (err, state) => {
   if (err) reject(err)
