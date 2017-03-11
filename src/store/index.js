@@ -19,11 +19,7 @@ export const rehydratePromise = new Promise((resolve, reject) => persistStore(st
     createTransform(map(pick(['id', 'steps'])), null, {whitelist: 'patternsSynth'}),
     saveFilterTransform('song', ['steps']),
   ],
-  whitelist: [
-    'controlPad',
-    'keyboard',
-    'settings',
-  ],
+  whitelist: [],
 }, (err, state) => {
   if (err) reject(err)
   else resolve(state)
