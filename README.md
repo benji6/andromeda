@@ -4,7 +4,7 @@
 
 Andromeda is a pluggable digital audio workstation built on open web technologies
 
-**[Check it out here](http://elemental.audio/)**
+**[Check it out here](http://andromeda.audio)**
 
 ## Plugin API
 
