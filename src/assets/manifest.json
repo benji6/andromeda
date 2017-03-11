@@ -1,10 +1,9 @@
 {
   "icons": [
     {
-      "src": "assets/icon.svg+xml",
+      "src": "assets/icon.svg",
       "sizes": "any",
-      "type": "image/svg",
-      "density": 4.0
+      "type": "image/svg+xml"
     }
   ],
   "display": "minimal-ui",
