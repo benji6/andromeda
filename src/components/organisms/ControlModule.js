@@ -6,39 +6,37 @@ const Input = ({children, label}) =>
     children
   )
 
-export const CheckBox = ({label, ...props}) =>
-  createElement(Input, {label},
-    createElement('input', {type: 'checkbox', ...props})
-  )
+export const CheckBox = props => createElement(Input, {label: props.label},
+  createElement('input', Object.assign({type: 'checkbox'}, props))
+)
 
-export const Range = ({
-  label,
-  max = 1,
-  min = 0,
-  step = (max - min) / 1000,
-  ...props
-}) =>
-  createElement(Input, {label},
-    createElement('input', {
-      className: 'ControlModule__Range',
-      max,
-      min,
-      step,
-      type: 'range',
-      ...props,
-    }),
-    createElement('div', {className: 'ControlModule__Output'},
-      props.displayValue || props.defaultValue.toFixed(2)
-    )
-  )
+export const Range = props => {
+  const max = props.max === undefined ? 1 : props.max
+  const min = props.min === undefined ? 0 : props.min
+  const step = props.step === undefined ? (max - min) / 1000 : props.step
+  const displayValue = props.displayValue === undefined ? props.defaultValue.toFixed(2) : props.displayValue
 
-export const Select = ({label, ...props}) =>
-  createElement(Input, {label},
-    createElement('select', {className: 'ControlModule__Select', ...props})
-  )
+  const inputProps = Object.assign({
+    className: 'ControlModule__Range',
+    max,
+    min,
+    step,
+    type: 'range',
+  }, props)
 
-export default ({children, title, ...props}) =>
-  createElement('div', {className: 'ControlModule', ...props},
-    title && createElement('h3', {className: 'ControlModule__Title'}, title),
-    createElement('div', {className: 'ControlModule__Container'}, children)
+  delete inputProps.displayValue
+
+  return createElement(Input, {label: props.label},
+    createElement('input', inputProps),
+    createElement('div', {className: 'ControlModule__Output'}, displayValue)
   )
+}
+
+export const Select = props => createElement(Input, {label: props.label},
+  createElement('select', Object.assign({className: 'ControlModule__Select'}, props))
+)
+
+export default props => createElement('div', Object.assign({className: 'ControlModule'}, props),
+  props.title && createElement('h3', {className: 'ControlModule__Title'}, props.title),
+  createElement('div', {className: 'ControlModule__Container'}, props.children)
+)

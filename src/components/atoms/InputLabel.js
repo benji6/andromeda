@@ -1,7 +1,13 @@
-import {createElement} from 'react'
+import {createElement, PropTypes} from 'react'
 
-export default ({children}) => createElement(
-  'div',
-  {className: 'InputLabel'},
+const InputLabel = ({children}) => createElement('span', {className: 'InputLabel'},
   children,
 )
+
+if (process.env.NODE_ENV !== 'production') {
+  InputLabel.propTypes = {
+    children: PropTypes.string,
+  }
+}
+
+export default InputLabel

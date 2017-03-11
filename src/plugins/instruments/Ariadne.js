@@ -53,8 +53,7 @@ const notesToGraph = ({
   modulatorRatio,
 }, notes) => notes.reduce((acc, {
   frequency, gain, id, startTime, stopTime,
-}) => ({
-  ...acc,
+}) => Object.assign({}, acc, {
   [id]: [oscBank, 'output', {
     carrierDetune,
     carrierOscType,
@@ -131,14 +130,16 @@ export default class {
   }
   render (containerEl) {
     const store = stores.get(this)
-    const setPropFromRangeEvent = key => e => store.dispatch(state => ({
-      ...state,
-      [key]: Number(e.target.value),
-    }))
-    const setPropFromSelectEvent = key => e => store.dispatch(state => ({
-      ...state,
-      [key]: e.target.value,
-    }))
+    const setPropFromRangeEvent = key => e => store.dispatch(state => Object.assign(
+      {},
+      state,
+      {[key]: Number(e.target.value)}
+    ))
+    const setPropFromSelectEvent = key => e => store.dispatch(state => Object.assign(
+      {},
+      state,
+      {[key]: e.target.value}
+    ))
 
     ReactDOM.render(connect(store)(({
       carrierDetune,

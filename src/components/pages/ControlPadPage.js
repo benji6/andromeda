@@ -27,7 +27,7 @@ const mapStateToProps = ({
     octave,
     portamento,
     range,
-    touched,
+    isTouched,
   },
   nav: {lastDirection},
   plugins,
@@ -35,6 +35,7 @@ const mapStateToProps = ({
   settings: {rootNote},
 }) => ({
   instrument,
+  isTouched,
   lastDirection,
   noScale,
   octave,
@@ -43,7 +44,6 @@ const mapStateToProps = ({
   range,
   rootNote,
   sideLength,
-  touched,
 })
 
 const mapDispatchToProps = {controlPadTouched}
@@ -59,7 +59,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
   range,
   rootNote,
   sideLength,
-  touched,
+  isTouched,
 }) =>
   createElement('div', {
     className: makeClassName(
@@ -113,13 +113,9 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
           const instance = instrumentInstance(instrument, plugins)
           instance.noteStop(controlPadId)
         },
+        isTouched,
         sideLength,
-        touched,
       })
     ),
-    createElement(
-      ButtonPrimary,
-      {to: '/controllers/control-pad/settings'},
-      'Options'
-    )
+    createElement(ButtonPrimary, {to: '/controllers/control-pad/settings'}, 'Options')
   ))

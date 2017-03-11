@@ -1,6 +1,14 @@
-import {createElement} from 'react'
+import {createElement, PropTypes} from 'react'
 
-export default ({children}) => createElement('div', {
+const WelcomeMessage = ({children}) => createElement('div', {
   children,
   className: 'WelcomeMessage fade-out',
 })
+
+if (process.env.NODE_ENV !== 'production') {
+  WelcomeMessage.propTypes = {
+    children: PropTypes.string.isRequired,
+  }
+}
+
+export default WelcomeMessage

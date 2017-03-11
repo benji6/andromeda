@@ -1,0 +1,14 @@
+.PatternSteps {
+  align-content: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  position: relative;
+  width: 100vw;
+}
+
+.PatternSteps__Marker {
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+}

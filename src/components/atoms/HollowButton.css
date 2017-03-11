@@ -6,6 +6,7 @@
   color: var(--gray-99);
   font-size: 0.75rem;
   margin: 1rem 0.5rem;
+  outline: 0;
   padding: 0.33rem 1rem;
   text-decoration: none;
   transition-duration: var(--transition-fast);

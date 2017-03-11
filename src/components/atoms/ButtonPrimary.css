@@ -37,10 +37,3 @@
   background: linear-gradient(var(--blue-60), var(--blue-70));
   box-shadow: none;
 }
-
-.ButtonPrimary--red {
-  background: linear-gradient(var(--red-70), var(--red-60));
-}
-.ButtonPrimary--red:hover {
-  background: linear-gradient(var(--red-60), var(--red-70));
-}

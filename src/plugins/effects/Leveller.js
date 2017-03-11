@@ -61,7 +61,7 @@ export default class {
   }
   render (containerEl) {
     const store = stores.get(this)
-    const setProp = (key, val) => store.dispatch(state => ({...state, [key]: val}))
+    const setProp = (key, val) => store.dispatch(state => Object.assign({}, state, {[key]: val}))
 
     ReactDOM.render(
       connect(store)(({

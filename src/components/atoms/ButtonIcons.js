@@ -1,14 +1,27 @@
-import {createElement} from 'react'
+import {merge} from 'ramda'
+import {createElement, PropTypes} from 'react'
 
-const createButton = (modifier, text) => ({children, ...props}) => createElement(
+const ButtonIcon = ({
+  children,
+  modifier,
+  onClick,
+  text,
+}) => createElement(
   'button',
-  {...props, className: `ButtonIcon ButtonIcon--${modifier}`},
+  {className: `ButtonIcon ButtonIcon--${modifier}`, onClick},
   text,
   ' ',
   createElement('span', {className: 'ButtonIcon__Label'}, children)
 )
 
-export const Cross = createButton('red-hover', 'x')
-export const Down = createButton('blue-hover', '\u2193')
-export const Plus = createButton('green-hover', '+')
-export const Up = createButton('blue-hover', '\u2191')
+if (process.env.NODE_ENV !== 'production') {
+  ButtonIcon.propTypes = {
+    children: PropTypes.string,
+    modifier: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
+    text: PropTypes.string.isRequired,
+  }
+}
+
+export const Cross = props => createElement(ButtonIcon, merge({modifier: 'red-hover', text: 'x'}, props))
+export const Plus = props => createElement(ButtonIcon, merge({modifier: 'green-hover', text: '+'}, props))

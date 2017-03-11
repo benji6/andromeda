@@ -1,6 +1,6 @@
-import {createElement, Component} from 'react'
+import {createElement, Component, PropTypes} from 'react'
 
-export default class extends Component {
+const PluginMount = class extends Component {
   componentDidMount () {
     this.props.instance.render(this.refs.mount)
   }
@@ -8,3 +8,11 @@ export default class extends Component {
     return createElement('div', {ref: 'mount'})
   }
 }
+
+if (process.env.NODE_ENV !== 'production') {
+  PluginMount.propTypes = {
+    instance: PropTypes.object.isRequired,
+  }
+}
+
+export default PluginMount

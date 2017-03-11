@@ -1,6 +1,5 @@
 {
   "plugins": [
-    "transform-object-rest-spread",
     "ramda",
     "transform-react-router-optimize"
   ],

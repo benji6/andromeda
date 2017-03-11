@@ -1,0 +1,16 @@
+.PatternSynth {
+  animation-duration: var(--transition-medium);
+  animation-name: expand;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.PatternSynth__Controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.PatternSynth__Controls > * {
+  margin-right: 1rem;
+}

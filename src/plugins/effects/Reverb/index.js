@@ -25,7 +25,7 @@ const updateAudioGraph = virtualAudioGraph => ({
   reverbType,
   wetLevel,
 }) => {
-  const bufferPromise = reverbTypeToBufferPromise[reverbType] || window.fetch(reverbTypeToUri[reverbType])
+  const bufferPromise = reverbTypeToBufferPromise[reverbType] || fetch(reverbTypeToUri[reverbType])
     .then(response => response.arrayBuffer())
     .then(data => audioContext.decodeAudioData(data))
 
@@ -74,9 +74,9 @@ export default class {
   }
   render (containerEl) {
     const store = stores.get(this)
-    const setProp = (prop, val) => store.dispatch(state => ({...state, [prop]: val}))
+    const setProp = (prop, val) => store.dispatch(state => Object.assign({}, state, {[prop]: val}))
 
-    store.dispatch(state => ({setProp, ...state}))
+    store.dispatch(state => Object.assign({setProp}, state))
     containerEls.set(this, containerEl)
     ReactDOM.render(
       connect(store)(ReverbComponent),

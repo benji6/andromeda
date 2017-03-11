@@ -19,7 +19,7 @@ export default class extends Component {
     const inputCallback = e => {
       mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled
       if (e instanceof window.MouseEvent && !mouseInputEnabled) return
-      this.props.touched || this.props.controlPadTouched()
+      this.props.isTouched || this.props.controlPadTouched()
       currentXYRatios = eventRatiosAndCoords(e)
       this.token.handleInput(currentXYRatios)
       if (controlPadActive) return inputModifyHandler(currentXYRatios)
@@ -51,11 +51,11 @@ export default class extends Component {
   render () {
     const {sideLength} = this.props
     return createElement('div', {className: 'ControlPad'},
-       !this.props.touched && createElement(
+      !this.props.isTouched && createElement(
         'div',
-         {
-           className: 'ControlPad__Message',
-         },
+        {
+          className: 'ControlPad__Message',
+        },
         'TOUCH / CLICK TO PLAY'
       ),
       createElement('canvas', {
