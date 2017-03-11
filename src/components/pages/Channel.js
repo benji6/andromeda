@@ -56,9 +56,9 @@ export default connectComponent(({
     Boolean(addEffects.length) && createElement('p', null, 'Add effect'),
     Boolean(addEffects.length) && createElement('div', null,
       createElement(InputSelect, {
-        defaultValue: selectedAddEffect,
         onChange: e => selectedAddEffect = e.target.value,
         options: map(text => ({text, value: text}), addEffects),
+        value: selectedAddEffect,
       }),
       createElement(Plus, {onClick: () => dispatch(addEffectToChannel({
         channel: channelId,
@@ -85,9 +85,9 @@ export default connectComponent(({
     Boolean(addSources.length) && createElement('p', null, 'Add source'),
     Boolean(addSources.length) && createElement('div', null,
       createElement(InputSelect, {
-        defaultValue: selectedAddSource,
         onChange: e => selectedAddSource = e.target.value,
         options: map(text => ({text, value: text}), addSources),
+        value: selectedAddSource,
       }),
       createElement(Plus, {onClick: () => {
         dispatch(addInstrumentToChannel({

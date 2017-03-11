@@ -7,7 +7,7 @@ import audioContext from '../audioContext'
 export default ({dispatch}) => next => action => {
   if (action.type === APP_INITIALIZE) {
     forEach(
-      filename => window.fetch(`${samplesUri}/${filename}`)
+      filename => fetch(`${samplesUri}/${filename}`)
         .then(response => response.arrayBuffer())
         .then(data => audioContext.decodeAudioData(data))
         .then(buffer => dispatch(sampleFetched([filename, buffer]))),

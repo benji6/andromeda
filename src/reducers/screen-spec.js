@@ -6,8 +6,8 @@ const reducerName = 'screen reducer'
 
 test(`${reducerName} returns initial state`, t => {
   t.deepEqual(reducer(undefined, {}), {
-    sideLength: null,
-    width: null,
+    sideLength: 0,
+    width: 0,
   })
   t.end()
 })

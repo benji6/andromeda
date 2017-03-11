@@ -9,27 +9,22 @@ import {
   equals,
   find,
   findIndex,
-  flip,
   forEach,
   last,
   length,
   lensProp,
   over,
-  pluck,
   propEq,
-  sortBy,
   view,
   without,
 } from 'ramda'
 import {
-  ADD_CHANNEL,
   ADD_EFFECT_TO_CHANNEL,
   ADD_INSTRUMENT_TO_CHANNEL,
   INSTANTIATE_EFFECT,
   INSTANTIATE_INSTRUMENT,
   LOAD_PLUGIN_EFFECT,
   LOAD_PLUGIN_INSTRUMENT,
-  REMOVE_CHANNEL,
   REMOVE_EFFECT_FROM_CHANNEL,
   REMOVE_INSTRUMENT_FROM_CHANNEL,
 } from '../actions'
@@ -62,7 +57,6 @@ const overInstruments = over(instrumentsLens)
 const nameEquals = x => compose(equals(x), name)
 const findNameEquals = curry((x, y) => compose(find, nameEquals)(x)(y))
 const findConstructor = compose(viewConstructor, findNameEquals)
-const sortByName = sortBy(name)
 
 const overChannelEffects = curry((f, channelId, state) => overChannels(
   adjust(overEffects(f), findIndex(nameEquals(channelId), viewChannels(state))),
@@ -77,12 +71,6 @@ const effectInstance = curry((a, b) => instance(findNameEquals(a, effectInstance
 const effectInstanceDestination = compose(destination, effectInstance)
 const instrumentInstance = curry((a, b) => instance(findNameEquals(a, instrumentInstances(b))))
 
-const createChannel = name => ({effects: [], instruments: [], name})
-const lowestUniqueNatural = xs => {
-  let i = 0
-  while (xs.includes(i)) i++
-  return i
-}
 const initialState = {
   channels: [{effects: [], instruments: [], name: 0}],
   effectInstances: [],
@@ -96,13 +84,6 @@ const disconnect = x => (x.disconnect(), x)
 
 export default (state = initialState, {type, payload}) => {
   switch (type) {
-    case ADD_CHANNEL: return overChannels(compose(
-      sortByName,
-      append(createChannel(lowestUniqueNatural(pluck(
-        'name',
-        viewChannels(state)
-      ))))
-    ), state)
     case ADD_EFFECT_TO_CHANNEL: {
       const thisEffectInstance = effectInstance(payload.name, state)
       const lastEffect = last(effects(channel(payload.channel, state)))
@@ -156,22 +137,6 @@ export default (state = initialState, {type, payload}) => {
       return overInstrumentPlugins(append(payload), state)
     case LOAD_PLUGIN_EFFECT:
       return overEffectPlugins(append(payload), state)
-    case REMOVE_CHANNEL: {
-      const channel = findNameEquals(
-        payload,
-        viewChannels(state)
-      )
-      forEach(compose(
-        disconnect,
-        x => effectInstance(x, state)
-      ), effects(channel))
-      forEach(compose(
-        connectToAudioCtx,
-        disconnect,
-        flip(instrumentInstance)(state)
-      ), instruments(channel))
-      return overChannels(without([channel]), state)
-    }
     case REMOVE_EFFECT_FROM_CHANNEL: {
       const channelEffects = effects(channel(payload.channel, state))
       const channelInstruments = instruments(channel(payload.channel, state))

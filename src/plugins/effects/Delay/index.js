@@ -61,9 +61,8 @@ export default class {
   }
   render (containerEl) {
     const store = stores.get(this)
-    const setProp = (key, val) => store.dispatch(state => ({...state, [key]: val}))
-    const setPropFromRangeEvent = key => e => store.dispatch(state => ({
-      ...state,
+    const setProp = (key, val) => store.dispatch(state => Object.assign({}, state, {[key]: val}))
+    const setPropFromRangeEvent = key => e => store.dispatch(state => Object.assign({}, state, {
       [key]: Number(e.target.value),
     }))
 

@@ -15,7 +15,7 @@ const ControlContainer = ({children}) => createElement('div', {style: {padding: 
 )
 
 const loadSample = function (fileName) {
-  window.fetch(`${bucket}/${fileName}`)
+  fetch(`${bucket}/${fileName}`)
     .then(response => response.arrayBuffer())
     .then(data => audioContexts.get(this).decodeAudioData(data))
     .then(buffer => buffers.set(this, buffer))

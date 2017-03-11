@@ -2,8 +2,8 @@ import {merge} from 'ramda'
 import {SCREEN_RESIZE} from '../actions'
 
 const initialState = {
-  sideLength: null,
-  width: null,
+  sideLength: 0,
+  width: 0,
 }
 
 export default (state = initialState, {payload, type}) => {

@@ -1,22 +1,24 @@
-import {createElement} from 'react'
+import {createElement, PropTypes} from 'react'
 import {Link} from 'react-router'
 import {makeClassName} from '../../utils/dom'
 
-export default ({children, red, small, ...props}) => {
+const ButtonPrimary = ({children, onClick, small, to}) => {
   const className = makeClassName(
     'ButtonPrimary',
-    red && 'ButtonPrimary--red',
     small && 'ButtonPrimary--small',
   )
-  return props.to
-    ? createElement(
-      Link,
-      {className, ...props},
-      children
-    )
-    : createElement(
-      'a',
-      {className, href: '#', ...props},
-      children
-    )
+  return to
+    ? createElement(Link, {className, to}, children)
+    : createElement('a', {className, href: '#', onClick}, children)
 }
+
+if (process.env.NODE_ENV !== 'production') {
+  ButtonPrimary.propTypes = {
+    children: PropTypes.string,
+    onClick: PropTypes.func,
+    small: PropTypes.bool,
+    to: PropTypes.string,
+  }
+}
+
+export default ButtonPrimary

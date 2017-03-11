@@ -1,4 +1,3 @@
 {
-  "extends": "benji6",
-  "parser": "babel-eslint"
+  "extends": "benji6"
 }

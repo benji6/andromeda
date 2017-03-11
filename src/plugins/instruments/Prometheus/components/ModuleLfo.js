@@ -1,6 +1,16 @@
 import {createElement} from 'react'
-import ControlModule, {Range} from '../../../../components/organisms/ControlModule'
-import SelectOscType from './SelectOscType'
+import ControlModule, {Range, Select} from '../../../../components/organisms/ControlModule'
+
+const SelectOscType = ({defaultValue, onChange}) => createElement(Select, {
+  defaultValue,
+  label: 'Type',
+  onChange,
+},
+  createElement('option', {value: 'sawtooth'}, 'Sawtooth'),
+  createElement('option', {value: 'sine'}, 'Sine'),
+  createElement('option', {value: 'square'}, 'Square'),
+  createElement('option', {value: 'triangle'}, 'Triangle')
+)
 
 export default ({lfo: {gain, frequency, type}, updateLfo}) =>
   createElement(ControlModule, {title: 'LFO'},

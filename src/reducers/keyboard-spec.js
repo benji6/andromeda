@@ -27,25 +27,19 @@ test(`${reducerName} keyboardMonophonicSet`, t => {
 })
 
 test(`${reducerName} keyboardInstrumentSet`, t => {
-  t.deepEqual(reducer(undefined, keyboardInstrumentSet('piano')),
-              {...initialState, instrument: 'piano'})
-  t.deepEqual(reducer(undefined, keyboardInstrumentSet('tuba')),
-              {...initialState, instrument: 'tuba'})
+  t.deepEqual(reducer({instrument: 'foo'}, keyboardInstrumentSet('bar')),
+              {instrument: 'bar'})
   t.end()
 })
 
 test(`${reducerName} keyboardOctaveSet`, t => {
-  t.deepEqual(reducer(undefined, keyboardOctaveSet(1)),
-              {...initialState, octave: 1})
-  t.deepEqual(reducer(undefined, keyboardOctaveSet(-1)),
-              {...initialState, octave: -1})
+  t.deepEqual(reducer({octave: -1}, keyboardOctaveSet(1)),
+              {octave: 1})
   t.end()
 })
 
 test(`${reducerName} keyboardVolumeSet`, t => {
-  t.deepEqual(reducer(undefined, keyboardVolumeSet(0.5)),
-              {...initialState, volume: 0.5})
-  t.deepEqual(reducer(undefined, keyboardVolumeSet(0.6)),
-              {...initialState, volume: 0.6})
+  t.deepEqual(reducer({volume: 0.9}, keyboardVolumeSet(0.5)),
+              {volume: 0.5})
   t.end()
 })

@@ -1,7 +1,7 @@
 export default [
   ['/controllers/control-pad', 'Pad'],
   ['/controllers/song', 'Song'],
-  ['/channels', 'FX'],
-  ['/settings', 'Settings'],
+  ['/mixer', 'Mixer'],
+  ['/settings', '🔧'],
   ['/about', '?'],
 ]

@@ -1,5 +1,5 @@
 import test from 'tape'
-import reducer, {initialState} from './controlPad'
+import reducer from './controlPad'
 import {
   controlPadInstrumentSet,
   controlPadNoScaleSet,
@@ -16,59 +16,49 @@ test(`${reducerName} returns initial state`, t => {
     reducer(undefined, {}),
     {
       instrument: 'Ariadne',
+      isTouched: false,
       noScale: false,
       octave: 0,
       portamento: false,
       range: 1,
-      touched: false,
     }
   )
   t.end()
 })
 
 test(`${reducerName} controlPadTouched`, t => {
-  t.deepEqual(
-    reducer({touched: false}, controlPadTouched()),
-    {touched: true}
-  )
+  t.deepEqual(reducer({isTouched: false}, controlPadTouched()), {isTouched: true})
+  t.deepEqual(reducer({isTouched: true}, controlPadTouched()), {isTouched: true})
   t.end()
 })
 
 test(`${reducerName} updateControlPadChannel`, t => {
   const testVal = 'piano'
-  t.deepEqual(reducer(undefined, controlPadInstrumentSet(testVal)),
-              {...initialState, instrument: testVal})
+  t.deepEqual(reducer({instrument: 'foo'}, controlPadInstrumentSet(testVal)),
+              {instrument: testVal})
   t.end()
 })
 
 test(`${reducerName} controlPadPortamentoSet`, t => {
-  t.deepEqual(reducer(undefined, controlPadPortamentoSet(true)),
-              {...initialState, portamento: true})
-  t.deepEqual(reducer(undefined, controlPadPortamentoSet(false)),
-              {...initialState, portamento: false})
+  t.deepEqual(reducer({portamento: false}, controlPadPortamentoSet(true)),
+              {portamento: true})
   t.end()
 })
 
 test(`${reducerName} controlPadOctaveSet`, t => {
-  t.deepEqual(reducer(undefined, controlPadOctaveSet(3)),
-              {...initialState, octave: 3})
-  t.deepEqual(reducer(undefined, controlPadOctaveSet(-1)),
-              {...initialState, octave: -1})
+  t.deepEqual(reducer({octave: -1}, controlPadOctaveSet(3)),
+              {octave: 3})
   t.end()
 })
 
 test(`${reducerName} updateControlNoScale`, t => {
-  t.deepEqual(reducer(undefined, controlPadNoScaleSet(false)),
-              {...initialState, noScale: false})
-  t.deepEqual(reducer(undefined, controlPadNoScaleSet(true)),
-              {...initialState, noScale: true})
+  t.deepEqual(reducer({noScale: true}, controlPadNoScaleSet(false)),
+              {noScale: false})
   t.end()
 })
 
 test(`${reducerName} controlPadRangeSet`, t => {
-  t.deepEqual(reducer(undefined, controlPadRangeSet(2)),
-              {...initialState, range: 2})
-  t.deepEqual(reducer(undefined, controlPadRangeSet(3)),
-              {...initialState, range: 3})
+  t.deepEqual(reducer({range: 1}, controlPadRangeSet(2)),
+              {range: 2})
   t.end()
 })

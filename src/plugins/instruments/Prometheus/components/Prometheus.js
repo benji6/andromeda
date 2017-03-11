@@ -2,7 +2,8 @@ import {createElement} from 'react'
 import ModuleFilter from './ModuleFilter'
 import ModuleLfo from './ModuleLfo'
 import ModuleMaster from './ModuleMaster'
-import ModuleOsc from './ModuleOsc'
+import ModuleOscSingle from './ModuleOscSingle'
+import ModuleOscSuper from './ModuleOscSuper'
 
 const blue = '#ace'
 const size5 = '1rem'
@@ -12,11 +13,13 @@ export default ({
   filter,
   lfo,
   master,
-  oscillators,
+  oscillatorSingles,
+  oscillatorSupers,
   updateFilter,
   updateLfo,
   updateMaster,
-  updateOsc,
+  updateOscSingle,
+  updateOscSuper,
 }) =>
   createElement('div', {style: {color: blue, textAlign: 'center'}},
     createElement('h2', {style: {fontSize: size6, margin: size5}}, 'PROMETHEUS'),
@@ -31,10 +34,28 @@ export default ({
       }),
       createElement(ModuleLfo, {lfo, updateLfo})
     ),
-    oscillators.map((settings, i) => createElement(ModuleOsc, {
-      i,
-      key: i,
-      settings,
-      updateOsc: updateOsc(i),
+    createElement('div', null,
+      oscillatorSupers.map(({detune, gain, id, numberOfOscillators, pan, pitch, spread, type}) => createElement(ModuleOscSuper, {
+        detune,
+        gain,
+        id,
+        key: id,
+        numberOfOscillators,
+        pan,
+        pitch,
+        spread,
+        type,
+        updateOsc: updateOscSuper(id),
+      })),
+    ),
+    oscillatorSingles.map(({detune, gain, id, pan, pitch, type}) => createElement(ModuleOscSingle, {
+      detune,
+      gain,
+      id,
+      key: id,
+      pan,
+      pitch,
+      type,
+      updateOsc: updateOscSingle(id),
     }))
   )

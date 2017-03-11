@@ -1,10 +1,10 @@
 .LinkExternal {
-  color: var(--green-80);
+  color: var(--green-60);
   font-weight: 900;
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 .LinkExternal:hover {
-  color: var(--green-90);
+  color: var(--green-80);
 }

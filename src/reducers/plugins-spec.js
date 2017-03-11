@@ -2,14 +2,12 @@ import {dissoc} from 'ramda'
 import test from 'tape'
 import reducer from './plugins'
 import {
-  addChannel,
   addEffectToChannel,
   addInstrumentToChannel,
   instantiateEffect,
   instantiateInstrument,
   loadPluginEffect,
   loadPluginInstrument,
-  removeChannel,
   removeEffectFromChannel,
   removeInstrumentFromChannel,
 } from '../actions'
@@ -24,29 +22,6 @@ test(`${reducerName} reducer returns initial state`, t => {
     instrumentInstances: [],
     instrumentPlugins: [],
   })
-  t.end()
-})
-
-test(`${reducerName} reducer - addChanel`, t => {
-  t.deepEqual(
-    reducer({
-      channels: [{effects: [], instruments: [], name: 1}],
-      effectInstances: [],
-      effectPlugins: [],
-      instrumentInstances: [],
-      instrumentPlugins: [],
-    }, addChannel()),
-    {
-      channels: [
-        {effects: [], instruments: [], name: 0},
-        {effects: [], instruments: [], name: 1},
-      ],
-      effectInstances: [],
-      effectPlugins: [],
-      instrumentInstances: [],
-      instrumentPlugins: [],
-    }
-  )
   t.end()
 })
 
@@ -184,29 +159,6 @@ test(`${reducerName} reducer - loadPluginInstrument`, t => {
       effectPlugins: [],
       instrumentInstances: [],
       instrumentPlugins: ['test instrument'],
-    }
-  )
-  t.end()
-})
-
-test(`${reducerName} reducer - removeChannel`, t => {
-  t.deepEqual(
-    reducer({
-      channels: [
-        {effects: [], instruments: [], name: 0},
-        {effects: [], instruments: [], name: 1},
-      ],
-      effectInstances: [],
-      effectPlugins: [],
-      instrumentInstances: [],
-      instrumentPlugins: [],
-    }, removeChannel(0)),
-    {
-      channels: [{effects: [], instruments: [], name: 1}],
-      effectInstances: [],
-      effectPlugins: [],
-      instrumentInstances: [],
-      instrumentPlugins: [],
     }
   )
   t.end()

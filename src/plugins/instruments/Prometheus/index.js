@@ -3,6 +3,7 @@ import {createStore, connect} from 'st88'
 import createVirtualAudioGraph from 'virtual-audio-graph'
 import Prometheus from './components/Prometheus'
 import notesToGraph from './notesToGraph'
+import defaultState from './defaultState'
 
 const audioContexts = new WeakMap()
 const stores = new WeakMap()
@@ -20,29 +21,7 @@ export default class {
     const virtualAudioGraph = createVirtualAudioGraph({audioContext, output})
 
     notes.set(this, [])
-    const store = createStore({
-      filter: {
-        frequency: 1300,
-        gain: -12,
-        Q: 5,
-        type: 'lowpass',
-      },
-      lfo: {
-        frequency: 0.3,
-        gain: 400,
-        type: 'triangle',
-      },
-      master: {
-        gain: 0.75,
-        pan: 0,
-      },
-      oscillators: [
-        {detune: 0, gain: 0.35, name: 1, pan: -0.3, pitch: 0, type: 'triangle'},
-        {detune: 13, gain: 0.5, name: 2, pan: 0.4, pitch: 7, type: 'triangle'},
-        {detune: -7, gain: 0.8, name: 3, pan: 0.1, pitch: -12, type: 'sawtooth'},
-        {detune: 10, gain: 0.2, name: 4, pan: -0.4, pitch: 12, type: 'square'},
-      ],
-    })
+    const store = createStore(defaultState)
 
     store.subscribe(updateAudio.bind(this))
 
@@ -91,24 +70,26 @@ export default class {
   }
   render (containerEl) {
     const store = stores.get(this)
-    const setProp = prop => val => store.dispatch(state => ({
-      ...state,
-      [prop]: val,
-    }))
-    const updateProp = prop => (key, val) => store.dispatch(state => ({
-      ...state,
-      [prop]: {...state[prop], [key]: val},
+    const setProp = prop => val => store.dispatch(state => Object.assign({}, state, {[prop]: val}))
+    const updateProp = prop => (key, val) => store.dispatch(state => Object.assign({}, state, {
+      [prop]: Object.assign({}, state[prop], {[key]: val}),
     }))
     setProp('updateFilter')(updateProp('filter'))
     setProp('updateLfo')(updateProp('lfo'))
     setProp('updateMaster')(updateProp('master'))
     setProp('updateFilter')(updateProp('filter'))
-    setProp('updateOsc')(i => (key, val) => store.dispatch(state => ({
-      ...state,
-      oscillators: [
-        ...state.oscillators.slice(0, i),
-        {...state.oscillators[i], [key]: val},
-        ...state.oscillators.slice(i + 1),
+    setProp('updateOscSingle')(i => (key, val) => store.dispatch(state => Object.assign({}, state, {
+      oscillatorSingles: [
+        ...state.oscillatorSingles.slice(0, i),
+        Object.assign({}, state.oscillatorSingles[i], {[key]: val}),
+        ...state.oscillatorSingles.slice(i + 1),
+      ],
+    })))
+    setProp('updateOscSuper')(i => (key, val) => store.dispatch(state => Object.assign({}, state, {
+      oscillatorSupers: [
+        ...state.oscillatorSupers.slice(0, i),
+        Object.assign({}, state.oscillatorSupers[i], {[key]: val}),
+        ...state.oscillatorSupers.slice(i + 1),
       ],
     })))
 
