@@ -1,4 +1,4 @@
-<img src="http://elemental.audio/assets/logo.svg?v=2" />
+<img src="http://andromeda.audio/assets/logo.svg" />
 
 [![Build Status](https://travis-ci.org/benji6/andromeda.svg)](https://travis-ci.org/benji6/andromeda)
 
