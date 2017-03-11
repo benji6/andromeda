@@ -2,7 +2,7 @@ import {createElement} from 'react'
 import ReactDOM from 'react-dom'
 import sampleNames from '../../constants/sampleNames'
 
-const bucket = 'buckets/elemental-samples/standard-808-drumkit'
+const drumkitUri = 'assets/samples/standard-808-drumkit'
 
 const audioContexts = new WeakMap()
 const buffers = new WeakMap()
@@ -15,7 +15,7 @@ const ControlContainer = ({children}) => createElement('div', {style: {padding: 
 )
 
 const loadSample = function (fileName) {
-  fetch(`${bucket}/${fileName}`)
+  fetch(`${drumkitUri}/${fileName}`)
     .then(response => response.arrayBuffer())
     .then(data => audioContexts.get(this).decodeAudioData(data))
     .then(buffer => buffers.set(this, buffer))

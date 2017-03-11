@@ -1,1 +1,1 @@
-export const samples = 'buckets/elemental-samples/standard-808-drumkit'
+export const samples = 'assets/samples/standard-808-drumkit'

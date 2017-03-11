@@ -4,16 +4,16 @@ import createVirtualAudioGraph from 'virtual-audio-graph'
 import audioContext from '../../../audioContext'
 import ReverbComponent from './ReverbComponent'
 
-const reverbBucket = 'buckets/elemental-reverb'
+const reverbUri = 'assets/reverb'
 
 const containerEls = new WeakMap()
 const outputs = new WeakMap()
 const stores = new WeakMap()
 
 const reverbTypeToUri = {
-  'reverb chapel': `${reverbBucket}/chapel.wav`,
-  'reverb mausoleum': `${reverbBucket}/mausoleum.wav`,
-  'reverb stairwell': `${reverbBucket}/stairwell.wav`,
+  'reverb chapel': `${reverbUri}/chapel.wav`,
+  'reverb mausoleum': `${reverbUri}/mausoleum.wav`,
+  'reverb stairwell': `${reverbUri}/stairwell.wav`,
 }
 
 const reverbTypeToBufferPromise = {}
