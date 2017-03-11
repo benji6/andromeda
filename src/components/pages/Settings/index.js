@@ -1,23 +1,21 @@
 import {connect} from 'react-redux'
-import {bpmSet, rootHueSet, rootNoteSet, selectedScaleSet} from '../../../actions'
+import {bpmSet, rootNoteSet, selectedScaleSet} from '../../../actions'
 import Settings from './Settings'
 
 const mapStateToProps = ({
   nav: {lastDirection},
   microphone,
-  settings: {bpm, rootHue, rootNote, selectedScale},
+  settings: {bpm, rootNote, selectedScale},
 }) => ({
   bpm,
   lastDirection,
   microphone,
-  rootHue,
   rootNote,
   selectedScale,
 })
 
 const mapDispatchToProps = {
   bpmSet,
-  rootHueSet,
   rootNoteSet,
   selectedScaleSet,
 }

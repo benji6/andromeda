@@ -12,8 +12,6 @@ export default ({
   bpm,
   bpmSet,
   lastDirection,
-  rootHue,
-  rootHueSet,
   rootNote,
   rootNoteSet,
   selectedScale,
@@ -34,12 +32,6 @@ export default ({
     output: noteNameFromPitch(rootNote),
     value: rootNote,
   }, 'Root Note'),
-  createElement(RangeLabelled, {
-    max: 359,
-    min: 0,
-    onChange: e => rootHueSet(Number(eventValuePath(e))),
-    value: rootHue,
-  }, 'Color'),
   createElement(Selector, {
     defaultValue: selectedScale,
     handleChange: compose(selectedScaleSet, eventValuePath),

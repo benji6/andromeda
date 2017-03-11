@@ -1,8 +1,7 @@
 :root {
-  --root-hue: 0;
-  --hue-blue: calc(var(--root-hue) + 240);
-  --hue-green: calc(var(--root-hue) + 165);
-  --hue-red: var(--root-hue);
+  --hue-blue: calc(240);
+  --hue-green: calc(165);
+  --hue-red: 0;
 
   --blue-05: hsl(calc(var(--hue-blue) - 29), 62%, 5%);
   --blue-10: hsl(calc(var(--hue-blue) - 27), 64%, 10%);
