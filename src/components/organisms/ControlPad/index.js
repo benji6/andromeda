@@ -53,9 +53,9 @@ export default class extends Component {
     return createElement('div', {className: 'ControlPad'},
        !this.props.touched && createElement(
         'div',
-        {
-          className: 'ControlPad__Message',
-        },
+         {
+           className: 'ControlPad__Message',
+         },
         'TOUCH / CLICK TO PLAY'
       ),
       createElement('canvas', {
