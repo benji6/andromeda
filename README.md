@@ -1,8 +1,8 @@
 <img src="http://elemental.audio/assets/logo.svg" />
 
-[![Build Status](https://travis-ci.org/benji6/elemental.svg)](https://travis-ci.org/benji6/elemental)
+[![Build Status](https://travis-ci.org/benji6/andromeda.svg)](https://travis-ci.org/benji6/andromeda)
 
-Elemental is a pluggable digital audio workstation in development built on open web technologies
+Andromeda is a pluggable digital audio workstation in development built on open web technologies
 
 **[Check it out here](http://elemental.audio/)**
 
@@ -13,7 +13,7 @@ Elemental is a pluggable digital audio workstation in development built on open 
 ### Effect plugin API
 
 `EffectPlugin` should be a constructor or factory function which is newed up with an object with the following props:
-- `audioContext` - `instanceof AudioContext` reference to the audioContext instance used by Elemental
+- `audioContext` - `instanceof AudioContext` reference to the audioContext instance used by Andromeda
 - `bpm` - `Number` - current bpm
 
 ```javascript
@@ -31,7 +31,7 @@ new EffectPlugin({audioContext, bpm})
 ### Instrument plugin API
 
 `InstrumentPlugin` should be a constructor or factory function which is newed up with an object with the following props:
-- `audioContext` - `instanceof AudioContext` reference to the audioContext instance used by Elemental
+- `audioContext` - `instanceof AudioContext` reference to the audioContext instance used by Andromeda
 - `bpm` - `Number` - current bpm
 
 ```javascript
