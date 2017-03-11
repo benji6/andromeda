@@ -12,12 +12,10 @@ const CheckboxLabelled = ({checked, onChange, children}) => createElement('label
   )
 )
 
-if (process.env.NODE_ENV !== 'production') {
-  CheckboxLabelled.propTypes = {
-    checked: PropTypes.bool.isRequired,
-    children: PropTypes.string.isRequired,
-    onChange: PropTypes.func.isRequired,
-  }
+CheckboxLabelled.propTypes = {
+  checked: PropTypes.bool.isRequired,
+  children: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
 }
 
 export default CheckboxLabelled

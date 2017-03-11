@@ -14,13 +14,11 @@ const ButtonIcon = ({
   createElement('span', {className: 'ButtonIcon__Label'}, children)
 )
 
-if (process.env.NODE_ENV !== 'production') {
-  ButtonIcon.propTypes = {
-    children: PropTypes.string,
-    modifier: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-    text: PropTypes.string.isRequired,
-  }
+ButtonIcon.propTypes = {
+  children: PropTypes.string,
+  modifier: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  text: PropTypes.string.isRequired,
 }
 
 export const Cross = props => createElement(ButtonIcon, merge({modifier: 'red-hover', text: 'x'}, props))

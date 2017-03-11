@@ -8,11 +8,9 @@ const StepVelocitySelector = ({color, onClick}) => createElement('button', {
   },
 })
 
-if (process.env.NODE_ENV !== 'production') {
-  StepVelocitySelector.propTypes = {
-    color: PropTypes.string.isRequired,
-    onClick: PropTypes.func.isRequired,
-  }
+StepVelocitySelector.propTypes = {
+  color: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
 }
 
 export default StepVelocitySelector

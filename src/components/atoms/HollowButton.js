@@ -7,11 +7,9 @@ const HollowButton = ({children, to}) => createElement(Link, {
   to,
 }, children)
 
-if (process.env.NODE_ENV !== 'production') {
-  HollowButton.propTypes = {
-    children: PropTypes.string,
-    to: PropTypes.string,
-  }
+HollowButton.propTypes = {
+  children: PropTypes.string,
+  to: PropTypes.string,
 }
 
 export default HollowButton

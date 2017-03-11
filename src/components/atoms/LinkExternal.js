@@ -8,11 +8,9 @@ const LinkExternal = ({children, href}) => createElement('a', {
   target: '_blank',
 })
 
-if (process.env.NODE_ENV !== 'production') {
-  LinkExternal.propTypes = {
-    children: PropTypes.string.isRequired,
-    href: PropTypes.string.isRequired,
-  }
+LinkExternal.propTypes = {
+  children: PropTypes.string.isRequired,
+  href: PropTypes.string.isRequired,
 }
 
 export default LinkExternal

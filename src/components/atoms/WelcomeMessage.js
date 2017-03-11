@@ -5,10 +5,8 @@ const WelcomeMessage = ({children}) => createElement('div', {
   className: 'WelcomeMessage fade-out',
 })
 
-if (process.env.NODE_ENV !== 'production') {
-  WelcomeMessage.propTypes = {
-    children: PropTypes.string.isRequired,
-  }
+WelcomeMessage.propTypes = {
+  children: PropTypes.string.isRequired,
 }
 
 export default WelcomeMessage

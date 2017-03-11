@@ -9,10 +9,8 @@ const PluginMount = class extends Component {
   }
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  PluginMount.propTypes = {
-    instance: PropTypes.object.isRequired,
-  }
+PluginMount.propTypes = {
+  instance: PropTypes.object.isRequired,
 }
 
 export default PluginMount

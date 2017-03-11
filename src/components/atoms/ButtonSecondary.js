@@ -7,11 +7,9 @@ const ButtonSecondary = ({children, to}) => createElement(
   children
 )
 
-if (process.env.NODE_ENV !== 'production') {
-  ButtonSecondary.propTypes = {
-    children: PropTypes.string,
-    to: PropTypes.string,
-  }
+ButtonSecondary.propTypes = {
+  children: PropTypes.string,
+  to: PropTypes.string,
 }
 
 export default ButtonSecondary

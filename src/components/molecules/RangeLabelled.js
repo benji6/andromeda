@@ -27,16 +27,14 @@ const RangeLabelled = ({
   )
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  RangeLabelled.propTypes = {
-    children: PropTypes.string.isRequired,
-    max: PropTypes.number,
-    min: PropTypes.number,
-    onChange: PropTypes.func.isRequired,
-    output: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    step: PropTypes.number,
-    value: PropTypes.number.isRequired,
-  }
+RangeLabelled.propTypes = {
+  children: PropTypes.string.isRequired,
+  max: PropTypes.number,
+  min: PropTypes.number,
+  onChange: PropTypes.func.isRequired,
+  output: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  step: PropTypes.number,
+  value: PropTypes.number.isRequired,
 }
 
 export default RangeLabelled

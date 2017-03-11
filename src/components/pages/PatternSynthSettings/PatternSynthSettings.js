@@ -32,13 +32,11 @@ const PatternSynthSettings = ({
   )
 )
 
-if (process.env.NODE_ENV !== 'production') {
-  PatternSynthSettings.propTypes = {
-    instrument: PropTypes.string.isRequired,
-    patternId: PropTypes.number.isRequired,
-    patternSynthInstrumentSet: PropTypes.func.isRequired,
-    plugins: PropTypes.object.isRequired,
-  }
+PatternSynthSettings.propTypes = {
+  instrument: PropTypes.string.isRequired,
+  patternId: PropTypes.number.isRequired,
+  patternSynthInstrumentSet: PropTypes.func.isRequired,
+  plugins: PropTypes.object.isRequired,
 }
 
 export default PatternSynthSettings

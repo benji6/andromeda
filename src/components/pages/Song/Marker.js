@@ -36,12 +36,10 @@ const Marker = class extends Component {
   }
 }
 
-if (process.env.NODE_ENV !== 'production') {
-  Marker.propTypes = {
-    height: PropTypes.number.isRequired,
-    markerPosition: PropTypes.number.isRequired,
-    width: PropTypes.number.isRequired,
-  }
+Marker.propTypes = {
+  height: PropTypes.number.isRequired,
+  markerPosition: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
 }
 
 export default Marker
