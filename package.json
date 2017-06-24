@@ -47,7 +47,7 @@
     "capitalize": "^1.0.0",
     "localforage": "^1.4.3",
     "lodash.debounce": "^4.0.8",
-    "ramda": "^0.23.0",
+    "ramda": "^0.24.1",
     "random-js": "^1.0.8",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
@@ -58,8 +58,8 @@
     "redux-persist": "^4.1.0",
     "reselect": "^2.5.3",
     "sixflix": "^1.0.2",
-    "st88": "benji6/st88.git#v0.0.2",
-    "virtual-audio-graph": "^0.19.0"
+    "st88": "github:benji6/st88#v0.0.2",
+    "virtual-audio-graph": "^0.19.1"
   },
   "devDependencies": {
     "babel": "^6.3.26",
