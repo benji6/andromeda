@@ -13,10 +13,11 @@ export default class extends Component {
       gl: this.refs.controlPad.getContext('webgl'),
       sideLength: this.props.sideLength,
     })
-    const {inputStopHandler, inputStartHandler, inputModifyHandler} = this.props
+
     controlPadElement = this.refs.controlPad
 
     const inputCallback = e => {
+      const {inputStartHandler, inputModifyHandler} = this.props
       mouseInputEnabled = e.type === 'mousedown' ? true : mouseInputEnabled
       if (e instanceof window.MouseEvent && !mouseInputEnabled) return
       this.props.isTouched || this.props.controlPadTouched()
@@ -34,7 +35,7 @@ export default class extends Component {
 
     const inputEndCallback = () => {
       controlPadActive = mouseInputEnabled = false
-      inputStopHandler()
+      this.props.inputStopHandler()
       this.token.handleInputEnd()
     }
 
