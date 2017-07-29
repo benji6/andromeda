@@ -1,10 +1,10 @@
-<img src="http://andromeda.audio/assets/logo.svg" />
+<img src="http://andromeda.netlify.com/assets/logo.svg" />
 
 [![Build Status](https://travis-ci.org/benji6/andromeda.svg)](https://travis-ci.org/benji6/andromeda)
 
 Andromeda is a pluggable digital audio workstation built on open web technologies
 
-**[Check it out here](http://andromeda.audio)**
+**[Check it out here](http://andromeda.netlify.com)**
 
 ## Plugin API
 
