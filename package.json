@@ -3,11 +3,8 @@
   "version": "0.45.4",
   "description": "Make music in your browser!",
   "scripts": {
-    "aws": "aws s3 cp --acl \"public-read\" --content-encoding \"gzip\" --recursive --region eu-west-2 dist s3://andromeda.audio",
     "assets": "cp -r src/assets dist",
-    "build": "npm run build-local && find dist -type f -exec gzip -9 {} \\; -exec mv {}.gz {} \\;",
-    "build-local": "rm -rf dist && mkdir dist && concurrently 'npm run assets' 'npm run html' 'npm run scripts' 'npm run styles'",
-    "deploy": "concurrently 'npm t' 'npm run build' && npm run aws",
+    "build": "rm -rf dist && mkdir dist && concurrently 'npm run assets' 'npm run html' 'npm run scripts' 'npm run styles'",
     "html": "html-minifier --collapse-whitespace -o dist/index.html src/index.html",
     "lint": "eslint src",
     "scripts": "NODE_ENV=production browserify -p bundle-collapser/plugin -t babelify src/index.js | sed 's/process.env.NODE_ENV/\\x27production\\x27/g' | uglifyjs -cm --screw-ie8 > dist/index.js",
