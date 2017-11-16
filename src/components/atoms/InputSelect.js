@@ -1,5 +1,4 @@
 import {createElement, PropTypes} from 'react'
-import {mapIndexed} from '../../utils/helpers'
 
 const InputSelect = ({
   disabled,
@@ -11,10 +10,7 @@ const InputSelect = ({
   disabled,
   onChange,
   value,
-}, mapIndexed(
-  ({text, value}, i) => createElement('option', {key: i, value}, text),
-  options
-))
+}, options.map(({text, value}, i) => createElement('option', {key: i, value}, text)))
 
 InputSelect.propTypes = {
   disabled: PropTypes.bool,

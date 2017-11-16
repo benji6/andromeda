@@ -1,4 +1,4 @@
-import {map, pick} from 'ramda'
+import {pick} from 'ramda'
 import localForage from 'localforage'
 import {createStore} from 'redux'
 import {autoRehydrate, createTransform, persistStore} from 'redux-persist'
@@ -15,9 +15,6 @@ export const rehydratePromise = new Promise((resolve, reject) => persistStore(st
   storage: localForage,
   transforms: [
     saveFilterTransform('controlPad', ['instrument', 'noScale', 'octave', 'portamento', 'range']),
-    createTransform(map(pick(['id', 'steps'])), null, {whitelist: 'patternsBeat'}),
-    createTransform(map(pick(['id', 'steps'])), null, {whitelist: 'patternsSynth'}),
-    saveFilterTransform('song', ['steps']),
   ],
   whitelist: [],
 }, (err, state) => {

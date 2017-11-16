@@ -10,7 +10,6 @@ import {
 import ButtonPrimary from '../atoms/ButtonPrimary'
 import {Cross, Plus} from '../atoms/ButtonIcons'
 import InputSelect from '../atoms/InputSelect'
-import {mapIndexed} from '../../utils/helpers'
 
 let selectedAddEffect = null
 let selectedAddSource = null
@@ -43,16 +42,13 @@ export default connectComponent(({
   return createElement('div', {className: 'Channel'},
     createElement('h1', null, `Channel ${channelId}`),
     createElement('h2', null, 'Effects'),
-    mapIndexed(
-      (name, i) => createElement('div', {key: i},
-        createElement(ButtonPrimary, {to: `/plugins/effects/${name}`}, name),
-        createElement(Cross, {onClick: () => dispatch(removeEffectFromChannel({
-          channel: channelId,
-          name,
-        }))})
-      ),
-      effects
-    ),
+    effects.map((name, i) => createElement('div', {key: i},
+      createElement(ButtonPrimary, {to: `/plugins/effects/${name}`}, name),
+      createElement(Cross, {onClick: () => dispatch(removeEffectFromChannel({
+        channel: channelId,
+        name,
+      }))})
+    )),
     Boolean(addEffects.length) && createElement('p', null, 'Add effect'),
     Boolean(addEffects.length) && createElement('div', null,
       createElement(InputSelect, {
