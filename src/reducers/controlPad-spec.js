@@ -35,30 +35,30 @@ test(`${reducerName} controlPadTouched`, t => {
 test(`${reducerName} updateControlPadChannel`, t => {
   const testVal = 'piano'
   t.deepEqual(reducer({instrument: 'foo'}, controlPadInstrumentSet(testVal)),
-              {instrument: testVal})
+    {instrument: testVal})
   t.end()
 })
 
 test(`${reducerName} controlPadPortamentoSet`, t => {
   t.deepEqual(reducer({portamento: false}, controlPadPortamentoSet(true)),
-              {portamento: true})
+    {portamento: true})
   t.end()
 })
 
 test(`${reducerName} controlPadOctaveSet`, t => {
   t.deepEqual(reducer({octave: -1}, controlPadOctaveSet(3)),
-              {octave: 3})
+    {octave: 3})
   t.end()
 })
 
 test(`${reducerName} updateControlNoScale`, t => {
   t.deepEqual(reducer({noScale: true}, controlPadNoScaleSet(false)),
-              {noScale: false})
+    {noScale: false})
   t.end()
 })
 
 test(`${reducerName} controlPadRangeSet`, t => {
   t.deepEqual(reducer({range: 1}, controlPadRangeSet(2)),
-              {range: 2})
+    {range: 2})
   t.end()
 })

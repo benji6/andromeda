@@ -126,7 +126,7 @@ export default class {
           }),
         )
       )),
-      containerEl
+    containerEl
     )
   }
 }
