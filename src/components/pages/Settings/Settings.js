@@ -19,29 +19,29 @@ export default ({
 }) => createElement('div', {
   className: makeClassName('Settings', lastDirection === 'left' ? 'slide-in-left' : 'slide-in-right'),
 },
-  createElement(RangeLabelled, {
-    max: 512,
-    min: 32,
-    onChange: compose(bpmSet, Number, eventValuePath),
-    value: bpm,
-  }, 'BPM'),
-  createElement(RangeLabelled, {
-    max: 24,
-    min: -36,
-    onChange: compose(rootNoteSet, Number, eventValuePath),
-    output: noteNameFromPitch(rootNote),
-    value: rootNote,
-  }, 'Root Note'),
-  createElement(Selector, {
-    defaultValue: selectedScale,
-    handleChange: compose(selectedScaleSet, eventValuePath),
-    label: 'Scale',
-    options: map(
-      value => ({text: capitalize.words(value), value}),
-      Object.keys(scales)
-    ),
-  }),
-  createElement('div', null,
-    createElement(ButtonPrimary, {to: '/controllers/keyboard/settings'}, 'Keyboard Settings')
-  )
+createElement(RangeLabelled, {
+  max: 512,
+  min: 32,
+  onChange: compose(bpmSet, Number, eventValuePath),
+  value: bpm,
+}, 'BPM'),
+createElement(RangeLabelled, {
+  max: 24,
+  min: -36,
+  onChange: compose(rootNoteSet, Number, eventValuePath),
+  output: noteNameFromPitch(rootNote),
+  value: rootNote,
+}, 'Root Note'),
+createElement(Selector, {
+  defaultValue: selectedScale,
+  handleChange: compose(selectedScaleSet, eventValuePath),
+  label: 'Scale',
+  options: map(
+    value => ({text: capitalize.words(value), value}),
+    Object.keys(scales)
+  ),
+}),
+createElement('div', null,
+  createElement(ButtonPrimary, {to: '/controllers/keyboard/settings'}, 'Keyboard Settings')
+)
 )

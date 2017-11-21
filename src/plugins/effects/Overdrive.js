@@ -115,12 +115,12 @@ export default class {
             types.set(this, value)
             waveshapers.get(this).curve = typeFns[value](amounts.get(this))
           }},
-            createElement('option', {value: 'type1'}, 'type 1'),
-            createElement('option', {value: 'type2'}, 'type 2'),
-            createElement('option', {value: 'type3'}, 'type 3'),
-            createElement('option', {value: 'type4'}, 'type 4'),
-            createElement('option', {value: 'type5'}, 'type 5'),
-            createElement('option', {value: 'type6'}, 'type 6')
+          createElement('option', {value: 'type1'}, 'type 1'),
+          createElement('option', {value: 'type2'}, 'type 2'),
+          createElement('option', {value: 'type3'}, 'type 3'),
+          createElement('option', {value: 'type4'}, 'type 4'),
+          createElement('option', {value: 'type5'}, 'type 5'),
+          createElement('option', {value: 'type6'}, 'type 6')
           )
         ),
         createElement(ControlContainer, null,

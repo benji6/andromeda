@@ -12,14 +12,14 @@ const Mixer = ({
     lastDirection === 'left' ? 'slide-in-left' : 'slide-in-right'
   ),
 },
-  map(
-    channel => createElement('div', {key: channel},
-      createElement(ButtonPrimary, {to: `/channel/${channel}`},
-        `Channel ${channel}`
-      )
-    ),
-    pluck('name', channels)
-  )
+map(
+  channel => createElement('div', {key: channel},
+    createElement(ButtonPrimary, {to: `/channel/${channel}`},
+      `Channel ${channel}`
+    )
+  ),
+  pluck('name', channels)
+)
 )
 
 export default Mixer

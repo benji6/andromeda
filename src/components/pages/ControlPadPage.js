@@ -67,55 +67,55 @@ export default connect(mapStateToProps, mapDispatchToProps)(({
       lastDirection === 'left' ? 'slide-in-left' : 'slide-in-right'
     ),
   },
-    createElement('div', null,
-      createElement(ControlPad, {
-        controlPadTouched,
-        inputModifyHandler ({xRatio, yRatio}) {
-          const pitch = noScale
-            ? 12 * range * xRatio
-            : calculatePitch(range * xRatio)
-          const instance = instrumentInstance(instrument, plugins)
+  createElement('div', null,
+    createElement(ControlPad, {
+      controlPadTouched,
+      inputModifyHandler ({xRatio, yRatio}) {
+        const pitch = noScale
+          ? 12 * range * xRatio
+          : calculatePitch(range * xRatio)
+        const instance = instrumentInstance(instrument, plugins)
 
-          const isNewNote = !noScale &&
+        const isNewNote = !noScale &&
             !portamento &&
             currentlyPlayingPitch !== pitch &&
             currentlyPlayingPitch !== null
 
-          if (isNewNote && instance.noteStop) {
-            instance.noteStop(controlPadId)
-          }
-
-          currentlyPlayingPitch = pitch
-          const note = {
-            frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
-            gain: (1 - yRatio) / 2,
-            id: controlPadId,
-          }
-          isNewNote
-            ? instance.noteStart(note)
-            : instance.noteModify(note)
-        },
-        inputStartHandler ({xRatio, yRatio}) {
-          const instance = instrumentInstance(instrument, plugins)
-
-          currentlyPlayingPitch = noScale
-            ? 12 * range * xRatio
-            : calculatePitch(range * xRatio)
-
-          instance.noteStart({
-            frequency: pitchToFrequency(currentlyPlayingPitch + 12 * octave + rootNote),
-            gain: (1 - yRatio) / 2,
-            id: controlPadId,
-          })
-        },
-        inputStopHandler () {
-          currentlyPlayingPitch = null
-          const instance = instrumentInstance(instrument, plugins)
+        if (isNewNote && instance.noteStop) {
           instance.noteStop(controlPadId)
-        },
-        isTouched,
-        sideLength,
-      })
-    ),
-    createElement(ButtonPrimary, {to: '/controllers/control-pad/settings'}, 'Options')
+        }
+
+        currentlyPlayingPitch = pitch
+        const note = {
+          frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
+          gain: (1 - yRatio) / 2,
+          id: controlPadId,
+        }
+        isNewNote
+          ? instance.noteStart(note)
+          : instance.noteModify(note)
+      },
+      inputStartHandler ({xRatio, yRatio}) {
+        const instance = instrumentInstance(instrument, plugins)
+
+        currentlyPlayingPitch = noScale
+          ? 12 * range * xRatio
+          : calculatePitch(range * xRatio)
+
+        instance.noteStart({
+          frequency: pitchToFrequency(currentlyPlayingPitch + 12 * octave + rootNote),
+          gain: (1 - yRatio) / 2,
+          id: controlPadId,
+        })
+      },
+      inputStopHandler () {
+        currentlyPlayingPitch = null
+        const instance = instrumentInstance(instrument, plugins)
+        instance.noteStop(controlPadId)
+      },
+      isTouched,
+      sideLength,
+    })
+  ),
+  createElement(ButtonPrimary, {to: '/controllers/control-pad/settings'}, 'Options')
   ))

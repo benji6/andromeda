@@ -6,10 +6,10 @@ const SelectOscType = ({defaultValue, onChange}) => createElement(Select, {
   label: 'Type',
   onChange,
 },
-  createElement('option', {value: 'sawtooth'}, 'Sawtooth'),
-  createElement('option', {value: 'sine'}, 'Sine'),
-  createElement('option', {value: 'square'}, 'Square'),
-  createElement('option', {value: 'triangle'}, 'Triangle')
+createElement('option', {value: 'sawtooth'}, 'Sawtooth'),
+createElement('option', {value: 'sine'}, 'Sine'),
+createElement('option', {value: 'square'}, 'Square'),
+createElement('option', {value: 'triangle'}, 'Triangle')
 )
 
 export default ({lfo: {gain, frequency, type}, updateLfo}) =>

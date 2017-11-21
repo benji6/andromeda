@@ -48,10 +48,10 @@ export default ({frequency, gain, Q, type, updateFilter}) =>
       label: 'Type',
       onChange: e => updateFilter('type', e.target.value),
     },
-      Object.keys(typesToParams).map(type => createElement('option', {
-        key: type,
-        value: type,
-      }, capitalize(type)))
+    Object.keys(typesToParams).map(type => createElement('option', {
+      key: type,
+      value: type,
+    }, capitalize(type)))
     ),
     typesToParams[type].map(param => param === 'frequency'
       ? createElement(ControlFrequency, {frequency, key: param, updateFilter})
