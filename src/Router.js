@@ -12,7 +12,6 @@ import ControlPadSettings from './components/pages/ControlPadSettings'
 import Effect from './components/pages/Effect'
 import Instrument from './components/pages/Instrument'
 import KeyboardSettings from './components/pages/KeyboardSettings'
-import Mixer from './components/pages/Mixer'
 import Settings from './components/pages/Settings'
 
 export default createElement(Router, {history: hashHistory},
@@ -41,7 +40,6 @@ export default createElement(Router, {history: hashHistory},
   createElement(Route, {component: Effect, path: '/plugins/effects/:name'}),
   createElement(Route, {component: Instrument, path: '/plugins/instruments/:name'}),
   createElement(Route, {component: KeyboardSettings, path: '/controllers/keyboard/settings'}),
-  createElement(Route, {component: Mixer, path: '/mixer'}),
   createElement(Route, {component: Settings, path: '/settings'}),
   createElement(Route, {component: ControlPadPage, path: '/*'})
   )
