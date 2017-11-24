@@ -1,4 +1,5 @@
-import {createElement, Component, PropTypes} from 'react'
+import {PropTypes} from 'prop-types'
+import {createElement, Component} from 'react'
 
 const PluginMount = class extends Component {
   componentDidMount () {

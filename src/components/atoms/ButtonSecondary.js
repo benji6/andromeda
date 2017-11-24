@@ -1,4 +1,5 @@
-import {createElement, PropTypes} from 'react'
+import {PropTypes} from 'prop-types'
+import {createElement} from 'react'
 import {Link} from 'react-router'
 
 const ButtonSecondary = ({children, to}) => createElement(
