@@ -1,4 +1,5 @@
-import {createElement, PropTypes} from 'react'
+import {PropTypes} from 'prop-types'
+import {createElement} from 'react'
 
 const WelcomeMessage = ({children}) => createElement('div', {
   children,

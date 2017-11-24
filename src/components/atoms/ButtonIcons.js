@@ -1,5 +1,6 @@
+import {PropTypes} from 'prop-types'
 import {merge} from 'ramda'
-import {createElement, PropTypes} from 'react'
+import {createElement} from 'react'
 
 const ButtonIcon = ({
   children,
