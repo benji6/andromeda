@@ -10,11 +10,11 @@ let controlPadActive = false
 export default class extends Component {
   componentDidMount () {
     this.token = new Token({
-      gl: this.refs.controlPad.getContext('webgl'),
+      gl: this.el.getContext('webgl'),
       sideLength: this.props.sideLength,
     })
 
-    controlPadElement = this.refs.controlPad
+    controlPadElement = this.el
 
     const inputCallback = e => {
       const {inputStartHandler, inputModifyHandler} = this.props
@@ -62,7 +62,7 @@ export default class extends Component {
       createElement('canvas', {
         className: 'ControlPad__Canvas',
         height: sideLength,
-        ref: 'controlPad',
+        ref: el => this.el = el,
         width: sideLength,
       })
     )
