@@ -3,10 +3,10 @@ import {createElement, Component} from 'react'
 
 const PluginMount = class extends Component {
   componentDidMount () {
-    this.props.instance.render(this.refs.mount)
+    this.props.instance.render(this.el)
   }
   render () {
-    return createElement('div', {ref: 'mount'})
+    return createElement('div', {ref: el => this.el = el})
   }
 }
 

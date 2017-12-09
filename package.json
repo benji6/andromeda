@@ -45,8 +45,8 @@
     "prop-types": "^15.6.0",
     "ramda": "^0.25.0",
     "random-js": "^1.0.8",
-    "react": "^15.6.2",
-    "react-dom": "^15.6.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-router": "^3.2.0",
     "redux": "^3.7.2",
@@ -54,7 +54,7 @@
     "redux-persist": "^4.10.2",
     "reselect": "^3.0.1",
     "sixflix": "^1.0.2",
-    "st88": "github:benji6/st88#v0.0.2",
+    "st88": "github:benji6/st88#v0.0.3",
     "virtual-audio-graph": "^0.19.4"
   },
   "devDependencies": {
