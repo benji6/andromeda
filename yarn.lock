@@ -5553,9 +5553,9 @@ verror@1.10.0:
     core-util-is "1.0.2"
     extsprintf "^1.2.0"
 
-virtual-audio-graph@^0.19.4:
-  version "0.19.9"
-  resolved "https://registry.yarnpkg.com/virtual-audio-graph/-/virtual-audio-graph-0.19.9.tgz#c026c449da0457af6392caff100c34c04439f0b9"
+virtual-audio-graph@^0.20.0:
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/virtual-audio-graph/-/virtual-audio-graph-0.20.0.tgz#8a2b2ee34c111f60a14adf6ae4da6801b763d619"
 
 vm-browserify@~0.0.1:
   version "0.0.4"

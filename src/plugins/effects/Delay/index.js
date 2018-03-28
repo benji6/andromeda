@@ -1,7 +1,12 @@
 import {createElement} from 'react'
 import ReactDOM from 'react-dom'
 import {createStore, connect} from 'st88'
-import createVirtualAudioGraph from 'virtual-audio-graph'
+import createVirtualAudioGraph, {
+  biquadFilter,
+  delay,
+  gain,
+  stereoPanner,
+} from 'virtual-audio-graph'
 import ControlModule, {CheckBox, Range} from '../../../components/organisms/ControlModule'
 
 const maxDelayTime = 1.2
@@ -18,17 +23,17 @@ const updateAudioGraph = virtualAudioGraph => ({
   pingPong,
   wetLevel,
 }) => virtualAudioGraph.update({
-  0: ['gain', 'output', {gain: wetLevel}],
-  1: ['stereoPanner', 0, {pan: -1}],
-  2: ['stereoPanner', 0, {pan: 1}],
-  3: ['delay', [2, 8], {delayTime, maxDelayTime}],
-  4: ['gain', 3, {gain: feedback}],
-  5: ['delay', pingPong ? [1, 3] : [0, 8], {delayTime, maxDelayTime}],
-  6: ['biquadFilter', 5, {frequency: highCut}],
-  7: ['biquadFilter', 6, {frequency: lowCut, type: 'highpass'}],
-  8: ['gain', 7, {gain: feedback}],
-  9: ['gain', 'output', {gain: dryLevel}],
-  input: ['gain', [8, 9], {gain: 1}, 'input'],
+  0: gain('output', {gain: wetLevel}),
+  1: stereoPanner(0, {pan: -1}),
+  2: stereoPanner(0, {pan: 1}),
+  3: delay([2, 8], {delayTime, maxDelayTime}),
+  4: gain(3, {gain: feedback}),
+  5: delay(pingPong ? [1, 3] : [0, 8], {delayTime, maxDelayTime}),
+  6: biquadFilter(5, {frequency: highCut}),
+  7: biquadFilter(6, {frequency: lowCut, type: 'highpass'}),
+  8: gain(7, {gain: feedback}),
+  9: gain('output', {gain: dryLevel}),
+  input: gain([8, 9], {gain: 1}, 'input'),
 })
 
 export default class {

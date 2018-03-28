@@ -55,7 +55,7 @@
     "reselect": "^3.0.1",
     "sixflix": "^1.0.2",
     "st88": "github:benji6/st88#v0.0.3",
-    "virtual-audio-graph": "^0.19.4"
+    "virtual-audio-graph": "^0.20.0"
   },
   "devDependencies": {
     "babel": "^6.3.26",
