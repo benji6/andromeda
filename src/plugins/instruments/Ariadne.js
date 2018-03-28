@@ -2,7 +2,12 @@ import {createElement} from 'react'
 import ReactDOM from 'react-dom'
 import {createStore, connect} from 'st88'
 import ControlModule, {Range, Select} from '../../components/organisms/ControlModule'
-import createVirtualAudioGraph from 'virtual-audio-graph'
+import createVirtualAudioGraph, {
+  createNode,
+  gain as gainNode,
+  oscillator,
+  stereoPanner,
+} from 'virtual-audio-graph'
 
 const audioContexts = new WeakMap()
 const notes = new WeakMap()
@@ -10,7 +15,7 @@ const outputs = new WeakMap()
 const virtualAudioGraphs = new WeakMap()
 const stores = new WeakMap()
 
-const oscBank = ({
+const oscBank = createNode(({
   carrierDetune,
   carrierOscType,
   gain,
@@ -23,25 +28,25 @@ const oscBank = ({
   startTime,
   stopTime,
 }) => ({
-  0: ['gain', ['masterPan'], {gain}],
-  1: ['oscillator', 0, {
+  0: gainNode(['masterPan'], {gain}),
+  1: oscillator(0, {
     detune: carrierDetune,
     frequency,
     startTime,
     stopTime,
     type: carrierOscType,
-  }],
-  2: ['gain', {destination: 'frequency', key: 1}, {gain: 1024}],
-  3: ['oscillator', 2, {
+  }),
+  2: gainNode({destination: 'frequency', key: 1}, {gain: 1024}),
+  3: oscillator(2, {
     detune: modulatorDetune,
     frequency: frequency * modulatorRatio,
     startTime,
     stopTime,
     type: modulatorOscType,
-  }],
-  masterGain: ['gain', ['output'], {gain: masterGain}],
-  masterPan: ['stereoPanner', ['masterGain'], {pan: masterPan}],
-})
+  }),
+  masterGain: gainNode(['output'], {gain: masterGain}),
+  masterPan: stereoPanner(['masterGain'], {pan: masterPan}),
+}))
 
 const notesToGraph = ({
   carrierDetune,
@@ -54,7 +59,7 @@ const notesToGraph = ({
 }, notes) => notes.reduce((acc, {
   frequency, gain, id, startTime, stopTime,
 }) => Object.assign({}, acc, {
-  [id]: [oscBank, 'output', {
+  [id]: oscBank('output', {
     carrierDetune,
     carrierOscType,
     frequency,
@@ -66,7 +71,7 @@ const notesToGraph = ({
     modulatorRatio,
     startTime,
     stopTime,
-  }],
+  }),
 }), {})
 
 const updateAudio = function (state) {

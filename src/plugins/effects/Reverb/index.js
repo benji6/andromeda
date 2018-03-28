@@ -1,6 +1,10 @@
 import ReactDOM from 'react-dom'
 import {createStore, connect} from 'st88'
-import createVirtualAudioGraph from 'virtual-audio-graph'
+import createVirtualAudioGraph, {
+  biquadFilter,
+  convolver,
+  gain,
+} from 'virtual-audio-graph'
 import audioContext from '../../../audioContext'
 import ReverbComponent from './ReverbComponent'
 
@@ -30,13 +34,13 @@ const updateAudioGraph = virtualAudioGraph => ({
     .then(data => audioContext.decodeAudioData(data))
 
   bufferPromise.then(buffer => virtualAudioGraph.update({
-    0: ['gain', 'output', {gain: dryLevel}],
-    1: ['biquadFilter', 'output', {frequency: highCut}],
-    2: ['biquadFilter', 1, {frequency: lowCut, type: 'highpass'}],
-    3: ['gain', 2, {gain: wetLevel}],
-    4: ['gain', 3, {gain: 0.5}],
-    5: ['convolver', 4, {buffer}, 'input'],
-    input: ['gain', [0, 5]],
+    0: gain('output', {gain: dryLevel}),
+    1: biquadFilter('output', {frequency: highCut}),
+    2: biquadFilter(1, {frequency: lowCut, type: 'highpass'}),
+    3: gain(2, {gain: wetLevel}),
+    4: gain(3, {gain: 0.5}),
+    5: convolver(4, {buffer}, 'input'),
+    input: gain([0, 5]),
   }))
   reverbTypeToBufferPromise[reverbType] = bufferPromise
 }
@@ -61,7 +65,7 @@ export default class {
     outputs.set(this, output)
 
     virtualAudioGraph.update({
-      input: ['gain', 'output'],
+      input: gain('output'),
     })
 
     this.destination = virtualAudioGraph.getAudioNodeById('input')
