@@ -61,8 +61,6 @@ Instrument plugins receive note objects which have the following properties:
 
 ## More info
 
-Built using [virtual-audio-graph](https://github.com/benji6/virtual-audio-graph/)
+Built using [virtual-audio-graph](https://github.com/benji6/virtual-audio-graph)
 
-Impulse responses taken from [OpenAir](http://www.openairlib.net/)
-
-Samples taken from [SampleSwap](http://sampleswap.org)
+Impulse responses taken from [OpenAir](http://www.openairlib.net)

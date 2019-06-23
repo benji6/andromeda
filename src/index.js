@@ -7,10 +7,7 @@ import UpgradeBrowser from './components/pages/UpgradeBrowser'
 import store, {rehydratePromise} from './store'
 import Router from './Router'
 import './utils/loadPlugins'
-import {
-  appInitialize,
-  screenResize,
-} from './actions'
+import {screenResize} from './actions'
 
 const resizeHandler = () => requestAnimationFrame(() => store.dispatch(screenResize({
   height: innerHeight,
@@ -26,10 +23,7 @@ rehydratePromise
   .catch(err => console.error('rehydration error', err)) // eslint-disable-line
   .then(() => render(
     sixflix()
-      ? (
-        store.dispatch(appInitialize()),
-        createElement(Provider, {store}, Router)
-      )
+      ? createElement(Provider, {store}, Router)
       : createElement(UpgradeBrowser),
     document.getElementById('app')
   ))
