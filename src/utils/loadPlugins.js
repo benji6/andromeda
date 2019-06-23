@@ -3,7 +3,6 @@ import store from '../store'
 import Ariadne from '../plugins/instruments/Ariadne'
 import Microphone from '../plugins/instruments/Microphone'
 import Prometheus from '../plugins/instruments/Prometheus'
-import Sample from '../plugins/instruments/Sample'
 
 import Delay from '../plugins/effects/Delay'
 import Leveller from '../plugins/effects/Leveller'
@@ -22,7 +21,6 @@ import {
 store.dispatch(loadPluginInstrument({constructor: Ariadne, name: 'Ariadne'}))
 store.dispatch(loadPluginInstrument({constructor: Microphone, name: 'Microphone'}))
 store.dispatch(loadPluginInstrument({constructor: Prometheus, name: 'Prometheus'}))
-store.dispatch(loadPluginInstrument({constructor: Sample, name: 'Sample'}))
 
 store.dispatch(loadPluginEffect({constructor: Delay, name: 'Delay'}))
 store.dispatch(loadPluginEffect({constructor: Leveller, name: 'Leveller'}))
@@ -32,7 +30,6 @@ store.dispatch(loadPluginEffect({constructor: Reverb, name: 'Reverb'}))
 store.dispatch(instantiateInstrument({name: 'Ariadne', plugin: 'Ariadne'}))
 store.dispatch(instantiateInstrument({name: 'Microphone', plugin: 'Microphone'}))
 store.dispatch(instantiateInstrument({name: 'Prometheus', plugin: 'Prometheus'}))
-store.dispatch(instantiateInstrument({name: 'Sample', plugin: 'Sample'}))
 
 store.dispatch(instantiateEffect({name: 'Delay', plugin: 'Delay'}))
 store.dispatch(instantiateEffect({name: 'Leveller', plugin: 'Leveller'}))
