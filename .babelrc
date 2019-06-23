@@ -2,7 +2,6 @@
   "env": {
     "production": {
       "plugins": [
-        "ramda",
         "transform-react-remove-prop-types",
         "transform-react-router-optimize",
       ]
