@@ -5412,11 +5412,6 @@ simple-concat@^1.0.0:
   resolved "https://registry.yarnpkg.com/simple-concat/-/simple-concat-1.0.0.tgz#7344cbb8b6e26fb27d66b2fc86f9f6d5997521c6"
   integrity sha1-c0TLuLbib7J9ZrL8hvn21Zl1IcY=
 
-sixflix@^1.0.2:
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/sixflix/-/sixflix-1.0.3.tgz#2b0d9cb1dcdc74d2b58c09822c7cdf2d38d3e96a"
-  integrity sha1-Kw2csdzcdNK1jAmCLHzfLTjT6Wo=
-
 slash@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/slash/-/slash-1.0.0.tgz#c41f2f6c39fc16d1cd17ad4b5d896114ae470d55"

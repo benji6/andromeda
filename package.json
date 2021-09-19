@@ -52,7 +52,6 @@
     "redux-action-buffer": "^1.0.0",
     "redux-persist": "^4.10.2",
     "reselect": "^3.0.1",
-    "sixflix": "^1.0.2",
     "st88": "github:benji6/st88#v0.0.3",
     "virtual-audio-graph": "^0.20.0"
   },
