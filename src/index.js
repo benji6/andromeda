@@ -1,9 +1,7 @@
 import {createElement} from 'react'
 import {render} from 'react-dom'
 import {Provider} from 'react-redux'
-import sixflix from 'sixflix'
 import './keyboard'
-import UpgradeBrowser from './components/pages/UpgradeBrowser'
 import store, {rehydratePromise} from './store'
 import Router from './Router'
 import './utils/loadPlugins'
@@ -22,8 +20,6 @@ addEventListener('resize', resizeHandler)
 rehydratePromise
   .catch(err => console.error('rehydration error', err)) // eslint-disable-line
   .then(() => render(
-    sixflix()
-      ? createElement(Provider, {store}, Router)
-      : createElement(UpgradeBrowser),
+    createElement(Provider, {store}, Router),
     document.getElementById('app')
   ))
