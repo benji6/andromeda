@@ -10,7 +10,7 @@
     "build:styles": "postcss --use postcss-import --use cssnano -o dist/index.css src/index.css",
     "fmt": "prettier --write '**/*'",
     "start": "mkdir -p dist && run-p start:*",
-    "start:assets": "nodemon --watch src/assets -e glsl,ico,jpg,png,svg,wav --exec yarn build:assets",
+    "start:assets": "nodemon --watch src/assets -e glsl,jpg,png,svg,wav --exec yarn build:assets",
     "start:html": "nodemon --watch src/index.html --exec yarn build:html",
     "start:scripts": "watchify -t babelify src/index.js --o dist/index.js",
     "start:serve": "live-server dist",
