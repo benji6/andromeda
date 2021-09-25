@@ -18,8 +18,10 @@ resizeHandler()
 addEventListener('resize', resizeHandler)
 
 rehydratePromise
-  .catch(err => console.error('rehydration error', err)) // eslint-disable-line
-  .then(() => render(
-    createElement(Provider, {store}, Router),
-    document.getElementById('app')
-  ))
+  .catch((err) => console.error("rehydration error", err))
+  .then(() =>
+    render(
+      createElement(Provider, { store }, Router),
+      document.getElementById("app")
+    )
+  );

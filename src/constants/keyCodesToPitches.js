@@ -1,5 +1,3 @@
-/* eslint-disable sort-keys */
-
 export default {
   220: -10,
   90: -9,
