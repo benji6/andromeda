@@ -4,17 +4,10 @@
   "description": "Make music in your browser!",
   "scripts": {
     "build": "rm -rf dist && mkdir dist && run-p build:*",
-    "build:assets": "cp -r src/assets dist",
-    "build:html": "html-minifier --collapse-whitespace -o dist/index.html src/index.html",
-    "build:scripts": "NODE_ENV=production browserify -p bundle-collapser/plugin -t babelify src/index.js | sed 's/process.env.NODE_ENV/\\x27production\\x27/g' | uglifyjs -cm --screw-ie8 > dist/index.js",
-    "build:styles": "postcss --use postcss-import --use cssnano -o dist/index.css src/index.css",
+    "build:parcel": "parcel build --no-source-maps src/index.html",
+    "build:robots": "touch dist/robots.txt",
     "fmt": "prettier --write '**/*'",
-    "start": "mkdir -p dist && run-p start:*",
-    "start:assets": "nodemon --watch src/assets -e glsl,jpg,png,svg,wav --exec yarn build:assets",
-    "start:html": "nodemon --watch src/index.html --exec yarn build:html",
-    "start:scripts": "watchify -t babelify src/index.js --o dist/index.js",
-    "start:serve": "live-server dist",
-    "start:styles": "postcss --use postcss-import -w -o dist/index.css src/index.css",
+    "start": "parcel src/index.html --open",
     "test": "run-p test:*",
     "test:fmt": "prettier --check '**/*'"
   },
@@ -36,6 +29,9 @@
     "url": "https://github.com/benji6/andromeda/issues"
   },
   "homepage": "https://github.com/benji6/andromeda",
+  "browserslist": [
+    ">1.25%"
+  ],
   "dependencies": {
     "capitalize": "^1.0.0",
     "localforage": "^1.5.5",
@@ -54,22 +50,9 @@
     "virtual-audio-graph": "^0.20.0"
   },
   "devDependencies": {
-    "babel": "^6.3.26",
-    "babel-cli": "^6.26.0",
-    "babel-preset-latest": "^6.16.0",
-    "babelify": "^7.3.0",
-    "browserify": "^14.5.0",
-    "bundle-collapser": "^1.3.0",
-    "cssnano": "^3.7.1",
-    "html-minifier": "^3.5.7",
-    "live-server": "^1.2.1",
-    "nodemon": "^1.12.5",
     "npm-run-all": "^4.1.5",
-    "postcss-cli": "^2.5.2",
-    "postcss-import": "^9.0.0",
+    "parcel-bundler": "^1.12.5",
     "prettier": "^2.4.1",
-    "uglify-js": "^2.7.0",
-    "watchify": "^3.5.0",
     "web-audio-test-api": "^0.5.2"
   }
 }
