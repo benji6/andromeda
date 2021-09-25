@@ -17,9 +17,7 @@
     "start:styles": "postcss --use postcss-import -w -o dist/index.css src/index.css",
     "test": "run-p test:*",
     "test:fmt": "prettier --check '**/*'",
-    "test:unit": "NODE_ENV=test babel-node node_modules/.bin/tape 'src/**/*-spec.js' | faucet",
-    "watch-test:unit": "nodemon --exec yarn test:unit",
-    "watch-test": "nodemon --exec yarn test"
+    "test:unit": "NODE_ENV=test babel-node node_modules/.bin/tape 'src/**/*-spec.js' | faucet"
   },
   "repository": {
     "type": "git",
