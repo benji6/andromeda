@@ -1,12 +1,15 @@
-import {createElement} from 'react'
-import Selector from './Selector'
-import ButtonSecondary from '../atoms/ButtonSecondary'
+import { createElement } from "react";
+import Selector from "./Selector";
+import ButtonSecondary from "../atoms/ButtonSecondary";
 
-export default props => createElement('div', null,
-  createElement(Selector, props),
+export default (props) =>
   createElement(
-    ButtonSecondary,
-    {to: `/plugins/instruments/${props.defaultValue}`},
-    'edit'
-  )
-)
+    "div",
+    null,
+    createElement(Selector, props),
+    createElement(
+      ButtonSecondary,
+      { to: `/plugins/instruments/${props.defaultValue}` },
+      "edit"
+    )
+  );

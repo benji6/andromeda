@@ -1,0 +1,9 @@
+.*ignore
+.*rc
+*.glsl
+*.lock
+dist
+LICENSE
+*.svg
+*.wav
+*.ico

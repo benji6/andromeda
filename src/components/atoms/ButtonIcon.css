@@ -8,8 +8,12 @@
   outline: 0;
   transition: color var(--transition-fast);
 }
-.ButtonIcon--green-hover:hover { color: var(--green-80); }
-.ButtonIcon--red-hover:hover { color: var(--red-50); }
+.ButtonIcon--green-hover:hover {
+  color: var(--green-80);
+}
+.ButtonIcon--red-hover:hover {
+  color: var(--red-50);
+}
 
 .ButtonIcon__Label {
   font-size: 1rem;

@@ -1,9 +1,9 @@
 export const compileShader = (gl, src, shaderType) => {
-  const shader = gl.createShader(shaderType)
-  gl.shaderSource(shader, src)
-  gl.compileShader(shader)
-  return shader
-}
+  const shader = gl.createShader(shaderType);
+  gl.shaderSource(shader, src);
+  gl.compileShader(shader);
+  return shader;
+};
 
 export const mult = (a, b) => [
   a[0] * b[0] + a[1] * b[4] + a[2] * b[8] + a[3] * b[12],
@@ -22,47 +22,44 @@ export const mult = (a, b) => [
   a[12] * b[1] + a[13] * b[5] + a[14] * b[9] + a[15] * b[13],
   a[12] * b[2] + a[13] * b[6] + a[14] * b[10] + a[15] * b[14],
   a[12] * b[3] + a[13] * b[7] + a[14] * b[11] + a[15] * b[15],
-]
+];
 
-export const rotateX = a => {
-  const c = Math.cos(a)
-  const s = Math.sin(a)
+export const rotateX = (a) => {
+  const c = Math.cos(a);
+  const s = Math.sin(a);
 
-  return [
-    1, 0, 0, 0,
-    0, c, s, 0,
-    0, -s, c, 0,
-    0, 0, 0, 1,
-  ]
-}
+  return [1, 0, 0, 0, 0, c, s, 0, 0, -s, c, 0, 0, 0, 0, 1];
+};
 
-export const rotateY = a => {
-  const c = Math.cos(a)
-  const s = Math.sin(a)
+export const rotateY = (a) => {
+  const c = Math.cos(a);
+  const s = Math.sin(a);
 
-  return [
-    c, 0, -s, 0,
-    0, 1, 0, 0,
-    s, 0, c, 0,
-    0, 0, 0, 1,
-  ]
-}
+  return [c, 0, -s, 0, 0, 1, 0, 0, s, 0, c, 0, 0, 0, 0, 1];
+};
 
-export const rotateZ = a => {
-  const c = Math.cos(a)
-  const s = Math.sin(a)
+export const rotateZ = (a) => {
+  const c = Math.cos(a);
+  const s = Math.sin(a);
 
-  return [
-    c, s, 0, 0,
-    -s, c, 0, 0,
-    0, 0, 1, 0,
-    0, 0, 0, 1,
-  ]
-}
+  return [c, s, 0, 0, -s, c, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+};
 
 export const translate = (x, y, z) => [
-  1, 0, 0, 0,
-  0, 1, 0, 0,
-  0, 0, 1, 0,
-  x, y, z, 1,
-]
+  1,
+  0,
+  0,
+  0,
+  0,
+  1,
+  0,
+  0,
+  0,
+  0,
+  1,
+  0,
+  x,
+  y,
+  z,
+  1,
+];

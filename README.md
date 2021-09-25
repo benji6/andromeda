@@ -13,11 +13,12 @@ Andromeda is a pluggable digital audio workstation built on open web technologie
 ### Effect plugin API
 
 `EffectPlugin` should be a constructor or factory function which is newed up with an object with the following props:
+
 - `audioContext` - `instanceof AudioContext` reference to the audioContext instance used by Andromeda
 - `bpm` - `Number` - current bpm
 
 ```javascript
-new EffectPlugin({audioContext, bpm})
+new EffectPlugin({ audioContext, bpm });
 ```
 
 `effectPlugin` instances should then expose the following API:
@@ -31,11 +32,12 @@ new EffectPlugin({audioContext, bpm})
 ### Instrument plugin API
 
 `InstrumentPlugin` should be a constructor or factory function which is newed up with an object with the following props:
+
 - `audioContext` - `instanceof AudioContext` reference to the audioContext instance used by Andromeda
 - `bpm` - `Number` - current bpm
 
 ```javascript
-new InstrumentPlugin({audioContext, bpm})
+new InstrumentPlugin({ audioContext, bpm });
 ```
 
 `instrumentPlugin` instances should then expose the following API:
