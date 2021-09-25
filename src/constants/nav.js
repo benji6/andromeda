@@ -1,5 +1,5 @@
 export default [
-  ['/controllers/control-pad', 'Pad'],
-  ['/settings', '🔧'],
-  ['/about', '?'],
-]
+  ["/controllers/control-pad", "Pad"],
+  ["/settings", "🔧"],
+  ["/about", "?"],
+];

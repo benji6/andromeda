@@ -18,10 +18,15 @@
   outline: 0;
 }
 
-.RangeLabelled__Input::-webkit-Slider-thumb {
+.RangeLabelled__Input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  background: linear-gradient(to bottom, var(--gray-99) 0%, var(--gray-90) 55%, var(--blue-80) 80%);
+  background: linear-gradient(
+    to bottom,
+    var(--gray-99) 0%,
+    var(--gray-90) 55%,
+    var(--blue-80) 80%
+  );
   border-radius: 0.3rem;
   box-shadow: 0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.5);
   height: 0.8rem;

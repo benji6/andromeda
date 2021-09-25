@@ -1,20 +1,26 @@
-import {createElement} from 'react'
-import ControlModule, {Range} from '../../../../components/organisms/ControlModule'
+import { createElement } from "react";
+import ControlModule, {
+  Range,
+} from "../../../../components/organisms/ControlModule";
 
-export default ({master: {gain, pan}, updateMaster}) =>
-  createElement('div', null,
-    createElement(ControlModule, {title: 'Master'},
+export default ({ master: { gain, pan }, updateMaster }) =>
+  createElement(
+    "div",
+    null,
+    createElement(
+      ControlModule,
+      { title: "Master" },
       createElement(Range, {
         defaultValue: gain,
-        label: 'Gain',
+        label: "Gain",
         max: 1.5,
-        onInput: e => updateMaster('gain', Number(e.target.value)),
+        onInput: (e) => updateMaster("gain", Number(e.target.value)),
       }),
       createElement(Range, {
         defaultValue: pan,
-        label: 'Pan',
+        label: "Pan",
         min: -1,
-        onInput: e => updateMaster('pan', Number(e.target.value)),
+        onInput: (e) => updateMaster("pan", Number(e.target.value)),
       })
     )
-  )
+  );

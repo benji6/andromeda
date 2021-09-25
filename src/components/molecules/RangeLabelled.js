@@ -1,5 +1,5 @@
-import {PropTypes} from 'prop-types'
-import {createElement} from 'react'
+import { PropTypes } from "prop-types";
+import { createElement } from "react";
 
 const RangeLabelled = ({
   children,
@@ -10,23 +10,27 @@ const RangeLabelled = ({
   step,
   value,
 }) => {
-  if (output === undefined) output = value
-  return createElement('label', {className: 'RangeLabelled'},
-    createElement('div', {className: 'RangeLabelled__LabelContainer'},
+  if (output === undefined) output = value;
+  return createElement(
+    "label",
+    { className: "RangeLabelled" },
+    createElement(
+      "div",
+      { className: "RangeLabelled__LabelContainer" },
       children,
-      createElement('output', null, output),
+      createElement("output", null, output)
     ),
-    createElement('input', {
-      className: 'RangeLabelled__Input',
+    createElement("input", {
+      className: "RangeLabelled__Input",
       max,
       min,
       onChange,
       step,
-      type: 'range',
+      type: "range",
       value,
     })
-  )
-}
+  );
+};
 
 RangeLabelled.propTypes = {
   children: PropTypes.string.isRequired,
@@ -36,6 +40,6 @@ RangeLabelled.propTypes = {
   output: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   step: PropTypes.number,
   value: PropTypes.number.isRequired,
-}
+};
 
-export default RangeLabelled
+export default RangeLabelled;
