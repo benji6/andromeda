@@ -16,8 +16,7 @@
     "start:serve": "live-server dist",
     "start:styles": "postcss --use postcss-import -w -o dist/index.css src/index.css",
     "test": "run-p test:*",
-    "test:fmt": "prettier --check '**/*'",
-    "test:unit": "NODE_ENV=test babel-node node_modules/.bin/tape 'src/**/*-spec.js'"
+    "test:fmt": "prettier --check '**/*'"
   },
   "repository": {
     "type": "git",
@@ -69,7 +68,6 @@
     "postcss-cli": "^2.5.2",
     "postcss-import": "^9.0.0",
     "prettier": "^2.4.1",
-    "tape": "^4.8.0",
     "uglify-js": "^2.7.0",
     "watchify": "^3.5.0",
     "web-audio-test-api": "^0.5.2"
