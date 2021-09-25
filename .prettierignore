@@ -2,8 +2,7 @@
 .*rc
 *.glsl
 *.lock
-dist
-LICENSE
 *.svg
 *.wav
-*.ico
+dist
+LICENSE
