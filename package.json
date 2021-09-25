@@ -32,7 +32,7 @@
     "api"
   ],
   "author": "Ben Hall",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/benji6/andromeda/issues"
   },
