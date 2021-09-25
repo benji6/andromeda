@@ -1,12 +1,4 @@
 {
-  "env": {
-    "production": {
-      "plugins": [
-        "transform-react-remove-prop-types",
-        "transform-react-router-optimize",
-      ]
-    }
-  },
   "presets": [
     "latest"
   ]
