@@ -1,5 +1,5 @@
 import capitalize from "capitalize";
-import { compose, map } from "ramda";
+import { compose } from "ramda";
 import { createElement } from "react";
 import { connect } from "react-redux";
 import { controllableInstrumentInstanceNames } from "../../utils/derivedData";
@@ -27,12 +27,11 @@ export default connect(mapStateToProps)(({ keyboard, dispatch, plugins }) =>
       defaultValue: keyboard.instrument,
       handleChange: compose(dispatch, keyboardInstrumentSet, eventValuePath),
       label: "Instrument",
-      options: map(
+      options: controllableInstrumentInstanceNames(plugins).map(
         (instrument) => ({
           text: capitalize.words(instrument),
           value: instrument,
-        }),
-        controllableInstrumentInstanceNames(plugins)
+        })
       ),
     }),
     createElement(
