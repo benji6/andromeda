@@ -1,4 +1,4 @@
-import { difference, map, pluck } from "ramda";
+import { difference, pluck } from "ramda";
 import { createElement } from "react";
 import { connect } from "react-redux";
 import {
@@ -68,7 +68,7 @@ export default connectComponent(
           null,
           createElement(InputSelect, {
             onChange: (e) => (selectedAddEffect = e.target.value),
-            options: map((text) => ({ text, value: text }), addEffects),
+            options: addEffects.map((text) => ({ text, value: text })),
             value: selectedAddEffect,
           }),
           createElement(Plus, {
@@ -85,27 +85,25 @@ export default connectComponent(
       createElement(
         "div",
         { className: "Channel__Sources" },
-        map(
-          (name) =>
+        sources.map((name) =>
+          createElement(
+            "div",
+            { key: name },
             createElement(
-              "div",
-              { key: name },
-              createElement(
-                ButtonPrimary,
-                { small: true, to: `/plugins/instruments/${name}` },
-                name
-              ),
-              createElement(Cross, {
-                onClick: () =>
-                  dispatch(
-                    removeInstrumentFromChannel({
-                      channel: channelId,
-                      name,
-                    })
-                  ),
-              })
+              ButtonPrimary,
+              { small: true, to: `/plugins/instruments/${name}` },
+              name
             ),
-          sources
+            createElement(Cross, {
+              onClick: () =>
+                dispatch(
+                  removeInstrumentFromChannel({
+                    channel: channelId,
+                    name,
+                  })
+                ),
+            })
+          )
         )
       ),
       Boolean(addSources.length) && createElement("p", null, "Add source"),
@@ -115,7 +113,7 @@ export default connectComponent(
           null,
           createElement(InputSelect, {
             onChange: (e) => (selectedAddSource = e.target.value),
-            options: map((text) => ({ text, value: text }), addSources),
+            options: addSources.map((text) => ({ text, value: text })),
             value: selectedAddSource,
           }),
           createElement(Plus, {

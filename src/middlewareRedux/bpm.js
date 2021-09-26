@@ -1,4 +1,3 @@
-import { forEach } from "ramda";
 import { BPM_SET } from "../actions";
 
 export default (store) => (next) => (action) => {
@@ -6,8 +5,9 @@ export default (store) => (next) => (action) => {
     const {
       plugins: { effectInstances, instrumentInstances },
     } = store.getState();
-    forEach((x) => x.instance.setBpm(action.payload), effectInstances);
-    forEach((x) => x.instance.setBpm(action.payload), instrumentInstances);
+    for (const { instance } of effectInstances) instance.setBpm(action.payload);
+    for (const { instance } of instrumentInstances)
+      instance.setBpm(action.payload);
   }
   next(action);
 };
