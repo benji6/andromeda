@@ -7,7 +7,6 @@ export const BPM_SET = "BPM_SET";
 export const CONTROL_PAD_INSTRUMENT_SET = "CONTROL_PAD_INSTRUMENT_SET";
 export const CONTROL_PAD_NO_SCALE_SET = "CONTROL_PAD_NO_SCALE_SET";
 export const CONTROL_PAD_OCTAVE_SET = "CONTROL_PAD_OCTAVE_SET";
-export const CONTROL_PAD_PORTAMENTO_SET = "CONTROL_PAD_PORTAMENTO_SET";
 export const CONTROL_PAD_RANGE_SET = "CONTROL_PAD_RANGE_SET";
 export const CONTROL_PAD_TOUCHED = "CONTROL_PAD_TOUCHED";
 export const INSTANTIATE_EFFECT = "INSTANTIATE_EFFECT";
@@ -32,9 +31,6 @@ export const controlPadInstrumentSet = actionCreator(
 );
 export const controlPadNoScaleSet = actionCreator(CONTROL_PAD_NO_SCALE_SET);
 export const controlPadOctaveSet = actionCreator(CONTROL_PAD_OCTAVE_SET);
-export const controlPadPortamentoSet = actionCreator(
-  CONTROL_PAD_PORTAMENTO_SET
-);
 export const controlPadRangeSet = actionCreator(CONTROL_PAD_RANGE_SET);
 export const controlPadTouched = actionCreator(CONTROL_PAD_TOUCHED);
 export const instantiateEffect = actionCreator(INSTANTIATE_EFFECT);
