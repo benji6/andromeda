@@ -19,8 +19,6 @@ export const KEYBOARD_VOLUME_SET = "KEYBOARD_VOLUME_SET";
 export const LOAD_PLUGIN_EFFECT = "LOAD_PLUGIN_EFFECT";
 export const LOAD_PLUGIN_INSTRUMENT = "LOAD_PLUGIN_INSTRUMENT";
 export const NAV_LAST_DIRECTION_SET = "NAV_LAST_DIRECTION_SET";
-export const REMOVE_EFFECT_FROM_CHANNEL = "REMOVE_EFFECT_FROM_CHANNEL";
-export const REMOVE_INSTRUMENT_FROM_CHANNEL = "REMOVE_INSTRUMENT_FROM_CHANNEL";
 export const ROOT_NOTE_SET = "ROOT_NOTE_SET";
 export const SCREEN_RESIZE = "SCREEN_RESIZE";
 export const SELECTED_SCALE_SET = "SELECTED_SCALE_SET";
@@ -48,12 +46,6 @@ export const keyboardVolumeSet = actionCreator(KEYBOARD_VOLUME_SET);
 export const loadPluginEffect = actionCreator(LOAD_PLUGIN_EFFECT);
 export const loadPluginInstrument = actionCreator(LOAD_PLUGIN_INSTRUMENT);
 export const navLastDirectionSet = actionCreator(NAV_LAST_DIRECTION_SET);
-export const removeEffectFromChannel = actionCreator(
-  REMOVE_EFFECT_FROM_CHANNEL
-);
-export const removeInstrumentFromChannel = actionCreator(
-  REMOVE_INSTRUMENT_FROM_CHANNEL
-);
 export const rootNoteSet = actionCreator(ROOT_NOTE_SET);
 export const screenResize = actionCreator(SCREEN_RESIZE);
 export const selectedScaleSet = actionCreator(SELECTED_SCALE_SET);

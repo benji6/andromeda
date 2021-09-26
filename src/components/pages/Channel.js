@@ -1,15 +1,4 @@
-import { difference, pluck } from "ramda";
-import { createElement } from "react";
-import { connect } from "react-redux";
-import {
-  addEffectToChannel,
-  addInstrumentToChannel,
-  removeEffectFromChannel,
-  removeInstrumentFromChannel,
-} from "../../actions";
-import ButtonPrimary from "../atoms/ButtonPrimary";
-import { Cross, Plus } from "../atoms/ButtonIcons";
-import InputSelect from "../atoms/InputSelect";
+import { removeInstrumentFromChannel } from "../../actions";
 
 let selectedAddEffect = null;
 let selectedAddSource = null;

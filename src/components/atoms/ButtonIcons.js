@@ -16,8 +16,3 @@ ButtonIcon.propTypes = {
   onClick: PropTypes.func.isRequired,
   text: PropTypes.string.isRequired,
 };
-
-export const Cross = (props) =>
-  createElement(ButtonIcon, { ...props, modifier: "red-hover", text: "x" });
-export const Plus = (props) =>
-  createElement(ButtonIcon, { ...props, modifier: "green-hover", text: "+" });
