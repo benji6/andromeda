@@ -6,7 +6,6 @@ import {
   controlPadInstrumentSet,
   controlPadNoScaleSet,
   controlPadOctaveSet,
-  controlPadPortamentoSet,
   controlPadRangeSet,
 } from "../../actions";
 import ButtonPrimary from "../atoms/ButtonPrimary";
@@ -61,15 +60,6 @@ export default connect(mapStateToProps)(({ controlPad, dispatch, plugins }) =>
         value: controlPad.range,
       },
       "Range"
-    ),
-    createElement(
-      CheckboxLabelled,
-      {
-        checked: controlPad.portamento,
-        onChange: (e) =>
-          dispatch(controlPadPortamentoSet(e.currentTarget.checked)),
-      },
-      "Portamento"
     ),
     createElement(
       CheckboxLabelled,

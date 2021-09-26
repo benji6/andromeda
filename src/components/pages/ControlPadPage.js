@@ -21,7 +21,7 @@ const calculatePitch = (ratio) => {
 };
 
 const mapStateToProps = ({
-  controlPad: { instrument, noScale, octave, portamento, range, isTouched },
+  controlPad: { instrument, noScale, octave, range, isTouched },
   nav: { lastDirection },
   plugins,
   screen: { sideLength },
@@ -33,7 +33,6 @@ const mapStateToProps = ({
   noScale,
   octave,
   plugins,
-  portamento,
   range,
   rootNote,
   sideLength,
@@ -52,7 +51,6 @@ export default connect(
     noScale,
     octave,
     plugins,
-    portamento,
     range,
     rootNote,
     sideLength,
@@ -77,23 +75,13 @@ export default connect(
               : calculatePitch(range * xRatio);
             const instance = instrumentInstance(instrument, plugins);
 
-            const isNewNote =
-              !noScale &&
-              !portamento &&
-              currentlyPlayingPitch !== pitch &&
-              currentlyPlayingPitch !== null;
-
-            if (isNewNote && instance.noteStop) {
-              instance.noteStop(controlPadId);
-            }
-
             currentlyPlayingPitch = pitch;
             const note = {
               frequency: pitchToFrequency(pitch + 12 * octave + rootNote),
               gain: (1 - yRatio) / 2,
               id: controlPadId,
             };
-            isNewNote ? instance.noteStart(note) : instance.noteModify(note);
+            instance.noteModify(note);
           },
           inputStartHandler({ xRatio, yRatio }) {
             const instance = instrumentInstance(instrument, plugins);

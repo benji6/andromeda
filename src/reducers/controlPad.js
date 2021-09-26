@@ -3,7 +3,6 @@ import {
   CONTROL_PAD_INSTRUMENT_SET,
   CONTROL_PAD_NO_SCALE_SET,
   CONTROL_PAD_OCTAVE_SET,
-  CONTROL_PAD_PORTAMENTO_SET,
   CONTROL_PAD_RANGE_SET,
 } from "../actions";
 
@@ -12,7 +11,6 @@ export const initialState = {
   isTouched: false,
   noScale: false,
   octave: 0,
-  portamento: false,
   range: 1,
 };
 
@@ -24,8 +22,6 @@ export default (state = initialState, { type, payload }) => {
       return { ...state, noScale: payload };
     case CONTROL_PAD_OCTAVE_SET:
       return { ...state, octave: payload };
-    case CONTROL_PAD_PORTAMENTO_SET:
-      return { ...state, portamento: payload };
     case CONTROL_PAD_RANGE_SET:
       return { ...state, range: payload };
     case CONTROL_PAD_TOUCHED:
