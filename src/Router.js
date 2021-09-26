@@ -1,4 +1,3 @@
-import { findIndex } from "ramda";
 import { createElement } from "react";
 import { hashHistory, IndexRoute, Router, Route } from "react-router";
 import store from "./store";
@@ -23,13 +22,11 @@ export default createElement(
       component: App,
       onChange: (prevState, nextState) => {
         const { lastDirection } = store.getState().nav;
-        const prevIndex = findIndex(
-          ([pathname]) => pathname === prevState.location.pathname,
-          nav
+        const prevIndex = nav.findIndex(
+          ([pathname]) => pathname === prevState.location.pathname
         );
-        const nextIndex = findIndex(
-          ([pathname]) => pathname === nextState.location.pathname,
-          nav
+        const nextIndex = nav.findIndex(
+          ([pathname]) => pathname === nextState.location.pathname
         );
 
         if (nextIndex === prevIndex) return;

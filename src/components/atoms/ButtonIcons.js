@@ -1,5 +1,4 @@
 import { PropTypes } from "prop-types";
-import { merge } from "ramda";
 import { createElement } from "react";
 
 const ButtonIcon = ({ children, modifier, onClick, text }) =>
@@ -19,9 +18,6 @@ ButtonIcon.propTypes = {
 };
 
 export const Cross = (props) =>
-  createElement(ButtonIcon, merge({ modifier: "red-hover", text: "x" }, props));
+  createElement(ButtonIcon, { ...props, modifier: "red-hover", text: "x" });
 export const Plus = (props) =>
-  createElement(
-    ButtonIcon,
-    merge({ modifier: "green-hover", text: "+" }, props)
-  );
+  createElement(ButtonIcon, { ...props, modifier: "green-hover", text: "+" });

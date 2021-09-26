@@ -1,4 +1,3 @@
-import { forEach } from "ramda";
 import { instrumentInstance } from "./utils/derivedData";
 import keyCodesToPitches from "./constants/keyCodesToPitches";
 import pitchToFrequency from "./audioHelpers/pitchToFrequency";
@@ -41,7 +40,8 @@ document.addEventListener("keydown", (e) => {
   if (pitch === undefined) return;
   const state = store.getState();
   if (state.keyboard.monophonic) {
-    forEach((code) => code !== keyCode && stopAndRemoveNote(code), pressedKeys);
+    for (const code of pressedKeys)
+      if (code !== keyCode) stopAndRemoveNote(code);
   }
   const noteParams = computeNoteParams(pitch);
   const instrumentObj = instrumentInstance(
