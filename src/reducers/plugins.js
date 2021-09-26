@@ -11,12 +11,10 @@ import {
   findIndex,
   forEach,
   last,
-  length,
   lensProp,
   over,
   propEq,
   view,
-  without,
 } from "ramda";
 import {
   ADD_EFFECT_TO_CHANNEL,
@@ -25,8 +23,6 @@ import {
   INSTANTIATE_INSTRUMENT,
   LOAD_PLUGIN_EFFECT,
   LOAD_PLUGIN_INSTRUMENT,
-  REMOVE_EFFECT_FROM_CHANNEL,
-  REMOVE_INSTRUMENT_FROM_CHANNEL,
 } from "../actions";
 import store from "../store";
 
@@ -162,52 +158,6 @@ export default (state = initialState, { type, payload }) => {
       return overInstrumentPlugins(append(payload), state);
     case LOAD_PLUGIN_EFFECT:
       return overEffectPlugins(append(payload), state);
-    case REMOVE_EFFECT_FROM_CHANNEL: {
-      const channelEffects = effects(channel(payload.channel, state));
-      const channelInstruments = instruments(channel(payload.channel, state));
-
-      disconnect(effectInstance(payload.name, state));
-      const effectIndex = findIndex(equals(payload.name), channelEffects);
-
-      if (length(channelEffects) === 1) {
-        forEach(
-          (name) => connectToAudioCtx(instrumentInstance(name, state)),
-          channelInstruments
-        );
-      } else if (effectIndex === length(channelEffects) - 1) {
-        forEach(
-          (name) =>
-            instrumentInstance(name, state).connect(
-              effectInstanceDestination(channelEffects[effectIndex - 1], state)
-            ),
-          channelInstruments
-        );
-      } else if (effectIndex === 0) {
-        connectToAudioCtx(
-          disconnect(effectInstance(channelEffects[effectIndex + 1], state))
-        );
-      } else {
-        disconnect(
-          effectInstance(channelEffects[effectIndex + 1], state)
-        ).connect(
-          effectInstanceDestination(channelEffects[effectIndex - 1], state)
-        );
-      }
-
-      return overChannelEffects(
-        without([payload.name]),
-        payload.channel,
-        state
-      );
-    }
-    case REMOVE_INSTRUMENT_FROM_CHANNEL: {
-      connectToAudioCtx(disconnect(instrumentInstance(payload.name, state)));
-      return overChannelInstruments(
-        without([payload.name]),
-        payload.channel,
-        state
-      );
-    }
     default:
       return state;
   }

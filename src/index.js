@@ -19,7 +19,6 @@ import "./components/organisms/Navigation.css";
 import "./components/organisms/spinner.css";
 import "./components/organisms/table-center.css";
 import "./components/pages/About/style.css";
-import "./components/pages/Channel.css";
 import "./components/pages/ControlPadPage.css";
 import "./components/pages/ControlPadSettings.css";
 import "./components/pages/Effect.css";

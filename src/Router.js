@@ -5,7 +5,6 @@ import { navLastDirectionSet } from "./actions";
 import nav from "./constants/nav";
 import App from "./components/templates/App";
 import About from "./components/pages/About";
-import Channel from "./components/pages/Channel";
 import ControlPadPage from "./components/pages/ControlPadPage";
 import ControlPadSettings from "./components/pages/ControlPadSettings";
 import Effect from "./components/pages/Effect";
@@ -41,7 +40,6 @@ export default createElement(
     },
     createElement(IndexRoute, { component: ControlPadPage }),
     createElement(Route, { component: About, path: "/about" }),
-    createElement(Route, { component: Channel, path: "/channel/:channelId" }),
     createElement(Route, {
       component: ControlPadPage,
       path: "/controllers/control-pad",
