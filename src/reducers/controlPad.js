@@ -1,4 +1,3 @@
-import { assoc } from "ramda";
 import {
   CONTROL_PAD_TOUCHED,
   CONTROL_PAD_INSTRUMENT_SET,
@@ -20,17 +19,17 @@ export const initialState = {
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case CONTROL_PAD_INSTRUMENT_SET:
-      return assoc("instrument", payload, state);
+      return { ...state, instrument: payload };
     case CONTROL_PAD_NO_SCALE_SET:
-      return assoc("noScale", payload, state);
+      return { ...state, noScale: payload };
     case CONTROL_PAD_OCTAVE_SET:
-      return assoc("octave", payload, state);
+      return { ...state, octave: payload };
     case CONTROL_PAD_PORTAMENTO_SET:
-      return assoc("portamento", payload, state);
+      return { ...state, portamento: payload };
     case CONTROL_PAD_RANGE_SET:
-      return assoc("range", payload, state);
+      return { ...state, range: payload };
     case CONTROL_PAD_TOUCHED:
-      return assoc("isTouched", true, state);
+      return { ...state, isTouched: true };
     default:
       return state;
   }

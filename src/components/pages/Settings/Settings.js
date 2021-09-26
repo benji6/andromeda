@@ -1,12 +1,11 @@
 import capitalize from "capitalize";
-import { compose } from "ramda";
 import { createElement } from "react";
 import ButtonPrimary from "../../atoms/ButtonPrimary";
 import RangeLabelled from "../../molecules/RangeLabelled";
 import noteNameFromPitch from "../../../audioHelpers/noteNameFromPitch";
 import Selector from "../../molecules/Selector";
 import scales from "../../../constants/scales";
-import { makeClassName, eventValuePath } from "../../../utils/dom";
+import { makeClassName } from "../../../utils/dom";
 
 export default ({
   bpm,
@@ -30,7 +29,7 @@ export default ({
       {
         max: 512,
         min: 32,
-        onChange: compose(bpmSet, Number, eventValuePath),
+        onChange: (e) => bpmSet(Number(e.currentTarget.value)),
         value: bpm,
       },
       "BPM"
@@ -40,7 +39,7 @@ export default ({
       {
         max: 24,
         min: -36,
-        onChange: compose(rootNoteSet, Number, eventValuePath),
+        onChange: (e) => rootNoteSet(Number(e.currentTarget.value)),
         output: noteNameFromPitch(rootNote),
         value: rootNote,
       },
@@ -48,7 +47,7 @@ export default ({
     ),
     createElement(Selector, {
       defaultValue: selectedScale,
-      handleChange: compose(selectedScaleSet, eventValuePath),
+      handleChange: (e) => selectedScaleSet(e.currentTarget.value),
       label: "Scale",
       options: Object.keys(scales).map((value) => ({
         text: capitalize.words(value),
