@@ -1,21 +1,7 @@
 import audioContext from "../audioContext";
 import pluginWrapperInstrument from "../utils/pluginWrapperInstrument";
 import pluginWrapperEffect from "../utils/pluginWrapperEffect";
-import {
-  adjust,
-  append,
-  compose,
-  curry,
-  equals,
-  find,
-  findIndex,
-  forEach,
-  last,
-  lensProp,
-  over,
-  propEq,
-  view,
-} from "ramda";
+import { adjust, append, curry, lensProp, over } from "ramda";
 import {
   ADD_EFFECT_TO_CHANNEL,
   ADD_INSTRUMENT_TO_CHANNEL,
@@ -28,57 +14,38 @@ import store from "../store";
 
 const channelsLens = lensProp("channels");
 const effectsLens = lensProp("effects");
-const effectInstancesLens = lensProp("effectInstances");
-const instrumentInstancesLens = lensProp("instrumentInstances");
 const instrumentsLens = lensProp("instruments");
 
-const viewChannels = view(channelsLens);
-const viewConstructor = view(lensProp("constructor"));
-const destination = view(lensProp("destination"));
-const effects = view(effectsLens);
-const effectInstances = view(effectInstancesLens);
-const instance = view(lensProp("instance"));
-const instruments = view(instrumentsLens);
-const instrumentInstances = view(instrumentInstancesLens);
-const name = view(lensProp("name"));
-
 const overChannels = over(channelsLens);
-const overEffectInstances = over(effectInstancesLens);
-const overEffectPlugins = over(lensProp("effectPlugins"));
 const overEffects = over(effectsLens);
-const overInstrumentInstances = over(instrumentInstancesLens);
-const overInstrumentPlugins = over(lensProp("instrumentPlugins"));
 const overInstruments = over(instrumentsLens);
 
-const nameEquals = (x) => compose(equals(x), name);
-const findNameEquals = curry((x, y) => compose(find, nameEquals)(x)(y));
-const findConstructor = compose(viewConstructor, findNameEquals);
+const nameEquals = (x) => (y) => x === y.name;
+const findNameEquals = curry((x, y) => y.find(({ name }) => x === name));
+const findConstructor = (x, y) => findNameEquals(x, y).constructor;
 
 const overChannelEffects = curry((f, channelId, state) =>
   overChannels(
     adjust(
       overEffects(f),
-      findIndex(nameEquals(channelId), viewChannels(state))
+      state.channels.findIndex((channel) => channel.name === channelId)
     ),
     state
   )
 );
 const overChannelInstruments = curry((f, channelId, state) =>
   overChannels(
-    adjust(
-      overInstruments(f),
-      findIndex(nameEquals(channelId), viewChannels(state))
-    ),
+    adjust(overInstruments(f), state.channels.findIndex(nameEquals(channelId))),
     state
   )
 );
-const channel = curry((a, b) => findNameEquals(a, viewChannels(b)));
-const effectInstance = curry((a, b) =>
-  instance(findNameEquals(a, effectInstances(b)))
+const channel = curry((a, b) => findNameEquals(a, b.channels));
+const effectInstance = curry(
+  (a, b) => findNameEquals(a, b.effectInstances).instance
 );
-const effectInstanceDestination = compose(destination, effectInstance);
-const instrumentInstance = curry((a, b) =>
-  instance(findNameEquals(a, instrumentInstances(b)))
+const effectInstanceDestination = (x, y) => effectInstance(x, y).destination;
+const instrumentInstance = curry(
+  (a, b) => findNameEquals(a, b.instrumentInstances).instance
 );
 
 const initialState = {
@@ -89,37 +56,37 @@ const initialState = {
   instrumentPlugins: [],
 };
 
-const connectToAudioCtx = (x) => (x.connect(destination(audioContext)), x);
+const connectToAudioCtx = (x) => (x.connect(audioContext.destination), x);
 const disconnect = (x) => (x.disconnect(), x);
 
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case ADD_EFFECT_TO_CHANNEL: {
       const thisEffectInstance = effectInstance(payload.name, state);
-      const lastEffect = last(effects(channel(payload.channel, state)));
-      if (!lastEffect) connectToAudioCtx(thisEffectInstance);
+      const { effects } = channel(payload.channel, state);
+      if (!effects.length) connectToAudioCtx(thisEffectInstance);
       else {
         thisEffectInstance.connect(
-          effectInstanceDestination(lastEffect, state)
+          effectInstanceDestination(effects[effects.length - 1], state)
         );
       }
-      forEach(
-        (name) =>
-          disconnect(instrumentInstance(name, state)).connect(
-            destination(thisEffectInstance)
-          ),
-        instruments(channel(payload.channel, state))
-      );
+      for (const name of channel(payload.channel, state).instruments)
+        disconnect(instrumentInstance(name, state)).connect(
+          thisEffectInstance.destination
+        );
       return overChannelEffects(append(payload.name), payload.channel, state);
     }
     case ADD_INSTRUMENT_TO_CHANNEL: {
-      const instrument = instance(
-        find(propEq("name", payload.name), instrumentInstances(state))
-      );
+      const instrument = state.instrumentInstances.find(
+        ({ name }) => name === payload.name
+      ).instance;
       instrument.disconnect();
-      const lastEffect = last(effects(channel(payload.channel, state)));
-      if (!lastEffect) connectToAudioCtx(instrument);
-      else instrument.connect(effectInstanceDestination(lastEffect, state));
+      const effects = channel(payload.channel, state);
+      if (!effects.length) connectToAudioCtx(instrument);
+      else
+        instrument.connect(
+          effectInstanceDestination(effects[effects.length - 1], state)
+        );
       return overChannelInstruments(
         append(payload.name),
         payload.channel,
@@ -133,13 +100,13 @@ export default (state = initialState, { type, payload }) => {
           bpm: store.getState().settings.bpm,
         })
       );
-      return overEffectInstances(
-        append({
-          instance,
-          name: payload.name,
-        }),
-        state
-      );
+      return {
+        ...state,
+        effectInstances: [
+          ...state.effectInstances,
+          { instance, name: payload.name },
+        ],
+      };
     }
     case INSTANTIATE_INSTRUMENT: {
       const instance = pluginWrapperInstrument(
@@ -149,15 +116,24 @@ export default (state = initialState, { type, payload }) => {
         })
       );
       connectToAudioCtx(instance);
-      return overInstrumentInstances(
-        append({ instance, name: payload.name }),
-        state
-      );
+      return {
+        ...state,
+        instrumentInstances: [
+          ...state.instrumentInstances,
+          { instance, name: payload.name },
+        ],
+      };
     }
     case LOAD_PLUGIN_INSTRUMENT:
-      return overInstrumentPlugins(append(payload), state);
+      return {
+        ...state,
+        instrumentPlugins: [...state.instrumentPlugins, payload],
+      };
     case LOAD_PLUGIN_EFFECT:
-      return overEffectPlugins(append(payload), state);
+      return {
+        ...state,
+        effectPlugins: [...state.effectPlugins, payload],
+      };
     default:
       return state;
   }
