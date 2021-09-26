@@ -1,5 +1,5 @@
 import capitalize from "capitalize";
-import { compose, map } from "ramda";
+import { compose } from "ramda";
 import { createElement } from "react";
 import ButtonPrimary from "../../atoms/ButtonPrimary";
 import RangeLabelled from "../../molecules/RangeLabelled";
@@ -50,10 +50,10 @@ export default ({
       defaultValue: selectedScale,
       handleChange: compose(selectedScaleSet, eventValuePath),
       label: "Scale",
-      options: map(
-        (value) => ({ text: capitalize.words(value), value }),
-        Object.keys(scales)
-      ),
+      options: Object.keys(scales).map((value) => ({
+        text: capitalize.words(value),
+        value,
+      })),
     }),
     createElement(
       "div",
