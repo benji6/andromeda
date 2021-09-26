@@ -1,9 +1,7 @@
 import capitalize from "capitalize";
-import { compose } from "ramda";
 import { createElement } from "react";
 import { connect } from "react-redux";
 import { controllableInstrumentInstanceNames } from "../../utils/derivedData";
-import { eventValuePath } from "../../utils/dom";
 import InstrumentSelector from "../molecules/InstrumentSelector";
 import {
   keyboardMonophonicSet,
@@ -25,7 +23,8 @@ export default connect(mapStateToProps)(({ keyboard, dispatch, plugins }) =>
     createElement("h2", null, "Keyboard Settings"),
     createElement(InstrumentSelector, {
       defaultValue: keyboard.instrument,
-      handleChange: compose(dispatch, keyboardInstrumentSet, eventValuePath),
+      handleChange: (e) =>
+        dispatch(keyboardInstrumentSet(e.currentTarget.value)),
       label: "Instrument",
       options: controllableInstrumentInstanceNames(plugins).map(
         (instrument) => ({
@@ -39,7 +38,8 @@ export default connect(mapStateToProps)(({ keyboard, dispatch, plugins }) =>
       {
         max: 1,
         min: 0,
-        onChange: compose(dispatch, keyboardVolumeSet, Number, eventValuePath),
+        onChange: (e) =>
+          dispatch(keyboardVolumeSet(Number(e.currentTarget.value))),
         output: Math.round(keyboard.volume * 100),
         step: 0.01,
         value: keyboard.volume,
@@ -51,7 +51,8 @@ export default connect(mapStateToProps)(({ keyboard, dispatch, plugins }) =>
       {
         max: 2,
         min: -3,
-        onChange: compose(dispatch, keyboardOctaveSet, Number, eventValuePath),
+        onChange: (e) =>
+          dispatch(keyboardOctaveSet(Number(e.currentTarget.value))),
         output: keyboard.octave,
         value: keyboard.octave,
       },

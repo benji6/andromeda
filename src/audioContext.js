@@ -1,1 +1,1 @@
-export default typeof window !== "undefined" ? new AudioContext() : {};
+export default new AudioContext();

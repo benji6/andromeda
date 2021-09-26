@@ -1,9 +1,7 @@
 import capitalize from "capitalize";
-import { compose } from "ramda";
 import { createElement } from "react";
 import { connect } from "react-redux";
 import { controllableInstrumentInstanceNames } from "../../utils/derivedData";
-import { eventValuePath, eventCheckedPath } from "../../utils/dom";
 import {
   controlPadInstrumentSet,
   controlPadNoScaleSet,
@@ -30,7 +28,8 @@ export default connect(mapStateToProps)(({ controlPad, dispatch, plugins }) =>
     createElement("h2", null, "Control Pad Settings"),
     createElement(InstrumentSelector, {
       defaultValue: controlPad.instrument,
-      handleChange: compose(dispatch, controlPadInstrumentSet, eventValuePath),
+      handleChange: (e) =>
+        dispatch(controlPadInstrumentSet(e.currentTarget.value)),
       label: "Instrument",
       options: controllableInstrumentInstanceNames(plugins).map(
         (instrument) => ({
@@ -44,12 +43,8 @@ export default connect(mapStateToProps)(({ controlPad, dispatch, plugins }) =>
       {
         max: 2,
         min: -3,
-        onChange: compose(
-          dispatch,
-          controlPadOctaveSet,
-          Number,
-          eventValuePath
-        ),
+        onChange: (e) =>
+          dispatch(controlPadOctaveSet(Number(e.currentTarget.value))),
         output: controlPad.octave,
         value: controlPad.octave,
       },
@@ -60,7 +55,8 @@ export default connect(mapStateToProps)(({ controlPad, dispatch, plugins }) =>
       {
         max: 3,
         min: 1,
-        onChange: compose(dispatch, controlPadRangeSet, Number, eventValuePath),
+        onChange: (e) =>
+          dispatch(controlPadRangeSet(Number(e.currentTarget.value))),
         output: controlPad.range,
         value: controlPad.range,
       },
@@ -70,7 +66,8 @@ export default connect(mapStateToProps)(({ controlPad, dispatch, plugins }) =>
       CheckboxLabelled,
       {
         checked: controlPad.portamento,
-        onChange: compose(dispatch, controlPadPortamentoSet, eventCheckedPath),
+        onChange: (e) =>
+          dispatch(controlPadPortamentoSet(e.currentTarget.checked)),
       },
       "Portamento"
     ),
@@ -78,7 +75,8 @@ export default connect(mapStateToProps)(({ controlPad, dispatch, plugins }) =>
       CheckboxLabelled,
       {
         checked: controlPad.noScale,
-        onChange: compose(dispatch, controlPadNoScaleSet, eventCheckedPath),
+        onChange: (e) =>
+          dispatch(controlPadNoScaleSet(e.currentTarget.checked)),
       },
       "No Scale"
     ),

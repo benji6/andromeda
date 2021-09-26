@@ -1,4 +1,3 @@
-import { assoc } from "ramda";
 import {
   KEYBOARD_MONOPHONIC_SET,
   KEYBOARD_INSTRUMENT_SET,
@@ -16,13 +15,13 @@ export const initialState = {
 export default (state = initialState, { type, payload }) => {
   switch (type) {
     case KEYBOARD_INSTRUMENT_SET:
-      return assoc("instrument", payload, state);
+      return { ...state, instrument: payload };
     case KEYBOARD_MONOPHONIC_SET:
-      return assoc("monophonic", payload, state);
+      return { ...state, monophonic: payload };
     case KEYBOARD_OCTAVE_SET:
-      return assoc("octave", payload, state);
+      return { ...state, octave: payload };
     case KEYBOARD_VOLUME_SET:
-      return assoc("volume", payload, state);
+      return { ...state, volume: payload };
     default:
       return state;
   }

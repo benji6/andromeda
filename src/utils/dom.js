@@ -1,8 +1,5 @@
-import { clamp, filter, join, path } from "ramda";
+const validRatio = (n) => Math.max(0, Math.min(1 - Number.EPSILON, n));
 
-const validRatio = clamp(0, 1 - Number.EPSILON);
-
-export const eventCheckedPath = path(["currentTarget", "checked"]);
 export const eventRatiosAndCoords = (e) => {
   const { top, right, bottom, left } = e.target.getBoundingClientRect();
   const [width, height] = [right - left, bottom - top];
@@ -15,5 +12,5 @@ export const eventRatiosAndCoords = (e) => {
     yRatio: validRatio(y / height),
   };
 };
-export const eventValuePath = path(["currentTarget", "value"]);
-export const makeClassName = (...xs) => join(" ", filter(Boolean, xs));
+
+export const makeClassName = (...xs) => xs.filter(Boolean).join(" ");
