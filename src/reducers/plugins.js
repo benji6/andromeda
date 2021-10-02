@@ -1,7 +1,7 @@
 import audioContext from "../audioContext";
 import pluginWrapperInstrument from "../utils/pluginWrapperInstrument";
 import pluginWrapperEffect from "../utils/pluginWrapperEffect";
-import { adjust, curry, lensProp, over } from "ramda";
+import { adjust, lensProp, over } from "ramda";
 import {
   ADD_EFFECT_TO_CHANNEL,
   ADD_INSTRUMENT_TO_CHANNEL,
@@ -21,17 +21,14 @@ const overEffects = over(effectsLens);
 const overInstruments = over(instrumentsLens);
 
 const nameEquals = (x) => (y) => x === y.name;
-const findNameEquals = curry((x, y) => y.find(({ name }) => x === name));
+const findNameEquals = (x, y) => y.find(({ name }) => x === name);
 const findConstructor = (x, y) => findNameEquals(x, y).constructor;
 
-const channel = curry((a, b) => findNameEquals(a, b.channels));
-const effectInstance = curry(
-  (a, b) => findNameEquals(a, b.effectInstances).instance
-);
+const channel = (a, b) => findNameEquals(a, b.channels);
+const effectInstance = (a, b) => findNameEquals(a, b.effectInstances).instance;
 const effectInstanceDestination = (x, y) => effectInstance(x, y).destination;
-const instrumentInstance = curry(
-  (a, b) => findNameEquals(a, b.instrumentInstances).instance
-);
+const instrumentInstance = (a, b) =>
+  findNameEquals(a, b.instrumentInstances).instance;
 
 const initialState = {
   channels: [{ effects: [], instruments: [], name: 0 }],
