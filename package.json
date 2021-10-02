@@ -36,7 +36,6 @@
     "capitalize": "^1.0.0",
     "lodash.debounce": "^4.0.8",
     "prop-types": "^15.6.0",
-    "ramda": "^0.25.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
