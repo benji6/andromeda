@@ -1,7 +1,6 @@
 import audioContext from "../audioContext";
 import pluginWrapperInstrument from "../utils/pluginWrapperInstrument";
 import pluginWrapperEffect from "../utils/pluginWrapperEffect";
-import { adjust } from "ramda";
 import {
   ADD_EFFECT_TO_CHANNEL,
   ADD_INSTRUMENT_TO_CHANNEL,
@@ -50,16 +49,10 @@ export default (state = initialState, { type, payload }) => {
         );
       return {
         ...state,
-        channels: adjust(
-          (channel) => ({
-            ...channel,
-            effects: [...channel.effects, payload.name],
-          }),
-          state.channels.findIndex(
-            (channel) => channel.name === payload.channel
-          ),
-          state.channels
-        ),
+        channels: state.channels.map((channel, i) => {
+          if (i !== payload.channel) return channel;
+          return { ...channel, effects: [...channel.effects, payload.name] };
+        }),
       };
     }
     case ADD_INSTRUMENT_TO_CHANNEL: {
@@ -75,14 +68,13 @@ export default (state = initialState, { type, payload }) => {
         );
       return {
         ...state,
-        channels: adjust(
-          (channel) => ({
+        channels: state.channels.map((channel, i) => {
+          if (i !== payload.channel) return channel;
+          return {
             ...channel,
             instruments: [...channel.instruments, payload.name],
-          }),
-          state.channels.findIndex(nameEquals(payload.channel)),
-          state.channels
-        ),
+          };
+        }),
       };
     }
     case INSTANTIATE_EFFECT: {
