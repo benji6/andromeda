@@ -1,7 +1,7 @@
 import audioContext from "../audioContext";
 import pluginWrapperInstrument from "../utils/pluginWrapperInstrument";
 import pluginWrapperEffect from "../utils/pluginWrapperEffect";
-import { adjust, lensProp, over } from "ramda";
+import { adjust } from "ramda";
 import {
   ADD_EFFECT_TO_CHANNEL,
   ADD_INSTRUMENT_TO_CHANNEL,
@@ -11,14 +11,6 @@ import {
   LOAD_PLUGIN_INSTRUMENT,
 } from "../actions";
 import store from "../store";
-
-const channelsLens = lensProp("channels");
-const effectsLens = lensProp("effects");
-const instrumentsLens = lensProp("instruments");
-
-const overChannels = over(channelsLens);
-const overEffects = over(effectsLens);
-const overInstruments = over(instrumentsLens);
 
 const nameEquals = (x) => (y) => x === y.name;
 const findNameEquals = (x, y) => y.find(({ name }) => x === name);
@@ -56,15 +48,19 @@ export default (state = initialState, { type, payload }) => {
         disconnect(instrumentInstance(name, state)).connect(
           thisEffectInstance.destination
         );
-      return overChannels(
-        adjust(
-          overEffects((effects) => [...effects, payload.name]),
+      return {
+        ...state,
+        channels: adjust(
+          (channel) => ({
+            ...channel,
+            effects: [...channel.effects, payload.name],
+          }),
           state.channels.findIndex(
             (channel) => channel.name === payload.channel
-          )
+          ),
+          state.channels
         ),
-        state
-      );
+      };
     }
     case ADD_INSTRUMENT_TO_CHANNEL: {
       const instrument = state.instrumentInstances.find(
@@ -77,13 +73,17 @@ export default (state = initialState, { type, payload }) => {
         instrument.connect(
           effectInstanceDestination(effects[effects.length - 1], state)
         );
-      return overChannels(
-        adjust(
-          overInstruments((instruments) => [...instruments, payload.name]),
-          state.channels.findIndex(nameEquals(payload.channel))
+      return {
+        ...state,
+        channels: adjust(
+          (channel) => ({
+            ...channel,
+            instruments: [...channel.instruments, payload.name],
+          }),
+          state.channels.findIndex(nameEquals(payload.channel)),
+          state.channels
         ),
-        state
-      );
+      };
     }
     case INSTANTIATE_EFFECT: {
       const instance = pluginWrapperEffect(
