@@ -1,7 +1,7 @@
 import audioContext from "../audioContext";
 import pluginWrapperInstrument from "../utils/pluginWrapperInstrument";
 import pluginWrapperEffect from "../utils/pluginWrapperEffect";
-import { adjust, append, curry, lensProp, over } from "ramda";
+import { adjust, curry, lensProp, over } from "ramda";
 import {
   ADD_EFFECT_TO_CHANNEL,
   ADD_INSTRUMENT_TO_CHANNEL,
@@ -24,21 +24,6 @@ const nameEquals = (x) => (y) => x === y.name;
 const findNameEquals = curry((x, y) => y.find(({ name }) => x === name));
 const findConstructor = (x, y) => findNameEquals(x, y).constructor;
 
-const overChannelEffects = curry((f, channelId, state) =>
-  overChannels(
-    adjust(
-      overEffects(f),
-      state.channels.findIndex((channel) => channel.name === channelId)
-    ),
-    state
-  )
-);
-const overChannelInstruments = curry((f, channelId, state) =>
-  overChannels(
-    adjust(overInstruments(f), state.channels.findIndex(nameEquals(channelId))),
-    state
-  )
-);
 const channel = curry((a, b) => findNameEquals(a, b.channels));
 const effectInstance = curry(
   (a, b) => findNameEquals(a, b.effectInstances).instance
@@ -74,7 +59,15 @@ export default (state = initialState, { type, payload }) => {
         disconnect(instrumentInstance(name, state)).connect(
           thisEffectInstance.destination
         );
-      return overChannelEffects(append(payload.name), payload.channel, state);
+      return overChannels(
+        adjust(
+          overEffects((effects) => [...effects, payload.name]),
+          state.channels.findIndex(
+            (channel) => channel.name === payload.channel
+          )
+        ),
+        state
+      );
     }
     case ADD_INSTRUMENT_TO_CHANNEL: {
       const instrument = state.instrumentInstances.find(
@@ -87,9 +80,11 @@ export default (state = initialState, { type, payload }) => {
         instrument.connect(
           effectInstanceDestination(effects[effects.length - 1], state)
         );
-      return overChannelInstruments(
-        append(payload.name),
-        payload.channel,
+      return overChannels(
+        adjust(
+          overInstruments((instruments) => [...instruments, payload.name]),
+          state.channels.findIndex(nameEquals(payload.channel))
+        ),
         state
       );
     }
