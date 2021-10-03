@@ -1,4 +1,3 @@
-import capitalize from "capitalize";
 import { createElement } from "react";
 import { connect } from "react-redux";
 import { controllableInstrumentInstanceNames } from "../../utils/derivedData";
@@ -13,6 +12,7 @@ import ButtonPrimary from "../atoms/ButtonPrimary";
 import InputLabel from "../atoms/InputLabel";
 import CheckboxLabelled from "../molecules/CheckboxLabelled";
 import RangeLabelled from "../molecules/RangeLabelled";
+import { capitalizeWords } from "../../utils/helpers";
 
 const mapStateToProps = ({ keyboard, plugins }) => ({ keyboard, plugins });
 
@@ -28,7 +28,7 @@ export default connect(mapStateToProps)(({ keyboard, dispatch, plugins }) =>
       label: "Instrument",
       options: controllableInstrumentInstanceNames(plugins).map(
         (instrument) => ({
-          text: capitalize.words(instrument),
+          text: capitalizeWords(instrument),
           value: instrument,
         })
       ),

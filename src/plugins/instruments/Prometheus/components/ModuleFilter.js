@@ -3,7 +3,7 @@ import ControlModule, {
   Range,
   Select,
 } from "../../../../components/organisms/ControlModule";
-import capitalize from "capitalize";
+import { capitalizeFirst } from "../../../../utils/helpers";
 
 const paramsAll = ["frequency", "gain", "Q"];
 const paramsFrequencyGain = ["frequency", "gain"];
@@ -65,7 +65,7 @@ export default ({ frequency, gain, Q, type, updateFilter }) =>
             key: type,
             value: type,
           },
-          capitalize(type)
+          capitalizeFirst(type)
         )
       )
     ),

@@ -1493,10 +1493,10 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001259:
   dependencies:
     nanocolors "^0.1.0"
 
-capitalize@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/capitalize/-/capitalize-1.0.0.tgz#dc802c580aee101929020d2ca14b4ca8a0ae44be"
-  integrity sha1-3IAsWAruEBkpAg0soUtMqKCuRL4=
+capitalize@^2.0.3:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/capitalize/-/capitalize-2.0.3.tgz#ccfeb1046d2a054eb30f34af907a70c3e90f3b73"
+  integrity sha512-Qc5ksT1/zEJBbFYD05h99hCNEW0cgyD0zzE5WvkgisNnppJ+16zfaSk34evF0j6pGW8hejkRUeygJ5uN5k22SQ==
 
 caseless@~0.12.0:
   version "0.12.0"

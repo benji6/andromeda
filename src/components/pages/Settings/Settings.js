@@ -1,4 +1,3 @@
-import capitalize from "capitalize";
 import { createElement } from "react";
 import ButtonPrimary from "../../atoms/ButtonPrimary";
 import RangeLabelled from "../../molecules/RangeLabelled";
@@ -6,6 +5,7 @@ import noteNameFromPitch from "../../../audioHelpers/noteNameFromPitch";
 import Selector from "../../molecules/Selector";
 import scales from "../../../constants/scales";
 import { makeClassName } from "../../../utils/dom";
+import { capitalizeWords } from "../../../utils/helpers";
 
 export default ({
   bpm,
@@ -50,7 +50,7 @@ export default ({
       handleChange: (e) => selectedScaleSet(e.currentTarget.value),
       label: "Scale",
       options: Object.keys(scales).map((value) => ({
-        text: capitalize.words(value),
+        text: capitalizeWords(value),
         value,
       })),
     }),
