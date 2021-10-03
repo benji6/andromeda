@@ -26,7 +26,7 @@ import "./components/pages/Instrument.css";
 import "./components/pages/KeyboardSettings.css";
 import "./components/pages/Settings/style.css";
 
-import { createElement } from "react";
+import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import "./keyboard";
@@ -51,6 +51,8 @@ resizeHandler();
 addEventListener("resize", resizeHandler);
 
 ReactDOM.render(
-  createElement(Provider, { store }, Router),
+  <Provider store={store}>
+    <Router />
+  </Provider>,
   document.getElementById("app")
 );
