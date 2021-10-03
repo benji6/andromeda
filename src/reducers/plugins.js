@@ -11,7 +11,6 @@ import {
 } from "../actions";
 import store from "../store";
 
-const nameEquals = (x) => (y) => x === y.name;
 const findNameEquals = (x, y) => y.find(({ name }) => x === name);
 const findConstructor = (x, y) => findNameEquals(x, y).constructor;
 
