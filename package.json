@@ -35,8 +35,8 @@
   "dependencies": {
     "capitalize": "^2.0.3",
     "prop-types": "^15.6.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-redux": "^5.0.6",
     "react-router": "^3.2.0",
     "redux": "^3.7.2",
