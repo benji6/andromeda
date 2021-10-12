@@ -5,7 +5,6 @@ import Prometheus from "../plugins/instruments/Prometheus";
 
 import Delay from "../plugins/effects/Delay";
 import Leveller from "../plugins/effects/Leveller";
-import Reverb from "../plugins/effects/Reverb";
 
 import {
   addEffectToChannel,
@@ -23,7 +22,6 @@ store.dispatch(
 
 store.dispatch(loadPluginEffect({ constructor: Delay, name: "Delay" }));
 store.dispatch(loadPluginEffect({ constructor: Leveller, name: "Leveller" }));
-store.dispatch(loadPluginEffect({ constructor: Reverb, name: "Reverb" }));
 
 const bpm = store.getState().settings.bpm;
 
@@ -38,7 +36,6 @@ store.dispatch(instantiateEffect({ bpm, name: "Delay", plugin: "Delay" }));
 store.dispatch(
   instantiateEffect({ bpm, name: "Leveller", plugin: "Leveller" })
 );
-store.dispatch(instantiateEffect({ bpm, name: "Reverb", plugin: "Reverb" }));
 
 store.dispatch(addInstrumentToChannel({ channel: 0, name: "Ariadne" }));
 store.dispatch(addInstrumentToChannel({ channel: 0, name: "Prometheus" }));
