@@ -1,7 +1,6 @@
 import store from "../store";
 
 import Ariadne from "../plugins/instruments/Ariadne";
-import Microphone from "../plugins/instruments/Microphone";
 import Prometheus from "../plugins/instruments/Prometheus";
 
 import Delay from "../plugins/effects/Delay";
@@ -20,9 +19,6 @@ import {
 
 store.dispatch(loadPluginInstrument({ constructor: Ariadne, name: "Ariadne" }));
 store.dispatch(
-  loadPluginInstrument({ constructor: Microphone, name: "Microphone" })
-);
-store.dispatch(
   loadPluginInstrument({ constructor: Prometheus, name: "Prometheus" })
 );
 
@@ -35,9 +31,6 @@ const bpm = store.getState().settings.bpm;
 
 store.dispatch(
   instantiateInstrument({ bpm, name: "Ariadne", plugin: "Ariadne" })
-);
-store.dispatch(
-  instantiateInstrument({ bpm, name: "Microphone", plugin: "Microphone" })
 );
 store.dispatch(
   instantiateInstrument({ bpm, name: "Prometheus", plugin: "Prometheus" })
@@ -53,7 +46,6 @@ store.dispatch(
 store.dispatch(instantiateEffect({ bpm, name: "Reverb", plugin: "Reverb" }));
 
 store.dispatch(addInstrumentToChannel({ channel: 0, name: "Ariadne" }));
-store.dispatch(addInstrumentToChannel({ channel: 0, name: "Microphone" }));
 store.dispatch(addInstrumentToChannel({ channel: 0, name: "Prometheus" }));
 
 store.dispatch(addEffectToChannel({ channel: 0, name: "Leveller" }));
