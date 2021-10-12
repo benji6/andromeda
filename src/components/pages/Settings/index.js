@@ -4,12 +4,10 @@ import Settings from "./Settings";
 
 const mapStateToProps = ({
   nav: { lastDirection },
-  microphone,
   settings: { bpm, rootNote, selectedScale },
 }) => ({
   bpm,
   lastDirection,
-  microphone,
   rootNote,
   selectedScale,
 });
