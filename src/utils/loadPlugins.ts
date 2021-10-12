@@ -5,7 +5,6 @@ import Prometheus from "../plugins/instruments/Prometheus";
 
 import Delay from "../plugins/effects/Delay";
 import Leveller from "../plugins/effects/Leveller";
-import Overdrive from "../plugins/effects/Overdrive";
 import Reverb from "../plugins/effects/Reverb";
 
 import {
@@ -24,7 +23,6 @@ store.dispatch(
 
 store.dispatch(loadPluginEffect({ constructor: Delay, name: "Delay" }));
 store.dispatch(loadPluginEffect({ constructor: Leveller, name: "Leveller" }));
-store.dispatch(loadPluginEffect({ constructor: Overdrive, name: "Overdrive" }));
 store.dispatch(loadPluginEffect({ constructor: Reverb, name: "Reverb" }));
 
 const bpm = store.getState().settings.bpm;
@@ -39,9 +37,6 @@ store.dispatch(
 store.dispatch(instantiateEffect({ bpm, name: "Delay", plugin: "Delay" }));
 store.dispatch(
   instantiateEffect({ bpm, name: "Leveller", plugin: "Leveller" })
-);
-store.dispatch(
-  instantiateEffect({ bpm, name: "Overdrive", plugin: "Overdrive" })
 );
 store.dispatch(instantiateEffect({ bpm, name: "Reverb", plugin: "Reverb" }));
 
