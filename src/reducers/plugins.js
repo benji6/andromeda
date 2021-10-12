@@ -9,7 +9,6 @@ import {
   LOAD_PLUGIN_EFFECT,
   LOAD_PLUGIN_INSTRUMENT,
 } from "../actions";
-import store from "../store";
 
 const findNameEquals = (x, y) => y.find(({ name }) => x === name);
 const findConstructor = (x, y) => findNameEquals(x, y).constructor;
@@ -80,7 +79,7 @@ export default (state = initialState, { type, payload }) => {
       const instance = pluginWrapperEffect(
         new (findConstructor(payload.plugin, state.effectPlugins))({
           audioContext,
-          bpm: store.getState().settings.bpm,
+          bpm: payload.bpm,
         })
       );
       return {
@@ -95,7 +94,7 @@ export default (state = initialState, { type, payload }) => {
       const instance = pluginWrapperInstrument(
         new (findConstructor(payload.plugin, state.instrumentPlugins))({
           audioContext,
-          bpm: store.getState().settings.bpm,
+          bpm: payload.bpm,
         })
       );
       connectToAudioCtx(instance);

@@ -4,6 +4,6 @@ import middleware from "./middleware";
 export default compose(
   middleware,
   process.env.NODE_ENV !== "production" && window.devToolsExtension
-    ? window.devToolsExtension()
+    ? window.__REDUX_DEVTOOLS_EXTENSION__()
     : (x) => x
 );
