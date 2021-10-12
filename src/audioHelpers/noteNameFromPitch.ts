@@ -12,7 +12,7 @@ const alphabeticalComponents = [
   "F#/Gb",
   "G",
   "G#/Ab",
-];
+] as const;
 
 const { length } = alphabeticalComponents;
 

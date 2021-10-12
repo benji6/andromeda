@@ -1,4 +1,4 @@
-import "./vars/colors.css";
+import "./constants/colors.css";
 import "./constants/timings.css";
 import "./utils/keyframes.css";
 import "./utils/globals.css";
