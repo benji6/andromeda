@@ -31,18 +31,26 @@ store.dispatch(loadPluginEffect({ constructor: Leveller, name: "Leveller" }));
 store.dispatch(loadPluginEffect({ constructor: Overdrive, name: "Overdrive" }));
 store.dispatch(loadPluginEffect({ constructor: Reverb, name: "Reverb" }));
 
-store.dispatch(instantiateInstrument({ name: "Ariadne", plugin: "Ariadne" }));
+const bpm = store.getState().settings.bpm;
+
 store.dispatch(
-  instantiateInstrument({ name: "Microphone", plugin: "Microphone" })
+  instantiateInstrument({ bpm, name: "Ariadne", plugin: "Ariadne" })
 );
 store.dispatch(
-  instantiateInstrument({ name: "Prometheus", plugin: "Prometheus" })
+  instantiateInstrument({ bpm, name: "Microphone", plugin: "Microphone" })
+);
+store.dispatch(
+  instantiateInstrument({ bpm, name: "Prometheus", plugin: "Prometheus" })
 );
 
-store.dispatch(instantiateEffect({ name: "Delay", plugin: "Delay" }));
-store.dispatch(instantiateEffect({ name: "Leveller", plugin: "Leveller" }));
-store.dispatch(instantiateEffect({ name: "Overdrive", plugin: "Overdrive" }));
-store.dispatch(instantiateEffect({ name: "Reverb", plugin: "Reverb" }));
+store.dispatch(instantiateEffect({ bpm, name: "Delay", plugin: "Delay" }));
+store.dispatch(
+  instantiateEffect({ bpm, name: "Leveller", plugin: "Leveller" })
+);
+store.dispatch(
+  instantiateEffect({ bpm, name: "Overdrive", plugin: "Overdrive" })
+);
+store.dispatch(instantiateEffect({ bpm, name: "Reverb", plugin: "Reverb" }));
 
 store.dispatch(addInstrumentToChannel({ channel: 0, name: "Ariadne" }));
 store.dispatch(addInstrumentToChannel({ channel: 0, name: "Microphone" }));
