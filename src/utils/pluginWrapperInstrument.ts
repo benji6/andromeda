@@ -8,7 +8,7 @@ export default (plugin) => {
     noteModify: plugin.noteModify ? plugin.noteModify.bind(plugin) : noop,
     notesStart: plugin.notesStart
       ? plugin.notesStart.bind(plugin)
-      : (notes) => notes.forEach(noteStart),
+      : (notes: number[]) => notes.forEach(noteStart),
     noteStart,
     noteStop: plugin.noteStop ? plugin.noteStop.bind(plugin) : noop,
     render: plugin.render.bind(plugin),

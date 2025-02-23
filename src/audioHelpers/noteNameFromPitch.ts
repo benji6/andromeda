@@ -16,7 +16,7 @@ const alphabeticalComponents = [
 
 const { length } = alphabeticalComponents;
 
-export default (pitch) => {
+export default (pitch: number) => {
   const octave = floor(pitch / length) + 4;
   return (
     alphabeticalComponents[((pitch % length) + length) % length] +

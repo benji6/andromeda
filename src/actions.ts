@@ -1,4 +1,6 @@
-const actionCreator = (type) => (payload) => ({ payload, type });
+const actionCreator =
+  (type: string) =>
+  <Payload>(payload: Payload) => ({ payload, type });
 
 export const ADD_EFFECT = "ADD_EFFECT";
 export const ADD_EFFECT_TO_CHANNEL = "ADD_EFFECT_TO_CHANNEL";
