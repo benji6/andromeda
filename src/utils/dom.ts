@@ -1,4 +1,4 @@
-const validRatio = (n) => Math.max(0, Math.min(1 - Number.EPSILON, n));
+const validRatio = (n: number) => Math.max(0, Math.min(1 - Number.EPSILON, n));
 
 export const eventRatiosAndCoords = (e) => {
   const { top, right, bottom, left } = e.target.getBoundingClientRect();
@@ -13,4 +13,4 @@ export const eventRatiosAndCoords = (e) => {
   };
 };
 
-export const makeClassName = (...xs) => xs.filter(Boolean).join(" ");
+export const makeClassName = (...xs: string[]) => xs.filter(Boolean).join(" ");

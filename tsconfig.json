@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "allowUnreachableCode": false,
     "forceConsistentCasingInFileNames": true,
     "jsx": "react",
     "moduleResolution": "node",
