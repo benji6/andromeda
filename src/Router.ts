@@ -56,17 +56,17 @@ export default () =>
           },
         }),
         createElement(Route, {
-          path: "/controllers/control-pad",
-          render: (props) => {
-            handleRouteChange(props.location, props.location);
-            return createElement(ControlPadPage, props);
-          },
-        }),
-        createElement(Route, {
           path: "/controllers/control-pad/settings",
           render: (props) => {
             handleRouteChange(props.location, props.location);
             return createElement(ControlPadSettings, props);
+          },
+        }),
+        createElement(Route, {
+          path: "/controllers/control-pad",
+          render: (props) => {
+            handleRouteChange(props.location, props.location);
+            return createElement(ControlPadPage, props);
           },
         }),
         createElement(Route, {
