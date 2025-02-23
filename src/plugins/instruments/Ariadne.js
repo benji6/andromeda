@@ -50,7 +50,7 @@ const oscBank = createNode(
     }),
     masterGain: gainNode(["output"], { gain: masterGain }),
     masterPan: stereoPanner(["masterGain"], { pan: masterPan }),
-  })
+  }),
 );
 
 const notesToGraph = (
@@ -63,7 +63,7 @@ const notesToGraph = (
     modulatorOscType,
     modulatorRatio,
   },
-  notes
+  notes,
 ) =>
   notes.reduce(
     (acc, { frequency, gain, id, startTime, stopTime }) =>
@@ -82,7 +82,7 @@ const notesToGraph = (
           stopTime,
         }),
       }),
-    {}
+    {},
   );
 
 const updateAudio = function (state) {
@@ -126,7 +126,7 @@ export default class {
         .filter((note) =>
           note.hasOwnProperty("stopTime")
             ? note.stopTime > audioContexts.get(this).currentTime
-            : true
+            : true,
         ),
       note,
     ];
@@ -152,11 +152,11 @@ export default class {
     const store = stores.get(this);
     const setPropFromRangeEvent = (key) => (e) =>
       store.dispatch((state) =>
-        Object.assign({}, state, { [key]: Number(e.target.value) })
+        Object.assign({}, state, { [key]: Number(e.target.value) }),
       );
     const setPropFromSelectEvent = (key) => (e) =>
       store.dispatch((state) =>
-        Object.assign({}, state, { [key]: e.target.value })
+        Object.assign({}, state, { [key]: e.target.value }),
       );
 
     ReactDOM.render(
@@ -199,7 +199,7 @@ export default class {
                 createElement("option", { value: "sawtooth" }, "Sawtooth"),
                 createElement("option", { value: "sine" }, "Sine"),
                 createElement("option", { value: "square" }, "Square"),
-                createElement("option", { value: "triangle" }, "Triangle")
+                createElement("option", { value: "triangle" }, "Triangle"),
               ),
               createElement(
                 Select,
@@ -211,7 +211,7 @@ export default class {
                 createElement("option", { value: "sawtooth" }, "Sawtooth"),
                 createElement("option", { value: "sine" }, "Sine"),
                 createElement("option", { value: "square" }, "Square"),
-                createElement("option", { value: "triangle" }, "Triangle")
+                createElement("option", { value: "triangle" }, "Triangle"),
               ),
               createElement(Range, {
                 defaultValue: carrierDetune,
@@ -233,11 +233,11 @@ export default class {
                 max: 128,
                 min: -128,
                 onInput: setPropFromRangeEvent("modulatorDetune"),
-              })
-            )
-          )
+              }),
+            ),
+          ),
       ),
-      containerEl
+      containerEl,
     );
   }
 }

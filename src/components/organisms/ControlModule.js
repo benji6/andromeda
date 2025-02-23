@@ -5,14 +5,14 @@ const Input = ({ children, label }) =>
     "label",
     { className: "ControlModule__Input" },
     createElement("span", { className: "ControlModule__Input__Label" }, label),
-    children
+    children,
   );
 
 export const CheckBox = (props) =>
   createElement(
     Input,
     { label: props.label },
-    createElement("input", Object.assign({ type: "checkbox" }, props))
+    createElement("input", Object.assign({ type: "checkbox" }, props)),
   );
 
 export const Range = (props) => {
@@ -32,7 +32,7 @@ export const Range = (props) => {
       step,
       type: "range",
     },
-    props
+    props,
   );
 
   delete inputProps.displayValue;
@@ -41,7 +41,7 @@ export const Range = (props) => {
     Input,
     { label: props.label },
     createElement("input", inputProps),
-    createElement("div", { className: "ControlModule__Output" }, displayValue)
+    createElement("div", { className: "ControlModule__Output" }, displayValue),
   );
 };
 
@@ -51,8 +51,8 @@ export const Select = (props) =>
     { label: props.label },
     createElement(
       "select",
-      Object.assign({ className: "ControlModule__Select" }, props)
-    )
+      Object.assign({ className: "ControlModule__Select" }, props),
+    ),
   );
 
 export default (props) =>
@@ -64,6 +64,6 @@ export default (props) =>
     createElement(
       "div",
       { className: "ControlModule__Container" },
-      props.children
-    )
+      props.children,
+    ),
   );

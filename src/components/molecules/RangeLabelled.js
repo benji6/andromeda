@@ -18,7 +18,7 @@ const RangeLabelled = ({
       "div",
       { className: "RangeLabelled__LabelContainer" },
       children,
-      createElement("output", null, output)
+      createElement("output", null, output),
     ),
     createElement("input", {
       className: "RangeLabelled__Input",
@@ -28,7 +28,7 @@ const RangeLabelled = ({
       step,
       type: "range",
       value,
-    })
+    }),
   );
 };
 

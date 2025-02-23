@@ -14,8 +14,8 @@ const CheckboxLabelled = ({ checked, onChange, children }) =>
         defaultChecked: checked,
         onChange,
         type: "checkbox",
-      })
-    )
+      }),
+    ),
   );
 
 CheckboxLabelled.propTypes = {

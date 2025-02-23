@@ -1,9 +1,0 @@
-.*ignore
-.*rc
-.cache
-*.glsl
-*.lock
-*.svg
-*.wav
-dist
-LICENSE

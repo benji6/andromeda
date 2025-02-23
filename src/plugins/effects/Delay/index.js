@@ -70,7 +70,7 @@ export default class {
       store.dispatch((state) =>
         Object.assign({}, state, {
           [key]: Number(e.target.value),
-        })
+        }),
       );
 
     ReactDOM.render(
@@ -138,11 +138,11 @@ export default class {
                 min: Math.log(20),
                 onInput: (e) =>
                   setProp("highCut", Math.exp(Number(e.target.value))),
-              })
-            )
-          )
+              }),
+            ),
+          ),
       ),
-      containerEl
+      containerEl,
     );
   }
 }

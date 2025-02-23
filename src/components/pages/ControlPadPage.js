@@ -42,7 +42,7 @@ const mapDispatchToProps = { controlPadTouched };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(
   ({
     controlPadTouched,
@@ -61,7 +61,7 @@ export default connect(
       {
         className: makeClassName(
           "ControlPadPage",
-          lastDirection === "left" ? "slide-in-left" : "slide-in-right"
+          lastDirection === "left" ? "slide-in-left" : "slide-in-right",
         ),
       },
       createElement(
@@ -92,7 +92,7 @@ export default connect(
 
             instance.noteStart({
               frequency: pitchToFrequency(
-                currentlyPlayingPitch + 12 * octave + rootNote
+                currentlyPlayingPitch + 12 * octave + rootNote,
               ),
               gain: (1 - yRatio) / 2,
               id: controlPadId,
@@ -105,12 +105,12 @@ export default connect(
           },
           isTouched,
           sideLength,
-        })
+        }),
       ),
       createElement(
         ButtonPrimary,
         { to: "/controllers/control-pad/settings" },
-        "Options"
-      )
-    )
+        "Options",
+      ),
+    ),
 );

@@ -11,8 +11,8 @@ const InputSelect = ({ disabled, onChange, options, value }) =>
       value,
     },
     options.map(({ text, value }, i) =>
-      createElement("option", { key: i, value }, text)
-    )
+      createElement("option", { key: i, value }, text),
+    ),
   );
 
 InputSelect.propTypes = {

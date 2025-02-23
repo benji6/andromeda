@@ -43,7 +43,7 @@ export default class {
         .filter((note) =>
           note.hasOwnProperty("stopTime")
             ? note.stopTime > audioContexts.get(this).currentTime
-            : true
+            : true,
         ),
       note,
     ];
@@ -56,7 +56,7 @@ export default class {
       .filter((note) =>
         note.hasOwnProperty("stopTime")
           ? note.stopTime > audioContexts.get(this).currentTime
-          : true
+          : true,
       )
       .concat(notesToStart);
     notes.set(this, newNotes);
@@ -85,7 +85,7 @@ export default class {
       store.dispatch((state) =>
         Object.assign({}, state, {
           [prop]: Object.assign({}, state[prop], { [key]: val }),
-        })
+        }),
       );
     setProp("updateFilter")(updateProp("filter"));
     setProp("updateLfo")(updateProp("lfo"));
@@ -100,8 +100,8 @@ export default class {
               Object.assign({}, state.oscillatorSingles[i], { [key]: val }),
               ...state.oscillatorSingles.slice(i + 1),
             ],
-          })
-        )
+          }),
+        ),
     );
     setProp("updateOscSuper")(
       (i) => (key, val) =>
@@ -112,8 +112,8 @@ export default class {
               Object.assign({}, state.oscillatorSupers[i], { [key]: val }),
               ...state.oscillatorSupers.slice(i + 1),
             ],
-          })
-        )
+          }),
+        ),
     );
 
     ReactDOM.render(connect(store)(Prometheus), containerEl);

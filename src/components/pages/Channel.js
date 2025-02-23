@@ -6,14 +6,14 @@ let selectedAddSource = null;
 const connectComponent = connect(
   (
     { dispatch, plugins: { channels, effectInstances, instrumentInstances } },
-    { params }
+    { params },
   ) => ({
     channelId: Number(params.channelId),
     channels,
     dispatch,
     effectInstances,
     instrumentInstances,
-  })
+  }),
 );
 
 export default connectComponent(
@@ -37,7 +37,7 @@ export default connectComponent(
           createElement(
             ButtonPrimary,
             { to: `/plugins/effects/${name}` },
-            name
+            name,
           ),
           createElement(Cross, {
             onClick: () =>
@@ -45,10 +45,10 @@ export default connectComponent(
                 removeEffectFromChannel({
                   channel: channelId,
                   name,
-                })
+                }),
               ),
-          })
-        )
+          }),
+        ),
       ),
       Boolean(addEffects.length) && createElement("p", null, "Add effect"),
       Boolean(addEffects.length) &&
@@ -66,9 +66,9 @@ export default connectComponent(
                 addEffectToChannel({
                   channel: channelId,
                   name: selectedAddEffect,
-                })
+                }),
               ),
-          })
+          }),
         ),
       createElement("h2", null, "Sources"),
       createElement(
@@ -81,7 +81,7 @@ export default connectComponent(
             createElement(
               ButtonPrimary,
               { small: true, to: `/plugins/instruments/${name}` },
-              name
+              name,
             ),
             createElement(Cross, {
               onClick: () =>
@@ -89,11 +89,11 @@ export default connectComponent(
                   removeInstrumentFromChannel({
                     channel: channelId,
                     name,
-                  })
+                  }),
                 ),
-            })
-          )
-        )
+            }),
+          ),
+        ),
       ),
       Boolean(addSources.length) && createElement("p", null, "Add source"),
       Boolean(addSources.length) &&
@@ -111,12 +111,12 @@ export default connectComponent(
                 addInstrumentToChannel({
                   channel: channelId,
                   name: selectedAddSource,
-                })
+                }),
               );
               selectedAddSource = addSources[1];
             },
-          })
-        )
+          }),
+        ),
     );
-  }
+  },
 );

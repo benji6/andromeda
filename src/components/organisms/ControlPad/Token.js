@@ -83,19 +83,19 @@ export default class {
 
     Promise.all([
       fetch("assets/ControlPadVertexShader.glsl").then((response) =>
-        response.text()
+        response.text(),
       ),
       fetch("assets/ControlPadFragmentShader.glsl").then((response) =>
-        response.text()
+        response.text(),
       ),
     ]).then(([vertexShader, fragmentShader]) => {
       gl.attachShader(
         program,
-        compileShader(gl, vertexShader, gl.VERTEX_SHADER)
+        compileShader(gl, vertexShader, gl.VERTEX_SHADER),
       );
       gl.attachShader(
         program,
-        compileShader(gl, fragmentShader, gl.FRAGMENT_SHADER)
+        compileShader(gl, fragmentShader, gl.FRAGMENT_SHADER),
       );
 
       gl.linkProgram(program);
@@ -135,25 +135,25 @@ export default class {
           rotateY((this.rotations.y += modToRotationInc(yMod))),
           mult(
             rotateX((this.rotations.x += modToRotationInc(xMod))),
-            rotateZ((this.rotations.z += modToRotationInc(xMod * yMod)))
-          )
+            rotateZ((this.rotations.z += modToRotationInc(xMod * yMod))),
+          ),
         );
 
         const translationMatrix = translate(
           x - this.sideLength / 2,
           this.sideLength / 2 - y,
-          this.z
+          this.z,
         );
         const projectionMatrix = makePerspective(
           Math.PI * 0.0005 * this.sideLength,
           1,
           1,
-          2048
+          2048,
         );
 
         const matrix = mult(
           mult(rotationMatrix, translationMatrix),
-          projectionMatrix
+          projectionMatrix,
         );
 
         // TODO this will overflow

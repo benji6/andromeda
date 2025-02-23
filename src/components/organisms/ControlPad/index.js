@@ -60,14 +60,14 @@ export default class extends Component {
           {
             className: "ControlPad__Message",
           },
-          "TOUCH / CLICK TO PLAY"
+          "TOUCH / CLICK TO PLAY",
         ),
       createElement("canvas", {
         className: "ControlPad__Canvas",
         height: sideLength,
         ref: (el) => (this.el = el),
         width: sideLength,
-      })
+      }),
     );
   }
 }

@@ -11,14 +11,14 @@ export default connect(mapStateToProps)(({ lastDirection }) =>
     {
       className: makeClassName(
         "About",
-        lastDirection === "left" ? "slide-in-left" : "slide-in-right"
+        lastDirection === "left" ? "slide-in-left" : "slide-in-right",
       ),
     },
     createElement("h1", { className: "About__Title" }, "About"),
     createElement(
       "p",
       null,
-      "Andromeda is a pluggable digital audio workstation built on open web technologies."
+      "Andromeda is a pluggable digital audio workstation built on open web technologies.",
     ),
     createElement(
       "p",
@@ -27,9 +27,9 @@ export default connect(mapStateToProps)(({ lastDirection }) =>
       createElement(
         LinkExternal,
         { href: "https://github.com/benji6/andromeda" },
-        "GitHub"
+        "GitHub",
       ),
-      "."
+      ".",
     ),
     createElement(
       "p",
@@ -38,14 +38,14 @@ export default connect(mapStateToProps)(({ lastDirection }) =>
       createElement(
         LinkExternal,
         { href: "https://github.com/benji6/andromeda/issues" },
-        "here"
+        "here",
       ),
-      "."
+      ".",
     ),
     createElement(
       "p",
       null,
-      "Contributions, feedback and suggestions are all very welcome!"
-    )
-  )
+      "Contributions, feedback and suggestions are all very welcome!",
+    ),
+  ),
 );

@@ -42,8 +42,8 @@ const resizeHandler = () =>
         height: innerHeight,
         sideLength: innerWidth < innerHeight ? innerWidth : innerHeight * 0.8,
         width: innerWidth,
-      })
-    )
+      }),
+    ),
   );
 
 resizeHandler();
@@ -54,5 +54,5 @@ ReactDOM.render(
   <Provider store={store}>
     <Router />
   </Provider>,
-  document.getElementById("app")
+  document.getElementById("app"),
 );

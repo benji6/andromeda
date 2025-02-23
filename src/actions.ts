@@ -27,7 +27,7 @@ export const addEffectToChannel = actionCreator(ADD_EFFECT_TO_CHANNEL);
 export const addInstrumentToChannel = actionCreator(ADD_INSTRUMENT_TO_CHANNEL);
 export const bpmSet = actionCreator(BPM_SET);
 export const controlPadInstrumentSet = actionCreator(
-  CONTROL_PAD_INSTRUMENT_SET
+  CONTROL_PAD_INSTRUMENT_SET,
 );
 export const controlPadNoScaleSet = actionCreator(CONTROL_PAD_NO_SCALE_SET);
 export const controlPadOctaveSet = actionCreator(CONTROL_PAD_OCTAVE_SET);

@@ -34,7 +34,7 @@ export default connect(mapStateToProps)(({ controlPad, dispatch, plugins }) =>
         (instrument) => ({
           text: capitalizeWords(instrument),
           value: instrument,
-        })
+        }),
       ),
     }),
     createElement(
@@ -47,7 +47,7 @@ export default connect(mapStateToProps)(({ controlPad, dispatch, plugins }) =>
         output: controlPad.octave,
         value: controlPad.octave,
       },
-      "Octave"
+      "Octave",
     ),
     createElement(
       RangeLabelled,
@@ -59,7 +59,7 @@ export default connect(mapStateToProps)(({ controlPad, dispatch, plugins }) =>
         output: controlPad.range,
         value: controlPad.range,
       },
-      "Range"
+      "Range",
     ),
     createElement(
       CheckboxLabelled,
@@ -68,13 +68,13 @@ export default connect(mapStateToProps)(({ controlPad, dispatch, plugins }) =>
         onChange: (e) =>
           dispatch(controlPadNoScaleSet(e.currentTarget.checked)),
       },
-      "No Scale"
+      "No Scale",
     ),
     createElement(
       "div",
       null,
       createElement(InputLabel),
-      createElement(ButtonPrimary, { to: "/controllers/control-pad" }, "OK")
-    )
-  )
+      createElement(ButtonPrimary, { to: "/controllers/control-pad" }, "OK"),
+    ),
+  ),
 );

@@ -9,5 +9,5 @@ export default ({ children }) =>
     null,
     createElement(WelcomeMessage, null, `v${version}`),
     createElement(Navigation),
-    children
+    children,
   );
