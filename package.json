@@ -7,7 +7,7 @@
     "build:parcel": "parcel build --no-source-maps src/index.html",
     "build:robots": "touch dist/robots.txt",
     "fmt": "prettier --write '**/*'",
-    "start": "parcel src/index.html --open",
+    "start": "parcel src/index.html --open --port 1238",
     "test": "run-p test:*",
     "test:fmt": "prettier --check '**/*'",
     "test:types": "tsc --noEmit"
