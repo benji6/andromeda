@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router";
+import { withRouter } from "react-router-dom";
 import { instrumentInstance } from "../../utils/derivedData";
 import PluginMount from "../atoms/PluginMount";
 import ButtonPrimary from "../atoms/ButtonPrimary";
@@ -14,7 +14,7 @@ const Instrument = ({ params, plugins, router }) =>
     createElement(PluginMount, {
       instance: instrumentInstance(params.name, plugins),
     }),
-    createElement(ButtonPrimary, { onClick: router.goBack }, "OK")
+    createElement(ButtonPrimary, { onClick: router.goBack }, "OK"),
   );
 
 export default connect(mapStateToProps)(withRouter(Instrument));
