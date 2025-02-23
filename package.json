@@ -3,11 +3,9 @@
   "version": "0.45.4",
   "description": "Make music in your browser!",
   "scripts": {
-    "build": "rm -rf dist && mkdir dist && run-p build:*",
-    "build:parcel": "parcel build --no-source-maps src/index.html",
-    "build:robots": "touch dist/robots.txt",
+    "build": "vite build src --emptyOutDir --outDir ../dist && touch dist/robots.txt",
     "fmt": "prettier --write '**/*'",
-    "start": "parcel src/index.html --open --port 1238",
+    "start": "vite src --open",
     "test": "run-p test:*",
     "test:fmt": "prettier --check '**/*'",
     "test:types": "tsc --noEmit"
@@ -30,9 +28,6 @@
     "url": "https://github.com/benji6/andromeda/issues"
   },
   "homepage": "https://github.com/benji6/andromeda",
-  "browserslist": [
-    ">1.25%"
-  ],
   "dependencies": {
     "capitalize": "^2.0.3",
     "prop-types": "^15.6.0",
@@ -50,8 +45,8 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-redux": "^7.1.18",
     "npm-run-all": "^4.1.5",
-    "parcel-bundler": "^1.12.5",
     "prettier": "^2.4.1",
+    "vite": "^6.1.1",
     "web-audio-test-api": "^0.5.2"
   }
 }

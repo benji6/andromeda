@@ -1,4 +1,3 @@
-.cache
-*.log
-dist
-node_modules
+/*.log
+/dist
+/node_modules
