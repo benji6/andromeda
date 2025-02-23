@@ -10,6 +10,6 @@ export default (props) =>
     createElement(
       ButtonSecondary,
       { to: `/plugins/instruments/${props.defaultValue}` },
-      "edit"
-    )
+      "edit",
+    ),
   );

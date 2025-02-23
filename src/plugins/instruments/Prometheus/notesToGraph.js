@@ -24,12 +24,12 @@ const osc = createNode(
       stopTime,
       type,
     }),
-  })
+  }),
 );
 
 export default (
   { filter, lfo, master, oscillatorSingles, oscillatorSupers },
-  notes
+  notes,
 ) =>
   notes.reduce(
     (acc, { frequency, gain, id, startTime, stopTime }) => {
@@ -44,7 +44,7 @@ export default (
             frequency,
             startTime,
             stopTime,
-          })
+          }),
         );
       }
 
@@ -80,5 +80,5 @@ export default (
       lfo: lfoNode({ destination: "frequency", key: "filter" }, lfo),
       masterGain: gainNode("output", { gain: master.gain }),
       masterPan: stereoPanner("masterGain", { pan: master.pan }),
-    }
+    },
   );

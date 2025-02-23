@@ -21,6 +21,6 @@ export default ({ master: { gain, pan }, updateMaster }) =>
         label: "Pan",
         min: -1,
         onInput: (e) => updateMaster("pan", Number(e.target.value)),
-      })
-    )
+      }),
+    ),
   );

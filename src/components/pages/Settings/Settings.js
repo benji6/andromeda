@@ -21,7 +21,7 @@ export default ({
     {
       className: makeClassName(
         "Settings",
-        lastDirection === "left" ? "slide-in-left" : "slide-in-right"
+        lastDirection === "left" ? "slide-in-left" : "slide-in-right",
       ),
     },
     createElement(
@@ -32,7 +32,7 @@ export default ({
         onChange: (e) => bpmSet(Number(e.currentTarget.value)),
         value: bpm,
       },
-      "BPM"
+      "BPM",
     ),
     createElement(
       RangeLabelled,
@@ -43,7 +43,7 @@ export default ({
         output: noteNameFromPitch(rootNote),
         value: rootNote,
       },
-      "Root Note"
+      "Root Note",
     ),
     createElement(Selector, {
       defaultValue: selectedScale,
@@ -60,7 +60,7 @@ export default ({
       createElement(
         ButtonPrimary,
         { to: "/controllers/keyboard/settings" },
-        "Keyboard Settings"
-      )
-    )
+        "Keyboard Settings",
+      ),
+    ),
   );

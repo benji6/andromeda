@@ -30,7 +30,7 @@ export default connect(mapStateToProps)(({ keyboard, dispatch, plugins }) =>
         (instrument) => ({
           text: capitalizeWords(instrument),
           value: instrument,
-        })
+        }),
       ),
     }),
     createElement(
@@ -44,7 +44,7 @@ export default connect(mapStateToProps)(({ keyboard, dispatch, plugins }) =>
         step: 0.01,
         value: keyboard.volume,
       },
-      "Volume"
+      "Volume",
     ),
     createElement(
       RangeLabelled,
@@ -56,7 +56,7 @@ export default connect(mapStateToProps)(({ keyboard, dispatch, plugins }) =>
         output: keyboard.octave,
         value: keyboard.octave,
       },
-      "Octave"
+      "Octave",
     ),
     createElement(
       CheckboxLabelled,
@@ -64,13 +64,13 @@ export default connect(mapStateToProps)(({ keyboard, dispatch, plugins }) =>
         checked: keyboard.monophonic,
         onChange: (e) => dispatch(keyboardMonophonicSet(e.target.checked)),
       },
-      "Monophonic"
+      "Monophonic",
     ),
     createElement(
       "div",
       null,
       createElement(InputLabel),
-      createElement(ButtonPrimary, { to: "/settings" }, "OK")
-    )
-  )
+      createElement(ButtonPrimary, { to: "/settings" }, "OK"),
+    ),
+  ),
 );

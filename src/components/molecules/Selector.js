@@ -13,5 +13,5 @@ export default ({ defaultValue, disabled, handleChange, label, options }) =>
       onChange: handleChange,
       options,
       value: defaultValue,
-    })
+    }),
   );

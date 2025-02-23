@@ -38,12 +38,12 @@ export default (state = initialState, { type, payload }) => {
       if (!effects.length) connectToAudioCtx(thisEffectInstance);
       else {
         thisEffectInstance.connect(
-          effectInstanceDestination(effects[effects.length - 1], state)
+          effectInstanceDestination(effects[effects.length - 1], state),
         );
       }
       for (const name of channel(payload.channel, state).instruments)
         disconnect(instrumentInstance(name, state)).connect(
-          thisEffectInstance.destination
+          thisEffectInstance.destination,
         );
       return {
         ...state,
@@ -55,14 +55,14 @@ export default (state = initialState, { type, payload }) => {
     }
     case ADD_INSTRUMENT_TO_CHANNEL: {
       const instrument = state.instrumentInstances.find(
-        ({ name }) => name === payload.name
+        ({ name }) => name === payload.name,
       ).instance;
       instrument.disconnect();
       const effects = channel(payload.channel, state);
       if (!effects.length) connectToAudioCtx(instrument);
       else
         instrument.connect(
-          effectInstanceDestination(effects[effects.length - 1], state)
+          effectInstanceDestination(effects[effects.length - 1], state),
         );
       return {
         ...state,
@@ -80,7 +80,7 @@ export default (state = initialState, { type, payload }) => {
         new (findConstructor(payload.plugin, state.effectPlugins))({
           audioContext,
           bpm: payload.bpm,
-        })
+        }),
       );
       return {
         ...state,
@@ -95,7 +95,7 @@ export default (state = initialState, { type, payload }) => {
         new (findConstructor(payload.plugin, state.instrumentPlugins))({
           audioContext,
           bpm: payload.bpm,
-        })
+        }),
       );
       connectToAudioCtx(instance);
       return {

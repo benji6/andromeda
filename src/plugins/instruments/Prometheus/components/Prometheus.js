@@ -27,7 +27,7 @@ export default ({
     createElement(
       "h2",
       { style: { fontSize: size6, margin: size5 } },
-      "PROMETHEUS"
+      "PROMETHEUS",
     ),
     createElement(ModuleMaster, { master, updateMaster }),
     createElement(
@@ -40,7 +40,7 @@ export default ({
         type: filter.type,
         updateFilter,
       }),
-      createElement(ModuleLfo, { lfo, updateLfo })
+      createElement(ModuleLfo, { lfo, updateLfo }),
     ),
     createElement(
       "div",
@@ -58,8 +58,8 @@ export default ({
             spread,
             type,
             updateOsc: updateOscSuper(id),
-          })
-      )
+          }),
+      ),
     ),
     oscillatorSingles.map(({ detune, gain, id, pan, pitch, type }) =>
       createElement(ModuleOscSingle, {
@@ -71,6 +71,6 @@ export default ({
         pitch,
         type,
         updateOsc: updateOscSingle(id),
-      })
-    )
+      }),
+    ),
   );

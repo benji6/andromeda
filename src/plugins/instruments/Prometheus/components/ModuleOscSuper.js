@@ -16,7 +16,7 @@ const SelectOscType = ({ defaultValue, onChange }) =>
     createElement("option", { value: "sawtooth" }, "Sawtooth"),
     createElement("option", { value: "sine" }, "Sine"),
     createElement("option", { value: "square" }, "Square"),
-    createElement("option", { value: "triangle" }, "Triangle")
+    createElement("option", { value: "triangle" }, "Triangle"),
   );
 
 export default ({
@@ -82,5 +82,5 @@ export default ({
       max: 50,
       min: -50,
       onInput: (e) => updateOsc("detune", Number(e.target.value)),
-    })
+    }),
   );

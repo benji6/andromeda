@@ -6,5 +6,5 @@ export default () =>
   createElement(
     "nav",
     { className: "Navigation" },
-    ...nav.map(([to, txt]) => createElement(HollowButton, { to }, txt))
+    ...nav.map(([to, txt]) => createElement(HollowButton, { to }, txt)),
   );

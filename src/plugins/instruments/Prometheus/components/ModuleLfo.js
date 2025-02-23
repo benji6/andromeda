@@ -15,7 +15,7 @@ const SelectOscType = ({ defaultValue, onChange }) =>
     createElement("option", { value: "sawtooth" }, "Sawtooth"),
     createElement("option", { value: "sine" }, "Sine"),
     createElement("option", { value: "square" }, "Square"),
-    createElement("option", { value: "triangle" }, "Triangle")
+    createElement("option", { value: "triangle" }, "Triangle"),
   );
 
 export default ({ lfo: { gain, frequency, type }, updateLfo }) =>
@@ -39,5 +39,5 @@ export default ({ lfo: { gain, frequency, type }, updateLfo }) =>
       label: "Amount",
       max: 1024,
       onInput: (e) => updateLfo("gain", Number(e.target.value)),
-    })
+    }),
   );

@@ -36,7 +36,7 @@ export default class {
 
         gainNodes.get(this).gain.value = gain;
         panNodes.get(this).pan.value = pan;
-      }
+      },
     );
 
     this.destination = dynamicsCompressorNode;
@@ -81,8 +81,8 @@ export default class {
                 label: "Pan",
                 min: -1,
                 onInput: (e) => setProp("pan", Number(e.target.value)),
-              })
-            )
+              }),
+            ),
           ),
           createElement(
             ControlModule,
@@ -118,11 +118,11 @@ export default class {
               label: "Release",
               max: 1,
               onInput: (e) => setProp("release", Number(e.target.value)),
-            })
-          )
-        )
+            }),
+          ),
+        ),
       ),
-      containerEl
+      containerEl,
     );
   }
 }

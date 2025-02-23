@@ -7,7 +7,7 @@ const ButtonIcon = ({ children, modifier, onClick, text }) =>
     { className: `ButtonIcon ButtonIcon--${modifier}`, onClick },
     text,
     " ",
-    createElement("span", { className: "ButtonIcon__Label" }, children)
+    createElement("span", { className: "ButtonIcon__Label" }, children),
   );
 
 ButtonIcon.propTypes = {

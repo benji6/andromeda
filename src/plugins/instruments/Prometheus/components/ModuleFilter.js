@@ -65,9 +65,9 @@ export default ({ frequency, gain, Q, type, updateFilter }) =>
             key: type,
             value: type,
           },
-          capitalizeFirst(type)
-        )
-      )
+          capitalizeFirst(type),
+        ),
+      ),
     ),
     typesToParams[type].map((param) =>
       param === "frequency"
@@ -77,7 +77,7 @@ export default ({ frequency, gain, Q, type, updateFilter }) =>
             updateFilter,
           })
         : param === "gain"
-        ? createElement(ControlGain, { gain, key: param, updateFilter })
-        : createElement(ControlQ, { key: param, Q, updateFilter })
-    )
+          ? createElement(ControlGain, { gain, key: param, updateFilter })
+          : createElement(ControlQ, { key: param, Q, updateFilter }),
+    ),
   );

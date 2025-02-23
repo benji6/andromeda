@@ -26,7 +26,7 @@ const stopAndRemoveNote = (keyCode) => {
   const noteParams = computeNoteParams(pitch);
   const instrumentObj = instrumentInstance(
     noteParams.instrument,
-    store.getState().plugins
+    store.getState().plugins,
   );
   instrumentObj.noteStop(noteParams.id);
 };
@@ -46,7 +46,7 @@ document.addEventListener("keydown", (e) => {
   const noteParams = computeNoteParams(pitch);
   const instrumentObj = instrumentInstance(
     noteParams.instrument,
-    state.plugins
+    state.plugins,
   );
   instrumentObj.noteStart(noteParams);
 });
@@ -58,7 +58,7 @@ document.addEventListener("keyup", ({ keyCode }) => {
   const noteParams = computeNoteParams(pitch);
   const instrumentObj = instrumentInstance(
     noteParams.instrument,
-    store.getState().plugins
+    store.getState().plugins,
   );
   instrumentObj.noteStop(noteParams.id);
 });
