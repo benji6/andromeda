@@ -7,6 +7,7 @@
     "fmt": "prettier --ignore-unknown --write '**/*'",
     "start": "vite src --open",
     "test": "run-p test:*",
+    "test:audit": "npm audit --audit-level=critical",
     "test:fmt": "prettier --check --ignore-unknown '**/*'",
     "test:types": "tsc --noEmit"
   },
