@@ -1,6 +1,6 @@
 import { PropTypes } from "prop-types";
 import { createElement } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const ButtonSecondary = ({ children, to }) =>
   createElement(Link, { className: "ButtonSecondary", to }, children);

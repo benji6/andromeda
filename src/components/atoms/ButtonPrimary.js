@@ -1,12 +1,12 @@
 import { PropTypes } from "prop-types";
 import { createElement } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 import { makeClassName } from "../../utils/dom";
 
 const ButtonPrimary = ({ children, onClick, small, to }) => {
   const className = makeClassName(
     "ButtonPrimary",
-    small && "ButtonPrimary--small"
+    small && "ButtonPrimary--small",
   );
   return to
     ? createElement(Link, { className, to }, children)

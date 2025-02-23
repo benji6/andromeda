@@ -1,5 +1,5 @@
 import { createElement } from "react";
-import { hashHistory, IndexRoute, Router, Route } from "react-router";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import store from "./store";
 import { navLastDirectionSet } from "./actions";
 import nav from "./constants/nav";
@@ -12,56 +12,98 @@ import Instrument from "./components/pages/Instrument";
 import KeyboardSettings from "./components/pages/KeyboardSettings";
 import Settings from "./components/pages/Settings";
 
+const handleRouteChange = (prevLocation, location) => {
+  const { lastDirection } = store.getState().nav;
+  const prevIndex = nav.findIndex(
+    ([pathname]) => pathname === prevLocation.pathname,
+  );
+  const nextIndex = nav.findIndex(
+    ([pathname]) => pathname === location.pathname,
+  );
+
+  if (nextIndex === prevIndex) return;
+
+  const direction = nextIndex > prevIndex ? "right" : "left";
+
+  if (direction !== lastDirection) {
+    store.dispatch(navLastDirectionSet(direction));
+  }
+};
+
 export default () =>
   createElement(
-    Router,
-    { history: hashHistory },
+    BrowserRouter,
+    null,
     createElement(
-      Route,
-      {
-        component: App,
-        onChange: (prevState, nextState) => {
-          const { lastDirection } = store.getState().nav;
-          const prevIndex = nav.findIndex(
-            ([pathname]) => pathname === prevState.location.pathname
-          );
-          const nextIndex = nav.findIndex(
-            ([pathname]) => pathname === nextState.location.pathname
-          );
-
-          if (nextIndex === prevIndex) return;
-
-          const direction = nextIndex > prevIndex ? "right" : "left";
-
-          if (direction !== lastDirection) {
-            store.dispatch(navLastDirectionSet(direction));
-          }
-        },
-        path: "/",
-      },
-      createElement(IndexRoute, { component: ControlPadPage }),
-      createElement(Route, { component: About, path: "/about" }),
-      createElement(Route, {
-        component: ControlPadPage,
-        path: "/controllers/control-pad",
-      }),
-      createElement(Route, {
-        component: ControlPadSettings,
-        path: "/controllers/control-pad/settings",
-      }),
-      createElement(Route, {
-        component: Effect,
-        path: "/plugins/effects/:name",
-      }),
-      createElement(Route, {
-        component: Instrument,
-        path: "/plugins/instruments/:name",
-      }),
-      createElement(Route, {
-        component: KeyboardSettings,
-        path: "/controllers/keyboard/settings",
-      }),
-      createElement(Route, { component: Settings, path: "/settings" }),
-      createElement(Route, { component: ControlPadPage, path: "/*" })
-    )
+      App,
+      null,
+      createElement(
+        Switch,
+        null,
+        createElement(Route, {
+          exact: true,
+          path: "/",
+          render: (props) => {
+            handleRouteChange(props.location, props.location);
+            return createElement(ControlPadPage, props);
+          },
+        }),
+        createElement(Route, {
+          path: "/about",
+          render: (props) => {
+            handleRouteChange(props.location, props.location);
+            return createElement(About, props);
+          },
+        }),
+        createElement(Route, {
+          path: "/controllers/control-pad",
+          render: (props) => {
+            handleRouteChange(props.location, props.location);
+            return createElement(ControlPadPage, props);
+          },
+        }),
+        createElement(Route, {
+          path: "/controllers/control-pad/settings",
+          render: (props) => {
+            handleRouteChange(props.location, props.location);
+            return createElement(ControlPadSettings, props);
+          },
+        }),
+        createElement(Route, {
+          path: "/plugins/effects/:name",
+          render: (props) => {
+            handleRouteChange(props.location, props.location);
+            return createElement(Effect, props);
+          },
+        }),
+        createElement(Route, {
+          path: "/plugins/instruments/:name",
+          render: (props) => {
+            handleRouteChange(props.location, props.location);
+            return createElement(Instrument, props);
+          },
+        }),
+        createElement(Route, {
+          path: "/controllers/keyboard/settings",
+          render: (props) => {
+            handleRouteChange(props.location, props.location);
+            return createElement(KeyboardSettings, props);
+          },
+        }),
+        createElement(Route, {
+          path: "/settings",
+          render: (props) => {
+            handleRouteChange(props.location, props.location);
+            return createElement(Settings, props);
+          },
+        }),
+        createElement(Route, {
+          path: "/*",
+          render: (props) => {
+            handleRouteChange(props.location, props.location);
+            return createElement(ControlPadPage, props);
+          },
+        }),
+      ),
+    ),
   );

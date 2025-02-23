@@ -1,16 +1,16 @@
 import { PropTypes } from "prop-types";
 import { createElement } from "react";
-import { Link } from "react-router";
+import { NavLink } from "react-router-dom";
 
 const HollowButton = ({ children, to }) =>
   createElement(
-    Link,
+    NavLink,
     {
       activeClassName: "HollowButton--active",
       className: "HollowButton",
       to,
     },
-    children
+    children,
   );
 
 HollowButton.propTypes = {
