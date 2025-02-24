@@ -2,12 +2,24 @@ import { Component, createElement } from "react";
 import Token from "./Token";
 import { eventRatiosAndCoords } from "../../../utils/dom";
 
+interface Props {
+  sideLength: number;
+  isTouched: boolean;
+  controlPadTouched: () => void;
+  inputStartHandler: (ratios: any) => void;
+  inputModifyHandler: (ratios: any) => void;
+  inputStopHandler: () => void;
+}
+
 let currentXYRatios = null;
 let controlPadElement = null;
 let mouseInputEnabled = false;
 let controlPadActive = false;
 
-export default class extends Component {
+export default class extends Component<Props> {
+  token: Token;
+  el: HTMLCanvasElement;
+
   componentDidMount() {
     this.token = new Token({
       gl: this.el.getContext("webgl"),
