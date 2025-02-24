@@ -5,7 +5,7 @@ import InputSelect from "../atoms/InputSelect";
 
 interface Props {
   defaultValue: string;
-  disabled: boolean;
+  disabled?: boolean;
   handleChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   label: string;
   options: { text: string; value: string }[];
