@@ -1,7 +1,11 @@
-import { PropTypes } from "prop-types";
 import { createElement } from "react";
 
-const LinkExternal = ({ children, href }) =>
+interface Props {
+  children: string;
+  href: string;
+}
+
+const LinkExternal = ({ children, href }: Props) =>
   createElement("a", {
     children,
     className: "LinkExternal",
@@ -9,10 +13,5 @@ const LinkExternal = ({ children, href }) =>
     rel: "noopener",
     target: "_blank",
   });
-
-LinkExternal.propTypes = {
-  children: PropTypes.string.isRequired,
-  href: PropTypes.string.isRequired,
-};
 
 export default LinkExternal;

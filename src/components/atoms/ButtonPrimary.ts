@@ -1,9 +1,15 @@
-import { PropTypes } from "prop-types";
 import { createElement } from "react";
 import { Link } from "react-router-dom";
 import { makeClassName } from "../../utils/dom";
 
-const ButtonPrimary = ({ children, onClick, small, to }) => {
+interface Props {
+  children: string;
+  onClick: () => void;
+  small: boolean;
+  to: string;
+}
+
+const ButtonPrimary = ({ children, onClick, small, to }: Props) => {
   const className = makeClassName(
     "ButtonPrimary",
     small && "ButtonPrimary--small",
@@ -11,13 +17,6 @@ const ButtonPrimary = ({ children, onClick, small, to }) => {
   return to
     ? createElement(Link, { className, to }, children)
     : createElement("a", { className, href: "#", onClick }, children);
-};
-
-ButtonPrimary.propTypes = {
-  children: PropTypes.string,
-  onClick: PropTypes.func,
-  small: PropTypes.bool,
-  to: PropTypes.string,
 };
 
 export default ButtonPrimary;
