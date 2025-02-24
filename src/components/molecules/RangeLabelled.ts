@@ -1,5 +1,14 @@
-import { PropTypes } from "prop-types";
 import { createElement } from "react";
+
+interface Props {
+  children: string;
+  max?: number;
+  min?: number;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  output?: number | string;
+  step?: number;
+  value: number;
+}
 
 const RangeLabelled = ({
   children,
@@ -9,7 +18,7 @@ const RangeLabelled = ({
   output,
   step,
   value,
-}) => {
+}: Props) => {
   if (output === undefined) output = value;
   return createElement(
     "label",
@@ -30,16 +39,6 @@ const RangeLabelled = ({
       value,
     }),
   );
-};
-
-RangeLabelled.propTypes = {
-  children: PropTypes.string.isRequired,
-  max: PropTypes.number,
-  min: PropTypes.number,
-  onChange: PropTypes.func.isRequired,
-  output: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  step: PropTypes.number,
-  value: PropTypes.number.isRequired,
 };
 
 export default RangeLabelled;

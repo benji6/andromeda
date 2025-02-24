@@ -1,8 +1,13 @@
-import { PropTypes } from "prop-types";
 import { createElement } from "react";
 import InputLabel from "../atoms/InputLabel";
 
-const CheckboxLabelled = ({ checked, onChange, children }) =>
+interface Props {
+  checked: boolean;
+  children: string;
+  onChange: () => void;
+}
+
+const CheckboxLabelled = ({ checked, onChange, children }: Props) =>
   createElement(
     "label",
     null,
@@ -17,11 +22,5 @@ const CheckboxLabelled = ({ checked, onChange, children }) =>
       }),
     ),
   );
-
-CheckboxLabelled.propTypes = {
-  checked: PropTypes.bool.isRequired,
-  children: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
 
 export default CheckboxLabelled;
