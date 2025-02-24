@@ -1,5 +1,5 @@
 import { createElement } from "react";
-import ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom";
 import { createStore, connect } from "st88";
 import ControlModule, { Range } from "../../components/organisms/ControlModule";
 
@@ -9,6 +9,8 @@ const panNodes = new WeakMap();
 const stores = new WeakMap();
 
 export default class {
+  destination: AudioDestinationNode;
+
   constructor({ audioContext }) {
     const dynamicsCompressorNode = audioContext.createDynamicsCompressor();
     const gainNode = audioContext.createGain();
