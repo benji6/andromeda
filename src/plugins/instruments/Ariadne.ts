@@ -1,5 +1,5 @@
 import { createElement } from "react";
-import ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom";
 import { createStore, connect } from "st88";
 import ControlModule, {
   Range,

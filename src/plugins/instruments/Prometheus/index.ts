@@ -1,4 +1,4 @@
-import ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom";
 import { createStore, connect } from "st88";
 import createVirtualAudioGraph from "virtual-audio-graph";
 import Prometheus from "./components/Prometheus";

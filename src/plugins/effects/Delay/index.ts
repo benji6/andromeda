@@ -1,5 +1,5 @@
 import { createElement } from "react";
-import ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom";
 import { createStore, connect } from "st88";
 import createVirtualAudioGraph, {
   biquadFilter,
@@ -35,6 +35,8 @@ const updateAudioGraph =
     });
 
 export default class {
+  destination: AudioDestinationNode;
+
   constructor({ audioContext }) {
     const output = audioContext.createGain();
     const virtualAudioGraph = createVirtualAudioGraph({ audioContext, output });
