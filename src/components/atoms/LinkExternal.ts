@@ -1,7 +1,7 @@
 import { createElement } from "react";
 
 interface Props {
-  children: string;
+  children?: string;
   href: string;
 }
 

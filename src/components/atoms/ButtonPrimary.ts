@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 import { makeClassName } from "../../utils/dom";
 
 interface Props {
-  children: string;
-  onClick: () => void;
-  small: boolean;
+  children?: string;
+  onClick?: () => void;
+  small?: boolean;
   to: string;
 }
 
