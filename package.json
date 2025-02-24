@@ -31,7 +31,6 @@
   "homepage": "https://github.com/benji6/andromeda",
   "dependencies": {
     "capitalize": "^2.0.3",
-    "prop-types": "^15.6.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.5",
