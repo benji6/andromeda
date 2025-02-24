@@ -1,8 +1,12 @@
-import { PropTypes } from "prop-types";
 import { createElement } from "react";
 import { NavLink } from "react-router-dom";
 
-const HollowButton = ({ children, to }) =>
+interface Props {
+  children: string;
+  to: string;
+}
+
+const HollowButton = ({ children, to }: Props) =>
   createElement(
     NavLink,
     {
@@ -12,10 +16,5 @@ const HollowButton = ({ children, to }) =>
     },
     children,
   );
-
-HollowButton.propTypes = {
-  children: PropTypes.string,
-  to: PropTypes.string,
-};
 
 export default HollowButton;

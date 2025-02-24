@@ -1,14 +1,13 @@
-import { PropTypes } from "prop-types";
 import { createElement } from "react";
 
-const WelcomeMessage = ({ children }) =>
+interface Props {
+  children: string;
+}
+
+const WelcomeMessage = ({ children }: Props) =>
   createElement("div", {
     children,
     className: "WelcomeMessage fade-out",
   });
-
-WelcomeMessage.propTypes = {
-  children: PropTypes.string.isRequired,
-};
 
 export default WelcomeMessage;

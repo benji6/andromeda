@@ -1,7 +1,13 @@
-import { PropTypes } from "prop-types";
 import { createElement } from "react";
 
-const InputSelect = ({ disabled, onChange, options, value }) =>
+interface Props {
+  disabled: boolean;
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  options: { text: string; value: string }[];
+  value: string;
+}
+
+const InputSelect = ({ disabled, onChange, options, value }: Props) =>
   createElement(
     "select",
     {
@@ -14,12 +20,5 @@ const InputSelect = ({ disabled, onChange, options, value }) =>
       createElement("option", { key: i, value }, text),
     ),
   );
-
-InputSelect.propTypes = {
-  disabled: PropTypes.bool,
-  onChange: PropTypes.func.isRequired,
-  options: PropTypes.array.isRequired,
-  value: PropTypes.string.isRequired,
-};
 
 export default InputSelect;
