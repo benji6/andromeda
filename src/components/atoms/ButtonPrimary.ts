@@ -6,7 +6,7 @@ interface Props {
   children?: string;
   onClick?: () => void;
   small?: boolean;
-  to: string;
+  to?: string;
 }
 
 const ButtonPrimary = ({ children, onClick, small, to }: Props) => {

@@ -4,7 +4,7 @@ import ButtonSecondary from "../atoms/ButtonSecondary";
 
 interface Props {
   defaultValue: string;
-  disabled: boolean;
+  disabled?: boolean;
   handleChange: (event: ChangeEvent<HTMLSelectElement>) => void;
   label: string;
   options: { text: string; value: string }[];
