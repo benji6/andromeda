@@ -3,7 +3,6 @@ import "./constants/timings.css";
 import "./utils/keyframes.css";
 import "./utils/globals.css";
 
-import "./components/atoms/ButtonIcon.css";
 import "./components/atoms/ButtonPrimary.css";
 import "./components/atoms/ButtonSecondary.css";
 import "./components/atoms/HollowButton.css";
