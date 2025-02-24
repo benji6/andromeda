@@ -3,8 +3,8 @@ import InputLabel from "../atoms/InputLabel";
 
 interface Props {
   checked: boolean;
-  children: string;
-  onChange: () => void;
+  children?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const CheckboxLabelled = ({ checked, onChange, children }: Props) =>

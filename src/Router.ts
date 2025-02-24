@@ -73,14 +73,16 @@ export default () =>
           path: "/plugins/effects/:name",
           render: (props) => {
             handleRouteChange(props.location, props.location);
-            return createElement(Effect, props);
+            // TODO fix any
+            return createElement(Effect, props as any);
           },
         }),
         createElement(Route, {
           path: "/plugins/instruments/:name",
           render: (props) => {
             handleRouteChange(props.location, props.location);
-            return createElement(Instrument, props);
+            // TODO fix any
+            return createElement(Instrument, props as any);
           },
         }),
         createElement(Route, {

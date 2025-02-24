@@ -1,20 +1,21 @@
 import { createElement } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import { effectInstance } from "../../utils/derivedData";
-import ButtonPrimary from "../atoms/ButtonPrimary";
+import { instrumentInstance } from "../../utils/derivedData";
 import PluginMount from "../atoms/PluginMount";
+import ButtonPrimary from "../atoms/ButtonPrimary";
 
 const mapStateToProps = ({ plugins }, { params }) => ({ params, plugins });
 
-const Effect = ({ params, plugins, router }) =>
+const Instrument = ({ params, plugins, router }) =>
   createElement(
     "div",
-    { className: "Effect" },
+    { className: "Instrument" },
     createElement(PluginMount, {
-      instance: effectInstance(params.name, plugins),
+      instance: instrumentInstance(params.name, plugins),
     }),
     createElement(ButtonPrimary, { onClick: router.goBack }, "OK"),
   );
 
-export default connect(mapStateToProps)(withRouter(Effect));
+// TODO fix any
+export default connect(mapStateToProps)(withRouter(Instrument as any));

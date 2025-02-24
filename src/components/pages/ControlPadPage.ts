@@ -11,9 +11,9 @@ import { makeClassName } from "../../utils/dom";
 
 const controlPadId = "controlPad";
 
-let currentlyPlayingPitch = null;
+let currentlyPlayingPitch: number = null;
 
-const calculatePitch = (ratio) => {
+const calculatePitch = (ratio: number) => {
   const scale = scales[store.getState().settings.selectedScale];
   const { length } = scale;
   const i = Math.floor((length + 1) * ratio);
@@ -70,7 +70,7 @@ export default connect(
         createElement(ControlPad, {
           controlPadTouched,
           inputModifyHandler({ xRatio, yRatio }) {
-            const pitch = noScale
+            const pitch: number = noScale
               ? 12 * range * xRatio
               : calculatePitch(range * xRatio);
             const instance = instrumentInstance(instrument, plugins);
