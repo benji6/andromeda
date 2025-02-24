@@ -9,7 +9,6 @@ import "./components/atoms/HollowButton.css";
 import "./components/atoms/InputLabel.css";
 import "./components/atoms/InputSelect.css";
 import "./components/atoms/LinkExternal.css";
-import "./components/atoms/WelcomeMessage.css";
 import "./components/molecules/CheckboxLabelled.css";
 import "./components/molecules/RangeLabelled.css";
 import "./components/organisms/ControlModule.css";

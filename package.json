@@ -1,6 +1,5 @@
 {
   "name": "andromeda",
-  "version": "0.45.4",
   "description": "Make music in your browser!",
   "scripts": {
     "build": "vite build src --emptyOutDir --outDir ../dist && touch dist/robots.txt",
