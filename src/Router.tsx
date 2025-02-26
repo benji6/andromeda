@@ -11,6 +11,7 @@ import Effect from "./components/pages/Effect";
 import Instrument from "./components/pages/Instrument";
 import KeyboardSettings from "./components/pages/KeyboardSettings";
 import Settings from "./components/pages/Settings";
+import RedirectHome from "./components/shared/RedirectHome";
 
 const handleRouteChange = (prevLocation, location) => {
   const { lastDirection } = store.getState().nav;
@@ -57,7 +58,7 @@ const Router = () => (
             element={<KeyboardSettings />}
           />
           <Route path="/settings" element={<Settings />} />
-          <Route path="/*" element={<ControlPadPage />} />
+          <Route path="/*" element={<RedirectHome />} />
         </Routes>
       </App>
     </RouteChangeHandler>
