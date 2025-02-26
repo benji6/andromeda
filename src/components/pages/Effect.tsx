@@ -1,20 +1,22 @@
 import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { effectInstance } from "../../utils/derivedData";
 import ButtonPrimary from "../atoms/ButtonPrimary";
 import PluginMount from "../atoms/PluginMount";
 
-const mapStateToProps = ({ plugins }, { params }) => ({ params, plugins });
+const mapStateToProps = ({ plugins }): Props => ({
+  plugins,
+});
 
 // TODO fix these types
 interface Props {
-  params: { name: string };
   plugins: any;
-  router: any;
 }
 
-const Effect = ({ params, plugins }: Props) => {
+const Effect = ({ plugins }: Props) => {
   const navigate = useNavigate();
+  const params = useParams();
+
   return (
     <div className="Effect">
       <PluginMount instance={effectInstance(params.name, plugins)} />
@@ -23,5 +25,4 @@ const Effect = ({ params, plugins }: Props) => {
   );
 };
 
-// TODO fix any
-export default connect(mapStateToProps)(Effect as any);
+export default connect(mapStateToProps)(Effect);
