@@ -1,13 +1,15 @@
 import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { instrumentInstance } from "../../utils/derivedData";
 import PluginMount from "../atoms/PluginMount";
 import ButtonPrimary from "../atoms/ButtonPrimary";
 
-const mapStateToProps = ({ plugins }, { params }) => ({ params, plugins });
+const mapStateToProps = ({ plugins }) => ({ plugins });
 
-const Instrument = ({ params, plugins }) => {
+const Instrument = ({ plugins }) => {
   const navigate = useNavigate();
+  const params = useParams();
+
   return (
     <div className="Instrument">
       <PluginMount instance={instrumentInstance(params.name, plugins)} />
@@ -16,5 +18,4 @@ const Instrument = ({ params, plugins }) => {
   );
 };
 
-// TODO fix any
 export default connect(mapStateToProps)(Instrument);
