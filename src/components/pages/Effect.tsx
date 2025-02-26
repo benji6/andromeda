@@ -1,4 +1,3 @@
-import { createElement } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { effectInstance } from "../../utils/derivedData";
@@ -16,13 +15,11 @@ interface Props {
 
 const Effect = ({ params, plugins }: Props) => {
   const navigate = useNavigate();
-  return createElement(
-    "div",
-    { className: "Effect" },
-    createElement(PluginMount, {
-      instance: effectInstance(params.name, plugins),
-    }),
-    createElement(ButtonPrimary, { onClick: () => navigate(-1) }, "OK"),
+  return (
+    <div className="Effect">
+      <PluginMount instance={effectInstance(params.name, plugins)} />
+      <ButtonPrimary onClick={() => navigate(-1)}>OK</ButtonPrimary>
+    </div>
   );
 };
 

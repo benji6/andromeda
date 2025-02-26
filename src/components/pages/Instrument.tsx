@@ -1,4 +1,3 @@
-import { createElement } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { instrumentInstance } from "../../utils/derivedData";
@@ -9,13 +8,11 @@ const mapStateToProps = ({ plugins }, { params }) => ({ params, plugins });
 
 const Instrument = ({ params, plugins }) => {
   const navigate = useNavigate();
-  return createElement(
-    "div",
-    { className: "Instrument" },
-    createElement(PluginMount, {
-      instance: instrumentInstance(params.name, plugins),
-    }),
-    createElement(ButtonPrimary, { onClick: () => navigate(-1) }, "OK"),
+  return (
+    <div className="Instrument">
+      <PluginMount instance={instrumentInstance(params.name, plugins)} />
+      <ButtonPrimary onClick={() => navigate(-1)}>OK</ButtonPrimary>
+    </div>
   );
 };
 
