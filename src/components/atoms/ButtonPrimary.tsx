@@ -1,4 +1,4 @@
-import { createElement } from "react";
+import * as React from "react";
 import { Link } from "react-router-dom";
 import { makeClassName } from "../../utils/dom";
 
@@ -14,9 +14,15 @@ const ButtonPrimary = ({ children, onClick, small, to }: Props) => {
     "ButtonPrimary",
     small && "ButtonPrimary--small",
   );
-  return to
-    ? createElement(Link, { className, to }, children)
-    : createElement("a", { className, href: "#", onClick }, children);
+  return to ? (
+    <Link className={className} to={to}>
+      {children}
+    </Link>
+  ) : (
+    <a className={className} href="#" onClick={onClick}>
+      {children}
+    </a>
+  );
 };
 
 export default ButtonPrimary;
