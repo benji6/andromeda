@@ -1,4 +1,3 @@
-import { createElement } from "react";
 import { createStore, connect } from "st88";
 import ControlModule, {
   Range,
@@ -169,73 +168,66 @@ export default class {
           modulatorDetune,
           modulatorOscType,
           modulatorRatio,
-        }) =>
-          createElement(
-            "div",
-            { style: { textAlign: "center" } },
-            createElement("h2", null, "Ariadne"),
-            createElement(
-              ControlModule,
-              null,
-              createElement(Range, {
-                defaultValue: masterGain,
-                label: "Gain",
-                max: 1.25,
-                onInput: setPropFromRangeEvent("masterGain"),
-              }),
-              createElement(Range, {
-                defaultValue: masterPan,
-                label: "Pan",
-                min: -1,
-                onInput: setPropFromRangeEvent("masterPan"),
-              }),
-              createElement(
-                Select,
-                {
-                  defaultValue: carrierOscType,
-                  label: "Carrier wave",
-                  onInput: setPropFromSelectEvent("carrierOscType"),
-                },
-                createElement("option", { value: "sawtooth" }, "Sawtooth"),
-                createElement("option", { value: "sine" }, "Sine"),
-                createElement("option", { value: "square" }, "Square"),
-                createElement("option", { value: "triangle" }, "Triangle"),
-              ),
-              createElement(
-                Select,
-                {
-                  defaultValue: modulatorOscType,
-                  label: "Modulator wave",
-                  onInput: setPropFromSelectEvent("modulatorOscType"),
-                },
-                createElement("option", { value: "sawtooth" }, "Sawtooth"),
-                createElement("option", { value: "sine" }, "Sine"),
-                createElement("option", { value: "square" }, "Square"),
-                createElement("option", { value: "triangle" }, "Triangle"),
-              ),
-              createElement(Range, {
-                defaultValue: carrierDetune,
-                label: "Carrier detune",
-                max: 32,
-                min: -32,
-                onInput: setPropFromRangeEvent("carrierDetune"),
-              }),
-              createElement(Range, {
-                defaultValue: modulatorRatio,
-                label: "Modulator freq",
-                max: 8,
-                min: 0.1,
-                onInput: setPropFromRangeEvent("modulatorRatio"),
-              }),
-              createElement(Range, {
-                defaultValue: modulatorDetune,
-                label: "Modulator detune",
-                max: 128,
-                min: -128,
-                onInput: setPropFromRangeEvent("modulatorDetune"),
-              }),
-            ),
-          ),
+        }) => (
+          <div style={{ textAlign: "center" }}>
+            <h2>Ariadne</h2>
+            <ControlModule>
+              <Range
+                defaultValue={masterGain}
+                label="Gain"
+                max={1.25}
+                onInput={setPropFromRangeEvent("masterGain")}
+              />
+              <Range
+                defaultValue={masterPan}
+                label="Pan"
+                min={-1}
+                onInput={setPropFromRangeEvent("masterPan")}
+              />
+              <Select
+                defaultValue={carrierOscType}
+                label="Carrier wave"
+                onInput={setPropFromSelectEvent("carrierOscType")}
+              >
+                <option value="sawtooth">Sawtooth</option>
+                <option value="sine">Sine</option>
+                <option value="square">Square</option>
+                <option value="triangle">Triangle</option>
+              </Select>
+              <Select
+                defaultValue={modulatorOscType}
+                label="Modulator wave"
+                onInput={setPropFromSelectEvent("modulatorOscType")}
+              >
+                <option value="sawtooth">Sawtooth</option>
+                <option value="sine">Sine</option>
+                <option value="square">Square</option>
+                <option value="triangle">Triangle</option>
+              </Select>
+              <Range
+                defaultValue={carrierDetune}
+                label="Carrier detune"
+                max={32}
+                min={-32}
+                onInput={setPropFromRangeEvent("carrierDetune")}
+              />
+              <Range
+                defaultValue={modulatorRatio}
+                label="Modulator freq"
+                max={8}
+                min={0.1}
+                onInput={setPropFromRangeEvent("modulatorRatio")}
+              />
+              <Range
+                defaultValue={modulatorDetune}
+                label="Modulator detune"
+                max={128}
+                min={-128}
+                onInput={setPropFromRangeEvent("modulatorDetune")}
+              />
+            </ControlModule>
+          </div>
+        ),
       ),
     );
   }

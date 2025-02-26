@@ -1,4 +1,3 @@
-import { createElement } from "react";
 import { createStore, connect } from "st88";
 import createVirtualAudioGraph, {
   biquadFilter,
@@ -85,64 +84,63 @@ export default class {
           lowCut,
           pingPong,
           wetLevel,
-        }) =>
-          createElement(
-            "div",
-            { style: { textAlign: "center" } },
-            createElement("h2", null, "Delay"),
-            createElement(
-              ControlModule,
-              null,
-              createElement(CheckBox, {
-                defaultChecked: pingPong,
-                label: "Ping pong",
-                onChange: (e) => setProp("pingPong", e.target.checked),
-              }),
-              createElement(Range, {
-                defaultValue: dryLevel,
-                label: "Dry level",
-                max: "1.5",
-                onInput: setPropFromRangeEvent("dryLevel"),
-              }),
-              createElement(Range, {
-                defaultValue: wetLevel,
-                label: "Wet level",
-                max: "1.5",
-                onInput: setPropFromRangeEvent("wetLevel"),
-              }),
-              createElement(Range, {
-                defaultValue: feedback,
-                label: "Feedback",
-                max: "1.2",
-                onInput: setPropFromRangeEvent("feedback"),
-              }),
-              createElement(Range, {
-                defaultValue: delayTime,
-                label: "Delay time",
-                max: maxDelayTime,
-                min: 0.01,
-                onInput: setPropFromRangeEvent("delayTime"),
-              }),
-              createElement(Range, {
-                defaultValue: Math.log(lowCut),
-                displayValue: lowCut.toFixed(2),
-                label: "Low cutoff",
-                max: Math.log(20000),
-                min: Math.log(20),
-                onInput: (e) =>
-                  setProp("lowCut", Math.exp(Number(e.target.value))),
-              }),
-              createElement(Range, {
-                defaultValue: Math.log(highCut),
-                displayValue: highCut.toFixed(2),
-                label: "High cutoff",
-                max: Math.log(20000),
-                min: Math.log(20),
-                onInput: (e) =>
-                  setProp("highCut", Math.exp(Number(e.target.value))),
-              }),
-            ),
-          ),
+        }) => (
+          <div style={{ textAlign: "center" }}>
+            <h2>Delay</h2>
+            <ControlModule>
+              <CheckBox
+                defaultChecked={pingPong}
+                label="Ping pong"
+                onChange={(e) => setProp("pingPong", e.target.checked)}
+              />
+              <Range
+                defaultValue={dryLevel}
+                label="Dry level"
+                max="1.5"
+                onInput={setPropFromRangeEvent("dryLevel")}
+              />
+              <Range
+                defaultValue={wetLevel}
+                label="Wet level"
+                max="1.5"
+                onInput={setPropFromRangeEvent("wetLevel")}
+              />
+              <Range
+                defaultValue={feedback}
+                label="Feedback"
+                max="1.2"
+                onInput={setPropFromRangeEvent("feedback")}
+              />
+              <Range
+                defaultValue={delayTime}
+                label="Delay time"
+                max={maxDelayTime}
+                min={0.01}
+                onInput={setPropFromRangeEvent("delayTime")}
+              />
+              <Range
+                defaultValue={Math.log(lowCut)}
+                displayValue={lowCut.toFixed(2)}
+                label="Low cutoff"
+                max={Math.log(20000)}
+                min={Math.log(20)}
+                onInput={(e) =>
+                  setProp("lowCut", Math.exp(Number(e.target.value)))
+                }
+              />
+              <Range
+                defaultValue={Math.log(highCut)}
+                displayValue={highCut.toFixed(2)}
+                label="High cutoff"
+                max={Math.log(20000)}
+                min={Math.log(20)}
+                onInput={(e) =>
+                  setProp("highCut", Math.exp(Number(e.target.value)))
+                }
+              />
+            </ControlModule>
+          </div>
+        ),
       ),
     );
   }
