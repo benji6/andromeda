@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Component } from "react";
 import Token from "./Token";
 import { eventRatiosAndCoords } from "../../../utils/dom";
