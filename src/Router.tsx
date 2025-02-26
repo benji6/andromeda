@@ -50,7 +50,6 @@ const Router = () => (
             path="/controllers/control-pad/settings"
             element={<ControlPadSettings />}
           />
-          <Route path="/controllers/control-pad" element={<ControlPadPage />} />
           <Route path="/plugins/effects/:name" element={<Effect />} />
           <Route path="/plugins/instruments/:name" element={<Instrument />} />
           <Route

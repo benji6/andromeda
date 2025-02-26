@@ -1,5 +1,5 @@
 export default [
-  ["/controllers/control-pad", "Pad"],
+  ["/", "Pad"],
   ["/settings", "🔧"],
   ["/about", "?"],
 ] as const;
