@@ -72,7 +72,7 @@ const ControlPadSettings = ({ controlPad, dispatch, plugins }: Props) => (
     </CheckboxLabelled>
     <div>
       <InputLabel />
-      <ButtonPrimary to="/controllers/control-pad">OK</ButtonPrimary>
+      <ButtonPrimary to="/">OK</ButtonPrimary>
     </div>
   </div>
 );
