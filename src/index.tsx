@@ -24,7 +24,6 @@ import "./components/pages/Instrument.css";
 import "./components/pages/KeyboardSettings.css";
 import "./components/pages/Settings/style.css";
 
-import * as React from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import "./keyboard";

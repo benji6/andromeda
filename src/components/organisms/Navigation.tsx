@@ -1,4 +1,3 @@
-import * as React from "react";
 import HollowButton from "../atoms/HollowButton";
 import nav from "../../constants/nav";
 

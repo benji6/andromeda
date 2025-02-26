@@ -1,5 +1,3 @@
-import * as React from "react";
-
 const Input = ({ children, label }) => (
   <label className="ControlModule__Input">
     <span className="ControlModule__Input__Label">{label}</span>
