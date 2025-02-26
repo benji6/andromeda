@@ -1,7 +1,7 @@
 import { createElement } from "react";
-import * as ReactDOM from "react-dom";
 import { createStore, connect } from "st88";
 import ControlModule, { Range } from "../../components/organisms/ControlModule";
+import { createRoot } from "react-dom/client";
 
 const dynamicsCompressorNodes = new WeakMap();
 const gainNodes = new WeakMap();
@@ -60,7 +60,7 @@ export default class {
     const setProp = (key, val) =>
       store.dispatch((state) => Object.assign({}, state, { [key]: val }));
 
-    ReactDOM.render(
+    createRoot(containerEl).render(
       connect(store)(({ attack, gain, knee, pan, ratio, release, threshold }) =>
         createElement(
           "div",
@@ -124,7 +124,6 @@ export default class {
           ),
         ),
       ),
-      containerEl,
     );
   }
 }

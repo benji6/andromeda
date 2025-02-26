@@ -1,5 +1,4 @@
 import { createElement } from "react";
-import * as ReactDOM from "react-dom";
 import { createStore, connect } from "st88";
 import createVirtualAudioGraph, {
   biquadFilter,
@@ -11,6 +10,7 @@ import ControlModule, {
   CheckBox,
   Range,
 } from "../../../components/organisms/ControlModule";
+import { createRoot } from "react-dom/client";
 
 const maxDelayTime = 1.2;
 
@@ -75,7 +75,7 @@ export default class {
         }),
       );
 
-    ReactDOM.render(
+    createRoot(containerEl).render(
       connect(store)(
         ({
           delayTime,
@@ -144,7 +144,6 @@ export default class {
             ),
           ),
       ),
-      containerEl,
     );
   }
 }

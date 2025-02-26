@@ -1,6 +1,6 @@
 import { createElement } from "react";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { effectInstance } from "../../utils/derivedData";
 import ButtonPrimary from "../atoms/ButtonPrimary";
 import PluginMount from "../atoms/PluginMount";
@@ -14,15 +14,17 @@ interface Props {
   router: any;
 }
 
-const Effect = ({ params, plugins, router }: Props) =>
-  createElement(
+const Effect = ({ params, plugins }: Props) => {
+  const navigate = useNavigate();
+  return createElement(
     "div",
     { className: "Effect" },
     createElement(PluginMount, {
       instance: effectInstance(params.name, plugins),
     }),
-    createElement(ButtonPrimary, { onClick: router.goBack }, "OK"),
+    createElement(ButtonPrimary, { onClick: () => navigate(-1) }, "OK"),
   );
+};
 
 // TODO fix any
-export default connect(mapStateToProps)(withRouter(Effect as any));
+export default connect(mapStateToProps)(Effect as any);

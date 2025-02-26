@@ -1,5 +1,4 @@
 import { createElement } from "react";
-import * as ReactDOM from "react-dom";
 import { createStore, connect } from "st88";
 import ControlModule, {
   Range,
@@ -11,6 +10,7 @@ import createVirtualAudioGraph, {
   oscillator,
   stereoPanner,
 } from "virtual-audio-graph";
+import { createRoot } from "react-dom/client";
 
 const audioContexts = new WeakMap();
 const notes = new WeakMap();
@@ -159,7 +159,7 @@ export default class {
         Object.assign({}, state, { [key]: e.target.value }),
       );
 
-    ReactDOM.render(
+    createRoot(containerEl).render(
       connect(store)(
         ({
           carrierDetune,
@@ -237,7 +237,6 @@ export default class {
             ),
           ),
       ),
-      containerEl,
     );
   }
 }
