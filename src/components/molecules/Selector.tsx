@@ -1,4 +1,3 @@
-import { createElement } from "react";
 import { capitalizeFirst } from "../../utils/helpers";
 import InputLabel from "../atoms/InputLabel";
 import InputSelect from "../atoms/InputSelect";
@@ -18,15 +17,15 @@ export default function Selector({
   label,
   options,
 }: Props) {
-  return createElement(
-    "label",
-    { className: "Selector" },
-    createElement(InputLabel, null, capitalizeFirst(label)),
-    createElement(InputSelect, {
-      disabled,
-      onChange: handleChange,
-      options,
-      value: defaultValue,
-    }),
+  return (
+    <label className="Selector">
+      <InputLabel>{capitalizeFirst(label)}</InputLabel>
+      <InputSelect
+        disabled={disabled}
+        onChange={handleChange}
+        options={options}
+        value={defaultValue}
+      />
+    </label>
   );
 }

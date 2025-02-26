@@ -1,4 +1,4 @@
-import { ChangeEvent, createElement } from "react";
+import { ChangeEvent } from "react";
 import Selector from "./Selector";
 import ButtonSecondary from "../atoms/ButtonSecondary";
 
@@ -11,14 +11,12 @@ interface Props {
 }
 
 export default function InstrumentSelector(props: Props) {
-  return createElement(
-    "div",
-    null,
-    createElement(Selector, props),
-    createElement(
-      ButtonSecondary,
-      { to: `/plugins/instruments/${props.defaultValue}` },
-      "edit",
-    ),
+  return (
+    <div>
+      <Selector {...props} />
+      <ButtonSecondary to={`/plugins/instruments/${props.defaultValue}`}>
+        edit
+      </ButtonSecondary>
+    </div>
   );
 }
