@@ -1,4 +1,5 @@
-import { Component, createElement } from "react";
+import * as React from "react";
+import { Component } from "react";
 import Token from "./Token";
 import { eventRatiosAndCoords } from "../../../utils/dom";
 
@@ -63,23 +64,20 @@ export default class extends Component<Props> {
 
   render() {
     const { sideLength } = this.props;
-    return createElement(
-      "div",
-      { className: "ControlPad" },
-      !this.props.isTouched &&
-        createElement(
-          "div",
-          {
-            className: "ControlPad__Message",
-          },
-          "TOUCH / CLICK TO PLAY",
-        ),
-      createElement("canvas", {
-        className: "ControlPad__Canvas",
-        height: sideLength,
-        ref: (el) => (this.el = el),
-        width: sideLength,
-      }),
+    return (
+      <div className="ControlPad">
+        {!this.props.isTouched && (
+          <div className="ControlPad__Message">TOUCH / CLICK TO PLAY</div>
+        )}
+        <canvas
+          className="ControlPad__Canvas"
+          height={sideLength}
+          ref={(el) => {
+            this.el = el;
+          }}
+          width={sideLength}
+        />
+      </div>
     );
   }
 }

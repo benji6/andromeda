@@ -25,7 +25,7 @@ import "./components/pages/KeyboardSettings.css";
 import "./components/pages/Settings/style.css";
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import "./keyboard";
 import store from "./store";
@@ -48,9 +48,8 @@ resizeHandler();
 
 addEventListener("resize", resizeHandler);
 
-ReactDOM.render(
+createRoot(document.getElementById("app")).render(
   <Provider store={store}>
     <Router />
   </Provider>,
-  document.getElementById("app"),
 );

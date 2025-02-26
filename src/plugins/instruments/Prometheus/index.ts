@@ -1,9 +1,9 @@
-import * as ReactDOM from "react-dom";
 import { createStore, connect } from "st88";
 import createVirtualAudioGraph from "virtual-audio-graph";
 import Prometheus from "./components/Prometheus";
 import notesToGraph from "./notesToGraph";
 import defaultState from "./defaultState";
+import { createRoot } from "react-dom/client";
 
 const audioContexts = new WeakMap();
 const stores = new WeakMap();
@@ -116,6 +116,6 @@ export default class {
         ),
     );
 
-    ReactDOM.render(connect(store)(Prometheus), containerEl);
+    createRoot(containerEl).render(connect(store)(Prometheus));
   }
 }

@@ -10,8 +10,8 @@ const HollowButton = ({ children, to }: Props) =>
   createElement(
     NavLink,
     {
-      activeClassName: "HollowButton--active",
-      className: "HollowButton",
+      className: ({ isActive }) =>
+        `HollowButton${isActive ? " HollowButton--active" : ""}`,
       to,
     },
     children,
