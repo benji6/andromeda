@@ -34,7 +34,7 @@ const updateAudioGraph =
     });
 
 export default class {
-  destination: AudioDestinationNode;
+  destination: AudioNode;
 
   constructor({ audioContext }) {
     const output = audioContext.createGain();
@@ -55,7 +55,9 @@ export default class {
     store.dispatch((x) => x);
 
     outputs.set(this, output);
-    this.destination = virtualAudioGraph.getAudioNodeById("input");
+    const destination = virtualAudioGraph.getAudioNodeById("input");
+    if (!destination) throw new Error("Node not found");
+    this.destination = destination;
   }
   connect(destination) {
     outputs.get(this).connect(destination);
