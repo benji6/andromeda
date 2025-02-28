@@ -3,19 +3,20 @@ import {
   createNode,
   gain as gainNode,
   oscillator,
+  OUTPUT,
   stereoPanner,
 } from "virtual-audio-graph";
 import frequencyToPitch from "../../../audioHelpers/frequencyToPitch";
 import pitchToFrequency from "../../../audioHelpers/pitchToFrequency";
 
 const lfoNode = createNode(({ frequency, gain, type }) => ({
-  0: gainNode("output", { gain }),
+  0: gainNode(OUTPUT, { gain }),
   1: oscillator(0, { frequency, type }),
 }));
 
 const osc = createNode(
   ({ detune, frequency, gain, pan, pitch, startTime, stopTime, type }) => ({
-    0: gainNode("output", { gain }),
+    0: gainNode(OUTPUT, { gain }),
     1: stereoPanner(0, { pan }),
     2: oscillator(1, {
       detune,
@@ -78,7 +79,7 @@ export default (
     {
       filter: biquadFilter("masterPan", filter),
       lfo: lfoNode({ destination: "frequency", key: "filter" }, lfo),
-      masterGain: gainNode("output", { gain: master.gain }),
+      masterGain: gainNode(OUTPUT, { gain: master.gain }),
       masterPan: stereoPanner("masterGain", { pan: master.pan }),
     },
   );

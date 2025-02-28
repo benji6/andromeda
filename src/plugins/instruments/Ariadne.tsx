@@ -7,6 +7,7 @@ import createVirtualAudioGraph, {
   createNode,
   gain as gainNode,
   oscillator,
+  OUTPUT,
   stereoPanner,
 } from "virtual-audio-graph";
 import { createRoot } from "react-dom/client";
@@ -47,7 +48,7 @@ const oscBank = createNode(
       stopTime,
       type: modulatorOscType,
     }),
-    masterGain: gainNode(["output"], { gain: masterGain }),
+    masterGain: gainNode([OUTPUT], { gain: masterGain }),
     masterPan: stereoPanner(["masterGain"], { pan: masterPan }),
   }),
 );
@@ -67,7 +68,7 @@ const notesToGraph = (
   notes.reduce(
     (acc, { frequency, gain, id, startTime, stopTime }) =>
       Object.assign({}, acc, {
-        [id]: oscBank("output", {
+        [id]: oscBank(OUTPUT, {
           carrierDetune,
           carrierOscType,
           frequency,

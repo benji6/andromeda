@@ -3,6 +3,7 @@ import createVirtualAudioGraph, {
   biquadFilter,
   delay,
   gain,
+  OUTPUT,
   stereoPanner,
 } from "virtual-audio-graph";
 import ControlModule, {
@@ -20,7 +21,7 @@ const updateAudioGraph =
   (virtualAudioGraph) =>
   ({ delayTime, dryLevel, feedback, highCut, lowCut, pingPong, wetLevel }) =>
     virtualAudioGraph.update({
-      0: gain("output", { gain: wetLevel }),
+      0: gain(OUTPUT, { gain: wetLevel }),
       1: stereoPanner(0, { pan: -1 }),
       2: stereoPanner(0, { pan: 1 }),
       3: delay([2, 8], { delayTime, maxDelayTime }),
@@ -29,7 +30,7 @@ const updateAudioGraph =
       6: biquadFilter(5, { frequency: highCut }),
       7: biquadFilter(6, { frequency: lowCut, type: "highpass" }),
       8: gain(7, { gain: feedback }),
-      9: gain("output", { gain: dryLevel }),
+      9: gain(OUTPUT, { gain: dryLevel }),
       input: gain([8, 9], { gain: 1 }, "input"),
     });
 
