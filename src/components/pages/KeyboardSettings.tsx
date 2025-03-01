@@ -1,77 +1,76 @@
-import { connect } from "react-redux";
-import { controllableInstrumentInstanceNames } from "../../utils/derivedData";
 import InstrumentSelector from "../molecules/InstrumentSelector";
-import {
-  keyboardMonophonicSet,
-  keyboardInstrumentSet,
-  keyboardOctaveSet,
-  keyboardVolumeSet,
-} from "../../actions";
 import ButtonPrimary from "../atoms/ButtonPrimary";
 import InputLabel from "../atoms/InputLabel";
 import CheckboxLabelled from "../molecules/CheckboxLabelled";
 import RangeLabelled from "../molecules/RangeLabelled";
 import { capitalizeWords } from "../../utils/helpers";
+import { useDispatch, useSelector } from "react-redux";
+import keyboardSlice from "../../store/keyboardSlice";
+import pluginsSlice from "../../store/pluginsSlice";
 
-const mapStateToProps = ({ keyboard, plugins }) => ({ keyboard, plugins });
+export default function KeyboardSettings() {
+  const dispatch = useDispatch();
+  const instrument = useSelector(keyboardSlice.selectors.instrument);
+  const monophonic = useSelector(keyboardSlice.selectors.monophonic);
+  const octave = useSelector(keyboardSlice.selectors.octave);
+  const volume = useSelector(keyboardSlice.selectors.volume);
+  const controllableInstrumentInstanceNames = useSelector(
+    pluginsSlice.selectors.controllableInstrumentInstanceNames,
+  );
 
-// TODO fix these types
-interface Props {
-  keyboard: any;
-  dispatch: any;
-  plugins: any;
-}
-
-const KeyboardSettings = ({ keyboard, dispatch, plugins }: Props) => (
-  <div className="KeyboardSettings">
-    <h2>Keyboard Settings</h2>
-    <InstrumentSelector
-      defaultValue={keyboard.instrument}
-      handleChange={(e) =>
-        dispatch(keyboardInstrumentSet(e.currentTarget.value))
-      }
-      label="Instrument"
-      options={controllableInstrumentInstanceNames(plugins).map(
-        (instrument) => ({
+  return (
+    <div className="KeyboardSettings">
+      <h2>Keyboard Settings</h2>
+      <InstrumentSelector
+        defaultValue={instrument}
+        handleChange={(e) =>
+          dispatch(keyboardSlice.actions.instrumentSet(e.currentTarget.value))
+        }
+        label="Instrument"
+        options={controllableInstrumentInstanceNames.map((instrument) => ({
           text: capitalizeWords(instrument),
           value: instrument,
-        }),
-      )}
-    />
-    <RangeLabelled
-      max={1}
-      min={0}
-      onChange={(e) =>
-        dispatch(keyboardVolumeSet(Number(e.currentTarget.value)))
-      }
-      output={Math.round(keyboard.volume * 100)}
-      step={0.01}
-      value={keyboard.volume}
-    >
-      Volume
-    </RangeLabelled>
-    <RangeLabelled
-      max={2}
-      min={-3}
-      onChange={(e) =>
-        dispatch(keyboardOctaveSet(Number(e.currentTarget.value)))
-      }
-      output={keyboard.octave}
-      value={keyboard.octave}
-    >
-      Octave
-    </RangeLabelled>
-    <CheckboxLabelled
-      checked={keyboard.monophonic}
-      onChange={(e) => dispatch(keyboardMonophonicSet(e.target.checked))}
-    >
-      Monophonic
-    </CheckboxLabelled>
-    <div>
-      <InputLabel />
-      <ButtonPrimary to="/settings">OK</ButtonPrimary>
+        }))}
+      />
+      <RangeLabelled
+        max={1}
+        min={0}
+        onChange={(e) =>
+          dispatch(
+            keyboardSlice.actions.volumeSet(Number(e.currentTarget.value)),
+          )
+        }
+        output={Math.round(volume * 100)}
+        step={0.01}
+        value={volume}
+      >
+        Volume
+      </RangeLabelled>
+      <RangeLabelled
+        max={2}
+        min={-3}
+        onChange={(e) =>
+          dispatch(
+            keyboardSlice.actions.octaveSet(Number(e.currentTarget.value)),
+          )
+        }
+        output={octave}
+        value={octave}
+      >
+        Octave
+      </RangeLabelled>
+      <CheckboxLabelled
+        checked={monophonic}
+        onChange={(e) =>
+          dispatch(keyboardSlice.actions.monophonicSet(e.target.checked))
+        }
+      >
+        Monophonic
+      </CheckboxLabelled>
+      <div>
+        <InputLabel />
+        <ButtonPrimary to="/settings">OK</ButtonPrimary>
+      </div>
     </div>
-  </div>
-);
-
-export default connect(mapStateToProps)(KeyboardSettings);
+  );
+}

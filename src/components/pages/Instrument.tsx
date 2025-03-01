@@ -1,14 +1,14 @@
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { instrumentInstance } from "../../utils/derivedData";
 import PluginMount from "../atoms/PluginMount";
 import ButtonPrimary from "../atoms/ButtonPrimary";
+import pluginsSlice from "../../store/pluginsSlice";
 
-const mapStateToProps = ({ plugins }) => ({ plugins });
-
-const Instrument = ({ plugins }) => {
+export default function Instrument() {
   const navigate = useNavigate();
   const params = useParams();
+  const plugins = useSelector(pluginsSlice.selectors.plugins);
 
   return (
     <div className="Instrument">
@@ -16,6 +16,4 @@ const Instrument = ({ plugins }) => {
       <ButtonPrimary onClick={() => navigate(-1)}>OK</ButtonPrimary>
     </div>
   );
-};
-
-export default connect(mapStateToProps)(Instrument);
+}

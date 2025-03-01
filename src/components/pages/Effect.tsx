@@ -1,21 +1,14 @@
-import { connect } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { effectInstance } from "../../utils/derivedData";
 import ButtonPrimary from "../atoms/ButtonPrimary";
 import PluginMount from "../atoms/PluginMount";
+import pluginsSlice from "../../store/pluginsSlice";
 
-const mapStateToProps = ({ plugins }): Props => ({
-  plugins,
-});
-
-// TODO fix these types
-interface Props {
-  plugins: any;
-}
-
-const Effect = ({ plugins }: Props) => {
+export default function Effect() {
   const navigate = useNavigate();
   const params = useParams();
+  const plugins = useSelector(pluginsSlice.selectors.plugins);
 
   return (
     <div className="Effect">
@@ -23,6 +16,4 @@ const Effect = ({ plugins }: Props) => {
       <ButtonPrimary onClick={() => navigate(-1)}>OK</ButtonPrimary>
     </div>
   );
-};
-
-export default connect(mapStateToProps)(Effect);
+}

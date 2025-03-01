@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import store from "./store";
-import { navLastDirectionSet } from "./actions";
 import nav from "./constants/nav";
 import App from "./components/templates/App";
 import About from "./components/pages/About";
@@ -12,6 +11,7 @@ import Instrument from "./components/pages/Instrument";
 import KeyboardSettings from "./components/pages/KeyboardSettings";
 import Settings from "./components/pages/Settings";
 import RedirectHome from "./components/shared/RedirectHome";
+import navSlice from "./store/navSlice";
 
 const handleRouteChange = (prevLocation, location) => {
   const { lastDirection } = store.getState().nav;
@@ -27,7 +27,7 @@ const handleRouteChange = (prevLocation, location) => {
   const direction = nextIndex > prevIndex ? "right" : "left";
 
   if (direction !== lastDirection) {
-    store.dispatch(navLastDirectionSet(direction));
+    store.dispatch(navSlice.actions.lastDirectionSet(direction));
   }
 };
 

@@ -30,13 +30,12 @@ import "./keyboard";
 import store from "./store";
 import Router from "./Router";
 import "./utils/loadPlugins";
-import { screenResize } from "./actions";
+import screenSlice from "./store/screenSlice";
 
 const resizeHandler = () =>
   requestAnimationFrame(() =>
     store.dispatch(
-      screenResize({
-        height: innerHeight,
+      screenSlice.actions.screenResize({
         sideLength: innerWidth < innerHeight ? innerWidth : innerHeight * 0.8,
         width: innerWidth,
       }),
