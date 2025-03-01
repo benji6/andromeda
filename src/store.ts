@@ -1,5 +1,4 @@
-import { applyMiddleware, createStore } from "redux";
-import bpm from "./middlewareRedux/bpm";
+import { createStore } from "redux";
 import { combineReducers } from "redux";
 import controlPad from "./reducers/controlPad";
 import keyboard from "./reducers/keyboard";
@@ -17,5 +16,5 @@ const reducer = combineReducers({
   settings,
 });
 
-// TODO: Use redux toolkit and fix types
-export default createStore(reducer, applyMiddleware(bpm) as any);
+// TODO: Use redux toolkit
+export default createStore(reducer);

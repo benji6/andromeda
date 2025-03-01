@@ -12,6 +12,5 @@ export default (plugin) => {
     noteStart,
     noteStop: plugin.noteStop ? plugin.noteStop.bind(plugin) : noop,
     render: plugin.render.bind(plugin),
-    setBpm: plugin.setBpm ? plugin.setBpm.bind(plugin) : noop,
   };
 };

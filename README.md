@@ -25,7 +25,6 @@ new EffectPlugin({ audioContext, bpm });
 - `destination` - `AudioNode | AudioParam` - required property - an unchanging reference to an object which is a valid argument for `AudioNode.connect`
 - `disconnect` - `Function` - required method - to be implemented in the same manner as `AudioNode.disconnect`
 - `render` - `Function` - required method - called with a DOM element when the user wishes to view and possibly edit parameters in theplugin
-- `setBpm` - `Function | undefined` - optional method - called with a number representing the global bpm whenever it changes.
 
 ### Instrument plugin API
 
@@ -47,7 +46,6 @@ new InstrumentPlugin({ audioContext, bpm });
 - `noteStop` - `Function | undefined` - optional method - called with the id of the note to stop. If available then controllers will be able to stop notes which are currently playing
 - `noteModify` - `Function | undefined` - optional method - called with a note object (see specification below). If available then controllers will be able to modify notes which are currently playing
 - `render` - `Function` - required method - called with a DOM element when user wishes to view and possibly modify parameters within the plugin
-- `setBpm` - `Function | undefined` - optional method - called with a number representing the global bpm whenever it changes.
 
 #### Note object specification
 
