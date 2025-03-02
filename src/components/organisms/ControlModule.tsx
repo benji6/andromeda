@@ -1,3 +1,5 @@
+import { InputHTMLAttributes } from "react";
+
 const Input = ({ children, label }) => (
   <label className="ControlModule__Input">
     <span className="ControlModule__Input__Label">{label}</span>
@@ -11,13 +13,18 @@ export const CheckBox = (props) => (
   </Input>
 );
 
-export const Range = (props) => {
-  const max = props.max === undefined ? 1 : props.max;
-  const min = props.min === undefined ? 0 : props.min;
-  const step = props.step === undefined ? (max - min) / 1000 : props.step;
+interface RangeProps extends InputHTMLAttributes<HTMLInputElement> {
+  displayValue?: string;
+  label: string;
+}
+
+export const Range = (props: RangeProps) => {
+  const max = props.max ?? 1;
+  const min = props.min ?? 0;
+  const step = props.step ?? (Number(max) - Number(min)) / 1000;
   const displayValue =
     props.displayValue === undefined
-      ? props.defaultValue.toFixed(2)
+      ? Number(props.defaultValue).toFixed(2)
       : props.displayValue;
 
   const inputProps = {
