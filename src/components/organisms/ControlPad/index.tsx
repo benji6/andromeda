@@ -1,82 +1,96 @@
-import { Component } from "react";
+import { useEffect, useRef } from "react";
 import Token from "./Token";
 import { eventRatiosAndCoords } from "../../../utils/dom";
+import { useDispatch } from "react-redux";
+import controlPadSlice from "../../../store/controlPadSlice";
 
 interface Props {
   sideLength: number;
   isTouched: boolean;
-  controlPadTouched: () => void;
   inputStartHandler: (ratios: any) => void;
   inputModifyHandler: (ratios: any) => void;
   inputStopHandler: () => void;
 }
 
 let currentXYRatios = null;
-let controlPadElement = null;
 let mouseInputEnabled = false;
 let controlPadActive = false;
 
-export default class extends Component<Props> {
-  token: Token;
-  el: HTMLCanvasElement;
+export default function ControlPad({
+  sideLength,
+  isTouched,
+  inputStartHandler,
+  inputModifyHandler,
+  inputStopHandler,
+}: Props) {
+  const dispatch = useDispatch();
+  const tokenRef = useRef<Token | undefined>(undefined);
+  const canvasRef = useRef<HTMLCanvasElement | undefined>(undefined);
 
-  componentDidMount() {
-    this.token = new Token({
-      gl: this.el.getContext("webgl"),
-      sideLength: this.props.sideLength,
-    });
+  useEffect(() => {
+    if (!canvasRef.current) return;
 
-    controlPadElement = this.el;
+    const canvasEl = canvasRef.current;
+
+    if (!tokenRef.current) {
+      tokenRef.current = new Token({
+        gl: canvasEl.getContext("webgl"),
+        sideLength,
+      });
+    }
 
     const inputCallback = (e) => {
-      const { inputStartHandler, inputModifyHandler } = this.props;
       mouseInputEnabled = e.type === "mousedown" ? true : mouseInputEnabled;
       if (e instanceof window.MouseEvent && !mouseInputEnabled) return;
-      this.props.isTouched || this.props.controlPadTouched();
+      isTouched || dispatch(controlPadSlice.actions.isTouched());
       currentXYRatios = eventRatiosAndCoords(e);
-      this.token.handleInput(currentXYRatios);
+      tokenRef.current?.handleInput(currentXYRatios);
       if (controlPadActive) return inputModifyHandler(currentXYRatios);
       controlPadActive = true;
       inputStartHandler(currentXYRatios);
     };
 
-    controlPadElement.addEventListener("touchstart", inputCallback);
-    controlPadElement.addEventListener("touchmove", inputCallback);
-    controlPadElement.addEventListener("mousedown", inputCallback);
-    controlPadElement.addEventListener("mousemove", inputCallback);
-
     const inputEndCallback = () => {
       controlPadActive = mouseInputEnabled = false;
-      this.props.inputStopHandler();
-      this.token.handleInputEnd();
+      inputStopHandler();
+      tokenRef.current?.handleInputEnd();
     };
 
-    controlPadElement.addEventListener("touchend", inputEndCallback);
-    controlPadElement.addEventListener("mouseup", inputEndCallback);
+    canvasEl.addEventListener("touchstart", inputCallback);
+    canvasEl.addEventListener("touchmove", inputCallback);
+    canvasEl.addEventListener("mousedown", inputCallback);
+    canvasEl.addEventListener("mousemove", inputCallback);
+    canvasEl.addEventListener("touchend", inputEndCallback);
+    canvasEl.addEventListener("mouseup", inputEndCallback);
 
-    controlPadElement.oncontextmenu = (e) => e.preventDefault();
-  }
+    canvasEl.oncontextmenu = (e) => e.preventDefault();
 
-  componentDidUpdate() {
-    this.token.handleResize(this.props.sideLength);
-  }
+    return () => {
+      canvasEl.removeEventListener("touchstart", inputCallback);
+      canvasEl.removeEventListener("touchmove", inputCallback);
+      canvasEl.removeEventListener("mousedown", inputCallback);
+      canvasEl.removeEventListener("mousemove", inputCallback);
+      canvasEl.removeEventListener("touchend", inputEndCallback);
+      canvasEl.removeEventListener("mouseup", inputEndCallback);
+      canvasEl.oncontextmenu = null;
+    };
+  }, [isTouched, inputStartHandler, inputModifyHandler, inputStopHandler]);
 
-  render() {
-    const { sideLength } = this.props;
-    return (
-      <div className="ControlPad">
-        {!this.props.isTouched && (
-          <div className="ControlPad__Message">TOUCH / CLICK TO PLAY</div>
-        )}
-        <canvas
-          className="ControlPad__Canvas"
-          height={sideLength}
-          ref={(el) => {
-            this.el = el;
-          }}
-          width={sideLength}
-        />
-      </div>
-    );
-  }
+  useEffect(() => {
+    tokenRef.current?.handleResize(sideLength);
+  }, [sideLength]);
+
+  return (
+    <div className="ControlPad">
+      {!isTouched && (
+        <div className="ControlPad__Message">TOUCH / CLICK TO PLAY</div>
+      )}
+      <canvas
+        className="ControlPad__Canvas"
+        height={sideLength}
+        ref={canvasRef}
+        width={sideLength}
+      />
+    </div>
+  );
 }

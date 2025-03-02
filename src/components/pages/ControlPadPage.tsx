@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { instrumentInstance } from "../../utils/derivedData";
 import ControlPad from "../organisms/ControlPad";
 import ButtonPrimary from "../atoms/ButtonPrimary";
@@ -24,7 +24,6 @@ const calculatePitch = (ratio: number) => {
 };
 
 export default function ControlPadPage() {
-  const dispatch = useDispatch();
   const instrument = useSelector(controlPadSlice.selectors.instrument);
   const isTouched = useSelector(controlPadSlice.selectors.isTouched);
   const noScale = useSelector(controlPadSlice.selectors.noScale);
@@ -44,9 +43,6 @@ export default function ControlPadPage() {
     >
       <div>
         <ControlPad
-          controlPadTouched={() =>
-            dispatch(controlPadSlice.actions.isTouched())
-          }
           inputModifyHandler={({ xRatio, yRatio }) => {
             const pitch: number = noScale
               ? 12 * range * xRatio
