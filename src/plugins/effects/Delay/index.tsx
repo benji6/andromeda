@@ -128,7 +128,7 @@ export default class {
                 max={Math.log(20000)}
                 min={Math.log(20)}
                 onInput={(e) =>
-                  setProp("lowCut", Math.exp(Number(e.target.value)))
+                  setProp("lowCut", Math.exp(Number(e.currentTarget.value)))
                 }
               />
               <Range
@@ -138,7 +138,7 @@ export default class {
                 max={Math.log(20000)}
                 min={Math.log(20)}
                 onInput={(e) =>
-                  setProp("highCut", Math.exp(Number(e.target.value)))
+                  setProp("highCut", Math.exp(Number(e.currentTarget.value)))
                 }
               />
             </ControlModule>

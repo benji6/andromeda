@@ -70,13 +70,15 @@ export default class {
                   defaultValue={gain}
                   label="Gain"
                   max={2}
-                  onInput={(e) => setProp("gain", Number(e.target.value))}
+                  onInput={(e) =>
+                    setProp("gain", Number(e.currentTarget.value))
+                  }
                 />
                 <Range
                   defaultValue={pan}
                   label="Pan"
                   min={-1}
-                  onInput={(e) => setProp("pan", Number(e.target.value))}
+                  onInput={(e) => setProp("pan", Number(e.currentTarget.value))}
                 />
               </ControlModule>
             </div>
@@ -86,32 +88,38 @@ export default class {
                 label="Threshold"
                 max={0}
                 min={-99.99}
-                onInput={(e) => setProp("threshold", Number(e.target.value))}
+                onInput={(e) =>
+                  setProp("threshold", Number(e.currentTarget.value))
+                }
               />
               <Range
                 defaultValue={knee}
                 label="Knee"
                 max={40}
-                onInput={(e) => setProp("knee", Number(e.target.value))}
+                onInput={(e) => setProp("knee", Number(e.currentTarget.value))}
               />
               <Range
                 defaultValue={ratio}
                 label="Ratio"
                 max={20}
                 min={1}
-                onInput={(e) => setProp("ratio", Number(e.target.value))}
+                onInput={(e) => setProp("ratio", Number(e.currentTarget.value))}
               />
               <Range
                 defaultValue={attack}
                 label="Attack"
                 max={1}
-                onInput={(e) => setProp("attack", Number(e.target.value))}
+                onInput={(e) =>
+                  setProp("attack", Number(e.currentTarget.value))
+                }
               />
               <Range
                 defaultValue={release}
                 label="Release"
                 max={1}
-                onInput={(e) => setProp("release", Number(e.target.value))}
+                onInput={(e) =>
+                  setProp("release", Number(e.currentTarget.value))
+                }
               />
             </ControlModule>
           </div>

@@ -35,7 +35,9 @@ const ModuleOscSuper = ({
       label="Oscillators"
       max={9}
       min={1}
-      onInput={(e) => updateOsc("numberOfOscillators", Number(e.target.value))}
+      onInput={(e) =>
+        updateOsc("numberOfOscillators", Number(e.currentTarget.value))
+      }
       step={1}
     />
     <Range
@@ -44,19 +46,19 @@ const ModuleOscSuper = ({
       label="Spread"
       max={50}
       min={0}
-      onInput={(e) => updateOsc("spread", Number(e.target.value))}
+      onInput={(e) => updateOsc("spread", Number(e.currentTarget.value))}
     />
     <Range
       defaultValue={gain}
       label="Gain"
       max={2}
-      onInput={(e) => updateOsc("gain", Number(e.target.value))}
+      onInput={(e) => updateOsc("gain", Number(e.currentTarget.value))}
     />
     <Range
       defaultValue={pan}
       label="Pan"
       min={-1}
-      onInput={(e) => updateOsc("pan", Number(e.target.value))}
+      onInput={(e) => updateOsc("pan", Number(e.currentTarget.value))}
     />
     <Range
       defaultValue={pitch}
@@ -64,7 +66,7 @@ const ModuleOscSuper = ({
       label="Pitch"
       max={24}
       min={-24}
-      onInput={(e) => updateOsc("pitch", Number(e.target.value))}
+      onInput={(e) => updateOsc("pitch", Number(e.currentTarget.value))}
       step={1}
     />
     <Range
@@ -73,7 +75,7 @@ const ModuleOscSuper = ({
       label="Detune"
       max={50}
       min={-50}
-      onInput={(e) => updateOsc("detune", Number(e.target.value))}
+      onInput={(e) => updateOsc("detune", Number(e.currentTarget.value))}
     />
   </ControlModule>
 );

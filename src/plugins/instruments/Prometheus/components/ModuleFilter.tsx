@@ -22,11 +22,13 @@ const typesToParams = {
 const ControlFrequency = ({ frequency, updateFilter }) => (
   <Range
     defaultValue={Math.log(frequency)}
-    displayValue={Math.round(frequency)}
+    displayValue={frequency.toFixed()}
     label="Frequency"
     max={Math.log(20000)}
     min={Math.log(20)}
-    onInput={(e) => updateFilter("frequency", Math.exp(Number(e.target.value)))}
+    onInput={(e) =>
+      updateFilter("frequency", Math.exp(Number(e.currentTarget.value)))
+    }
   />
 );
 
@@ -36,7 +38,7 @@ const ControlGain = ({ gain, updateFilter }) => (
     label="Gain"
     max={20}
     min={-20}
-    onInput={(e) => updateFilter("gain", Number(e.target.value))}
+    onInput={(e) => updateFilter("gain", Number(e.currentTarget.value))}
   />
 );
 
@@ -45,7 +47,7 @@ const ControlQ = ({ Q, updateFilter }) => (
     defaultValue={Q}
     label="Q"
     max={24}
-    onInput={(e) => updateFilter("Q", Number(e.target.value))}
+    onInput={(e) => updateFilter("Q", Number(e.currentTarget.value))}
   />
 );
 

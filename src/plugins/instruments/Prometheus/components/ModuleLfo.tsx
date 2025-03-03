@@ -23,14 +23,14 @@ export default ({ lfo: { gain, frequency, type }, updateLfo }) => (
       label="Rate"
       max={16}
       min={0.01}
-      onInput={(e) => updateLfo("frequency", Number(e.target.value))}
+      onInput={(e) => updateLfo("frequency", Number(e.currentTarget.value))}
     />
     <Range
       defaultValue={gain}
-      displayValue={Math.round(gain)}
+      displayValue={gain.toFixed()}
       label="Amount"
       max={1024}
-      onInput={(e) => updateLfo("gain", Number(e.target.value))}
+      onInput={(e) => updateLfo("gain", Number(e.currentTarget.value))}
     />
   </ControlModule>
 );

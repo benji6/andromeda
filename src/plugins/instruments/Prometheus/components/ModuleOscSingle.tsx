@@ -31,13 +31,13 @@ export default function ModuleOscSingle({
         defaultValue={gain}
         label="Gain"
         max={2}
-        onInput={(e) => updateOsc("gain", Number(e.target.value))}
+        onInput={(e) => updateOsc("gain", Number(e.currentTarget.value))}
       />
       <Range
         defaultValue={pan}
         label="Pan"
         min={-1}
-        onInput={(e) => updateOsc("pan", Number(e.target.value))}
+        onInput={(e) => updateOsc("pan", Number(e.currentTarget.value))}
       />
       <Range
         defaultValue={pitch}
@@ -45,7 +45,7 @@ export default function ModuleOscSingle({
         label="Pitch"
         max={24}
         min={-24}
-        onInput={(e) => updateOsc("pitch", Number(e.target.value))}
+        onInput={(e) => updateOsc("pitch", Number(e.currentTarget.value))}
         step={1}
       />
       <Range
@@ -54,7 +54,7 @@ export default function ModuleOscSingle({
         label="Detune"
         max={50}
         min={-50}
-        onInput={(e) => updateOsc("detune", Number(e.target.value))}
+        onInput={(e) => updateOsc("detune", Number(e.currentTarget.value))}
       />
     </ControlModule>
   );

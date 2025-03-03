@@ -9,13 +9,13 @@ const ModuleMaster = ({ master: { gain, pan }, updateMaster }) => (
         defaultValue={gain}
         label="Gain"
         max={1.5}
-        onInput={(e) => updateMaster("gain", Number(e.target.value))}
+        onInput={(e) => updateMaster("gain", Number(e.currentTarget.value))}
       />
       <Range
         defaultValue={pan}
         label="Pan"
         min={-1}
-        onInput={(e) => updateMaster("pan", Number(e.target.value))}
+        onInput={(e) => updateMaster("pan", Number(e.currentTarget.value))}
       />
     </ControlModule>
   </div>
