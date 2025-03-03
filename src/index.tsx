@@ -31,6 +31,7 @@ import store from "./store";
 import "./utils/loadPlugins";
 import screenSlice from "./store/screenSlice";
 import App from "./components/App";
+import { StrictMode } from "react";
 
 const resizeHandler = () =>
   requestAnimationFrame(() =>
@@ -48,6 +49,8 @@ addEventListener("resize", resizeHandler);
 
 createRoot(document.getElementById("app")).render(
   <Provider store={store}>
-    <App />
+    <StrictMode>
+      <App />
+    </StrictMode>
   </Provider>,
 );
