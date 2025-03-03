@@ -54,7 +54,7 @@ export default createSlice({
     },
     setCurrentCoordinateRatios: (
       state,
-      action: PayloadAction<CurrentCoordinateRatios>,
+      action: PayloadAction<CurrentCoordinateRatios | undefined>,
     ) => {
       state.currentCoordinateRatios = action.payload;
       if (!state.hasBeenTouched) state.hasBeenTouched = true;

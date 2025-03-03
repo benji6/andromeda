@@ -72,6 +72,7 @@ export default function ControlPad({
 
     const inputEndCallback = () => {
       controlPadActive = mouseInputEnabled = false;
+      dispatch(controlPadSlice.actions.setCurrentCoordinateRatios(undefined));
       inputStopHandler();
       tokenRef.current?.handleInputEnd();
     };
