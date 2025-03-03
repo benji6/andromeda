@@ -23,9 +23,12 @@ export default function ControlPadSettings() {
       <h2>Control Pad Settings</h2>
       <InstrumentSelector
         defaultValue={instrument}
-        handleChange={(e) =>
-          dispatch(controlPadSlice.actions.instrumentSet(e.currentTarget.value))
-        }
+        handleChange={(e) => {
+          const { value } = e.currentTarget;
+          if (value !== "Ariadne" && value !== "Prometheus")
+            throw Error("Invalid instrument");
+          dispatch(controlPadSlice.actions.instrumentSet(value));
+        }}
         label="Instrument"
         options={controllableInstrumentInstanceNames.map((instrument) => ({
           text: capitalizeWords(instrument),

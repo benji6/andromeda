@@ -1,6 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = {
+export type Instruments = "Ariadne" | "Prometheus";
+
+interface ControlPadState {
+  instrument: Instruments;
+  hasBeenTouched: boolean;
+  noScale: boolean;
+  octave: number;
+  range: number;
+}
+
+const initialState: ControlPadState = {
   instrument: "Ariadne",
   hasBeenTouched: false,
   noScale: false,
@@ -12,7 +22,7 @@ export default createSlice({
   name: "controlPad",
   initialState,
   reducers: {
-    instrumentSet: (state, action: PayloadAction<string>) => {
+    instrumentSet: (state, action: PayloadAction<Instruments>) => {
       state.instrument = action.payload;
     },
     noScaleSet: (state, action: PayloadAction<boolean>) => {
