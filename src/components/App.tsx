@@ -1,4 +1,4 @@
-import Router from "../Router";
+import Router from "./Router";
 import useAudio from "./hooks/useAudio";
 
 export default function App() {
