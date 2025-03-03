@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   instrument: "Ariadne",
-  isTouched: false,
+  hasBeenTouched: false,
   noScale: false,
   octave: 0,
   range: 1,
@@ -24,13 +24,13 @@ export default createSlice({
     rangeSet: (state, action: PayloadAction<number>) => {
       state.range = action.payload;
     },
-    isTouched: (state) => {
-      state.isTouched = true;
+    setHasBeenTouched: (state) => {
+      state.hasBeenTouched = true;
     },
   },
   selectors: {
     instrument: (state) => state.instrument,
-    isTouched: (state) => state.isTouched,
+    hasBeenTouched: (state) => state.hasBeenTouched,
     noScale: (state) => state.noScale,
     octave: (state) => state.octave,
     range: (state) => state.range,

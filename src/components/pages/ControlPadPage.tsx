@@ -25,7 +25,7 @@ const calculatePitch = (ratio: number) => {
 
 export default function ControlPadPage() {
   const instrument = useSelector(controlPadSlice.selectors.instrument);
-  const isTouched = useSelector(controlPadSlice.selectors.isTouched);
+  const hasBeenTouched = useSelector(controlPadSlice.selectors.hasBeenTouched);
   const noScale = useSelector(controlPadSlice.selectors.noScale);
   const octave = useSelector(controlPadSlice.selectors.octave);
   const range = useSelector(controlPadSlice.selectors.range);
@@ -77,7 +77,7 @@ export default function ControlPadPage() {
             const instance = instrumentInstance(instrument, plugins);
             instance.noteStop(CONTROL_PAD_ID);
           }}
-          isTouched={isTouched}
+          hasBeenTouched={hasBeenTouched}
           sideLength={sideLength}
         />
       </div>

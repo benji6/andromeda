@@ -6,7 +6,7 @@ import controlPadSlice from "../../../store/controlPadSlice";
 
 interface Props {
   sideLength: number;
-  isTouched: boolean;
+  hasBeenTouched: boolean;
   inputStartHandler: (ratios: any) => void;
   inputModifyHandler: (ratios: any) => void;
   inputStopHandler: () => void;
@@ -18,7 +18,7 @@ let controlPadActive = false;
 
 export default function ControlPad({
   sideLength,
-  isTouched,
+  hasBeenTouched,
   inputStartHandler,
   inputModifyHandler,
   inputStopHandler,
@@ -42,7 +42,7 @@ export default function ControlPad({
     const inputCallback = (e) => {
       mouseInputEnabled = e.type === "mousedown" ? true : mouseInputEnabled;
       if (e instanceof window.MouseEvent && !mouseInputEnabled) return;
-      isTouched || dispatch(controlPadSlice.actions.isTouched());
+      hasBeenTouched || dispatch(controlPadSlice.actions.setHasBeenTouched());
       currentXYRatios = eventRatiosAndCoords(e);
       tokenRef.current?.handleInput(currentXYRatios);
       if (controlPadActive) return inputModifyHandler(currentXYRatios);
@@ -74,7 +74,7 @@ export default function ControlPad({
       canvasEl.removeEventListener("mouseup", inputEndCallback);
       canvasEl.oncontextmenu = null;
     };
-  }, [isTouched, inputStartHandler, inputModifyHandler, inputStopHandler]);
+  }, [hasBeenTouched, inputStartHandler, inputModifyHandler, inputStopHandler]);
 
   useEffect(() => {
     tokenRef.current?.handleResize(sideLength);
@@ -82,7 +82,7 @@ export default function ControlPad({
 
   return (
     <div className="ControlPad">
-      {!isTouched && (
+      {!hasBeenTouched && (
         <div className="ControlPad__Message">TOUCH / CLICK TO PLAY</div>
       )}
       <canvas
