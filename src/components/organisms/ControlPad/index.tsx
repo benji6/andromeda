@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import Token from "./Token";
-import { eventRatiosAndCoords } from "../../../utils/dom";
 import { useDispatch } from "react-redux";
 import controlPadSlice from "../../../store/controlPadSlice";
 
@@ -12,9 +11,25 @@ interface Props {
   inputStopHandler: () => void;
 }
 
-let currentXYRatios = null;
 let mouseInputEnabled = false;
 let controlPadActive = false;
+
+const validRatio = (n: number) => Math.max(0, Math.min(1 - Number.EPSILON, n));
+
+const eventRatiosAndCoords = (
+  e,
+): { x: number; xRatio: number; y: number; yRatio: number } => {
+  const { top, right, bottom, left } = e.target.getBoundingClientRect();
+  const [width, height] = [right - left, bottom - top];
+  const { clientX, clientY } = (e.changedTouches && e.changedTouches[0]) || e;
+  const [x, y] = [clientX - left, clientY - top];
+  return {
+    x,
+    xRatio: validRatio(x / width),
+    y,
+    yRatio: validRatio(1 - y / height),
+  };
+};
 
 export default function ControlPad({
   sideLength,
@@ -39,11 +54,16 @@ export default function ControlPad({
       });
     }
 
-    const inputCallback = (e) => {
+    const inputCallback = (e: MouseEvent | TouchEvent): void => {
       mouseInputEnabled = e.type === "mousedown" ? true : mouseInputEnabled;
       if (e instanceof window.MouseEvent && !mouseInputEnabled) return;
-      hasBeenTouched || dispatch(controlPadSlice.actions.setHasBeenTouched());
-      currentXYRatios = eventRatiosAndCoords(e);
+      const currentXYRatios = eventRatiosAndCoords(e);
+      dispatch(
+        controlPadSlice.actions.setCurrentCoordinateRatios({
+          x: currentXYRatios.xRatio,
+          y: currentXYRatios.yRatio,
+        }),
+      );
       tokenRef.current?.handleInput(currentXYRatios);
       if (controlPadActive) return inputModifyHandler(currentXYRatios);
       controlPadActive = true;
@@ -74,7 +94,7 @@ export default function ControlPad({
       canvasEl.removeEventListener("mouseup", inputEndCallback);
       canvasEl.oncontextmenu = null;
     };
-  }, [hasBeenTouched, inputStartHandler, inputModifyHandler, inputStopHandler]);
+  }, [inputStartHandler, inputModifyHandler, inputStopHandler]);
 
   useEffect(() => {
     tokenRef.current?.handleResize(sideLength);

@@ -2,17 +2,24 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type Instruments = "Ariadne" | "Prometheus";
 
+interface CurrentCoordinateRatios {
+  x: number;
+  y: number;
+}
+
 interface ControlPadState {
-  instrument: Instruments;
+  currentCoordinateRatios: CurrentCoordinateRatios | undefined;
   hasBeenTouched: boolean;
+  instrument: Instruments;
   noScale: boolean;
   octave: number;
   range: number;
 }
 
 const initialState: ControlPadState = {
-  instrument: "Ariadne",
+  currentCoordinateRatios: undefined,
   hasBeenTouched: false,
+  instrument: "Ariadne",
   noScale: false,
   octave: 0,
   range: 1,
@@ -34,8 +41,12 @@ export default createSlice({
     rangeSet: (state, action: PayloadAction<number>) => {
       state.range = action.payload;
     },
-    setHasBeenTouched: (state) => {
-      state.hasBeenTouched = true;
+    setCurrentCoordinateRatios: (
+      state,
+      action: PayloadAction<CurrentCoordinateRatios>,
+    ) => {
+      state.currentCoordinateRatios = action.payload;
+      if (!state.hasBeenTouched) state.hasBeenTouched = true;
     },
   },
   selectors: {
