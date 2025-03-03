@@ -7,7 +7,6 @@ import scales from "../../constants/scales";
 import store from "../../store";
 import { makeClassName } from "../../utils/dom";
 import controlPadSlice from "../../store/controlPadSlice";
-import settingsSlice from "../../store/settingsSlice";
 import screenSlice from "../../store/screenSlice";
 import pluginsSlice from "../../store/pluginsSlice";
 import navSlice from "../../store/navSlice";
@@ -17,7 +16,7 @@ const CONTROL_PAD_ID = "controlPad";
 let currentlyPlayingPitch: number = null;
 
 const calculatePitch = (ratio: number) => {
-  const scale = scales[store.getState().settings.selectedScale];
+  const scale = scales[store.getState().controlPad.selectedScale];
   const { length } = scale;
   const i = Math.floor((length + 1) * ratio);
   return scale[((i % length) + length) % length] + 12 * Math.floor(i / length);
@@ -29,7 +28,7 @@ export default function ControlPadPage() {
   const noScale = useSelector(controlPadSlice.selectors.noScale);
   const octave = useSelector(controlPadSlice.selectors.octave);
   const range = useSelector(controlPadSlice.selectors.range);
-  const rootNote = useSelector(settingsSlice.selectors.rootNote);
+  const rootNote = useSelector(controlPadSlice.selectors.rootNote);
   const sideLength = useSelector(screenSlice.selectors.sideLength);
   const plugins = useSelector(pluginsSlice.selectors.plugins);
   const lastDirection = useSelector(navSlice.selectors.lastDirection);

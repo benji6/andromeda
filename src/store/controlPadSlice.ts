@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ScaleName } from "../constants/scales";
 
-export type Instruments = "Ariadne" | "Prometheus";
+export type Instrument = "Ariadne" | "Prometheus";
 
 interface CurrentCoordinateRatios {
   x: number;
@@ -10,10 +11,12 @@ interface CurrentCoordinateRatios {
 interface ControlPadState {
   currentCoordinateRatios: CurrentCoordinateRatios | undefined;
   hasBeenTouched: boolean;
-  instrument: Instruments;
+  instrument: Instrument;
   noScale: boolean;
   octave: number;
   range: number;
+  rootNote: number;
+  selectedScale: ScaleName;
 }
 
 const initialState: ControlPadState = {
@@ -23,13 +26,15 @@ const initialState: ControlPadState = {
   noScale: false,
   octave: 0,
   range: 1,
+  rootNote: 0,
+  selectedScale: "pentatonic",
 };
 
 export default createSlice({
   name: "controlPad",
   initialState,
   reducers: {
-    instrumentSet: (state, action: PayloadAction<Instruments>) => {
+    instrumentSet: (state, action: PayloadAction<Instrument>) => {
       state.instrument = action.payload;
     },
     noScaleSet: (state, action: PayloadAction<boolean>) => {
@@ -41,6 +46,12 @@ export default createSlice({
     rangeSet: (state, action: PayloadAction<number>) => {
       state.range = action.payload;
     },
+    rootNoteSet: (state, action: PayloadAction<number>) => {
+      state.rootNote = action.payload;
+    },
+    selectedScaleSet: (state, action: PayloadAction<ScaleName>) => {
+      state.selectedScale = action.payload;
+    },
     setCurrentCoordinateRatios: (
       state,
       action: PayloadAction<CurrentCoordinateRatios>,
@@ -50,10 +61,12 @@ export default createSlice({
     },
   },
   selectors: {
-    instrument: (state) => state.instrument,
     hasBeenTouched: (state) => state.hasBeenTouched,
+    instrument: (state) => state.instrument,
     noScale: (state) => state.noScale,
     octave: (state) => state.octave,
     range: (state) => state.range,
+    rootNote: (state) => state.rootNote,
+    selectedScale: (state) => state.selectedScale,
   },
 });

@@ -7,6 +7,12 @@ import InstrumentSelector from "../molecules/InstrumentSelector";
 import { capitalizeWords } from "../../utils/helpers";
 import controlPadSlice from "../../store/controlPadSlice";
 import pluginsSlice from "../../store/pluginsSlice";
+import noteNameFromPitch from "../../audioHelpers/noteNameFromPitch";
+import Selector from "../molecules/Selector";
+import scales, { ScaleName } from "../../constants/scales";
+
+const isScaleName = (scaleName: string): scaleName is ScaleName =>
+  Object.hasOwn(scales, scaleName);
 
 export default function ControlPadSettings() {
   const dispatch = useDispatch();
@@ -17,6 +23,8 @@ export default function ControlPadSettings() {
   const controllableInstrumentInstanceNames = useSelector(
     pluginsSlice.selectors.controllableInstrumentInstanceNames,
   );
+  const rootNote = useSelector(controlPadSlice.selectors.rootNote);
+  const selectedScale = useSelector(controlPadSlice.selectors.selectedScale);
 
   return (
     <div className="ControlPadSettings">
@@ -69,6 +77,32 @@ export default function ControlPadSettings() {
       >
         No Scale
       </CheckboxLabelled>
+      <RangeLabelled
+        max={24}
+        min={-36}
+        onChange={(e) =>
+          dispatch(
+            controlPadSlice.actions.rootNoteSet(Number(e.currentTarget.value)),
+          )
+        }
+        output={noteNameFromPitch(rootNote)}
+        value={rootNote}
+      >
+        Root Note
+      </RangeLabelled>
+      <Selector
+        defaultValue={selectedScale}
+        handleChange={(e) => {
+          const { value } = e.currentTarget;
+          if (!isScaleName(value)) throw Error("Invalid scale");
+          dispatch(controlPadSlice.actions.selectedScaleSet(value));
+        }}
+        label="Scale"
+        options={Object.keys(scales).map((value) => ({
+          text: capitalizeWords(value),
+          value,
+        }))}
+      />
       <div>
         <InputLabel />
         <ButtonPrimary to="/">OK</ButtonPrimary>
