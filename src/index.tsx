@@ -28,9 +28,9 @@ import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import "./keyboard";
 import store from "./store";
-import Router from "./Router";
 import "./utils/loadPlugins";
 import screenSlice from "./store/screenSlice";
+import App from "./components/App";
 
 const resizeHandler = () =>
   requestAnimationFrame(() =>
@@ -48,6 +48,6 @@ addEventListener("resize", resizeHandler);
 
 createRoot(document.getElementById("app")).render(
   <Provider store={store}>
-    <Router />
+    <App />
   </Provider>,
 );
