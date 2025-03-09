@@ -13,6 +13,7 @@ import createVirtualAudioGraph, {
 import controlPadSlice from "../../store/controlPadSlice";
 import audioContext from "../../audioContext";
 import { Note } from "../../types";
+import ariadneSlice from "../../store/ariadneSlice";
 
 // TODO: this needs to connect to the effects chain
 const virtualAudioGraph = createVirtualAudioGraph({ audioContext });
@@ -157,6 +158,13 @@ export default function useAudio() {
   // TODO implement keyboard input
   const currentNote = useSelector(controlPadSlice.selectors.currentNote);
   const instrument = useSelector(controlPadSlice.selectors.instrument);
+  const carrierDetune = useSelector(ariadneSlice.selectors.carrierDetune);
+  const carrierOscType = useSelector(ariadneSlice.selectors.carrierOscType);
+  const masterGain = useSelector(ariadneSlice.selectors.masterGain);
+  const masterPan = useSelector(ariadneSlice.selectors.masterPan);
+  const modulatorDetune = useSelector(ariadneSlice.selectors.modulatorDetune);
+  const modulatorOscType = useSelector(ariadneSlice.selectors.modulatorOscType);
+  const modulatorRatio = useSelector(ariadneSlice.selectors.modulatorRatio);
 
   // TODO implement other instruments
   if (instrument !== "Ariadne") return;
@@ -184,20 +192,16 @@ export default function useAudio() {
   };
 
   if (currentNote) {
-    effectsGraph[2] = ariadne(
-      0,
-      // TODO store these values in redux and update them here
-      {
-        carrierDetune: 0,
-        carrierOscType: "sine",
-        masterGain: 1,
-        masterPan: 0,
-        modulatorDetune: 0,
-        modulatorOscType: "sine",
-        modulatorRatio: 2.5,
-        notes: [currentNote],
-      },
-    );
+    effectsGraph[2] = ariadne(0, {
+      carrierDetune,
+      carrierOscType,
+      masterGain,
+      masterPan,
+      modulatorDetune,
+      modulatorOscType,
+      modulatorRatio,
+      notes: [currentNote],
+    });
   }
   virtualAudioGraph.update(effectsGraph);
 }

@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import scales, { ScaleName } from "../constants/scales";
+import { SCALES } from "../constants";
 import pitchToFrequency from "../audioHelpers/pitchToFrequency";
-import { Note } from "../types";
+import { Note, ScaleName } from "../types";
+import { INSTRUMENTS } from "../constants";
 
-export type Instrument = "Ariadne" | "Prometheus";
+export type Instrument = (typeof INSTRUMENTS)[number];
 
 interface CurrentCoordinateRatios {
   x: number;
@@ -70,7 +71,7 @@ export default createSlice({
       if (state.noScale)
         pitch = 12 * state.range * state.currentCoordinateRatios.x;
       else {
-        const scale = scales[state.selectedScale];
+        const scale = SCALES[state.selectedScale];
         const { length } = scale;
         const i = Math.floor(
           (length + 1) * state.range * state.currentCoordinateRatios.x,

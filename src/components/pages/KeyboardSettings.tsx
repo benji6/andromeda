@@ -3,10 +3,8 @@ import ButtonPrimary from "../atoms/ButtonPrimary";
 import InputLabel from "../atoms/InputLabel";
 import CheckboxLabelled from "../molecules/CheckboxLabelled";
 import RangeLabelled from "../molecules/RangeLabelled";
-import { capitalizeWords } from "../../utils/helpers";
 import { useDispatch, useSelector } from "react-redux";
 import keyboardSlice from "../../store/keyboardSlice";
-import pluginsSlice from "../../store/pluginsSlice";
 
 export default function KeyboardSettings() {
   const dispatch = useDispatch();
@@ -14,9 +12,6 @@ export default function KeyboardSettings() {
   const monophonic = useSelector(keyboardSlice.selectors.monophonic);
   const octave = useSelector(keyboardSlice.selectors.octave);
   const volume = useSelector(keyboardSlice.selectors.volume);
-  const controllableInstrumentInstanceNames = useSelector(
-    pluginsSlice.selectors.controllableInstrumentInstanceNames,
-  );
 
   return (
     <div className="KeyboardSettings">
@@ -27,10 +22,6 @@ export default function KeyboardSettings() {
           dispatch(keyboardSlice.actions.instrumentSet(e.currentTarget.value))
         }
         label="Instrument"
-        options={controllableInstrumentInstanceNames.map((instrument) => ({
-          text: capitalizeWords(instrument),
-          value: instrument,
-        }))}
       />
       <RangeLabelled
         max={1}

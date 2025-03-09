@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import ariadneSlice from "./ariadneSlice";
 import controlPadSlice from "./controlPadSlice";
 import keyboardSlice from "./keyboardSlice";
 import navSlice from "./navSlice";
@@ -8,6 +9,7 @@ import settingsSlice from "./settingsSlice";
 
 const store = configureStore({
   reducer: {
+    ariadne: ariadneSlice.reducer,
     controlPad: controlPadSlice.reducer,
     keyboard: keyboardSlice.reducer,
     nav: navSlice.reducer,

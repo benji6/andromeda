@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import audioContext from "../audioContext";
 import pluginWrapperInstrument from "../utils/pluginWrapperInstrument";
 import pluginWrapperEffect from "../utils/pluginWrapperEffect";
-import { noop } from "../utils/helpers";
 
 const findNameEquals = (x, y) => y.find(({ name }) => x === name);
 const findConstructor = (x, y) => findNameEquals(x, y).constructor;
@@ -127,10 +126,6 @@ export default createSlice({
     },
   },
   selectors: {
-    controllableInstrumentInstanceNames: (state) =>
-      state.instrumentInstances
-        .filter(({ instance }) => instance.noteStart !== noop)
-        .map(({ name }) => name),
     plugins: (state) => state,
   },
 });

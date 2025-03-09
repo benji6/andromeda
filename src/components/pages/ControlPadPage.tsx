@@ -3,7 +3,7 @@ import { instrumentInstance } from "../../utils/derivedData";
 import ControlPad from "../organisms/ControlPad";
 import ButtonPrimary from "../atoms/ButtonPrimary";
 import pitchToFrequency from "../../audioHelpers/pitchToFrequency";
-import scales from "../../constants/scales";
+import { SCALES } from "../../constants";
 import store from "../../store";
 import { makeClassName } from "../../utils/dom";
 import controlPadSlice from "../../store/controlPadSlice";
@@ -16,7 +16,7 @@ const CONTROL_PAD_ID = "controlPad";
 let currentlyPlayingPitch: number = null;
 
 const calculatePitch = (ratio: number) => {
-  const scale = scales[store.getState().controlPad.selectedScale];
+  const scale = SCALES[store.getState().controlPad.selectedScale];
   const { length } = scale;
   const i = Math.floor((length + 1) * ratio);
   return scale[((i % length) + length) % length] + 12 * Math.floor(i / length);
@@ -54,7 +54,7 @@ export default function ControlPadPage() {
               gain: (1 - yRatio) / 2,
               id: CONTROL_PAD_ID,
             };
-            instance.noteModify(note);
+            instance?.noteModify(note);
           }}
           inputStartHandler={({ xRatio, yRatio }) => {
             const instance = instrumentInstance(instrument, plugins);
@@ -63,7 +63,7 @@ export default function ControlPadPage() {
               ? 12 * range * xRatio
               : calculatePitch(range * xRatio);
 
-            instance.noteStart({
+            instance?.noteStart({
               frequency: pitchToFrequency(
                 currentlyPlayingPitch + 12 * octave + rootNote,
               ),
@@ -74,7 +74,7 @@ export default function ControlPadPage() {
           inputStopHandler={() => {
             currentlyPlayingPitch = null;
             const instance = instrumentInstance(instrument, plugins);
-            instance.noteStop(CONTROL_PAD_ID);
+            instance?.noteStop(CONTROL_PAD_ID);
           }}
           hasBeenTouched={hasBeenTouched}
           sideLength={sideLength}

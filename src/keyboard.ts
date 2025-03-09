@@ -1,5 +1,5 @@
 import { instrumentInstance } from "./utils/derivedData";
-import keyCodesToPitches from "./constants/keyCodesToPitches";
+import { KEY_CODES_TO_PITCHES } from "./constants";
 import pitchToFrequency from "./audioHelpers/pitchToFrequency";
 import store from "./store";
 
@@ -19,21 +19,22 @@ const computeNoteParams = (pitch: number) => {
   };
 };
 
-const stopAndRemoveNote = (keyCode: keyof typeof keyCodesToPitches) => {
+const stopAndRemoveNote = (keyCode: keyof typeof KEY_CODES_TO_PITCHES) => {
   pressedKeys.delete(keyCode);
-  const pitch = keyCodesToPitches[keyCode];
+  const pitch = KEY_CODES_TO_PITCHES[keyCode];
   if (pitch === undefined) return;
   const noteParams = computeNoteParams(pitch);
   const instrumentObj = instrumentInstance(
     noteParams.instrument,
     store.getState().plugins,
   );
-  instrumentObj.noteStop(noteParams.id);
+  instrumentObj?.noteStop(noteParams.id);
 };
 
 const isValidKeyCode = (
   keyCode: number,
-): keyCode is keyof typeof keyCodesToPitches => keyCode in keyCodesToPitches;
+): keyCode is keyof typeof KEY_CODES_TO_PITCHES =>
+  keyCode in KEY_CODES_TO_PITCHES;
 
 document.addEventListener("keydown", (e) => {
   const { keyCode } = e;
@@ -41,7 +42,7 @@ document.addEventListener("keydown", (e) => {
   if (pressedKeys.has(keyCode)) return;
   pressedKeys.add(keyCode);
   if (!isValidKeyCode(keyCode)) return;
-  const pitch = keyCodesToPitches[keyCode];
+  const pitch = KEY_CODES_TO_PITCHES[keyCode];
   const state = store.getState();
   if (state.keyboard.monophonic) {
     for (const code of pressedKeys)
@@ -52,17 +53,17 @@ document.addEventListener("keydown", (e) => {
     noteParams.instrument,
     state.plugins,
   );
-  instrumentObj.noteStart(noteParams);
+  instrumentObj?.noteStart(noteParams);
 });
 
 document.addEventListener("keyup", ({ keyCode }) => {
   pressedKeys.delete(keyCode);
   if (!isValidKeyCode(keyCode)) return;
-  const pitch = keyCodesToPitches[keyCode];
+  const pitch = KEY_CODES_TO_PITCHES[keyCode];
   const noteParams = computeNoteParams(pitch);
   const instrumentObj = instrumentInstance(
     noteParams.instrument,
     store.getState().plugins,
   );
-  instrumentObj.noteStop(noteParams.id);
+  instrumentObj?.noteStop(noteParams.id);
 });

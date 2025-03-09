@@ -1,18 +1,11 @@
 import store from "../store";
 
-import Ariadne from "../plugins/instruments/Ariadne";
 import Prometheus from "../plugins/instruments/Prometheus";
 
 import Delay from "../plugins/effects/Delay";
 import Leveller from "../plugins/effects/Leveller";
 import pluginsSlice from "../store/pluginsSlice";
 
-store.dispatch(
-  pluginsSlice.actions.loadPluginInstrument({
-    constructor: Ariadne,
-    name: "Ariadne",
-  }),
-);
 store.dispatch(
   pluginsSlice.actions.loadPluginInstrument({
     constructor: Prometheus,
@@ -32,13 +25,6 @@ store.dispatch(
 
 const bpm = store.getState().settings.bpm;
 
-store.dispatch(
-  pluginsSlice.actions.instantiateInstrument({
-    bpm,
-    name: "Ariadne",
-    plugin: "Ariadne",
-  }),
-);
 store.dispatch(
   pluginsSlice.actions.instantiateInstrument({
     bpm,
@@ -62,9 +48,6 @@ store.dispatch(
   }),
 );
 
-store.dispatch(
-  pluginsSlice.actions.addInstrumentToChannel({ channel: 0, name: "Ariadne" }),
-);
 store.dispatch(
   pluginsSlice.actions.addInstrumentToChannel({
     channel: 0,

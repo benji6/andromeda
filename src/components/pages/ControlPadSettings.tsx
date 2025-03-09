@@ -6,13 +6,13 @@ import RangeLabelled from "../molecules/RangeLabelled";
 import InstrumentSelector from "../molecules/InstrumentSelector";
 import { capitalizeWords } from "../../utils/helpers";
 import controlPadSlice from "../../store/controlPadSlice";
-import pluginsSlice from "../../store/pluginsSlice";
 import noteNameFromPitch from "../../audioHelpers/noteNameFromPitch";
 import Selector from "../molecules/Selector";
-import scales, { ScaleName } from "../../constants/scales";
+import { SCALES } from "../../constants";
+import { ScaleName } from "../../types";
 
 const isScaleName = (scaleName: string): scaleName is ScaleName =>
-  Object.hasOwn(scales, scaleName);
+  Object.hasOwn(SCALES, scaleName);
 
 export default function ControlPadSettings() {
   const dispatch = useDispatch();
@@ -20,9 +20,6 @@ export default function ControlPadSettings() {
   const noScale = useSelector(controlPadSlice.selectors.noScale);
   const octave = useSelector(controlPadSlice.selectors.octave);
   const range = useSelector(controlPadSlice.selectors.range);
-  const controllableInstrumentInstanceNames = useSelector(
-    pluginsSlice.selectors.controllableInstrumentInstanceNames,
-  );
   const rootNote = useSelector(controlPadSlice.selectors.rootNote);
   const selectedScale = useSelector(controlPadSlice.selectors.selectedScale);
 
@@ -38,10 +35,6 @@ export default function ControlPadSettings() {
           dispatch(controlPadSlice.actions.instrumentSet(value));
         }}
         label="Instrument"
-        options={controllableInstrumentInstanceNames.map((instrument) => ({
-          text: capitalizeWords(instrument),
-          value: instrument,
-        }))}
       />
       <RangeLabelled
         max={2}
@@ -98,7 +91,7 @@ export default function ControlPadSettings() {
           dispatch(controlPadSlice.actions.selectedScaleSet(value));
         }}
         label="Scale"
-        options={Object.keys(scales).map((value) => ({
+        options={Object.keys(SCALES).map((value) => ({
           text: capitalizeWords(value),
           value,
         }))}
