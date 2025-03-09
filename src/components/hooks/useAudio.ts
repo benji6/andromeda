@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import createVirtualAudioGraph, {
   createNode,
+  dynamicsCompressor,
   gain as gainNode,
   oscillator,
   OUTPUT,
@@ -87,6 +88,34 @@ const ariadne = createNode(
     ),
 );
 
+const leveller = createNode(
+  ({
+    attack,
+    gain,
+    knee,
+    pan,
+    ratio,
+    release,
+    threshold,
+  }: {
+    attack: number;
+    gain: number;
+    knee: number;
+    pan: number;
+    ratio: number;
+    release: number;
+    threshold: number;
+  }) => ({
+    0: gainNode(OUTPUT, { gain }),
+    1: stereoPanner(0, { pan }),
+    2: dynamicsCompressor(
+      1,
+      { attack, knee, ratio, release, threshold },
+      "input",
+    ),
+  }),
+);
+
 export default function useAudio() {
   // TODO implement keyboard input
   const currentNote = useSelector(controlPadSlice.selectors.currentNote);
@@ -101,8 +130,17 @@ export default function useAudio() {
   }
 
   virtualAudioGraph.update({
-    0: ariadne(
-      OUTPUT,
+    0: leveller(OUTPUT, {
+      attack: 0,
+      gain: 1,
+      knee: 30,
+      pan: 0,
+      ratio: 12,
+      release: 0.25,
+      threshold: -50,
+    }),
+    1: ariadne(
+      0,
       // TODO store these values in redux and update them here
       {
         carrierDetune: 0,
