@@ -7,12 +7,12 @@ import About from "./pages/About";
 import ControlPadPage from "./pages/ControlPadPage";
 import ControlPadSettings from "./pages/ControlPadSettings";
 import Effect from "./pages/Effect";
-import Instrument from "./pages/Instrument";
 import KeyboardSettings from "./pages/KeyboardSettings";
 import Settings from "./pages/Settings";
 import RedirectHome from "./shared/RedirectHome";
 import navSlice from "../store/navSlice";
 import AriadneSettings from "./pages/AriadneSettings";
+import PrometheusSettings from "./pages/PrometheusSettings";
 
 const handleRouteChange = (prevLocation, location) => {
   const { lastDirection } = store.getState().nav;
@@ -57,7 +57,10 @@ const Router = () => (
             path="/plugins/instruments/ariadne"
             element={<AriadneSettings />}
           />
-          <Route path="/plugins/instruments/:name" element={<Instrument />} />
+          <Route
+            path="/plugins/instruments/prometheus"
+            element={<PrometheusSettings />}
+          />
           <Route
             path="/controllers/keyboard/settings"
             element={<KeyboardSettings />}
