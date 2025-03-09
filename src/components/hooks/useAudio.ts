@@ -48,8 +48,8 @@ const oscBank = createNode(
   }),
 );
 
-const ariadneNotesToGraph = (
-  {
+const ariadne = createNode(
+  ({
     carrierDetune,
     carrierOscType,
     masterGain,
@@ -57,26 +57,35 @@ const ariadneNotesToGraph = (
     modulatorDetune,
     modulatorOscType,
     modulatorRatio,
-  },
-  notes: Note[],
-) =>
-  notes.reduce(
-    (acc, { frequency, gain, id }) =>
-      Object.assign({}, acc, {
-        [id]: oscBank(OUTPUT, {
-          carrierDetune,
-          carrierOscType,
-          frequency,
-          gain,
-          masterGain,
-          masterPan,
-          modulatorDetune,
-          modulatorOscType,
-          modulatorRatio,
+    notes,
+  }: {
+    carrierDetune: number;
+    carrierOscType: string;
+    masterGain: number;
+    masterPan: number;
+    modulatorDetune: number;
+    modulatorOscType: string;
+    modulatorRatio: number;
+    notes: Note[];
+  }) =>
+    notes.reduce(
+      (acc, { frequency, gain, id }) =>
+        Object.assign({}, acc, {
+          [id]: oscBank(OUTPUT, {
+            carrierDetune,
+            carrierOscType,
+            frequency,
+            gain,
+            masterGain,
+            masterPan,
+            modulatorDetune,
+            modulatorOscType,
+            modulatorRatio,
+          }),
         }),
-      }),
-    {},
-  );
+      {},
+    ),
+);
 
 export default function useAudio() {
   // TODO implement keyboard input
@@ -91,8 +100,9 @@ export default function useAudio() {
     return;
   }
 
-  virtualAudioGraph.update(
-    ariadneNotesToGraph(
+  virtualAudioGraph.update({
+    0: ariadne(
+      OUTPUT,
       // TODO store these values in redux and update them here
       {
         carrierDetune: 0,
@@ -102,8 +112,8 @@ export default function useAudio() {
         modulatorDetune: 0,
         modulatorOscType: "sine",
         modulatorRatio: 2.5,
+        notes: currentNote ? [currentNote] : [],
       },
-      currentNote ? [currentNote] : [],
     ),
-  );
+  });
 }
