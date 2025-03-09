@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux";
 import createVirtualAudioGraph, {
+  biquadFilter,
   createNode,
+  delay,
   dynamicsCompressor,
   gain as gainNode,
   INPUT,
@@ -117,6 +119,40 @@ const leveller = createNode(
   }),
 );
 
+const pingPongDelay = createNode(
+  ({
+    delayTime,
+    dryLevel,
+    feedback,
+    highCut,
+    lowCut,
+    maxDelayTime,
+    pingPong,
+    wetLevel,
+  }: {
+    delayTime: number;
+    dryLevel: number;
+    feedback: number;
+    highCut: number;
+    lowCut: number;
+    maxDelayTime: number;
+    pingPong: boolean;
+    wetLevel: number;
+  }) => ({
+    0: gainNode(OUTPUT, { gain: wetLevel }),
+    1: stereoPanner(0, { pan: -1 }),
+    2: stereoPanner(0, { pan: 1 }),
+    3: delay([2, 8], { delayTime, maxDelayTime }),
+    4: gainNode(3, { gain: feedback }),
+    5: delay(pingPong ? [1, 3] : [0, 8], { delayTime, maxDelayTime }),
+    6: biquadFilter(5, { frequency: highCut }),
+    7: biquadFilter(6, { frequency: lowCut, type: "highpass" }),
+    8: gainNode(7, { gain: feedback }),
+    9: gainNode(OUTPUT, { gain: dryLevel }),
+    input: gainNode([8, 9], { gain: 1 }, INPUT),
+  }),
+);
+
 export default function useAudio() {
   // TODO implement keyboard input
   const currentNote = useSelector(controlPadSlice.selectors.currentNote);
@@ -125,13 +161,18 @@ export default function useAudio() {
   // TODO implement other instruments
   if (instrument !== "Ariadne") return;
 
-  if (!currentNote) {
-    virtualAudioGraph.update({});
-    return;
-  }
-
-  virtualAudioGraph.update({
-    0: leveller(OUTPUT, {
+  const effectsGraph = {
+    0: pingPongDelay(OUTPUT, {
+      delayTime: 1 / 3,
+      dryLevel: 0.9,
+      feedback: 0.25,
+      highCut: 16000,
+      lowCut: 50,
+      maxDelayTime: 1.2,
+      pingPong: true,
+      wetLevel: 0.6,
+    }),
+    1: leveller(0, {
       attack: 0,
       gain: 1,
       knee: 30,
@@ -140,7 +181,10 @@ export default function useAudio() {
       release: 0.25,
       threshold: -50,
     }),
-    1: ariadne(
+  };
+
+  if (currentNote) {
+    effectsGraph[2] = ariadne(
       0,
       // TODO store these values in redux and update them here
       {
@@ -151,8 +195,9 @@ export default function useAudio() {
         modulatorDetune: 0,
         modulatorOscType: "sine",
         modulatorRatio: 2.5,
-        notes: currentNote ? [currentNote] : [],
+        notes: [currentNote],
       },
-    ),
-  });
+    );
+  }
+  virtualAudioGraph.update(effectsGraph);
 }
