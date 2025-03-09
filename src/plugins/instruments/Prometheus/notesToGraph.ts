@@ -6,8 +6,10 @@ import {
   OUTPUT,
   stereoPanner,
 } from "virtual-audio-graph";
-import frequencyToPitch from "../../../audioHelpers/frequencyToPitch";
+
 import pitchToFrequency from "../../../audioHelpers/pitchToFrequency";
+
+const frequencyToPitch = (frequency: number) => Math.log2(frequency / 440) * 12;
 
 const lfoNode = createNode(({ frequency, gain, type }) => ({
   0: gainNode(OUTPUT, { gain }),
