@@ -3,6 +3,7 @@ import createVirtualAudioGraph, {
   biquadFilter,
   delay,
   gain,
+  INPUT,
   OUTPUT,
   stereoPanner,
 } from "virtual-audio-graph";
@@ -31,7 +32,7 @@ const updateAudioGraph =
       7: biquadFilter(6, { frequency: lowCut, type: "highpass" }),
       8: gain(7, { gain: feedback }),
       9: gain(OUTPUT, { gain: dryLevel }),
-      input: gain([8, 9], { gain: 1 }, "input"),
+      input: gain([8, 9], { gain: 1 }, INPUT),
     });
 
 export default class {

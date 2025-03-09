@@ -3,6 +3,7 @@ import createVirtualAudioGraph, {
   createNode,
   dynamicsCompressor,
   gain as gainNode,
+  INPUT,
   oscillator,
   OUTPUT,
   stereoPanner,
@@ -111,7 +112,7 @@ const leveller = createNode(
     2: dynamicsCompressor(
       1,
       { attack, knee, ratio, release, threshold },
-      "input",
+      INPUT,
     ),
   }),
 );
