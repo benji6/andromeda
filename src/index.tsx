@@ -45,7 +45,9 @@ resizeHandler();
 
 addEventListener("resize", resizeHandler);
 
-createRoot(document.getElementById("app")).render(
+const rootEl = document.getElementById("app");
+if (!(rootEl instanceof HTMLElement)) throw new Error("Root element not found");
+createRoot(rootEl).render(
   <Provider store={store}>
     <StrictMode>
       <App />

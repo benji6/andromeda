@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import store from "../store";
 import { NAV } from "../constants";
-import App from "./templates/App";
 import About from "./pages/About";
 import ControlPadPage from "./pages/ControlPadPage";
 import ControlPadSettings from "./pages/ControlPadSettings";
@@ -12,6 +11,7 @@ import RedirectHome from "./shared/RedirectHome";
 import navSlice from "../store/navSlice";
 import AriadneSettings from "./pages/AriadneSettings";
 import PrometheusSettings from "./pages/PrometheusSettings";
+import Navigation from "./organisms/Navigation";
 
 const handleRouteChange = (prevLocation, location) => {
   const { lastDirection } = store.getState().nav;
@@ -43,7 +43,8 @@ const RouteChangeHandler = ({ children }) => {
 const Router = () => (
   <BrowserRouter>
     <RouteChangeHandler>
-      <App>
+      <div>
+        <Navigation />
         <Routes>
           <Route path="/" element={<ControlPadPage />} />
           <Route path="/about" element={<About />} />
@@ -66,7 +67,7 @@ const Router = () => (
           <Route path="/settings" element={<Settings />} />
           <Route path="/*" element={<RedirectHome />} />
         </Routes>
-      </App>
+      </div>
     </RouteChangeHandler>
   </BrowserRouter>
 );

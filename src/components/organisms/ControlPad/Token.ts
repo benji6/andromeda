@@ -41,7 +41,12 @@ const colors = new Uint8Array([
   90, 70, 255, 90, 70, 255, 90, 70, 255, 90, 70, 255, 90, 70, 255, 90, 70, 255,
 ]);
 
-const makePerspective = (fov, aspect, near, far): Matrix16 => {
+const makePerspective = (
+  fov: number,
+  aspect: number,
+  near: number,
+  far: number,
+): Matrix16 => {
   const f = Math.tan(Math.PI * 0.5 - 0.5 * fov);
   const rangeInv = 1.0 / (near - far);
 
@@ -68,7 +73,7 @@ const makePerspective = (fov, aspect, near, far): Matrix16 => {
 const ratioToMod = (ratio: number) =>
   ratio < 0.5 ? -Math.pow(ratio - 0.5, 2) : Math.pow(ratio - 0.5, 2);
 
-const modToRotationInc = (mod) =>
+const modToRotationInc = (mod: number) =>
   rotationBaseAmount + rotationVelocityComponent * mod;
 
 export default class {
@@ -78,7 +83,13 @@ export default class {
   rotations: { x: number; y: number; z: number };
   sideLength: number;
   z: number;
-  constructor({ gl, sideLength }) {
+  constructor({
+    gl,
+    sideLength,
+  }: {
+    gl: WebGLRenderingContext;
+    sideLength: number;
+  }) {
     const program = gl.createProgram();
 
     this.active = false;

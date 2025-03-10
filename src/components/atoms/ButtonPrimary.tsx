@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { makeClassName } from "../../utils/dom";
 
 interface Props {
   children?: string;
@@ -9,10 +8,7 @@ interface Props {
 }
 
 const ButtonPrimary = ({ children, onClick, small, to }: Props) => {
-  const className = makeClassName(
-    "ButtonPrimary",
-    small && "ButtonPrimary--small",
-  );
+  const className = `ButtonPrimary${small ? " ButtonPrimary--small" : ""}`;
   return to ? (
     <Link className={className} to={to}>
       {children}

@@ -2,9 +2,9 @@ export const compileShader = (
   gl: WebGLRenderingContext,
   src: string,
   shaderType: GLenum,
-) => {
+): WebGLShader => {
   const shader = gl.createShader(shaderType);
-  if (shader === null) return console.error("Failed to create shader");
+  if (shader === null) throw Error("Failed to create shader");
   gl.shaderSource(shader, src);
   gl.compileShader(shader);
   return shader;
