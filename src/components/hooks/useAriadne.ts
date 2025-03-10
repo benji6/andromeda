@@ -61,11 +61,11 @@ const ariadne = createNode(
     notes,
   }: {
     carrierDetune: number;
-    carrierOscType: string;
+    carrierOscType: OscillatorType;
     masterGain: number;
     masterPan: number;
     modulatorDetune: number;
-    modulatorOscType: string;
+    modulatorOscType: OscillatorType;
     modulatorRatio: number;
     notes: Note[];
   }) =>
