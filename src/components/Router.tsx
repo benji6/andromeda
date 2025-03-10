@@ -6,7 +6,6 @@ import App from "./templates/App";
 import About from "./pages/About";
 import ControlPadPage from "./pages/ControlPadPage";
 import ControlPadSettings from "./pages/ControlPadSettings";
-import Effect from "./pages/Effect";
 import KeyboardSettings from "./pages/KeyboardSettings";
 import Settings from "./pages/Settings";
 import RedirectHome from "./shared/RedirectHome";
@@ -52,7 +51,6 @@ const Router = () => (
             path="/controllers/control-pad/settings"
             element={<ControlPadSettings />}
           />
-          <Route path="/plugins/effects/:name" element={<Effect />} />
           <Route
             path="/plugins/instruments/ariadne"
             element={<AriadneSettings />}
