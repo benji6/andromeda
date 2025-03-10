@@ -1,17 +1,30 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Instrument, Note } from "../types";
 
-const initialState = {
+interface KeyboardState {
+  instrument: Instrument;
+  monophonic: boolean;
+  octave: number;
+  volume: number;
+  currentNotes: Note[];
+}
+
+const initialState: KeyboardState = {
   instrument: "Prometheus",
   monophonic: false,
   octave: 0,
   volume: 0.2,
+  currentNotes: [],
 };
 
 export default createSlice({
   name: "keyboard",
   initialState,
   reducers: {
-    instrumentSet: (state, action: PayloadAction<string>) => {
+    currentNotesSet: (state, action: PayloadAction<Note[]>) => {
+      state.currentNotes = action.payload;
+    },
+    instrumentSet: (state, action: PayloadAction<Instrument>) => {
       state.instrument = action.payload;
     },
     monophonicSet: (state, action: PayloadAction<boolean>) => {
@@ -25,6 +38,7 @@ export default createSlice({
     },
   },
   selectors: {
+    currentNotes: (state) => state.currentNotes,
     instrument: (state) => state.instrument,
     monophonic: (state) => state.monophonic,
     octave: (state) => state.octave,

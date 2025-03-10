@@ -6,13 +6,9 @@ import controlPadSlice from "../../../store/controlPadSlice";
 interface Props {
   sideLength: number;
   hasBeenTouched: boolean;
-  inputStartHandler: (ratios: any) => void;
-  inputModifyHandler: (ratios: any) => void;
-  inputStopHandler: () => void;
 }
 
 let mouseInputEnabled = false;
-let controlPadActive = false;
 
 const validRatio = (n: number) => Math.max(0, Math.min(1 - Number.EPSILON, n));
 
@@ -31,13 +27,7 @@ const eventRatiosAndCoords = (
   };
 };
 
-export default function ControlPad({
-  sideLength,
-  hasBeenTouched,
-  inputStartHandler,
-  inputModifyHandler,
-  inputStopHandler,
-}: Props) {
+export default function ControlPad({ sideLength, hasBeenTouched }: Props) {
   const dispatch = useDispatch();
   const tokenRef = useRef<Token | undefined>(undefined);
   const canvasRef = useRef<HTMLCanvasElement | undefined>(undefined);
@@ -65,15 +55,11 @@ export default function ControlPad({
         }),
       );
       tokenRef.current?.handleInput(currentXYRatios);
-      if (controlPadActive) return inputModifyHandler(currentXYRatios);
-      controlPadActive = true;
-      inputStartHandler(currentXYRatios);
     };
 
     const inputEndCallback = () => {
-      controlPadActive = mouseInputEnabled = false;
+      mouseInputEnabled = false;
       dispatch(controlPadSlice.actions.setCurrentCoordinateRatios(undefined));
-      inputStopHandler();
       tokenRef.current?.handleInputEnd();
     };
 
@@ -95,7 +81,7 @@ export default function ControlPad({
       canvasEl.removeEventListener("mouseup", inputEndCallback);
       canvasEl.oncontextmenu = null;
     };
-  }, [inputStartHandler, inputModifyHandler, inputStopHandler]);
+  }, []);
 
   useEffect(() => {
     tokenRef.current?.handleResize(sideLength);

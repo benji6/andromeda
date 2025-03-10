@@ -8,11 +8,10 @@ import createVirtualAudioGraph, {
   OUTPUT,
   stereoPanner,
 } from "virtual-audio-graph";
-import audioContext from "../../audioContext";
 import useAriadne from "./useAriadne";
 import usePrometheus from "./usePrometheus";
 
-const virtualAudioGraph = createVirtualAudioGraph({ audioContext });
+const virtualAudioGraph = createVirtualAudioGraph();
 
 const leveller = createNode(
   ({

@@ -8,7 +8,7 @@ import {
 import { Note } from "../../types";
 import { useSelector } from "react-redux";
 import ariadneSlice from "../../store/ariadneSlice";
-import controlPadSlice from "../../store/controlPadSlice";
+import { ariadneActiveNotesSelector } from "../../store/selectors";
 
 const oscBank = createNode(
   ({
@@ -89,9 +89,8 @@ const ariadne = createNode(
 );
 
 export default function useAriadne() {
-  // TODO implement keyboard input
-  const currentNote = useSelector(controlPadSlice.selectors.currentNote);
-  const instrument = useSelector(controlPadSlice.selectors.instrument);
+  const ariadneActiveNotes = useSelector(ariadneActiveNotesSelector);
+
   const carrierDetune = useSelector(ariadneSlice.selectors.carrierDetune);
   const carrierOscType = useSelector(ariadneSlice.selectors.carrierOscType);
   const masterGain = useSelector(ariadneSlice.selectors.masterGain);
@@ -100,7 +99,7 @@ export default function useAriadne() {
   const modulatorOscType = useSelector(ariadneSlice.selectors.modulatorOscType);
   const modulatorRatio = useSelector(ariadneSlice.selectors.modulatorRatio);
 
-  if (!currentNote || instrument !== "Ariadne") return;
+  if (!ariadneActiveNotes.length) return;
 
   return ariadne(0, {
     carrierDetune,
@@ -110,6 +109,6 @@ export default function useAriadne() {
     modulatorDetune,
     modulatorOscType,
     modulatorRatio,
-    notes: [currentNote],
+    notes: ariadneActiveNotes,
   });
 }

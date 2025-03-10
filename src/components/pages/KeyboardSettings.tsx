@@ -18,9 +18,14 @@ export default function KeyboardSettings() {
       <h2>Keyboard Settings</h2>
       <InstrumentSelector
         defaultValue={instrument}
-        handleChange={(e) =>
-          dispatch(keyboardSlice.actions.instrumentSet(e.currentTarget.value))
-        }
+        handleChange={(e) => {
+          if (
+            e.currentTarget.value !== "Ariadne" &&
+            e.currentTarget.value !== "Prometheus"
+          )
+            throw Error("Invalid instrument");
+          dispatch(keyboardSlice.actions.instrumentSet(e.currentTarget.value));
+        }}
         label="Instrument"
       />
       <RangeLabelled

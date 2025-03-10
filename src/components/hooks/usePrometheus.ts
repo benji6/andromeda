@@ -8,8 +8,8 @@ import {
 } from "virtual-audio-graph";
 import pitchToFrequency from "../../audioHelpers/pitchToFrequency";
 import { useSelector } from "react-redux";
-import controlPadSlice from "../../store/controlPadSlice";
 import prometheusSlice from "../../store/prometheusSlice";
+import { prometheusActiveNotesSelector } from "../../store/selectors";
 
 const frequencyToPitch = (frequency: number) => Math.log2(frequency / 440) * 12;
 
@@ -106,9 +106,8 @@ const prometheus = createNode(
 );
 
 export default function usePrometheus() {
-  // TODO implement keyboard input
-  const currentNote = useSelector(controlPadSlice.selectors.currentNote);
-  const instrument = useSelector(controlPadSlice.selectors.instrument);
+  const prometheusActiveNotes = useSelector(prometheusActiveNotesSelector);
+
   const filter = useSelector(prometheusSlice.selectors.filter);
   const lfo = useSelector(prometheusSlice.selectors.lfo);
   const master = useSelector(prometheusSlice.selectors.master);
@@ -119,7 +118,7 @@ export default function usePrometheus() {
     prometheusSlice.selectors.oscillatorSupers,
   );
 
-  if (!currentNote || instrument !== "Prometheus") return;
+  if (!prometheusActiveNotes.length) return;
 
   return prometheus(0, {
     filter,
@@ -127,6 +126,6 @@ export default function usePrometheus() {
     master,
     oscillatorSingles,
     oscillatorSupers,
-    notes: [currentNote],
+    notes: prometheusActiveNotes,
   });
 }

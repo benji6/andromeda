@@ -1,10 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { SCALES } from "../constants";
 import pitchToFrequency from "../audioHelpers/pitchToFrequency";
-import { Note, ScaleName } from "../types";
-import { INSTRUMENTS } from "../constants";
-
-export type Instrument = (typeof INSTRUMENTS)[number];
+import { Instrument, Note, ScaleName } from "../types";
 
 interface CurrentCoordinateRatios {
   x: number;
