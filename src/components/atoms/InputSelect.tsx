@@ -1,5 +1,5 @@
 interface Props {
-  disabled: boolean;
+  disabled?: boolean;
   onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
   options: { text: string; value: string }[];
   value: string;

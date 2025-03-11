@@ -2,7 +2,13 @@ import { useDispatch } from "react-redux";
 import ControlModule, { Range, Select } from "../../organisms/ControlModule";
 import prometheusSlice from "../../../store/prometheusSlice";
 
-const SelectOscType = ({ defaultValue, onChange }) => (
+const SelectOscType = ({
+  defaultValue,
+  onChange,
+}: {
+  defaultValue: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+}) => (
   <Select defaultValue={defaultValue} label="Type" onChange={onChange}>
     <option value="random">Random</option>
     <option value="sawtooth">Sawtooth</option>
@@ -11,6 +17,17 @@ const SelectOscType = ({ defaultValue, onChange }) => (
     <option value="triangle">Triangle</option>
   </Select>
 );
+
+interface Props {
+  detune: number;
+  gain: number;
+  id: number;
+  numberOfOscillators: number;
+  pan: number;
+  pitch: number;
+  spread: number;
+  type: string;
+}
 
 export default function ModuleOscSuper({
   detune,
@@ -21,7 +38,7 @@ export default function ModuleOscSuper({
   pitch,
   spread,
   type,
-}) {
+}: Props) {
   const dispatch = useDispatch();
 
   return (
@@ -32,14 +49,14 @@ export default function ModuleOscSuper({
           dispatch(
             prometheusSlice.actions.oscillatorSupersPatch({
               id,
-              type: e.target.value,
+              type: e.target.value as OscillatorType,
             }),
           )
         }
       />
       <Range
         defaultValue={numberOfOscillators}
-        displayValue={numberOfOscillators}
+        displayValue={String(numberOfOscillators)}
         label="Oscillators"
         max={9}
         min={1}
@@ -55,7 +72,7 @@ export default function ModuleOscSuper({
       />
       <Range
         defaultValue={spread}
-        displayValue={spread}
+        displayValue={String(spread)}
         label="Spread"
         max={50}
         min={0}
@@ -96,7 +113,7 @@ export default function ModuleOscSuper({
       />
       <Range
         defaultValue={pitch}
-        displayValue={pitch}
+        displayValue={String(pitch)}
         label="Pitch"
         max={24}
         min={-24}
@@ -112,7 +129,7 @@ export default function ModuleOscSuper({
       />
       <Range
         defaultValue={detune}
-        displayValue={detune}
+        displayValue={String(detune)}
         label="Detune"
         max={50}
         min={-50}

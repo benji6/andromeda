@@ -1,15 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import ControlModule, { Range, Select } from "../../organisms/ControlModule";
+import ControlModule, { Range } from "../../organisms/ControlModule";
 import prometheusSlice from "../../../store/prometheusSlice";
-
-const SelectOscType = ({ defaultValue, onChange }) => (
-  <Select defaultValue={defaultValue} label="Type" onChange={onChange}>
-    <option value="sawtooth">Sawtooth</option>
-    <option value="sine">Sine</option>
-    <option value="square">Square</option>
-    <option value="triangle">Triangle</option>
-  </Select>
-);
+import SelectOscType from "../../shared/SelectOscType";
 
 export default function ModuleLfo() {
   const { gain, frequency, type } = useSelector(prometheusSlice.selectors.lfo);
@@ -20,7 +12,11 @@ export default function ModuleLfo() {
       <SelectOscType
         defaultValue={type}
         onChange={(e) =>
-          dispatch(prometheusSlice.actions.lfoTypeSet(e.target.value))
+          dispatch(
+            prometheusSlice.actions.lfoTypeSet(
+              e.target.value as OscillatorType,
+            ),
+          )
         }
       />
       <Range

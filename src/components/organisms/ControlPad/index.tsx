@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import Token from "./Token";
+import Token, { RatiosAndCoords } from "./Token";
 import { useDispatch } from "react-redux";
 import controlPadSlice from "../../../store/controlPadSlice";
 
@@ -12,12 +12,21 @@ let mouseInputEnabled = false;
 
 const validRatio = (n: number) => Math.max(0, Math.min(1 - Number.EPSILON, n));
 
-const eventRatiosAndCoords = (
-  e,
-): { x: number; xRatio: number; y: number; yRatio: number } => {
+const eventRatiosAndCoords = (e: MouseEvent | TouchEvent): RatiosAndCoords => {
+  if (!(e.target instanceof HTMLElement))
+    throw Error("Invalid control pad element");
   const { top, right, bottom, left } = e.target.getBoundingClientRect();
   const [width, height] = [right - left, bottom - top];
-  const { clientX, clientY } = (e.changedTouches && e.changedTouches[0]) || e;
+  let clientX: number, clientY: number;
+  if ("changedTouches" in e && e.changedTouches[0]) {
+    clientX = e.changedTouches[0].clientX;
+    clientY = e.changedTouches[0].clientY;
+  } else if ("clientX" in e) {
+    clientX = e.clientX;
+    clientY = e.clientY;
+  } else {
+    throw new Error("Unexpected event type");
+  }
   const [x, y] = [clientX - left, clientY - top];
   return {
     x,
@@ -30,7 +39,7 @@ const eventRatiosAndCoords = (
 export default function ControlPad({ sideLength, hasBeenTouched }: Props) {
   const dispatch = useDispatch();
   const tokenRef = useRef<Token | undefined>(undefined);
-  const canvasRef = useRef<HTMLCanvasElement | undefined>(undefined);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -38,8 +47,10 @@ export default function ControlPad({ sideLength, hasBeenTouched }: Props) {
     const canvasEl = canvasRef.current;
 
     if (!tokenRef.current) {
+      const context = canvasEl.getContext("webgl");
+      if (!context) throw Error("WebGL not supported");
       tokenRef.current = new Token({
-        gl: canvasEl.getContext("webgl"),
+        gl: context,
         sideLength,
       });
     }

@@ -49,7 +49,11 @@ export default function AriadneSettings() {
             defaultValue={carrierOscType}
             label="Carrier wave"
             onInput={(e) =>
-              dispatch(ariadneSlice.actions.carrierOscTypeSet(e.target.value))
+              dispatch(
+                ariadneSlice.actions.carrierOscTypeSet(
+                  e.currentTarget.value as OscillatorType,
+                ),
+              )
             }
           >
             <option value="sawtooth">Sawtooth</option>
@@ -61,7 +65,11 @@ export default function AriadneSettings() {
             defaultValue={modulatorOscType}
             label="Modulator wave"
             onInput={(e) =>
-              dispatch(ariadneSlice.actions.carrierOscTypeSet(e.target.value))
+              dispatch(
+                ariadneSlice.actions.carrierOscTypeSet(
+                  e.currentTarget.value as OscillatorType,
+                ),
+              )
             }
           >
             <option value="sawtooth">Sawtooth</option>

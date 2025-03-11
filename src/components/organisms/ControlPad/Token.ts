@@ -8,6 +8,13 @@ import {
   translate,
 } from "../../../utils/webGl";
 
+export type RatiosAndCoords = {
+  x: number;
+  xRatio: number;
+  y: number;
+  yRatio: number;
+};
+
 const rotationBaseAmount = 0.01;
 const rotationVelocityComponent = 1.2;
 const fallAwayVelocity = 32;
@@ -79,7 +86,7 @@ const modToRotationInc = (mod: number) =>
 export default class {
   active: boolean;
   gl: WebGLRenderingContext;
-  ratiosAndCoords: { x: number; xRatio: number; y: number; yRatio: number };
+  ratiosAndCoords: RatiosAndCoords;
   rotations: { x: number; y: number; z: number };
   sideLength: number;
   z: number;
@@ -185,7 +192,7 @@ export default class {
     });
   }
 
-  handleInput(ratiosAndCoords) {
+  handleInput(ratiosAndCoords: RatiosAndCoords) {
     this.ratiosAndCoords = ratiosAndCoords;
     this.active = true;
   }
@@ -194,7 +201,7 @@ export default class {
     this.active = false;
   }
 
-  handleResize(sideLength) {
+  handleResize(sideLength: number) {
     this.sideLength = sideLength;
     this.gl.viewport(0, 0, sideLength, sideLength);
   }

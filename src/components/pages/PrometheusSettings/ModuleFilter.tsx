@@ -30,7 +30,11 @@ export default function ModuleFilter() {
         defaultValue={type}
         label="Type"
         onChange={(e) =>
-          dispatch(prometheusSlice.actions.filterTypeSet(e.target.value))
+          dispatch(
+            prometheusSlice.actions.filterTypeSet(
+              e.target.value as BiquadFilterType,
+            ),
+          )
         }
       >
         {Object.keys(typesToParams).map((type) => (

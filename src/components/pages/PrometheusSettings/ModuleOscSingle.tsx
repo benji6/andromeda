@@ -1,15 +1,16 @@
 import { useDispatch } from "react-redux";
-import ControlModule, { Range, Select } from "../../organisms/ControlModule";
+import ControlModule, { Range } from "../../organisms/ControlModule";
 import prometheusSlice from "../../../store/prometheusSlice";
+import SelectOscType from "../../shared/SelectOscType";
 
-const SelectOscType = ({ defaultValue, onChange }) => (
-  <Select defaultValue={defaultValue} label="Type" onChange={onChange}>
-    <option value="sawtooth">Sawtooth</option>
-    <option value="sine">Sine</option>
-    <option value="square">Square</option>
-    <option value="triangle">Triangle</option>
-  </Select>
-);
+interface Props {
+  detune: number;
+  gain: number;
+  id: number;
+  pan: number;
+  pitch: number;
+  type: OscillatorType;
+}
 
 export default function ModuleOscSingle({
   detune,
@@ -18,7 +19,7 @@ export default function ModuleOscSingle({
   pan,
   pitch,
   type,
-}) {
+}: Props) {
   const dispatch = useDispatch();
 
   return (
@@ -29,7 +30,7 @@ export default function ModuleOscSingle({
           dispatch(
             prometheusSlice.actions.oscillatorSinglesPatch({
               id,
-              type: e.target.value,
+              type: e.target.value as OscillatorType,
             }),
           )
         }
@@ -62,7 +63,7 @@ export default function ModuleOscSingle({
       />
       <Range
         defaultValue={pitch}
-        displayValue={pitch}
+        displayValue={String(pitch)}
         label="Pitch"
         max={24}
         min={-24}
@@ -78,7 +79,7 @@ export default function ModuleOscSingle({
       />
       <Range
         defaultValue={detune}
-        displayValue={detune}
+        displayValue={String(detune)}
         label="Detune"
         max={50}
         min={-50}
