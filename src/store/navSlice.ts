@@ -1,12 +1,19 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState = { lastDirection: "right" };
+interface NavState {
+  lastDirection: "left" | "right";
+}
+
+const initialState: NavState = { lastDirection: "right" };
 
 export default createSlice({
   name: "nav",
   initialState,
   reducers: {
-    lastDirectionSet: (state, action: PayloadAction<string>) => {
+    lastDirectionSet: (
+      state,
+      action: PayloadAction<NavState["lastDirection"]>,
+    ) => {
       state.lastDirection = action.payload;
     },
   },

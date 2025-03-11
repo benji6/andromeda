@@ -1,17 +1,11 @@
 import { useSelector } from "react-redux";
-import { makeClassName } from "../../../utils/dom";
 import LinkExternal from "../../atoms/LinkExternal";
 import navSlice from "../../../store/navSlice";
 
 export default function About() {
   const lastDirection = useSelector(navSlice.selectors.lastDirection);
   return (
-    <div
-      className={makeClassName(
-        "About",
-        lastDirection === "left" ? "slide-in-left" : "slide-in-right",
-      )}
-    >
+    <div className={`About slide-in-${lastDirection}`}>
       <h1 className="About__Title">About</h1>
       <p>
         Andromeda is a pluggable digital audio workstation built on open web

@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import ControlPad from "../organisms/ControlPad";
 import ButtonPrimary from "../atoms/ButtonPrimary";
-import { makeClassName } from "../../utils/dom";
 import controlPadSlice from "../../store/controlPadSlice";
 import screenSlice from "../../store/screenSlice";
 import navSlice from "../../store/navSlice";
@@ -12,12 +11,7 @@ export default function ControlPadPage() {
   const lastDirection = useSelector(navSlice.selectors.lastDirection);
 
   return (
-    <div
-      className={makeClassName(
-        "ControlPadPage",
-        lastDirection === "left" ? "slide-in-left" : "slide-in-right",
-      )}
-    >
+    <div className={`ControlPadPage slide-in-${lastDirection}`}>
       <div>
         <ControlPad hasBeenTouched={hasBeenTouched} sideLength={sideLength} />
       </div>

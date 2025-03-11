@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import store from "../store";
 import { NAV } from "../constants";
@@ -12,30 +12,28 @@ import navSlice from "../store/navSlice";
 import AriadneSettings from "./pages/AriadneSettings";
 import PrometheusSettings from "./pages/PrometheusSettings";
 import Navigation from "./organisms/Navigation";
+import { useSelector } from "react-redux";
 
-const handleRouteChange = (prevLocation, location) => {
-  const { lastDirection } = store.getState().nav;
-  const prevIndex = NAV.findIndex(
-    ([pathname]) => pathname === prevLocation.pathname,
-  );
-  const nextIndex = NAV.findIndex(
-    ([pathname]) => pathname === location.pathname,
-  );
-
-  if (nextIndex === prevIndex) return;
-
-  const direction = nextIndex > prevIndex ? "right" : "left";
-
-  if (direction !== lastDirection) {
-    store.dispatch(navSlice.actions.lastDirectionSet(direction));
-  }
-};
-
-const RouteChangeHandler = ({ children }) => {
+const RouteChangeHandler = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
+  const [lastPathname, setLastPathname] = useState(location.pathname);
+  const lastDirection = useSelector(navSlice.selectors.lastDirection);
+
   useEffect(() => {
-    handleRouteChange(location, location);
-  }, [location]);
+    const prevIndex = NAV.findIndex(([pathname]) => pathname === lastPathname);
+    const nextIndex = NAV.findIndex(
+      ([pathname]) => pathname === location.pathname,
+    );
+
+    if (nextIndex === prevIndex) return;
+
+    const direction = nextIndex > prevIndex ? "right" : "left";
+
+    if (direction !== lastDirection)
+      store.dispatch(navSlice.actions.lastDirectionSet(direction));
+
+    setLastPathname(location.pathname);
+  }, [lastDirection, lastPathname, location]);
 
   return children;
 };
