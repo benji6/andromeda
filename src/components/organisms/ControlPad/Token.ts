@@ -7,6 +7,8 @@ import {
   rotateZ,
   translate,
 } from "../../../utils/webGl";
+import fragmentShader from "./fragment_shader.glsl?raw";
+import vertexShader from "./vertex_shader.glsl?raw";
 
 export type RatiosAndCoords = {
   x: number;
@@ -106,90 +108,78 @@ export default class {
     this.sideLength = sideLength;
     this.z = zMin;
 
-    Promise.all([
-      fetch("assets/ControlPadVertexShader.glsl").then((response) =>
-        response.text(),
-      ),
-      fetch("assets/ControlPadFragmentShader.glsl").then((response) =>
-        response.text(),
-      ),
-    ]).then(([vertexShader, fragmentShader]) => {
-      gl.attachShader(
-        program,
-        compileShader(gl, vertexShader, gl.VERTEX_SHADER),
-      );
-      gl.attachShader(
-        program,
-        compileShader(gl, fragmentShader, gl.FRAGMENT_SHADER),
-      );
+    gl.attachShader(program, compileShader(gl, vertexShader, gl.VERTEX_SHADER));
+    gl.attachShader(
+      program,
+      compileShader(gl, fragmentShader, gl.FRAGMENT_SHADER),
+    );
 
-      gl.linkProgram(program);
-      gl.useProgram(program);
-      gl.enable(gl.CULL_FACE);
-      gl.enable(gl.DEPTH_TEST);
+    gl.linkProgram(program);
+    gl.useProgram(program);
+    gl.enable(gl.CULL_FACE);
+    gl.enable(gl.DEPTH_TEST);
 
-      const uTimeLocation = gl.getUniformLocation(program, "u_time");
-      const colorLocation = gl.getAttribLocation(program, "a_color");
-      const positionLocation = gl.getAttribLocation(program, "a_position");
-      const matrixLocation = gl.getUniformLocation(program, "u_matrix");
+    const uTimeLocation = gl.getUniformLocation(program, "u_time");
+    const colorLocation = gl.getAttribLocation(program, "a_color");
+    const positionLocation = gl.getAttribLocation(program, "a_position");
+    const matrixLocation = gl.getUniformLocation(program, "u_matrix");
 
-      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-      gl.enableVertexAttribArray(positionLocation);
-      gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
-      gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 3, gl.FLOAT, false, 0, 0);
+    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
-      gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
-      gl.enableVertexAttribArray(colorLocation);
-      gl.vertexAttribPointer(colorLocation, 1, gl.UNSIGNED_BYTE, true, 0, 0);
-      gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.enableVertexAttribArray(colorLocation);
+    gl.vertexAttribPointer(colorLocation, 1, gl.UNSIGNED_BYTE, true, 0, 0);
+    gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
 
-      const render = () => {
-        requestAnimationFrame(render);
-        const { x, xRatio, y, yRatio } = this.ratiosAndCoords;
-        const xMod = ratioToMod(xRatio);
-        const yMod = ratioToMod(yRatio);
-
-        if (this.active) {
-          if (this.z < zMax) {
-            if (this.z > zMax - returnVelocity) this.z = zMax;
-            else this.z += returnVelocity;
-          }
-        } else if (this.z > zMin - maxDepth) this.z -= fallAwayVelocity;
-
-        const rotationMatrix = mult(
-          rotateY((this.rotations.y += modToRotationInc(yMod))),
-          mult(
-            rotateX((this.rotations.x += modToRotationInc(xMod))),
-            rotateZ((this.rotations.z += modToRotationInc(xMod * yMod))),
-          ),
-        );
-
-        const translationMatrix = translate(
-          x - this.sideLength / 2,
-          this.sideLength / 2 - y,
-          this.z,
-        );
-        const projectionMatrix = makePerspective(
-          Math.PI * 0.0005 * this.sideLength,
-          1,
-          1,
-          2048,
-        );
-
-        const matrix = mult(
-          mult(rotationMatrix, translationMatrix),
-          projectionMatrix,
-        );
-
-        // TODO this will overflow
-        gl.uniform1f(uTimeLocation, performance.now() / 1000);
-        gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-        gl.uniformMatrix4fv(matrixLocation, false, matrix);
-        gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3);
-      };
-
+    const render = () => {
       requestAnimationFrame(render);
-    });
+      const { x, xRatio, y, yRatio } = this.ratiosAndCoords;
+      const xMod = ratioToMod(xRatio);
+      const yMod = ratioToMod(yRatio);
+
+      if (this.active) {
+        if (this.z < zMax) {
+          if (this.z > zMax - returnVelocity) this.z = zMax;
+          else this.z += returnVelocity;
+        }
+      } else if (this.z > zMin - maxDepth) this.z -= fallAwayVelocity;
+
+      const rotationMatrix = mult(
+        rotateY((this.rotations.y += modToRotationInc(yMod))),
+        mult(
+          rotateX((this.rotations.x += modToRotationInc(xMod))),
+          rotateZ((this.rotations.z += modToRotationInc(xMod * yMod))),
+        ),
+      );
+
+      const translationMatrix = translate(
+        x - this.sideLength / 2,
+        this.sideLength / 2 - y,
+        this.z,
+      );
+      const projectionMatrix = makePerspective(
+        Math.PI * 0.0005 * this.sideLength,
+        1,
+        1,
+        2048,
+      );
+
+      const matrix = mult(
+        mult(rotationMatrix, translationMatrix),
+        projectionMatrix,
+      );
+
+      // TODO this will overflow
+      gl.uniform1f(uTimeLocation, performance.now() / 1000);
+      gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+      gl.uniformMatrix4fv(matrixLocation, false, matrix);
+      gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3);
+    };
+
+    requestAnimationFrame(render);
   }
 
   handleInput(ratiosAndCoords: RatiosAndCoords) {
