@@ -6,12 +6,32 @@ import {
   OUTPUT,
   stereoPanner,
 } from "virtual-audio-graph";
-import pitchToFrequency from "../../audioHelpers/pitchToFrequency";
-import { useSelector } from "react-redux";
-import prometheusSlice, { PrometheusState } from "../../store/prometheusSlice";
-import { prometheusActiveNotesSelector } from "../../store/selectors";
-import { Note } from "../../types";
+import pitchToFrequency from "../audioHelpers/pitchToFrequency";
+import prometheusSlice, { PrometheusState } from "./prometheusSlice";
+import { Note } from "../types";
 import { IVirtualAudioNodeGraph } from "virtual-audio-graph/dist/types";
+
+import { createSelector } from "@reduxjs/toolkit";
+import controlPadSlice from "./controlPadSlice";
+import keyboardSlice from "./keyboardSlice";
+
+const prometheusActiveNotesSelector = createSelector(
+  controlPadSlice.selectors.instrument,
+  controlPadSlice.selectors.currentNote,
+  keyboardSlice.selectors.instrument,
+  keyboardSlice.selectors.currentNotes,
+  (
+    controlPadInstrument,
+    controlPadNote,
+    keyboardInstrument,
+    keyboardNotes,
+  ): Note[] => {
+    const notes = keyboardInstrument === "Prometheus" ? keyboardNotes : [];
+    if (controlPadInstrument === "Prometheus" && controlPadNote)
+      notes.push(controlPadNote);
+    return notes;
+  },
+);
 
 const frequencyToPitch = (frequency: number) => Math.log2(frequency / 440) * 12;
 
@@ -114,27 +134,22 @@ const prometheus = createNode(
     ),
 );
 
-export default function usePrometheus() {
-  const prometheusActiveNotes = useSelector(prometheusActiveNotesSelector);
-
-  const filter = useSelector(prometheusSlice.selectors.filter);
-  const lfo = useSelector(prometheusSlice.selectors.lfo);
-  const master = useSelector(prometheusSlice.selectors.master);
-  const oscillatorSingles = useSelector(
-    prometheusSlice.selectors.oscillatorSingles,
-  );
-  const oscillatorSupers = useSelector(
-    prometheusSlice.selectors.oscillatorSupers,
-  );
-
-  if (!prometheusActiveNotes.length) return;
-
-  return prometheus(0, {
-    filter,
-    lfo,
-    master,
-    oscillatorSingles,
-    oscillatorSupers,
-    notes: prometheusActiveNotes,
-  });
-}
+export default createSelector(
+  prometheusActiveNotesSelector,
+  prometheusSlice.selectors.filter,
+  prometheusSlice.selectors.lfo,
+  prometheusSlice.selectors.master,
+  prometheusSlice.selectors.oscillatorSingles,
+  prometheusSlice.selectors.oscillatorSupers,
+  (notes, filter, lfo, master, oscillatorSingles, oscillatorSupers) => {
+    if (!notes.length) return;
+    return prometheus(0, {
+      filter,
+      lfo,
+      master,
+      oscillatorSingles,
+      oscillatorSupers,
+      notes,
+    });
+  },
+);

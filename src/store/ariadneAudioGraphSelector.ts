@@ -5,10 +5,11 @@ import {
   OUTPUT,
   stereoPanner,
 } from "virtual-audio-graph";
-import { Note } from "../../types";
-import { useSelector } from "react-redux";
-import ariadneSlice from "../../store/ariadneSlice";
-import { ariadneActiveNotesSelector } from "../../store/selectors";
+import ariadneSlice from "./ariadneSlice";
+import { createSelector } from "@reduxjs/toolkit";
+import { Note } from "../types";
+import controlPadSlice from "./controlPadSlice";
+import keyboardSlice from "./keyboardSlice";
 
 const oscBank = createNode(
   ({
@@ -88,20 +89,35 @@ const ariadne = createNode(
     ),
 );
 
-export default function useAriadne() {
-  const ariadneActiveNotes = useSelector(ariadneActiveNotesSelector);
+const ariadneActiveNotesSelector = createSelector(
+  controlPadSlice.selectors.instrument,
+  controlPadSlice.selectors.currentNote,
+  keyboardSlice.selectors.instrument,
+  keyboardSlice.selectors.currentNotes,
+  (
+    controlPadInstrument,
+    controlPadNote,
+    keyboardInstrument,
+    keyboardNotes,
+  ): Note[] => {
+    const notes = keyboardInstrument === "Ariadne" ? keyboardNotes : [];
+    if (controlPadInstrument === "Ariadne" && controlPadNote)
+      notes.push(controlPadNote);
+    return notes;
+  },
+);
 
-  const carrierDetune = useSelector(ariadneSlice.selectors.carrierDetune);
-  const carrierOscType = useSelector(ariadneSlice.selectors.carrierOscType);
-  const masterGain = useSelector(ariadneSlice.selectors.masterGain);
-  const masterPan = useSelector(ariadneSlice.selectors.masterPan);
-  const modulatorDetune = useSelector(ariadneSlice.selectors.modulatorDetune);
-  const modulatorOscType = useSelector(ariadneSlice.selectors.modulatorOscType);
-  const modulatorRatio = useSelector(ariadneSlice.selectors.modulatorRatio);
-
-  if (!ariadneActiveNotes.length) return;
-
-  return ariadne(0, {
+export default createSelector(
+  ariadneActiveNotesSelector,
+  ariadneSlice.selectors.carrierDetune,
+  ariadneSlice.selectors.carrierOscType,
+  ariadneSlice.selectors.masterGain,
+  ariadneSlice.selectors.masterPan,
+  ariadneSlice.selectors.modulatorDetune,
+  ariadneSlice.selectors.modulatorOscType,
+  ariadneSlice.selectors.modulatorRatio,
+  (
+    notes,
     carrierDetune,
     carrierOscType,
     masterGain,
@@ -109,6 +125,17 @@ export default function useAriadne() {
     modulatorDetune,
     modulatorOscType,
     modulatorRatio,
-    notes: ariadneActiveNotes,
-  });
-}
+  ) => {
+    if (!notes.length) return;
+    return ariadne(0, {
+      carrierDetune,
+      carrierOscType,
+      masterGain,
+      masterPan,
+      modulatorDetune,
+      modulatorOscType,
+      modulatorRatio,
+      notes,
+    });
+  },
+);

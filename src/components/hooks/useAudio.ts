@@ -8,9 +8,10 @@ import createVirtualAudioGraph, {
   OUTPUT,
   stereoPanner,
 } from "virtual-audio-graph";
-import useAriadne from "./useAriadne";
-import usePrometheus from "./usePrometheus";
 import { IVirtualAudioNodeGraph } from "virtual-audio-graph/dist/types";
+import ariadneAudioGraphSelector from "../../store/ariadneAudioGraphSelector";
+import { useSelector } from "react-redux";
+import prometheusAudioGraphSelector from "../../store/prometheusAudioGraphSelector";
 
 const virtualAudioGraph = createVirtualAudioGraph();
 
@@ -77,8 +78,8 @@ const pingPongDelay = createNode(
 );
 
 export default function useAudio() {
-  const ariadneGraph = useAriadne();
-  const prometheusGraph = usePrometheus();
+  const ariadneAudioGraph = useSelector(ariadneAudioGraphSelector);
+  const prometheusAudioGraph = useSelector(prometheusAudioGraphSelector);
 
   const audioGraph: IVirtualAudioNodeGraph = {
     0: pingPongDelay(OUTPUT, {
@@ -101,8 +102,8 @@ export default function useAudio() {
       threshold: -50,
     }),
   };
-  if (ariadneGraph) audioGraph[2] = ariadneGraph;
-  if (prometheusGraph) audioGraph[3] = prometheusGraph;
+  if (ariadneAudioGraph) audioGraph[2] = ariadneAudioGraph;
+  if (prometheusAudioGraph) audioGraph[3] = prometheusAudioGraph;
 
   virtualAudioGraph.update(audioGraph);
 }
