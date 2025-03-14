@@ -26,7 +26,7 @@ const prometheusActiveNotesSelector = createSelector(
     keyboardInstrument,
     keyboardNotes,
   ): Note[] => {
-    const notes = keyboardInstrument === "Prometheus" ? keyboardNotes : [];
+    const notes = keyboardInstrument === "Prometheus" ? [...keyboardNotes] : [];
     if (controlPadInstrument === "Prometheus" && controlPadNote)
       notes.push(controlPadNote);
     return notes;

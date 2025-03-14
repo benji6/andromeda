@@ -100,7 +100,7 @@ const ariadneActiveNotesSelector = createSelector(
     keyboardInstrument,
     keyboardNotes,
   ): Note[] => {
-    const notes = keyboardInstrument === "Ariadne" ? keyboardNotes : [];
+    const notes = keyboardInstrument === "Ariadne" ? [...keyboardNotes] : [];
     if (controlPadInstrument === "Ariadne" && controlPadNote)
       notes.push(controlPadNote);
     return notes;
