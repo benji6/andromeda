@@ -46,6 +46,7 @@ export default function ModuleFilter() {
       {typesToParams[type].map((param) =>
         param === "frequency" ? (
           <Range
+            key={param}
             defaultValue={Math.log(frequency)}
             displayValue={frequency.toFixed()}
             label="Frequency"
@@ -61,6 +62,7 @@ export default function ModuleFilter() {
           />
         ) : param === "gain" ? (
           <Range
+            key={param}
             defaultValue={gain}
             label="Gain"
             max={20}
@@ -75,6 +77,7 @@ export default function ModuleFilter() {
           />
         ) : (
           <Range
+            key={param}
             defaultValue={Q}
             label="Q"
             max={24}
