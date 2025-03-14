@@ -10,6 +10,7 @@ import createVirtualAudioGraph, {
 } from "virtual-audio-graph";
 import useAriadne from "./useAriadne";
 import usePrometheus from "./usePrometheus";
+import { IVirtualAudioNodeGraph } from "virtual-audio-graph/dist/types";
 
 const virtualAudioGraph = createVirtualAudioGraph();
 
@@ -79,7 +80,7 @@ export default function useAudio() {
   const ariadneGraph = useAriadne();
   const prometheusGraph = usePrometheus();
 
-  const audioGraph = {
+  const audioGraph: IVirtualAudioNodeGraph = {
     0: pingPongDelay(OUTPUT, {
       delayTime: 1 / 3,
       dryLevel: 0.9,

@@ -6,7 +6,7 @@
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "sourceMap": true,
-    // "strict": true, TODO
+    "strict": true,
     "target": "ES2023"
   }
 }

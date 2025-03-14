@@ -8,8 +8,10 @@ import {
 } from "virtual-audio-graph";
 import pitchToFrequency from "../../audioHelpers/pitchToFrequency";
 import { useSelector } from "react-redux";
-import prometheusSlice from "../../store/prometheusSlice";
+import prometheusSlice, { PrometheusState } from "../../store/prometheusSlice";
 import { prometheusActiveNotesSelector } from "../../store/selectors";
+import { Note } from "../../types";
+import { IVirtualAudioNodeGraph } from "virtual-audio-graph/dist/types";
 
 const frequencyToPitch = (frequency: number) => Math.log2(frequency / 440) * 12;
 
@@ -55,9 +57,16 @@ const osc = createNode(
 );
 
 const prometheus = createNode(
-  ({ filter, lfo, master, oscillatorSingles, oscillatorSupers, notes }) =>
+  ({
+    filter,
+    lfo,
+    master,
+    oscillatorSingles,
+    oscillatorSupers,
+    notes,
+  }: PrometheusState & { notes: Note[] }) =>
     notes.reduce(
-      (acc, { frequency, gain, id }) => {
+      (acc: IVirtualAudioNodeGraph, { frequency, gain, id }) => {
         const noteGainId = `noteGain-${id}`;
         acc[noteGainId] = gainNode("filter", { gain });
 
@@ -86,7 +95,7 @@ const prometheus = createNode(
               pitch: oscillatorSuper.pitch,
               type:
                 type === "random"
-                  ? ["sawtooth", "sine", "square", "triangle"][
+                  ? (["sawtooth", "sine", "square", "triangle"] as const)[
                       Math.floor(Math.random() * 4)
                     ]
                   : type,

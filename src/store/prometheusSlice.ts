@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface PrometheusState {
+export interface PrometheusState {
   filter: {
     frequency: number;
     gain: number;
@@ -32,7 +32,7 @@ interface PrometheusState {
     pan: number;
     pitch: number;
     spread: number;
-    type: OscillatorType;
+    type: OscillatorType | "random";
   }[];
 }
 
