@@ -74,12 +74,12 @@ export default function ControlPad({ sideLength, hasBeenTouched }: Props) {
       tokenRef.current?.handleInputEnd();
     };
 
-    canvasEl.addEventListener("touchstart", inputCallback);
-    canvasEl.addEventListener("touchmove", inputCallback);
-    canvasEl.addEventListener("mousedown", inputCallback);
-    canvasEl.addEventListener("mousemove", inputCallback);
-    canvasEl.addEventListener("touchend", inputEndCallback);
-    canvasEl.addEventListener("mouseup", inputEndCallback);
+    canvasEl.addEventListener("touchstart", inputCallback, { passive: false });
+    canvasEl.addEventListener("touchmove", inputCallback, { passive: false });
+    canvasEl.addEventListener("mousedown", inputCallback, { passive: false });
+    canvasEl.addEventListener("mousemove", inputCallback, { passive: false });
+    canvasEl.addEventListener("touchend", inputEndCallback, { passive: false });
+    canvasEl.addEventListener("mouseup", inputEndCallback, { passive: false });
 
     canvasEl.oncontextmenu = (e) => e.preventDefault();
 

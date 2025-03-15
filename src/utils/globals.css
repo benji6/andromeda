@@ -1,5 +1,8 @@
 html {
   min-height: 100%;
+
+  /* Disables pull down to refresh on mobile */
+  overscroll-behavior-y: contain;
 }
 
 body {
