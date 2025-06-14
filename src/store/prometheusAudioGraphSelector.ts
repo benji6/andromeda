@@ -87,24 +87,20 @@ const prometheus = createNode(
   }: PrometheusState & { notes: Note[] }) =>
     notes.reduce(
       (acc: IVirtualAudioNodeGraph, { frequency, gain, id }) => {
-        const noteGainId = `noteGain-${id}`;
+        const noteGainId = `${id}-noteGain`;
         acc[noteGainId] = gainNode("filter", { gain });
 
-        for (let i = 0; i < oscillatorSingles.length; i++) {
-          const oscillatorSingle = oscillatorSingles[i];
-          acc[`oscSingle-${oscillatorSingle.id}-${id}`] = osc(
-            noteGainId,
-            Object.assign({}, oscillatorSingle, {
-              frequency,
-            }),
-          );
+        for (const oscillatorSingle of oscillatorSingles) {
+          acc[`${id}-oscSingle-${oscillatorSingle.id}`] = osc(noteGainId, {
+            ...oscillatorSingle,
+            frequency,
+          });
         }
 
-        for (let i = 0; i < oscillatorSupers.length; i++) {
-          const oscillatorSuper = oscillatorSupers[i];
+        for (const oscillatorSuper of oscillatorSupers) {
           const { numberOfOscillators, type } = oscillatorSuper;
           for (let j = 0; j < numberOfOscillators; j++) {
-            acc[`oscSuper-${oscillatorSuper.id}-${j}-${id}`] = osc(noteGainId, {
+            acc[`${id}-oscSuper-${oscillatorSuper.id}-${j}`] = osc(noteGainId, {
               detune:
                 oscillatorSuper.detune +
                 (j - Math.floor(numberOfOscillators / 2)) *
